@@ -1,5 +1,5 @@
-.idea/
 /vendor
 /node_modules
 Homestead.yaml
-*.env
+.env
+.idea/
