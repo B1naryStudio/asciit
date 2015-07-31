@@ -143,7 +143,12 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
 
+        /*
+         * Third-party providers...
+         */
+        Prettus\Repository\Providers\RepositoryServiceProvider::class,
     ],
 
     /*

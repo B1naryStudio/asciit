@@ -1,16 +1,16 @@
 <?php
 
-namespace App;
+namespace App\Repositories\Entities;
 
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Prettus\Repository\Contracts\Transformable;
+use Prettus\Repository\Traits\TransformableTrait;
+use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+class User extends Model implements Transformable
 {
-    use Authenticatable, CanResetPassword;
+    use TransformableTrait, Authenticatable, CanResetPassword;
 
     /**
      * The database table used by the model.
@@ -24,7 +24,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'avatar'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -32,4 +32,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public function questions()
+    {
+        return $this->hasMany('App\Repositories\Entities\Question');
+    }
 }
