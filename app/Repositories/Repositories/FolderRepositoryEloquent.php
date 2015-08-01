@@ -27,6 +27,6 @@ class FolderRepositoryEloquent extends BaseRepository implements FolderRepositor
      */
     public function boot()
     {
-        $this->pushCriteria( app(RequestCriteria::class) );
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 }
