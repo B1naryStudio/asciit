@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+Route::resource('/questions', 'QuestionController');
+Route::resource('/user', 'UserController');
+
+//Route::controller('auth', 'Auth\AuthController');
