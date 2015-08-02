@@ -1,16 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\QuestionService\Contracts\QuestionServiceInterface;
+use App\Exceptions\QuestionServiceException;
+use Illuminate\Support\Facades\Response;
 
 class QuestionController extends Controller
 {
-    
-    public function __construct() {
+    private $questionService;
+
+    public function __construct(QuestionServiceInterface $questionService) {
+        $this->questionService = $questionService;
+
 //        $this->middleware('auth');
     }
 
@@ -53,7 +59,17 @@ class QuestionController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $question = $this->questionService->getQuestion($id);
+        } catch (QuestionServiceException $e) {
+            return Response::json([
+                'error' => [
+                    'message' => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        return Response::json([$question->toArray()], 200);
     }
 
     /**

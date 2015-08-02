@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 
 
-Route::resource('/questions', 'QuestionController');
-Route::resource('/user', 'UserController');
+Route::resource('/questions', 'API\QuestionController');
+Route::resource('/user', 'API\UserController');
 
 //Route::controller('auth', 'Auth\AuthController');
