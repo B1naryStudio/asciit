@@ -22,16 +22,19 @@ define(['app', 'views/form', 'tpl!views/templates/user/login.tpl', 'syphon'], fu
                 this.model = new App.User.Model();
                 Backbone.Validation.bind(this);
             },
-            events: {
-                'submit form': 'submit'
-            },
-            submit: function (event) {
-                event.preventDefault();
-                var data = Backbone.Syphon.serialize(this);
-                this.trigger('form:submit', data);
-            },
             onDataInvalid: function (errors) {
-                // TODO: display errors
+                $('.error').html('');
+                if (!errors) {
+                    $('.error.all').html('Something went wrong.');
+                } else {
+                    for (var i in errors) {
+                        if (!errors.hasOwnProperty(i)) {
+                            continue;
+                        }
+
+                        $('.error.' + i).html(errors[i]);
+                    }
+                }
             }
         });
     });

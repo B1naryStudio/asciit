@@ -5,9 +5,13 @@ define(['app', 'views/user/login'], function (App, View) {
                 require(['models/user'], function () {
                     var view = new View.UserLoginForm();
 
-                    App.Main.Layout.content.show(view);
+                    App.Main.Layout.getRegion('content').show(view);
                     User.Controller.listenTo(view, 'form:submit', function (data) {
-                        // TODO: request to login
+                        $.when(App.request('user:login', data.email, data.password)).done(function(a,b,c) {
+                            App.trigger('questions:list');
+                        }).fail(function (errors) {
+                            view.triggerMethod('data:invalid', errors);
+                        });
                     });
                 });
             }

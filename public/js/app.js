@@ -1,4 +1,4 @@
-define(['marionette', 'bootstrap', 'validation-model'], function (Marionette, Regions) {
+define(['marionette', 'bootstrap', 'validation-model'], function (Marionette) {
     var App = new Marionette.Application();
 
     App.addRegions({
@@ -6,8 +6,11 @@ define(['marionette', 'bootstrap', 'validation-model'], function (Marionette, Re
     });
 
     App.addInitializer(function (options) {
-        layout = require(['views/main-layout']);
-        App.container.$el.show(layout);
+        require(['views/main-layout'], function (layout) {
+            App.container.show(layout);
+            debugger;
+        });
+        debugger;
     });
 
     App.on('start', function () {

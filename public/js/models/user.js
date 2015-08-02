@@ -1,7 +1,7 @@
 define(['app'], function (App) {
     App.module('User', function (User, App, Backbone, Marionette, $, _) {
         User.Model = Backbone.Model.extend({
-            urlRoot: '/users',
+            urlRoot: '/user/login',
             defaults: {
                 email: '',
                 password: ''
@@ -20,23 +20,30 @@ define(['app'], function (App) {
         });
 
         var API = {
-            getUser: function (id) {
-                var user = new Models.User({ id: id });
+            login: function (email, password) {
+                var user = new User.Model();
                 var defer = $.Deferred();
-                user.fetch({
+                debugger;
+                if (!user.save({
+                    email: email,
+                    password: password
+                }, {
+                    wait: true,
                     success: function (data) {
                         defer.resolve(data);
                     },
                     error: function (data) {
-                        defer.resolve(undefined);
+                        defer.reject(data.validationError);
                     }
-                });
+                })) {
+                    defer.reject(user.validationError);
+                }
                 return defer.promise();
             }
         };
 
-        App.reqres.setHandler('user:model', function (id) {
-            return API.getUser(id);
+        App.reqres.setHandler('user:login', function (email, password) {
+            return API.login(email, password);
         });
     });
 });

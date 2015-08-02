@@ -1,18 +1,21 @@
 <form action="/user/login">
     <div class="form-horizontal">
+        <div class="error all"></div>
         <div class="control-group">
             <label for="email" class="control-label">Email</label>
-            <input type="text" name="login" placeholder="Email">
+            <input type="text" name="email" class="email" placeholder="Email">
+            <div class="error email"></div>
         </div>
 
         <div class="control-group">
             <label for="password" class="control-label">Password</label>
-            <input type="text" name="password" placeholder="Password">
+            <input type="text" name="password" class="password" placeholder="Password">
+            <div class="error password"></div>
         </div>
     </div>
     <div class="control-group">
         <div class="controls">
-            <button class="btn btn-info" href="#">Login</button>
+            <button type="submit" class="btn btn-info">Login</button>
         </div>
     </div>
 </form>
