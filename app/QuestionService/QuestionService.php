@@ -1,14 +1,39 @@
 <?php
 namespace App\QuestionService;
-use App\QuestionService\Contructs\QuestionServiceInterface;
+use App\Exceptions\QuestionServiceException;
+use App\QuestionService\Contracts\QuestionServiceInterface;
+use App\Repositories\Repositories\QuestionRepository;
+use App\Exceptions\RepositoryException;
+use Response;
 
-class QuestionService implements QuestionServiceInterface{
-    
-    public function __construct() {}
+class QuestionService implements QuestionServiceInterface {
+
+    private $questionRepository;
+
+    public function __construct(
+        QuestionRepository $questionRepository
+    ) {
+        $this->questionRepository = $questionRepository;
+    }
     
     public function createQuestion($data){}
     
-    public function getQuestion($id){}
+    public function getQuestion($id)
+    {
+        try {
+            $question = $this->questionRepository
+                ->with(['user', 'folder'])
+                ->find($id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage() . " No such question",
+                null,
+                $e
+            );
+        }
+
+        return $question;
+    }
     
     public function getAnswersOfQuestion($question_id){}
     
