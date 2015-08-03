@@ -7,8 +7,9 @@ define(['app', 'views/user/login'], function (App, View) {
 
                     App.Main.Layout.getRegion('content').show(view);
                     User.Controller.listenTo(view, 'form:submit', function (data) {
-                        $.when(App.request('user:login', data.email, data.password)).done(function(a,b,c) {
-                            App.trigger('questions:list');
+                        $.when(App.request('user:login', data.email, data.password)).done(function (model) {
+                            App.User.Current = model;
+                            App.trigger('question:collection');
                         }).fail(function (errors) {
                             view.triggerMethod('data:invalid', errors);
                         });

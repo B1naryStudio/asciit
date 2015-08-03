@@ -8,9 +8,7 @@ define(['marionette', 'bootstrap', 'validation-model'], function (Marionette) {
     App.addInitializer(function (options) {
         require(['views/main-layout'], function (layout) {
             App.container.show(layout);
-            debugger;
         });
-        debugger;
     });
 
     App.on('start', function () {

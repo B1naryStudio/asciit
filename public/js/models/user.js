@@ -23,14 +23,13 @@ define(['app'], function (App) {
             login: function (email, password) {
                 var user = new User.Model();
                 var defer = $.Deferred();
-                debugger;
                 if (!user.save({
                     email: email,
                     password: password
                 }, {
                     wait: true,
                     success: function (data) {
-                        defer.resolve(data);
+                        defer.resolve(user);
                     },
                     error: function (data) {
                         defer.reject(data.validationError);

@@ -3,7 +3,7 @@ define(['app'], function (App) {
         // routes
         Routes.Router = Marionette.AppRouter.extend({
             appRoutes: {
-                '': 'login',
+                '': 'questions',
                 'login': 'login'
             }
         });
@@ -15,13 +15,18 @@ define(['app'], function (App) {
                 });
             },
             questions: function () {
-                require(['controllers/questions'], function (controller) {
-                    controller.login();
+                require(['controllers/question'], function (controller) {
+                    controller.questions();
                 });
             }
         };
 
         // events
+        this.listenTo(App, 'question:collection', function () {
+            Backbone.history.navigate('/');
+            API.questions();
+        });
+
         this.listenTo(App, 'user:login', function () {
             Backbone.history.navigate('/login');
             API.login();

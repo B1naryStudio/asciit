@@ -4,24 +4,6 @@ define(['app', 'views/form', 'tpl!views/templates/user/login.tpl', 'syphon'], fu
             tagName: 'div',
             template: EditTpl,
             redirectPath: '/',
-            bindings: {
-                '[name=login]': {
-                    observe: 'login',
-                    setOptions: {
-                        validate: true
-                    }
-                },
-                '[name=password]': {
-                    observe: 'password',
-                    setOptions: {
-                        validate: true
-                    }
-                }
-            },
-            initialize: function (options) {
-                this.model = new App.User.Model();
-                Backbone.Validation.bind(this);
-            },
             onDataInvalid: function (errors) {
                 $('.error').html('');
                 if (!errors) {

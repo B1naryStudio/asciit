@@ -1,4 +1,4 @@
-define(['app', 'tpl!views/templates/main-layout.tpl', 'syphon'], function (App, Tpl) {
+define(['app', 'tpl!views/templates/main-layout.tpl', 'views/menu', 'syphon'], function (App, Tpl, Menu) {
     App.module('Main', function (Main, App, Backbone, Marionette, $, _) {
         var Layout = Marionette.LayoutView.extend({
             tagName: 'div',
@@ -9,15 +9,8 @@ define(['app', 'tpl!views/templates/main-layout.tpl', 'syphon'], function (App, 
                 content: '#page-content-wrapper',
                 footer: 'footer'
             },
-            initialize: function() {
-                console.log('main layout: initialize');
-            },
-            onRender: function() {
-                console.log('main layout: onRender');
-            },
             onShow: function() {
-                /*var menu = require('views/menu');
-                this.menuRegion.show(menu);*/
+                this.getRegion('header').show(Menu);
             }
         });
         Main.Layout = new Layout();
