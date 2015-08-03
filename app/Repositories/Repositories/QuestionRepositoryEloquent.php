@@ -26,6 +26,6 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
      */
     public function boot()
     {
-        $this->pushCriteria( app(RequestCriteria::class) );
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 }
