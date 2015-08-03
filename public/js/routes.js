@@ -4,6 +4,7 @@ define(['app'], function (App) {
         Routes.Router = Marionette.AppRouter.extend({
             appRoutes: {
                 '': 'questions',
+                'questions/:id': 'question',
                 'login': 'login'
             }
         });
@@ -18,19 +19,29 @@ define(['app'], function (App) {
                 require(['controllers/question'], function (controller) {
                     controller.questions();
                 });
+            },
+            question: function (id) {
+                require(['controllers/question'], function (controller) {
+                    controller.question(id);
+                });
             }
         };
 
         // events
         this.listenTo(App, 'question:collection', function () {
-            Backbone.history.navigate('/');
+            Backbone.history.navigate('/', {trigger: true});
             API.questions();
         });
 
         this.listenTo(App, 'user:login', function () {
-            Backbone.history.navigate('/login');
+            Backbone.history.navigate('login/', {trigger: true});
             API.login();
         });
+
+        this.listenTo(App, 'question:model', function (id) {
+            Backbone.history.navigate('questions/' + id, {trigger: true});
+            API.question(id);
+        })
 
         App.addInitializer(function(){
             new Routes.Router({
