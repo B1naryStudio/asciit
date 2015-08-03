@@ -15,14 +15,10 @@ define(['app', 'tpl!views/templates/menu.tpl', 'syphon'], function (App, Tpl) {
             login: function() {
                 this.$el.find('.navbar-nav .active').removeClass('active');
                 this.ui.login.closest('li').addClass('active');
-                App.trigger('user:login');
-                return false;
             },
             question: function() {
                 this.$el.find('.navbar-nav .active').removeClass('active');
                 this.ui.questions.closest('li').addClass('active');
-                App.trigger('question:collection');
-                return false;
             }
         });
     });
