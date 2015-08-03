@@ -10,7 +10,7 @@ define(['app', 'tpl!views/templates/menu.tpl', 'syphon'], function (App, Tpl) {
             },
             events: {
                 'click #nav-login' : 'login',
-                'click #nav-question' : 'question'
+                'click #nav-questions' : 'questions'
             },
             login: function() {
                 this.$el.find('.navbar-nav .active').removeClass('active');
@@ -18,7 +18,7 @@ define(['app', 'tpl!views/templates/menu.tpl', 'syphon'], function (App, Tpl) {
                 App.trigger('user:login');
                 return false;
             },
-            question: function() {
+            questions: function() {
                 this.$el.find('.navbar-nav .active').removeClass('active');
                 this.ui.questions.closest('li').addClass('active');
                 App.trigger('question:collection');
