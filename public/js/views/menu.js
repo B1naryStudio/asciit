@@ -8,6 +8,8 @@ define(['app', 'tpl!views/templates/menu.tpl', 'syphon'], function (App, Tpl) {
                 login: '#nav-login',
                 questions: '#nav-questions',
                 question_add: '#nav-question-add'
+,
+                question_add: '#nav-question-add'
             },
             events: {
                 'click @ui.login' : 'login',
@@ -30,4 +32,3 @@ define(['app', 'tpl!views/templates/menu.tpl', 'syphon'], function (App, Tpl) {
     });
     return new App.Menu.View;
 });
-
