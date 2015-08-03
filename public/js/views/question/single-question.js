@@ -7,5 +7,4 @@ define(['app', 'tpl!views/templates/question/question-layout.tpl'], function (Ap
     });
 
     return App.Question.Views;
-
 });

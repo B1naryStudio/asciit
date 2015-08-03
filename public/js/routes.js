@@ -4,8 +4,8 @@ define(['app'], function (App) {
         Routes.Router = Marionette.AppRouter.extend({
             appRoutes: {
                 '': 'questions',
-                'questions/:id': 'question',
                 'questions': 'questions',
+                'questions/:id': 'question',
                 'login': 'login'
             }
         });
