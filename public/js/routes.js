@@ -5,6 +5,7 @@ define(['app'], function (App) {
             appRoutes: {
                 '': 'questions',
                 'questions/:id': 'question',
+                'questions': 'questions',
                 'login': 'login'
             }
         });
@@ -27,26 +28,33 @@ define(['app'], function (App) {
             }
         };
 
-        // events
-        this.listenTo(App, 'question:collection', function () {
-            Backbone.history.navigate('/', {trigger: true});
-            API.questions();
-        });
-
-        this.listenTo(App, 'user:login', function () {
-            Backbone.history.navigate('login/', {trigger: true});
-            API.login();
-        });
-
-        this.listenTo(App, 'question:model', function (id) {
-            Backbone.history.navigate('questions/' + id, {trigger: true});
-            API.question(id);
-        })
-
         App.addInitializer(function(){
             new Routes.Router({
                 controller: API
             });
+        });
+
+        $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {
+            var href = $(this).attr('href'),
+                protocol = this.protocol + '//';
+
+            if (href === '#') {
+                evt.preventDefault();
+            }
+
+            if (evt.metaKey || evt.ctrlKey) {
+                return;
+            }
+
+            if (href && href.slice(0, protocol.length) !== protocol &&
+                href.indexOf('#') !== 0 &&
+                href.indexOf('javascript:') !== 0 &&
+                href.indexOf('mailto:') !== 0 &&
+                href.indexOf('tel:') !== 0
+            ) {
+                evt.preventDefault();
+                Backbone.history.navigate(href, true);
+            }
         });
     });
     return App.Routes.Router;

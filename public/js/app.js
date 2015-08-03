@@ -14,7 +14,7 @@ define(['marionette', 'bootstrap', 'validation-model'], function (Marionette) {
     App.on('start', function () {
         require(['routes'], function () {
             if (Backbone.history) {
-                Backbone.history.start();
+                Backbone.history.start({ pushState: true });
             }
         });
     });
