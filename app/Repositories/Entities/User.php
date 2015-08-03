@@ -7,8 +7,9 @@ use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class User extends Model implements Transformable
+class User extends Model implements Transformable, AuthenticatableContract
 {
     use TransformableTrait, Authenticatable, CanResetPassword;
 
