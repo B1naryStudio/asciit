@@ -23,4 +23,9 @@ abstract class Repository extends BaseRepository {
             throw new RepositoryException('Entity is not found!', null, $e);
         }
     }
+
+    public function findWithRelations($id, array $relations)
+    {
+        return $this->with($relations)->find($id);
+    }
 }

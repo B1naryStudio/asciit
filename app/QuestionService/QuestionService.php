@@ -22,8 +22,7 @@ class QuestionService implements QuestionServiceInterface {
     {
         try {
             $question = $this->questionRepository
-                ->with(['user', 'folder'])
-                ->find($id);
+                ->findWithRelations($id, ['user', 'folder']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . " No such question",
