@@ -3,6 +3,8 @@ define(['app'], function(App) {
         Question.Model = Backbone.Model.extend({
             urlRoot: '/questions',
             defaults: {
+                'title': '',
+                'description': ''
             }
         });
 

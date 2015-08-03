@@ -69,7 +69,7 @@ class QuestionController extends Controller
             ], 404);
         }
 
-        return Response::json([$question->toArray()], 200);
+        return Response::json($question->toArray(), 200);
     }
 
     /**

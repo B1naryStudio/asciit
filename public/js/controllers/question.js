@@ -11,7 +11,7 @@ define(['app', 'views/question/single-question'], function (App, View) {
             },
 
             question: function (id) {
-                require(['models/question'], function (id) {
+                require(['models/question'], function () {
                     $.when(App.request('question:model', id)).done(function (question) {
                         var view = new View.QuestionLayout({model: question});
                         App.Main.Layout.getRegion('content').show(view);

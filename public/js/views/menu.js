@@ -6,11 +6,13 @@ define(['app', 'tpl!views/templates/menu.tpl', 'syphon'], function (App, Tpl) {
             template: Tpl,
             ui: {
                 login: '#nav-login',
-                questions: '#nav-questions'
+                questions: '#nav-questions',
+                question: '#nav-question'
             },
             events: {
                 'click #nav-login' : 'login',
-                'click #nav-questions' : 'questions'
+                'click #nav-questions' : 'questions',
+                'click #nav-question' : 'question'
             },
             login: function() {
                 this.$el.find('.navbar-nav .active').removeClass('active');
@@ -23,6 +25,10 @@ define(['app', 'tpl!views/templates/menu.tpl', 'syphon'], function (App, Tpl) {
                 this.ui.questions.closest('li').addClass('active');
                 App.trigger('question:collection');
                 return false;
+            },
+            question: function(e) {
+                e.preventDefault();
+                App.trigger('question:model', 1);
             }
         });
     });
