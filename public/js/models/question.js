@@ -1,9 +1,7 @@
 define(['app'], function(App) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
-            urlRoot: '/questions',
-            defaults: {
-            }
+            urlRoot: '/questions'
         });
 
         Question.Collection = Backbone.Collection.extend({
@@ -12,7 +10,7 @@ define(['app'], function(App) {
         });
 
         var API = {
-            getQuestions: function () {
+            questionCollection: function () {
                 var questions = new Question.Collection();
                 var defer = $.Deferred();
                 questions.fetch({
@@ -22,7 +20,7 @@ define(['app'], function(App) {
                 });
                 return defer.promise();
             },
-            getQuestion: function (id) {
+            questionGet: function (id) {
                 var question = new Question.Model({ id: id });
                 var defer = $.Deferred();
                 question.fetch({
@@ -30,18 +28,36 @@ define(['app'], function(App) {
                         defer.resolve(data);
                     },
                     error: function (data) {
-                        defer.resolve(undefined);
+                        defer.reject(data.validationError);
+                    }
+                });
+                return defer.promise();
+            },
+            questionAdd: function (data) {
+                var question = new Question.Model();
+                var defer = $.Deferred();
+                question.save(data, {
+                    wait: true,
+                    success: function (data) {
+                        defer.resolve(question);
+                    },
+                    error: function (data) {
+                        defer.reject(data.validationError);
                     }
                 });
                 return defer.promise();
             }
         };
         App.reqres.setHandler('question:collection', function () {
-            return API.getQuestions();
+            return API.questionCollection();
         });
 
         App.reqres.setHandler('question:model', function (id) {
-            return API.getQuestion(id);
+            return API.questionGet(id);
+        });
+
+        App.reqres.setHandler('question:add', function (data) {
+            return API.questionAdd(data);
         });
     });
 });

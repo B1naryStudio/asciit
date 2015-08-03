@@ -6,22 +6,24 @@ define(['app', 'tpl!views/templates/menu.tpl', 'syphon'], function (App, Tpl) {
             template: Tpl,
             ui: {
                 login: '#nav-login',
-                questions: '#nav-questions'
+                questions: '#nav-questions',
+                question_add: '#nav-question-add'
             },
             events: {
-                'click #nav-login' : 'login',
-                'click #nav-question' : 'question'
+                'click @ui.login' : 'login',
+                'click @ui.question' : 'question',
+                'click @ui.question_add' : 'questionAdd'
             },
-            login: function() {
+            login: function () {
                 this.$el.find('.navbar-nav .active').removeClass('active');
                 this.ui.login.closest('li').addClass('active');
-                App.trigger('user:login');
-                return false;
             },
-            question: function() {
+            question: function () {
                 this.$el.find('.navbar-nav .active').removeClass('active');
                 this.ui.questions.closest('li').addClass('active');
-                App.trigger('question:collection');
+            },
+            questionAdd: function () {
+                App.trigger('question:add');
                 return false;
             }
         });

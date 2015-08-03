@@ -7,6 +7,9 @@
             <li class="active">
                 <a id="nav-question" href="/questions">Questions</a>
             </li>
+            <li>
+                <a id="nav-question-add" href="/questions/add">Add question</a>
+            </li>
         </ul>
     </div>
 </nav>

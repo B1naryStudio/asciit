@@ -3,9 +3,9 @@ define(['app', 'views/user/login'], function (App, View) {
         var Controller = Marionette.Controller.extend({
             login: function () {
                 require(['models/user'], function () {
-                    var view = new View.UserLoginForm();
-
+                    var view = new View();
                     App.Main.Layout.getRegion('content').show(view);
+
                     User.Controller.listenTo(view, 'form:submit', function (data) {
                         $.when(App.request('user:login', data.email, data.password)).done(function (model) {
                             App.User.Current = model;

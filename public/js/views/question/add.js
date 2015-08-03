@@ -1,8 +1,8 @@
-define(['app', 'views/form', 'tpl!views/templates/user/login.tpl', 'syphon'], function (App, FormView, Tpl) {
-    App.module('User.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.UserLoginForm = FormView.extend({
+define(['app', 'views/form', 'tpl!views/templates/question/add.tpl', 'syphon'], function (App, FormView, AddTpl) {
+    App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
+        View.AddForm = FormView.extend({
             tagName: 'div',
-            template: Tpl,
+            template: AddTpl,
             onDataInvalid: function (errors) {
                 $('.error').html('');
                 if (!errors) {
@@ -19,6 +19,6 @@ define(['app', 'views/form', 'tpl!views/templates/user/login.tpl', 'syphon'], fu
             }
         });
     });
-    return App.User.Views.UserLoginForm;
+    return App.Question.Views.AddForm;
 });
 

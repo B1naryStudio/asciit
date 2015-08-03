@@ -1,11 +1,26 @@
-define(['app', 'views/question/collection'], function (App, View) {
+define(['app', 'views/question/collection', 'views/question/add', 'models/question'], function (App, CollectionView, AddView) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function () {
-                require(['models/question'], function () {
-                    $.when(App.request('question:collection')).done(function (questions) {
-                        var view = new View.Questions({collection: questions});
-                        App.Main.Layout.getRegion('content').show(view);
+                $.when(App.request('question:collection')).done(function (questions) {
+                    var view = new CollectionView({ collection: questions });
+                    App.Main.Layout.getRegion('content').show(view);
+                });
+            },
+            add: function () {
+                var view = new AddView();
+                App.trigger('popup:show', {
+                    header: {
+                        title: 'Add new question'
+                    },
+                    contentView: view
+                });
+
+                Question.Controller.listenTo(view, 'form:submit', function (data) {
+                    $.when(App.request('question:add', data)).done(function (model) {
+                        Backbone.history.navigate('/', { trigger: true });
+                    }).fail(function (errors) {
+                        view.triggerMethod('data:invalid', errors);
                     });
                 });
             }

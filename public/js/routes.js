@@ -4,6 +4,7 @@ define(['app'], function (App) {
         Routes.Router = Marionette.AppRouter.extend({
             appRoutes: {
                 '': 'questions',
+                'questions': 'questions',
                 'login': 'login'
             }
         });
@@ -18,24 +19,54 @@ define(['app'], function (App) {
                 require(['controllers/question'], function (controller) {
                     controller.questions();
                 });
+            },
+            questionsAdd: function () {
+                require(['controllers/question'], function (controller) {
+                    controller.add();
+                });
+            },
+            popupShow: function (data) {
+                require(['controllers/popup'], function (controller) {
+                    controller.show(data);
+                });
             }
         };
-
-        // events
-        this.listenTo(App, 'question:collection', function () {
-            Backbone.history.navigate('/');
-            API.questions();
-        });
-
-        this.listenTo(App, 'user:login', function () {
-            Backbone.history.navigate('/login');
-            API.login();
-        });
 
         App.addInitializer(function(){
             new Routes.Router({
                 controller: API
             });
+        });
+
+        this.listenTo(App, 'popup:show', function (data) {
+            API.popupShow(data);
+        });
+
+        this.listenTo(App, 'question:add', function () {
+            API.questionsAdd();
+        });
+
+        $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {
+            var href = $(this).attr('href'),
+                protocol = this.protocol + '//';
+
+            if (href === '#') {
+                evt.preventDefault();
+            }
+
+            if (evt.metaKey || evt.ctrlKey) {
+                return;
+            }
+
+            if (href && href.slice(0, protocol.length) !== protocol &&
+                href.indexOf('#') !== 0 &&
+                href.indexOf('javascript:') !== 0 &&
+                href.indexOf('mailto:') !== 0 &&
+                href.indexOf('tel:') !== 0
+            ) {
+                evt.preventDefault();
+                Backbone.history.navigate(href, true);
+            }
         });
     });
     return App.Routes.Router;
