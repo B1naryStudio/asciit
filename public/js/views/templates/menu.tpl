@@ -9,7 +9,6 @@
                 <li><a href="#">Folders</a></li>
                 <li><a href="#">Add question</a></li>
                 <li><a href="#">My questions <span class="badge">2</span></a></li>
-                <li><a id="nav-question" href="/questions/1">Question1</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><img src="http://placehold.it/40x40" class="img-thumbnail"/></li>

@@ -27,7 +27,6 @@ class UsersSeeder extends Seeder
                 'last_name'  => $faker->lastName,
                 'email'     => $faker->unique()->email,
                 'password'  => bcrypt('secret'),
-                'avatar'    => $faker->url,
                 'remember_token' => str_random(10),
             ]);
         }
@@ -37,7 +36,6 @@ class UsersSeeder extends Seeder
             'last_name'  => 'admin',
             'email'     => 'admin@admin.com',
             'password' => bcrypt('admin'),
-            'avatar'    => $faker->url,
             'remember_token' => str_random(10),
         ]);
 
@@ -46,7 +44,6 @@ class UsersSeeder extends Seeder
             'last_name'  => 'unknown',
             'email'     => 'cypherpunks01@europe.com',
             'password' => bcrypt('cypherpunks01'),
-            'avatar'    => $faker->url,
             'remember_token' => str_random(10),
         ]);
     }
