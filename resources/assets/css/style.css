@@ -1,0 +1,56 @@
+.navbar-nav {
+    margin-left: 25px;
+}
+.questions_list {
+    margin-top: 10px;
+}
+.questions_list .votes,
+.answers_list {
+    margin-top: 10px;
+}
+.questions_list .col-md-10 div,
+.question_view .col-md-10 div,
+.question_view .col-md-2 div,
+.answers_list .col-md-2 div,
+.answers_list .col-md-10 div {
+    margin-top: 5px;
+}
+.questions_list .col-md-10 .asked_time,
+.questions_list .col-md-10 .folder,
+.question_view .col-md-10 .asked_time,
+.question_view .col-md-10 .folder,
+.answers_list .col-md-10 .answered_time {
+    color: dimgray;
+    font-size: 0.9em;
+}
+.questions_list .glyphicon-folder-close,
+.question_view .glyphicon-folder-close{
+    margin-right: 5px;
+}
+.questions_list .col-md-10 .question,
+.question_view .col-md-10 .question,
+.answers_list .answers_header,
+.answers_list .your_answer_header {
+    color: black;
+    font-size: 16px;
+}
+.answers_list .answers_header,
+.answers_list .your_answer_header {
+    margin-left: 20px;
+}
+.your_answer div {
+    margin-bottom: 10px;
+}
+.question_view .vote {
+    color: dimgray;
+    font-size: 25px;
+    padding-top: 20px;
+}
+.answers_list .vote {
+    color: dimgray;
+    font-size: 20px;
+}
+.question_view .vote span,
+.answers_list .vote span {
+    margin-right: 10px;
+}
