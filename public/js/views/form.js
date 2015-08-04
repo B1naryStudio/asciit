@@ -1,6 +1,6 @@
 define(['app', 'stickit'], function (App) {
     App.module('FormView', function (FormView, App, Backbone, Marionette, $, _) {
-        FormView.view = Marionette.ItemView.extend({
+        FormView.View = Marionette.ItemView.extend({
             events: {
                 'submit form': 'submit'
             },
@@ -14,12 +14,10 @@ define(['app', 'stickit'], function (App) {
                 return this;
             },
             remove: function() {
-                // Remove the validation binding
-                // See: http://thedersen.com/projects/backbone-validation/#using-form-model-validation/unbinding
                 Backbone.Validation.unbind(this);
                 return Backbone.View.prototype.remove.apply(this, arguments);
             }
         });
     });
-    return App.FormView.view;
+    return App.FormView.View;
 });
