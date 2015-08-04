@@ -1,10 +1,18 @@
-define(['app', 'views/question/collection', 'views/question/add', 'models/question'], function (App, CollectionView, AddView) {
+define(['app', 'views/question/collection', 'views/question/single', 'views/question/add', 'models/question'], function (App, CollectionView, SingleView, AddView) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function () {
                 $.when(App.request('question:collection')).done(function (questions) {
-                    var view = new CollectionView({ collection: questions });
+                    var view = new CollectionView.Questions({collection: questions});
                     App.Main.Layout.getRegion('content').show(view);
+                });
+            },
+            question: function (id) {
+                require(['models/question'], function () {
+                    $.when(App.request('question:model', id)).done(function (question) {
+                        var view = new SingleView({model: question});
+                        App.Main.Layout.getRegion('content').show(view);
+                    });
                 });
             },
             add: function () {

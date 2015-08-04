@@ -1,4 +1,6 @@
-define(['app', 'tpl!views/templates/question/collection.tpl', 'tpl!views/templates/question/row.tpl'], function (App, QuestionsTpl, QuestionTpl) {
+define(['app', 'tpl!views/templates/question/collection.tpl',
+    'tpl!views/templates/question/row.tpl'
+    ], function (App, QuestionsTpl, QuestionTpl) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionCollectionRow = Marionette.ItemView.extend({
             tagName: 'div',

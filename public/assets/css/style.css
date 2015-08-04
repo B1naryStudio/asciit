@@ -9,26 +9,22 @@
     margin-top: 10px;
 }
 .questions_list .col-md-10 div,
-.question_view .col-md-10 div,
-.question_view .col-md-2 div,
+/*.question_view .col-md-10 div,
+.question_view .col-md-2 div,*/
 .answers_list .col-md-2 div,
 .answers_list .col-md-10 div {
     margin-top: 5px;
 }
 .questions_list .col-md-10 .asked_time,
 .questions_list .col-md-10 .folder,
-.question_view .col-md-10 .asked_time,
-.question_view .col-md-10 .folder,
 .answers_list .col-md-10 .answered_time {
     color: dimgray;
     font-size: 0.9em;
 }
-.questions_list .glyphicon-folder-close,
-.question_view .glyphicon-folder-close{
+.questions_list .glyphicon-folder-close {
     margin-right: 5px;
 }
 .questions_list .col-md-10 .question,
-.question_view .col-md-10 .question,
 .answers_list .answers_header,
 .answers_list .your_answer_header {
     color: black;
@@ -55,3 +51,31 @@
     margin-right: 10px;
 }
 
+
+/* Question header */
+time {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.question_view h2 {
+    font-size: 1.8em;
+    margin: 5px 0;
+}
+
+time,
+.question_view .folder,
+.user-info h5 {
+    color: dimgray;
+    font-size: 0.9em;
+    margin-bottom: 5px
+}
+
+.question_view .folder,
+.user-info h5 {
+    font-weight: bold;
+}
+
+.icon {
+    margin-right: 5px;
+}

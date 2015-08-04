@@ -23,30 +23,27 @@ class UsersSeeder extends Seeder
 
         for ($i = 0; $i < 30; $i++) {
             $this->userRepository->create([
-                'first-name' => $faker->firstNameMale,
-                'last-name'  => $faker->lastName,
+                'first_name' => $faker->firstNameMale,
+                'last_name'  => $faker->lastName,
                 'email'     => $faker->unique()->email,
                 'password'  => bcrypt('secret'),
-                'avatar'    => $faker->url,
                 'remember_token' => str_random(10),
             ]);
         }
 
         $this->userRepository->create([
-            'first-name' => 'admin',
-            'last-name'  => 'admin',
+            'first_name' => 'admin',
+            'last_name'  => 'admin',
             'email'     => 'admin@admin.com',
             'password' => bcrypt('admin'),
-            'avatar'    => $faker->url,
             'remember_token' => str_random(10),
         ]);
 
         $this->userRepository->create([
-            'first-name' => 'unknown',
-            'last-name'  => 'unknown',
+            'first_name' => 'unknown',
+            'last_name'  => 'unknown',
             'email'     => 'cypherpunks01@europe.com',
             'password' => bcrypt('cypherpunks01'),
-            'avatar'    => $faker->url,
             'remember_token' => str_random(10),
         ]);
     }

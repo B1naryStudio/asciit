@@ -15,10 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-
-Route::resource('/questions', 'QuestionController');
-Route::resource('/user', 'UserController');
-Route::post('user/login', 'UserController@login');
-
-//Route::controller('auth', 'Auth\AuthController');
+Route::group(['prefix' => 'api/v1'], function() {
+    Route::resource('/questions', 'API\QuestionController');
+    Route::resource('/user', 'API\UserController');
+});

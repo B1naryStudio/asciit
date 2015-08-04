@@ -1,12 +1,16 @@
 define(['app'], function(App) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
-            urlRoot: '/questions'
+            urlRoot: '/api/v1/questions',
+            defaults: {
+                'title': '',
+                'description': ''
+            }
         });
 
         Question.Collection = Backbone.Collection.extend({
             model: Question.Model,
-            url: '/questions'
+            url: '/api/v1/questions'
         });
 
         var API = {

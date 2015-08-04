@@ -1,6 +1,6 @@
 <?php
 
-namespace App\QuestionService\Contructs;
+namespace App\QuestionService\Contracts;
 
 interface QuestionServiceInterface{
     
