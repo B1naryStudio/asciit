@@ -5,7 +5,8 @@ namespace App\QuestionService\Contracts;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
-interface QuestionServiceInterface{
+interface QuestionServiceInterface
+{
     public function createQuestion($data);
 
     /**
@@ -36,4 +37,6 @@ interface QuestionServiceInterface{
     public function addTagToQuestion($tag_id, $question_id);
 
     public function createAnswer($data, $question_id);
+
+    public function getFolders();
 }

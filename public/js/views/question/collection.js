@@ -15,5 +15,5 @@ define(['app', 'tpl!views/templates/question/collection.tpl',
             childViewContainer: '.list'
         });
     });
-    return App.Question.Views;
+    return App.Question.Views.Questions;
 });
