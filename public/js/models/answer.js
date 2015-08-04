@@ -46,15 +46,20 @@ define(['app'], function(App) {
             addAnswer: function (answer) {
                 var defer = $.Deferred();
 
-                answer.save({
+
+                var test = answer.save({
                     wait: true,
                     success: function (newAnswer) {
+                        debugger;
                         defer.resolve(newAnswer);
                     },
                     error: function (answnewAnswerer) {
+                        debugger;
                         defer.reject(newAnswer.validationError);
                     }
                 });
+
+
 
                 return defer.promise();
             }

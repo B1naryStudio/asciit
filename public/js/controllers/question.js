@@ -39,9 +39,10 @@ define([
 
                             Question.Controller.listenTo(answersView, 'form:submit', function (model) {
                                 console.log('Data received in contoller');
+                                debugger;
 
                                 $.when(App.request('answer:add', model)).done(function (newModel) {
-                                    console.log(newModel);
+                                    debugger;
                                     answers.add(newModel);
 
                                  }).fail(function (errors) {
