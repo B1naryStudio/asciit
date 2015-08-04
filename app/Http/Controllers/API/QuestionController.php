@@ -27,7 +27,8 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        $questions = $this->questionService->getQuestions();
+        return Response::json($questions, 200);
     }
 
     /**
