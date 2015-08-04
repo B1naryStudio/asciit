@@ -11,7 +11,8 @@ requirejs.config({
         stickit: 'vendor/backbone/backbone.stickit.min',
         text: 'vendor/require/text',
         tpl: 'vendor/backbone/underscore-tpl',
-        syphon: 'vendor/backbone/backbone.syphon'
+        syphon: 'vendor/backbone/backbone.syphon',
+        select2: 'vendor/select2/select2'
     },
     shim: {
         underscore: {

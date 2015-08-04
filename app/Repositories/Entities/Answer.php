@@ -12,9 +12,9 @@ class Answer extends Model implements Transformable
 
     protected $table = 'q_and_a';
 
-    protected $fillable = ['description'];
+    protected $fillable = ['description', 'user_id', 'question_id'];
 
-    protected $hidden = ['title'];
+    protected $hidden = ['title', 'folder_id'];
 
     public function user()
     {
