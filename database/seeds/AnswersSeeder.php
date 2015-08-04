@@ -1,25 +1,25 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Repositories\Contracts\FolderRepository;
 use App\Repositories\Contracts\UserRepository;
 use App\Repositories\Contracts\QuestionRepository;
+use App\Repositories\Contracts\AnswerRepository;
 use Faker\Factory;
 
-class QuestionsSeeder extends Seeder
+class AnswersSeeder extends Seeder
 {
-    private $folderRepository;
     private $userRepository;
     private $questionRepository;
+    private $answerRepository;
 
     public function __construct(
-        FolderRepository $folderRepository,
         UserRepository $userRepository,
-        QuestionRepository $questionRepository
+        QuestionRepository $questionRepository,
+        AnswerRepository $answerRepository
     ) {
-        $this->folderRepository = $folderRepository;
         $this->userRepository = $userRepository;
         $this->questionRepository = $questionRepository;
+        $this->answerRepository = $answerRepository;
     }
 
     /**
@@ -32,14 +32,13 @@ class QuestionsSeeder extends Seeder
         $faker = Factory::create();
 
         $users = $this->userRepository->all();
-        $folders = $this->folderRepository->all();
+        $questions = $this->questionRepository->all();
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $this->questionRepository->create([
-                'title' => $faker->sentence,
-                'description' => $faker->realText(1500),
-                'user_id' => $users->random()->id,
-                'folder_id' => $folders->random()->id,
+                'description' => $faker->realText(500),
+                'user_id'     => $users->random()->id,
+                'question_id' => $questions->random()->id
             ]);
         }
     }

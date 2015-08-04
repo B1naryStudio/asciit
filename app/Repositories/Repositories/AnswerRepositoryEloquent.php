@@ -3,13 +3,10 @@
 namespace App\Repositories\Repositories;
 
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\Entities\Folder;
-use App\Repositories\Contracts\FolderRepository;
-/**
- * Class FolderRepositoryEloquent
- * @package namespace App\RepositoriesRepositories;
- */
-class FolderRepositoryEloquent extends Repository implements FolderRepository
+use App\Repositories\Entities\Answer;
+use App\Repositories\Contracts\AnswerRepository;
+
+class AnswerRepositoryEloquent extends Repository implements AnswerRepository
 {
     /**
      * Specify Model class name
@@ -18,7 +15,7 @@ class FolderRepositoryEloquent extends Repository implements FolderRepository
      */
     public function model()
     {
-        return Folder::class;
+        return Answer::class;
     }
 
     /**

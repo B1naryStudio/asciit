@@ -9,6 +9,8 @@
                 <li><a href="#">Folders</a></li>
                 <li><a id="nav-question-add" href="#">Add question</a></li>
                 <li><a href="#">My questions <span class="badge">2</span></a></li>
+                <!-- Test button for single question page -->
+                <li><a id="nav-question" href="/questions/1">Question1 test</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><img src="http://placehold.it/40x40" class="img-thumbnail"/></li>

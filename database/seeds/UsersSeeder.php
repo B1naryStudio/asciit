@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Repositories\Repositories\UserRepository;
+use App\Repositories\Contracts\UserRepository;
 use Faker\Factory;
 
 class UsersSeeder extends Seeder
