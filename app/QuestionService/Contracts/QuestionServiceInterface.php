@@ -29,4 +29,6 @@ interface QuestionServiceInterface
     public function addTagToQuestion($tag_id, $question_id);
 
     public function createAnswer($data, $question_id);
+
+    public function getFolders();
 }

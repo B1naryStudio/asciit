@@ -81,5 +81,19 @@ class QuestionService implements QuestionServiceInterface
     public function addTagToQuestion($tag_id, $question_id){}
     
     public function createAnswer($data, $question_id){}
+
+    public function getFolders()
+    {
+        try {
+            $folder = $this->folderRepository->all();
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $folder;
+    }
 }
 

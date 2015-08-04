@@ -1,4 +1,11 @@
-define(['app', 'views/question/collection', 'views/question/single', 'views/question/add', 'models/question'], function (App, CollectionView, SingleView, AddView) {
+define(['app',
+    'views/question/collection',
+    'views/question/single',
+    'views/question/add',
+    'views/folder/select',
+    'models/question',
+    'models/folder'
+], function (App, CollectionView, SingleView, AddView, SelectFolderView) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function () {
@@ -14,24 +21,28 @@ define(['app', 'views/question/collection', 'views/question/single', 'views/ques
                 });
             },
             add: function () {
-                var view = new AddView();
-                App.trigger('popup:show', {
-                    header: {
-                        title: 'Add new question'
-                    },
-                    class: 'question-add',
-                    contentView: view
-                });
-                var self = this;
+                $.when(App.request('folder:collection')).done(function (folders) {
+                    var folder_view = new SelectFolderView({ collection: folders });
+                    var view = new AddView({ folder_view: folder_view });
+                    App.trigger('popup:show', {
+                        header: {
+                            title: 'Add new question'
+                        },
+                        class: 'question-add',
+                        contentView: view
+                    });
 
-                Question.Controller.listenTo(view, 'form:submit', function (data) {
-                    $.when(App.request('question:add', data)).done(function (model) {
-                        App.trigger('popup:close');
-                        if (Backbone.history.navigate('/', { trigger: true })) {
-                            self.questions();
-                        }
-                    }).fail(function (errors) {
-                        view.triggerMethod('data:invalid', errors);
+                    var self = this;
+
+                    Question.Controller.listenTo(view, 'form:submit', function (data) {
+                        $.when(App.request('question:add', data)).done(function (model) {
+                            App.trigger('popup:close');
+                            if (Backbone.history.navigate('/', { trigger: true })) {
+                                self.questions();
+                            }
+                        }).fail(function (errors) {
+                            view.triggerMethod('data:invalid', errors);
+                        });
                     });
                 });
             }

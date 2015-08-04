@@ -11,12 +11,7 @@
 
         <div class="control-group folder">
             <label for="folder" class="control-label col-sm-2">Folder</label>
-            <div class="col-sm-10">
-                <select name="folder" id="folder" class="folder-select form-control">
-                    <option value="test">test</option>
-                    <option value="folder">older</option>
-                </select>
-            </div>
+            <div class="col-sm-10 folder-select-wrapper"></div>
             <div class="error folder"></div>
         </div>
 

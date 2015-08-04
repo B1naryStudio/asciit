@@ -142,7 +142,7 @@ time,
     resize: none;
 }
 
-#popup-layout-view.question-add .modal-backdrop.in {
+.modal-backdrop.in {
     width: 100%;
     height: 100%;
 }
