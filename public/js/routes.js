@@ -5,6 +5,7 @@ define(['app'], function (App) {
             appRoutes: {
                 '': 'questions',
                 'questions': 'questions',
+                'questions/:id': 'question',
                 'login': 'login'
             }
         });
@@ -18,6 +19,11 @@ define(['app'], function (App) {
             questions: function () {
                 require(['controllers/question'], function (controller) {
                     controller.questions();
+                });
+            },
+            question: function (id) {
+                require(['controllers/question'], function (controller) {
+                    controller.question(id);
                 });
             }
         };

@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\Folder;
 
@@ -10,7 +9,7 @@ use App\Repositories\Entities\Folder;
  * Class FolderRepositoryEloquent
  * @package namespace App\RepositoriesRepositories;
  */
-class FolderRepositoryEloquent extends BaseRepository implements FolderRepository
+class FolderRepositoryEloquent extends Repository implements FolderRepository
 {
     /**
      * Specify Model class name
