@@ -1,2 +1,2 @@
-<header class="answers-header">2 answers</header>
-<div id="answers"></div>
+<header class="section-header"><%- count %> answers</header>
+<ul id="answers" class="list-group"></ul>

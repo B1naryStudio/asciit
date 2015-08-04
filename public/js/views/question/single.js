@@ -8,16 +8,19 @@ define([
         View.QuestionLayout = Marionette.LayoutView.extend({
             tagname: 'div',
             template: QuestionLayoutTpl,
+
             regions: {
-                answersRegion: '#answers-region'
+                'answersRegion': '#answers-region'
             },
             onShow: function () {
+                var savedThis = this;
 
-                    $.when(App.request('answer:collection', this.model.id)).done(function (answers) {
-                        var view = new AnswersCompositeView({collection: answers});
-                        this.answersRegion.show(view);
-                    });
-
+                $.when(App.request('answer:collection', this.model.id)).done(function (answers) {
+                    var model = new Backbone.Model({count: answers.length})
+                    var view = new AnswersCompositeView({model: model, collection: answers});
+                    console.log(savedThis);
+                    savedThis.answersRegion.show(view);
+                });
             }
         });
     });

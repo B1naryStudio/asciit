@@ -28,4 +28,9 @@ abstract class Repository extends BaseRepository {
     {
         return $this->with($relations)->find($id);
     }
+
+    public function findByFieldWithRelations($fieldName, $fieldValue, $relations, $columns=['*'])
+    {
+        return $this->with($relations)->findByField($fieldName, $fieldValue);
+    }
 }

@@ -40,7 +40,8 @@ class QuestionService implements QuestionServiceInterface {
     
     public function getAnswersOfQuestion($question_id)
     {
-        return $this->answerRepository->findByField('question_id', $question_id);
+        return $this->answerRepository
+            ->findByFieldWithRelations('question_id', $question_id, ['user']);
     }
     
     public function getEntryComments($question_id){}
