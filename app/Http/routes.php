@@ -19,5 +19,6 @@ Route::get('/', function () {
 
 Route::resource('/questions', 'QuestionController');
 Route::resource('/user', 'UserController');
+Route::post('user/login', 'UserController@login');
 
 //Route::controller('auth', 'Auth\AuthController');
