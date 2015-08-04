@@ -37,5 +37,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Repositories\Repositories\FolderRepository',
             'App\Repositories\Repositories\FolderRepositoryEloquent'
         );
+
+        $this->app->singleton(
+            'App\Repositories\Repositories\AnswerRepository',
+            'App\Repositories\Repositories\AnswerRepositoryEloquent'
+        );
     }
 }

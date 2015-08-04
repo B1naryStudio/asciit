@@ -3,17 +3,21 @@ namespace App\QuestionService;
 use App\Exceptions\QuestionServiceException;
 use App\QuestionService\Contracts\QuestionServiceInterface;
 use App\Repositories\Repositories\QuestionRepository;
+use App\Repositories\Repositories\AnswerRepository;
 use App\Exceptions\RepositoryException;
 use Response;
 
 class QuestionService implements QuestionServiceInterface {
 
     private $questionRepository;
+    private $answerRepository;
 
     public function __construct(
-        QuestionRepository $questionRepository
+        QuestionRepository $questionRepository,
+        AnswerRepository $answerRepository
     ) {
         $this->questionRepository = $questionRepository;
+        $this->answerRepository = $answerRepository;
     }
     
     public function createQuestion($data){}
@@ -34,7 +38,11 @@ class QuestionService implements QuestionServiceInterface {
         return $question;
     }
     
-    public function getAnswersOfQuestion($question_id){}
+    public function getAnswersOfQuestion($question_id)
+    {
+        return $this->answerRepository
+            ->findByFieldWithRelations('question_id', $question_id, ['user']);
+    }
     
     public function getEntryComments($question_id){}
     

@@ -37,20 +37,27 @@
 .your_answer div {
     margin-bottom: 10px;
 }
-.question_view .vote {
+
+/* Votes block */
+.vote {
     color: dimgray;
+}
+
+.question_view .vote {
     font-size: 25px;
     padding-top: 20px;
 }
-.answers_list .vote {
-    color: dimgray;
+
+.single-answer .vote {
+    float: right;
+    margin: 5px 0 0 10px;
     font-size: 20px;
 }
-.question_view .vote span,
-.answers_list .vote span {
-    margin-right: 10px;
-}
 
+    .question_view .vote span,
+    .single-answer .vote span {
+        margin-right: 10px;
+    }
 
 /* Question header */
 time {
@@ -79,3 +86,22 @@ time,
 .icon {
     margin-right: 5px;
 }
+
+.section-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #aaa;
+    border-bottom: 1px solid #ccc;
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+
+    .section-header button {
+        margin-bottom: 5px;
+    }
+
+.single-answer {
+    margin: 10px 0;
+}
+
+
