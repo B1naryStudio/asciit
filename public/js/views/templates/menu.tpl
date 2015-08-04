@@ -5,6 +5,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <li><a id="nav-login" href="/login">Login</a></li>
                 <li><a id="nav-question" href="/questions">Questions</a></li>
                 <li><a href="#">Folders</a></li>
                 <li><a id="nav-question-add" href="#">Add question</a></li>

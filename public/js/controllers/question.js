@@ -19,6 +19,7 @@ define(['app', 'views/question/collection', 'views/question/single', 'views/ques
                     header: {
                         title: 'Add new question'
                     },
+                    class: 'question-add',
                     contentView: view
                 });
                 var self = this;

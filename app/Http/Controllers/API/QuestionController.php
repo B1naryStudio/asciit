@@ -10,6 +10,7 @@ use App\QuestionService\Contracts\QuestionServiceInterface;
 use App\Exceptions\QuestionServiceException;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
@@ -52,6 +53,14 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return Response::json([
+                'error' => [
+                    'message' => 'Unauthorized'
+                ]
+            ], 401);
+        }
+
         $rules = array(
             'title' => 'required|regex:/^([A-Za-zА-Яа-я0-9\s]+)$/|max:400',
             'description' => 'required|max:2048'
@@ -64,6 +73,7 @@ class QuestionController extends Controller
             return Response::json($validator->getMessageBag(), 400);
         } else {
             try {
+                $data['user_id'] = Auth::user()->id;
                 $question = $this->questionService->createQuestion($data);
             } catch (QuestionServiceException $e) {
                 return Response::json([

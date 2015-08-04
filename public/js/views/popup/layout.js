@@ -19,6 +19,9 @@ define(['app', 'tpl!views/templates/popup/main.tpl'], function (App, Tpl, Header
                 'click @ui.close': 'close'
             },
             close: function (event) {
+                if (this.options.class) {
+                    this.$el.removeClass(this.options.class);
+                }
                 this.$el.modal('hide');
                 this.destroy();
             },
@@ -33,6 +36,9 @@ define(['app', 'tpl!views/templates/popup/main.tpl'], function (App, Tpl, Header
                 });
                 if (this.options.contentView) {
                     self.getRegion('content').show(this.options.contentView);
+                }
+                if (this.options.class) {
+                    this.$el.addClass(this.options.class);
                 }
                 this.$el.modal('show');
             }
