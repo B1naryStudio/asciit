@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['prefix' => 'api/v1'], function() {
+    Route::resource('/questions', 'API\QuestionController');
+    Route::resource('/questions/{id}/answers', 'API\Question\AnswerController');
+    Route::resource('/user', 'API\UserController');
+});

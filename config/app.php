@@ -143,7 +143,14 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
+        App\Providers\QuestionServiceProvider::class,
 
+        /*
+         * Third-party providers...
+         */
+        Prettus\Repository\Providers\RepositoryServiceProvider::class,
+        Creativeorange\Gravatar\GravatarServiceProvider::class,
     ],
 
     /*
@@ -172,6 +179,7 @@ return [
         'Eloquent'  => Illuminate\Database\Eloquent\Model::class,
         'Event'     => Illuminate\Support\Facades\Event::class,
         'File'      => Illuminate\Support\Facades\File::class,
+        'Gravatar'  => Creativeorange\Gravatar\Facades\Gravatar::class,
         'Hash'      => Illuminate\Support\Facades\Hash::class,
         'Input'     => Illuminate\Support\Facades\Input::class,
         'Inspiring' => Illuminate\Foundation\Inspiring::class,
