@@ -9,26 +9,22 @@
     margin-top: 10px;
 }
 .questions_list .col-md-10 div,
-.question_view .col-md-10 div,
-.question_view .col-md-2 div,
+/*.question_view .col-md-10 div,
+.question_view .col-md-2 div,*/
 .answers_list .col-md-2 div,
 .answers_list .col-md-10 div {
     margin-top: 5px;
 }
 .questions_list .col-md-10 .asked_time,
 .questions_list .col-md-10 .folder,
-.question_view .col-md-10 .asked_time,
-.question_view .col-md-10 .folder,
 .answers_list .col-md-10 .answered_time {
     color: dimgray;
     font-size: 0.9em;
 }
-.questions_list .glyphicon-folder-close,
-.question_view .glyphicon-folder-close{
+.questions_list .glyphicon-folder-close {
     margin-right: 5px;
 }
 .questions_list .col-md-10 .question,
-.question_view .col-md-10 .question,
 .answers_list .answers_header,
 .answers_list .your_answer_header {
     color: black;
@@ -41,19 +37,56 @@
 .your_answer div {
     margin-bottom: 10px;
 }
-.question_view .vote {
+
+/* Votes block */
+.vote {
     color: dimgray;
+}
+
+.question_view .vote {
     font-size: 25px;
     padding-top: 20px;
 }
-.answers_list .vote {
-    color: dimgray;
+
+.single-answer .vote {
+    float: right;
+    margin: 5px 0 0 10px;
     font-size: 20px;
 }
-.question_view .vote span,
-.answers_list .vote span {
-    margin-right: 10px;
+
+    .question_view .vote span,
+    .single-answer .vote span {
+        margin-right: 10px;
+    }
+
+/* Question header */
+time {
+    display: block;
+    margin-bottom: 5px;
 }
+
+.question_view h2 {
+    font-size: 1.8em;
+    margin: 5px 0;
+}
+
+time,
+.question_view .folder,
+.user-info h5 {
+    color: dimgray;
+    font-size: 0.9em;
+    margin-bottom: 5px
+}
+
+.question_view .folder,
+.user-info h5 {
+    font-weight: bold;
+}
+
+.icon {
+    margin-right: 5px;
+}
+
 
 .login-form{
     display: table;
@@ -71,3 +104,21 @@
 .error{
     color: red;
 }
+
+.section-header {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #aaa;
+    border-bottom: 1px solid #ccc;
+    padding-left: 10px;
+    margin-bottom: 15px;
+}
+
+    .section-header button {
+        margin-bottom: 5px;
+    }
+
+.single-answer {
+    margin: 10px 0;
+}
+

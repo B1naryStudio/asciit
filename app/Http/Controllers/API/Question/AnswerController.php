@@ -1,26 +1,29 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Question;
 
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\AuthService\AuthService;
+use App\QuestionService\Contracts\QuestionServiceInterface;
 
-class UserController extends Controller
+class AnswerController extends Controller
 {
-    public function __construct() {
-//        $this->middleware('auth');
+    private $questionService;
+
+    public function __construct(QuestionServiceInterface $questionService)
+    {
+        $this->questionService = $questionService;
     }
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index()
+    public function index($question_id)
     {
-        //
+        return $this->questionService->getAnswersOfQuestion($question_id);
     }
 
     /**
@@ -87,11 +90,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-    
-    public function login(Request $request){
-        
-        $auth = new AuthService($request->all());
-        return $auth->authenticate();
     }
 }

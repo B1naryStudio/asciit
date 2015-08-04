@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Repositories\Repositories;
-
-use Prettus\Repository\Contracts\RepositoryInterface;
+namespace App\Repositories\Contracts;
 
 /**
  * Interface UserRepository

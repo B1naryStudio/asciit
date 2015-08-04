@@ -10,7 +10,7 @@ define(['app', 'tpl!views/templates/menu.tpl', 'syphon'], function (App, Tpl) {
             },
             events: {
                 'click #nav-login' : 'login',
-                'click #nav-question' : 'question'
+                'click #nav-questions' : 'questions'
             },
             login: function() {
                 this.$el.find('.navbar-nav .active').removeClass('active');

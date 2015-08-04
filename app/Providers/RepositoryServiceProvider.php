@@ -24,18 +24,23 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(
-            'App\Repositories\Repositories\UserRepository',
+            'App\Repositories\Contracts\UserRepository',
             'App\Repositories\Repositories\UserRepositoryEloquent'
         );
 
         $this->app->singleton(
-            'App\Repositories\Repositories\QuestionRepository',
+            'App\Repositories\Contracts\QuestionRepository',
             'App\Repositories\Repositories\QuestionRepositoryEloquent'
         );
 
         $this->app->singleton(
-            'App\Repositories\Repositories\FolderRepository',
+            'App\Repositories\Contracts\FolderRepository',
             'App\Repositories\Repositories\FolderRepositoryEloquent'
+        );
+
+        $this->app->singleton(
+            'App\Repositories\Contracts\AnswerRepository',
+            'App\Repositories\Repositories\AnswerRepositoryEloquent'
         );
     }
 }

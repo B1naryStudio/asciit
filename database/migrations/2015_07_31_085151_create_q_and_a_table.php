@@ -19,7 +19,7 @@ class CreateQAndATable extends Migration
             $table->timestamps();
 
             $table->integer('user_id')->unsigned()->nullable();
-            $table->integer('folder_id')->unsigned();
+            $table->integer('folder_id')->unsigned()->nullable();
         });
     }
 

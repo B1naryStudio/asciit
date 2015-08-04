@@ -8,6 +8,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Creativeorange\Gravatar\Facades\Gravatar;
 
 class User extends Model implements Transformable, AuthenticatableContract
 {
@@ -37,5 +38,14 @@ class User extends Model implements Transformable, AuthenticatableContract
     public function questions()
     {
         return $this->hasMany('App\Repositories\Entities\Question');
+    }
+
+    public function getAvatarAttribute($avatar)
+    {
+        if (empty($avatar)) {
+            return Gravatar::get($this->attributes['email']);
+        }
+
+        return $avatar;
     }
 }

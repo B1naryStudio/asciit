@@ -2,15 +2,14 @@
 
 namespace App\Repositories\Repositories;
 
-use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\Question;
-
+use App\Repositories\Contracts\QuestionRepository;
 /**
  * Class QuestionRepositoryEloquent
  * @package namespace App\RepositoriesRepositories;
  */
-class QuestionRepositoryEloquent extends BaseRepository implements QuestionRepository
+class QuestionRepositoryEloquent extends Repository implements QuestionRepository
 {
     /**
      * Specify Model class name
