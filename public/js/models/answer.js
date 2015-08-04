@@ -4,6 +4,12 @@ define(['app'], function(App) {
             defaults: {
                 'description': ''
             },
+            validation: {
+                description: {
+                    required: true,
+                    pattern: /^[a-za-яё ]*$/i
+                }
+            },
             initialize: function (options) {
                 this.urlRoot = '/api/v1/questions/'
                     + options.question_id
@@ -13,10 +19,15 @@ define(['app'], function(App) {
 
         Answer.Collection = Backbone.Collection.extend({
             model: Answer.Model,
+            url: function () {
+                return '/api/v1/questions/'
+                    + this.question_id
+                    + '/answers';
+            },
             initialize: function (options) {
                 this.url = '/api/v1/questions/'
-                + options.question_id
-                + '/answers';
+                    + options.question_id
+                    + '/answers';
             }
         });
 
@@ -30,10 +41,32 @@ define(['app'], function(App) {
                     }
                 });
                 return defer.promise();
+            },
+
+            addAnswer: function (answer) {
+                var defer = $.Deferred();
+
+                answer.save({
+                    wait: true,
+                    success: function (answer) {
+                        defer.resolve(answer);
+                    },
+                    error: function (answer) {
+                        defer.reject(answer.validationError);
+                    }
+                });
+
+                return defer.promise();
             }
         };
+
         App.reqres.setHandler('answer:collection', function (question_id) {
             return API.getAnswers(question_id);
         });
+
+        App.reqres.setHandler('answer:add', function (data) {
+            return API.addAnswer(data);
+        })
     });
+    return App.Answer;
 });
