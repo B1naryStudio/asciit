@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\QuestionService\Contracts\QuestionServiceInterface;
+use Illuminate\Support\Facades\Response;
 
 class AnswerController extends Controller
 {
@@ -42,9 +43,19 @@ class AnswerController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $question_id)
     {
-        //
+        try {
+            $answer = $this->questionService->createAnswer($request->all(), $question_id);
+        } catch (QuestionServiceException $e) {
+            return Response::json([
+                'error' => [
+                    'message' => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        return Response::json($answer->toArray(), 201);
     }
 
     /**

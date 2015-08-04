@@ -63,6 +63,13 @@ class QuestionService implements QuestionServiceInterface
     
     public function addTagToQuestion($tag_id, $question_id){}
     
-    public function createAnswer($data, $question_id){}
+    public function createAnswer($data, $question_id)
+    {
+        $data['question_id'] = $question_id;
+        $data['user_id'] = 1;
+        $answer = $this->answerRepository->create($data);
+
+        return $answer;
+    }
 }
 

@@ -37,13 +37,13 @@ define([
                             var answersView = new AnswersCompositeView({model: model, collection: answers});
                             questionView.answersRegion.show(answersView);
 
-                            Question.Controller.listenTo(answersView, 'form:submit', function (data) {
+                            Question.Controller.listenTo(answersView, 'form:submit', function (model) {
                                 console.log('Data received in contoller');
 
-                                $.when(App.request('answer:add', model)).done(function (model) {
-                                 console.log('Data saved');
-                                 //answersView.render();
-                                 //Backbone.history.navigate('/', { trigger: true });
+                                $.when(App.request('answer:add', model)).done(function (newModel) {
+                                    console.log(newModel);
+                                    answers.add(newModel);
+
                                  }).fail(function (errors) {
                                  console.log(errors);
                                  //view.triggerMethod('data:invalid', errors);

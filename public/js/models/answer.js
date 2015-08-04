@@ -48,11 +48,11 @@ define(['app'], function(App) {
 
                 answer.save({
                     wait: true,
-                    success: function (answer) {
-                        defer.resolve(answer);
+                    success: function (newAnswer) {
+                        defer.resolve(newAnswer);
                     },
-                    error: function (answer) {
-                        defer.reject(answer.validationError);
+                    error: function (answnewAnswerer) {
+                        defer.reject(newAnswer.validationError);
                     }
                 });
 
