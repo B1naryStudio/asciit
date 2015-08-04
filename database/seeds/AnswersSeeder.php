@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Repositories\Repositories\UserRepository;
-use App\Repositories\Repositories\QuestionRepository;
-use App\Repositories\Repositories\AnswerRepository;
+use App\Repositories\Contracts\UserRepository;
+use App\Repositories\Contracts\QuestionRepository;
+use App\Repositories\Contracts\AnswerRepository;
 use Faker\Factory;
 
 class AnswersSeeder extends Seeder

@@ -4,7 +4,7 @@ namespace App\Repositories\Repositories;
 
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\Question;
-
+use App\Repositories\Contracts\QuestionRepository;
 /**
  * Class QuestionRepositoryEloquent
  * @package namespace App\RepositoriesRepositories;

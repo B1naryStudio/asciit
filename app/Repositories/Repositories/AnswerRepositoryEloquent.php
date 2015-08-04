@@ -4,6 +4,7 @@ namespace App\Repositories\Repositories;
 
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\Answer;
+use App\Repositories\Contracts\AnswerRepository;
 
 class AnswerRepositoryEloquent extends Repository implements AnswerRepository
 {
