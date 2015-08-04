@@ -21,7 +21,6 @@ define(['app', 'tpl!views/templates/popup/main.tpl'], function (App, Tpl, Header
             close: function (event) {
                 this.$el.modal('hide');
                 this.destroy();
-                App.trigger('popup:close');
             },
             onShow: function() {
                 var self = this;

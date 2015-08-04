@@ -4,6 +4,9 @@ define(['app', 'views/popup/layout'], function (App, View) {
             show: function (data) {
                 var view = new View(data);
                 App.Main.Layout.getRegion('popup').show(view);
+            },
+            close: function (data) {
+                App.Main.Layout.getRegion('popup').currentView.close(data);
             }
         });
         Popup.Controller = new Controller();

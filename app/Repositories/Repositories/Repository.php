@@ -47,4 +47,13 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     {
         return $this->with($relations)->findByField($fieldName, $fieldValue);
     }
+
+    public function firstOrCreate(array $attributes)
+    {
+        if (!is_null($instance = $this->findWhere($attributes)->first())) {
+            return $instance;
+        }
+
+        return static::create($attributes);
+    }
 }

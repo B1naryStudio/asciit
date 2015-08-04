@@ -8,11 +8,9 @@ define(['app', 'views/question/collection', 'views/question/single', 'views/ques
                 });
             },
             question: function (id) {
-                require(['models/question'], function () {
-                    $.when(App.request('question:model', id)).done(function (question) {
-                        var view = new SingleView({model: question});
-                        App.Main.Layout.getRegion('content').show(view);
-                    });
+                $.when(App.request('question:model', id)).done(function (question) {
+                    var view = new SingleView({ model: question });
+                    App.Main.Layout.getRegion('content').show(view);
                 });
             },
             add: function () {
@@ -23,10 +21,14 @@ define(['app', 'views/question/collection', 'views/question/single', 'views/ques
                     },
                     contentView: view
                 });
+                var self = this;
 
                 Question.Controller.listenTo(view, 'form:submit', function (data) {
                     $.when(App.request('question:add', data)).done(function (model) {
-                        Backbone.history.navigate('/', { trigger: true });
+                        App.trigger('popup:close');
+                        if (Backbone.history.navigate('/', { trigger: true })) {
+                            self.questions();
+                        }
                     }).fail(function (errors) {
                         view.triggerMethod('data:invalid', errors);
                     });

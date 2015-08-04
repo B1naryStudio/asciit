@@ -4,27 +4,32 @@ use App\Exceptions\QuestionServiceException;
 use App\QuestionService\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
+use App\Repositories\Contracts\FolderRepository;
 use App\Exceptions\RepositoryException;
-use Response;
 
 class QuestionService implements QuestionServiceInterface
 {
-
     private $questionRepository;
     private $answerRepository;
+    private $folderRepository;
 
     public function __construct(
         QuestionRepository $questionRepository,
-        AnswerRepository $answerRepository
+        AnswerRepository $answerRepository,
+        FolderRepository $folderRepository
     ) {
         $this->questionRepository = $questionRepository;
         $this->answerRepository = $answerRepository;
+        $this->folderRepository = $folderRepository;
     }
     
     public function createQuestion($data)
     {
         try {
+            $folder = $this->folderRepository->firstOrCreate(['title' => $data['folder']]);
+            $data['folder_id'] = $folder->id;
             $question = $this->questionRepository->create($data);
+            $question->save();
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -37,7 +42,7 @@ class QuestionService implements QuestionServiceInterface
     
     /**
      * @param $id
-     * @return model
+     * @return \App\Repositories\Entities\Question
      */
     public function getQuestion($id)
     {

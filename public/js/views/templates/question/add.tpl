@@ -8,6 +8,12 @@
         </div>
 
         <div class="control-group">
+            <label for="folder" class="control-label">Folder</label>
+            <textarea name="folder" class="folder" placeholder="Folder"></textarea>
+            <div class="error folder"></div>
+        </div>
+
+        <div class="control-group">
             <label for="description" class="control-label">Description</label>
             <textarea name="description" class="description" placeholder="description"></textarea>
             <div class="error description"></div>

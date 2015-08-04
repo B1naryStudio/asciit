@@ -35,6 +35,11 @@ define(['app'], function (App) {
                 require(['controllers/popup'], function (controller) {
                     controller.show(data);
                 });
+            },
+            popupClose: function (data) {
+                require(['controllers/popup'], function (controller) {
+                    controller.close(data);
+                });
             }
         };
 
@@ -46,6 +51,10 @@ define(['app'], function (App) {
 
         this.listenTo(App, 'popup:show', function (data) {
             API.popupShow(data);
+        });
+
+        this.listenTo(App, 'popup:close', function (data) {
+            API.popupClose(data);
         });
 
         this.listenTo(App, 'question:add', function () {
