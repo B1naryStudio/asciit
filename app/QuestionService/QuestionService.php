@@ -4,7 +4,6 @@ use App\Exceptions\QuestionServiceException;
 use App\QuestionService\Contracts\QuestionServiceInterface;
 use App\Repositories\Repositories\QuestionRepository;
 use App\Exceptions\RepositoryException;
-use Response;
 
 class QuestionService implements QuestionServiceInterface {
 
@@ -16,7 +15,19 @@ class QuestionService implements QuestionServiceInterface {
         $this->questionRepository = $questionRepository;
     }
     
-    public function createQuestion($data){}
+    public function createQuestion($data)
+    {
+        try {
+            $question = $this->questionRepository->create($data);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $question;
+    }
     
     public function getQuestion($id)
     {

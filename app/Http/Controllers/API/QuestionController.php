@@ -9,9 +9,13 @@ use App\Http\Controllers\Controller;
 use App\QuestionService\Contracts\QuestionServiceInterface;
 use App\Exceptions\QuestionServiceException;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
 {
+    /**
+     * @var QuestionServiceInterface
+     */
     private $questionService;
 
     public function __construct(QuestionServiceInterface $questionService) {
@@ -48,7 +52,28 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = array(
+            'title' => 'required|regex:/^([A-Za-zА-Яа-я0-9\s]+)$/|max:400',
+            'description' => 'required|max:2048'
+        );
+
+        $data = @json_decode($request->get('model'), true);
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) {
+            return Response::json($validator->getMessageBag(), 400);
+        } else {
+            try {
+                $question = $this->questionService->createQuestion($data);
+            } catch (QuestionServiceException $e) {
+                return Response::json([
+                    'error' => [
+                        'message' => $e->getMessage(),
+                    ],
+                ], 400);
+            }
+            return Response::json($question->toArray(), 200);
+        }
     }
 
     /**

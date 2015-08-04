@@ -40,7 +40,7 @@ define(['app'], function(App) {
             questionAdd: function (data) {
                 var question = new Question.Model();
                 var defer = $.Deferred();
-                question.save(data, {
+                if (!question.save(data, {
                     wait: true,
                     success: function (data) {
                         defer.resolve(question);
@@ -48,7 +48,9 @@ define(['app'], function(App) {
                     error: function (data) {
                         defer.reject(data.validationError);
                     }
-                });
+                })) {
+                    defer.reject(question.validationError);
+                }
                 return defer.promise();
             }
         };

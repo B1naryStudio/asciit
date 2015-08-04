@@ -2,6 +2,6 @@
 
 namespace App\QuestionService\Contracts;
 
-interface QuestionServiceInterface{
+interface QuestionServiceInterface {
     
 }
