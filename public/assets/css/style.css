@@ -55,3 +55,19 @@
     margin-right: 10px;
 }
 
+.login-form{
+    display: table;
+    margin: auto;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.login-form input{
+    float: right;
+    margin-left: 5px;
+}
+
+.error{
+    color: red;
+}
