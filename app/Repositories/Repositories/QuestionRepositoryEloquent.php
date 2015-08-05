@@ -36,17 +36,4 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
         $this->pushCriteria(app(RequestCriteria::class));
         $this->pushCriteria(new QuestionCriteria());
     }
-
-    /**
-     * @param $query
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-/*    public function search($query)
-    {
-        return $this->model
-            ->with('user', 'folder')
-            ->where('title', 'LIKE', "%{$query}%")
-            ->orWhere('description', 'LIKE', "%{$query}%")
-            ->get();
-    }*/
 }
