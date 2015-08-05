@@ -38,24 +38,27 @@ define([
                             questionView.answersRegion.show(answersView);
 
                             Question.Controller.listenTo(answersView, 'form:submit', function (model) {
-                                console.log('Data received in contoller');
-                                debugger;
+                                $.when(App.request('answer:add', model))
+                                    .done(function (savedModel) {
+                                        answers.push(savedModel);
 
-                                $.when(App.request('answer:add', model)).done(function (newModel) {
-                                    debugger;
-                                    answers.add(newModel);
+                                        // Add model and form clearing
+                                        var freshModel = new  Answer.Model({
+                                            question_id: id,
+                                            count: answers.length
+                                        });
 
-                                 }).fail(function (errors) {
-                                 console.log(errors);
-                                 //view.triggerMethod('data:invalid', errors);
-                                 });
+                                        answersView.triggerMethod('model:refresh', freshModel);
+                                    }).fail(function (errors) {
+                                        //console.log(errors);
+                                        answersView.triggerMethod('data:invalid', errors);
+                                    });
                             });
-                        });
+                    });
                 });
-
-
             }
         });
+
         Question.Controller = new Controller();
     });
     return App.Question.Controller;

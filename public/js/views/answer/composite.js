@@ -53,6 +53,17 @@ define(['app', 'tpl!views/templates/answer/answers.tpl',
                     this.trigger('form:submit', this.model);
                 }
             },
+            onDataInvalid: function (errors) {
+                for (var field in errors) {
+                    //console.log('Error in ' + field + ': ' + errors[field] );
+                    Backbone.Validation.callbacks.invalid(this, field, errors[field]);
+                }
+            },
+            // Refresh model and form for the futher using without view rendering
+            onModelRefresh: function (freshModel) {
+                this.model = freshModel;
+                this.stickit();
+            },
             onRender: function() {
                 this.stickit();
                 return this;

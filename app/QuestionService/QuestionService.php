@@ -67,7 +67,8 @@ class QuestionService implements QuestionServiceInterface
     {
         $data['question_id'] = $question_id;
         $data['user_id'] = 1;
-        $answer = $this->answerRepository->create($data);
+        $new = $this->answerRepository->create($data);
+        $answer = $this->answerRepository->findWithRelations($new->id, ['user']);
 
         return $answer;
     }

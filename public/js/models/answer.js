@@ -6,8 +6,7 @@ define(['app'], function(App) {
             },
             validation: {
                 description: {
-                    required: true,
-                    pattern: /^[a-za-яё ]*$/i
+                    required: true
                 }
             },
             initialize: function (options) {
@@ -35,31 +34,32 @@ define(['app'], function(App) {
             getAnswers: function (question_id) {
                 var answers = new Answer.Collection({question_id: question_id});
                 var defer = $.Deferred();
+
                 answers.fetch({
                     success: function (data) {
                         defer.resolve(data);
                     }
                 });
+
                 return defer.promise();
             },
 
-            addAnswer: function (answer) {
+            addAnswer: function (model) {
                 var defer = $.Deferred();
 
-
-                var test = answer.save({
-                    wait: true,
-                    success: function (newAnswer) {
-                        debugger;
-                        defer.resolve(newAnswer);
-                    },
-                    error: function (answnewAnswerer) {
-                        debugger;
-                        defer.reject(newAnswer.validationError);
-                    }
-                });
-
-
+                if (!model.save([], {
+                        wait: true,
+                        success: function () {
+                            debugger;
+                            defer.resolve(model);
+                        },
+                        error: function (model, xhr, options) {
+                            var errors = JSON.parse(xhr.responseText);
+                            defer.reject(errors);
+                        }
+                    })) {
+                    defer.reject({'description': 'Server error, saving is impossible.'});
+                }
 
                 return defer.promise();
             }
