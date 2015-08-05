@@ -39,7 +39,7 @@ class AuthService extends Controller
             if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
                 return Auth::user();
             } else {
-                return response('Bad request', 400);
+                return 'Wrong login or password';
             }
         }
     }
