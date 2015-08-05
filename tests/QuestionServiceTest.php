@@ -11,6 +11,8 @@ class QuestionServiceTest extends TestCase
     protected $question;
     protected $questionService;
     protected $questionRepo;
+    protected $answerRepo;
+    protected $folderRepo;
 
     public function setUp()
     {
@@ -36,7 +38,13 @@ class QuestionServiceTest extends TestCase
         ]);
 
         $this->questionRepo = m::mock('App\Repositories\Repositories\QuestionRepositoryEloquent');
-        $this->questionService = new QuestionService($this->questionRepo);
+        $this->answerRepo = m::mock('App\Repositories\Repositories\AnswerRepositoryEloquent');
+        $this->folderRepo = m::mock('App\Repositories\Repositories\FolderRepositoryEloquent');
+        $this->questionService = new QuestionService(
+            $this->questionRepo,
+            $this->answerRepo,
+            $this->folderRepo
+        );
     }
 
     public function tearDown()
