@@ -65,10 +65,21 @@ class QuestionService implements QuestionServiceInterface
     
     public function createAnswer($data, $question_id)
     {
-        $data['question_id'] = $question_id;
+        // temporary fix without auth
         $data['user_id'] = 1;
+
         $new = $this->answerRepository->create($data);
-        $answer = $this->answerRepository->findWithRelations($new->id, ['user']);
+
+        try {
+            $answer = $this->answerRepository
+                ->findWithRelations($new->id, ['user']);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage() . ' No such answer',
+                null,
+                $e
+            );
+        }
 
         return $answer;
     }

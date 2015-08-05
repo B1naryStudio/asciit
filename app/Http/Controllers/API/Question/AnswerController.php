@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\QuestionService\Contracts\QuestionServiceInterface;
 use Illuminate\Support\Facades\Response;
+use App\Http\Requests\AnswerValidatedRequest;
 
 class AnswerController extends Controller
 {
@@ -43,7 +44,7 @@ class AnswerController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request, $question_id)
+    public function store(AnswerValidatedRequest $request, $question_id)
     {
         try {
             $answer = $this->questionService->createAnswer($request->all(), $question_id);
