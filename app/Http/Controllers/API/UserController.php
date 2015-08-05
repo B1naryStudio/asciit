@@ -89,8 +89,9 @@ class UserController extends Controller
         dd($id);
     }
     
-    public function login(Request $request){
-        $auth = new AuthService(json_decode($request->model));
+    public function login(Request $request)
+    {
+        $auth = new AuthService($request->all());
         return $auth->authenticate();
     }
     

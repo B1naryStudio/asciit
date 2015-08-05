@@ -13,7 +13,7 @@ define([
         var Controller = Marionette.Controller.extend({
             questions: function () {
                 $.when(App.request('question:collection')).done(function (questions) {
-                    var view = new CollectionView.Questions({collection: questions});
+                    var view = new CollectionView({ collection: questions });
                     App.Main.Layout.getRegion('content').show(view);
                 });
             },
@@ -60,6 +60,7 @@ define([
             },
 
             add: function () {
+                var self = this;
                 $.when(App.request('folder:collection')).done(function (folders) {
                     var folder_view = new SelectFolderView({ collection: folders });
                     var view = new AddView({ folder_view: folder_view });
@@ -71,12 +72,10 @@ define([
                         contentView: view
                     });
 
-                    var self = this;
-
                     Question.Controller.listenTo(view, 'form:submit', function (data) {
                         $.when(App.request('question:add', data)).done(function (model) {
                             App.trigger('popup:close');
-                            if (Backbone.history.navigate('/', { trigger: true })) {
+                            if (!Backbone.history.navigate('/', { trigger: true })) {
                                 self.questions();
                             }
                         }).fail(function (errors) {

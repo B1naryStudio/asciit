@@ -18,11 +18,10 @@ class AuthService extends Controller
     public function __construct($request=null)
     {
         $this->middleware('guest', ['except' => 'getLogout']);
-        if(!empty($request)){
-            $this->email = $request->email;
-            $this->password = $request->password;
+        if (!empty($request)) {
+            $this->email = $request['email'];
+            $this->password = $request['password'];
         }
-        
     }
 
     public function authenticate()
