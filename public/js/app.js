@@ -1,6 +1,9 @@
 define(['marionette', 'bootstrap', 'validation-model'], function (Marionette) {
     var App = new Marionette.Application();
 
+    Backbone.emulateHTTP = true;
+    Backbone.emulateJSON = true;
+
     App.addRegions({
         container: 'body'
     });

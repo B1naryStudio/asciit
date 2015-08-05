@@ -2,12 +2,13 @@ define(['app', 'tpl!views/templates/main-layout.tpl', 'views/menu', 'syphon'], f
     App.module('Main', function (Main, App, Backbone, Marionette, $, _) {
         var Layout = Marionette.LayoutView.extend({
             tagName: 'div',
-            id: 'AppLayoutView',
+            id: 'app-layout-view',
             template: Tpl,
             regions: {
-                header: 'header',
+                header:  'header',
                 content: '#page-content-wrapper',
-                footer: 'footer'
+                popup:   '#popup',
+                footer:  'footer'
             },
             onShow: function() {
                 this.getRegion('header').show(Menu);

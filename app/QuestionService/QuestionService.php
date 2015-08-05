@@ -4,28 +4,47 @@ use App\Exceptions\QuestionServiceException;
 use App\QuestionService\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
+use App\Repositories\Contracts\FolderRepository;
 use App\Exceptions\RepositoryException;
-use Response;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class QuestionService implements QuestionServiceInterface
 {
-
     private $questionRepository;
     private $answerRepository;
+    private $folderRepository;
 
     public function __construct(
         QuestionRepository $questionRepository,
-        AnswerRepository $answerRepository
+        AnswerRepository $answerRepository,
+        FolderRepository $folderRepository
     ) {
         $this->questionRepository = $questionRepository;
         $this->answerRepository = $answerRepository;
+        $this->folderRepository = $folderRepository;
     }
     
-    public function createQuestion($data){}
-
+    public function createQuestion($data)
+    {
+        try {
+            $folder = $this->folderRepository->firstOrCreate(['title' => $data['folder']]);
+            $data['folder_id'] = $folder->id;
+            $question = $this->questionRepository->create($data);
+            $question->save();
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $question;
+    }
+    
     /**
      * @param $id
-     * @return model
+     * @return \App\Repositories\Entities\Question
      */
     public function getQuestion($id)
     {
@@ -44,7 +63,16 @@ class QuestionService implements QuestionServiceInterface
     }
 
     /**
-     * @param $question_id
+     * @return Collection
+     */
+    public function getQuestions()
+    {
+        $questions = $this->questionRepository->with(['user', 'folder'])->all();
+        return $questions;
+    }
+
+    /**
+     * @param int $question_id
      * @return Collection
      */
     public function getAnswersOfQuestion($question_id)
@@ -82,6 +110,20 @@ class QuestionService implements QuestionServiceInterface
         }
 
         return $answer;
+    }
+
+    public function getFolders()
+    {
+        try {
+            $folder = $this->folderRepository->all();
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $folder;
     }
 }
 

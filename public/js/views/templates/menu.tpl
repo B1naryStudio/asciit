@@ -5,9 +5,10 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="/questions">Questions</a></li>
+                <li><a id="nav-login" href="/login">Login</a></li>
+                <li><a id="nav-question" href="/questions">Questions</a></li>
                 <li><a href="#">Folders</a></li>
-                <li><a href="#">Add question</a></li>
+                <li><a id="nav-question-add" href="#">Add question</a></li>
                 <li><a href="#">My questions <span class="badge">2</span></a></li>
                 <!-- Test button for single question page -->
                 <li><a id="nav-question" href="/questions/1">Question1 test</a></li>
