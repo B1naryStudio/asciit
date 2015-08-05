@@ -34,7 +34,7 @@ class AuthService extends Controller
         
         $validator = Validator::make(['email' => $this->email, 'password' => $this->password], $rules);
         if ($validator->fails()) {
-            return response('Bad request', 400);
+            return 'Wrong login or password';
         } else {
             if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
                 return Auth::user();
