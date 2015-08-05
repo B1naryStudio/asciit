@@ -47,7 +47,7 @@ class AuthService extends Controller
     public function logout(){
         Auth::logout();
         if(!Auth::check()){
-            return true;
+            return 1;
         }
     }
 }
