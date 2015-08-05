@@ -13,10 +13,13 @@ define(['app', 'tpl!views/templates/tag/select-row.tpl', 'select2'], function (A
             className: 'tag-select',
             childView: View.TagSelectRow,
             onShow: function () {
-                this.$el.attr('name', 'tag').select2({
-                    placeholder: 'Select a tag',
-                    tags: true
-                });
+                this.$el.attr('name', 'tag')
+                    .attr('multiple', 'multiple')
+                    .select2({
+                        placeholder: 'Select a tag',
+                        tags: true,
+                        tokenSeparators: [',', ' ']
+                    }).val(null).trigger('change');
             }
         });
     });

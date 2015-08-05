@@ -25,8 +25,8 @@ class TagController extends Controller
      */
     public function index()
     {
-        $folders = $this->questionService->getFolders();
+        $tags = $this->questionService->getTags();
 
-        return Response::json($folders, 200);
+        return Response::json($tags, 200);
     }
 }

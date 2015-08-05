@@ -5,8 +5,9 @@ namespace App\Repositories\Repositories;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\Tag;
 use App\Repositories\Contracts\TagRepository;
+
 /**
- * Class QuestionRepositoryEloquent
+ * Class TagRepositoryEloquent
  * @package namespace App\RepositoriesRepositories;
  */
 class TagRepositoryEloquent extends Repository implements TagRepository

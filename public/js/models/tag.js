@@ -10,10 +10,11 @@ define(['app'], function(App) {
         });
 
         var API = {
-            tagCollection: function () {
+            tagCollection: function (data) {
                 var tags = new Tag.Collection();
                 var defer = $.Deferred();
                 tags.fetch({
+                    data: data,
                     success: function (data) {
                         defer.resolve(data);
                     }
@@ -21,8 +22,8 @@ define(['app'], function(App) {
                 return defer.promise();
             }
         };
-        App.reqres.setHandler('tag:collection', function () {
-            return API.tagCollection();
+        App.reqres.setHandler('tag:collection', function (data) {
+            return API.tagCollection(data);
         });
     });
 });

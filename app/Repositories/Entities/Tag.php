@@ -13,4 +13,9 @@ class Tag extends Model implements Transformable
     protected $table = 'tags';
 
     protected $fillable = ['title'];
+
+    public function questions()
+    {
+        return $this->belongsToMany('App\Repositories\Entities\Question', 'tag_q_and_a');
+    }
 }
