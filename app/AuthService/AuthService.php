@@ -15,11 +15,14 @@ class AuthService extends Controller
     protected $email;
     protected $password;
 
-    public function __construct(array $request)
+    public function __construct($request=null)
     {
         $this->middleware('guest', ['except' => 'getLogout']);
-        $this->email = $request['email'];
-        $this->password = $request['password'];
+        if(!empty($request)){
+            $this->email = $request->email;
+            $this->password = $request->password;
+        }
+        
     }
 
     public function authenticate()
@@ -31,14 +34,20 @@ class AuthService extends Controller
         
         $validator = Validator::make(['email' => $this->email, 'password' => $this->password], $rules);
         if ($validator->fails()) {
-            return 'Wrong email or password';
+            return response('Bad request', 400);
         } else {
             if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
                 return Auth::user();
             } else {
-                return 'Wrong email or password';
+                return response('Bad request', 400);
             }
         }
     }
     
+    public function logout(){
+        Auth::logout();
+        if(!Auth::check()){
+            return true;
+        }
+    }
 }

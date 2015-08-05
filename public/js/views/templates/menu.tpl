@@ -15,7 +15,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><img src="http://placehold.it/40x40" class="img-thumbnail"/></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="/logout">Logout</a></li>
             </ul>
         </div>
     </div>

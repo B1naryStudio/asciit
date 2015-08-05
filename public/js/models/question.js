@@ -2,9 +2,15 @@ define(['app'], function(App) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
             urlRoot: '/api/v1/questions',
-            defaults: {
-                'title': '',
-                'description': ''
+            validation: {
+                title: {
+                    required: true,
+                    msg: 'Please enter a title'
+                },
+                description: {
+                    required: true,
+                    msg: 'Please enter a description'
+                }
             }
         });
 
@@ -45,8 +51,12 @@ define(['app'], function(App) {
                     success: function (data) {
                         defer.resolve(question);
                     },
-                    error: function (data) {
-                        defer.reject(data.validationError);
+                    error: function (data, response) {
+                        if (data.validationError) {
+                            defer.reject(data.validationError);
+                        } else {
+                            defer.reject(response.responseJSON);
+                        }
                     }
                 })) {
                     defer.reject(question.validationError);
