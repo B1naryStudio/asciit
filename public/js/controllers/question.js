@@ -13,8 +13,17 @@ define([
         var Controller = Marionette.Controller.extend({
             questions: function () {
                 $.when(App.request('question:collection')).done(function (questions) {
-                    var view = new CollectionView({ collection: questions });
-                    App.Main.Layout.getRegion('content').show(view);
+                    var questionsView = new CollectionView({collection: questions});
+                    App.Main.Layout.getRegion('content').show(questionsView);
+
+                    // Updating for search
+                    Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
+                        $.when(App.request('question:collection', searchQuery))
+                            .done(function (questions) {
+                                questionsView.collection = questions;
+                                questionsView.render();
+                        });
+                    });
                 });
             },
 
@@ -60,7 +69,6 @@ define([
             },
 
             add: function () {
-                var self = this;
                 $.when(App.request('folder:collection')).done(function (folders) {
                     var folder_view = new SelectFolderView({ collection: folders });
                     var view = new AddView({ folder_view: folder_view });
@@ -72,10 +80,12 @@ define([
                         contentView: view
                     });
 
+                    var self = this;
+
                     Question.Controller.listenTo(view, 'form:submit', function (data) {
                         $.when(App.request('question:add', data)).done(function (model) {
                             App.trigger('popup:close');
-                            if (!Backbone.history.navigate('/', { trigger: true })) {
+                            if (Backbone.history.navigate('/', { trigger: true })) {
                                 self.questions();
                             }
                         }).fail(function (errors) {

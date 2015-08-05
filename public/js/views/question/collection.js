@@ -1,6 +1,9 @@
-define(['app', 'tpl!views/templates/question/collection.tpl',
-    'tpl!views/templates/question/row.tpl'
-    ], function (App, QuestionsTpl, QuestionTpl) {
+define([
+    'app',
+    'tpl!views/templates/question/collection.tpl',
+    'tpl!views/templates/question/row.tpl',
+    'syphon'
+], function (App, QuestionsTpl, QuestionTpl) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionCollectionRow = Marionette.ItemView.extend({
             tagName: 'div',
@@ -9,10 +12,23 @@ define(['app', 'tpl!views/templates/question/collection.tpl',
 
         View.Questions = Marionette.CompositeView.extend({
             tagName: 'div',
+            id: 'question-list',
             className: 'row',
             template: QuestionsTpl,
             childView: View.QuestionCollectionRow,
-            childViewContainer: '.list'
+            childViewContainer: '.list',
+
+            events: {
+                'submit form': 'submit'
+            },
+            submit: function (event) {
+                event.preventDefault();
+
+                var data = Backbone.Syphon.serialize(this);
+                var searchQuery = data['search_query'];
+                // return search query to controller
+                this.trigger('form:submit', searchQuery);
+            }
         });
     });
     return App.Question.Views.Questions;
