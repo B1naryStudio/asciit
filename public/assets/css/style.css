@@ -95,6 +95,24 @@ time,
     margin-right: 5px;
 }
 
+
+.login-form{
+    display: table;
+    margin: auto;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.login-form input{
+    float: right;
+    margin-left: 5px;
+}
+
+.error{
+    color: red;
+}
+
 .section-header {
     font-size: 1.2em;
     font-weight: bold;
@@ -117,6 +135,7 @@ time,
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 
 .modal-header h2 {
     margin-top: 0;

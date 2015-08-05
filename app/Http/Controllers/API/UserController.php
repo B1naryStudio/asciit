@@ -86,12 +86,18 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        dd($id);
     }
     
     public function login(Request $request){
-        
-        $auth = new AuthService($request->all());
+        $auth = new AuthService(json_decode($request->model));
         return $auth->authenticate();
+    }
+    
+    public function logout($id)
+    {
+        $auth = new AuthService();
+        return (1);
+        return $auth->logout();        
     }
 }
