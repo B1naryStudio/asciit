@@ -6,7 +6,7 @@ define(['app', 'views/form', 'tpl!views/templates/user/login.tpl', 'syphon'], fu
             onDataInvalid: function (errors) {
                 $('.error').html('');
                 if (!errors) {
-                    $('.error.all').html('Something went wrong.');
+                    $('.error.all').html('Wrong login or password');
                 } else {
                     for (var i in errors) {
                         if (!errors.hasOwnProperty(i)) {
