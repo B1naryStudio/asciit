@@ -97,7 +97,6 @@ class UserController extends Controller
     public function logout($id)
     {
         $auth = new AuthService();
-        return (1);
         return $auth->logout();        
     }
 }
