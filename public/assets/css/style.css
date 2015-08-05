@@ -111,6 +111,12 @@ time,
 .single-answer {
     margin: 10px 0;
 }
+.list-group-item .limited {
+    white-space: nowrap;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .modal-header h2 {
     margin-top: 0;

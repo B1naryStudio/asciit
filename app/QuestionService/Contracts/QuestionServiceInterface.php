@@ -2,15 +2,23 @@
 
 namespace App\QuestionService\Contracts;
 
-interface QuestionServiceInterface 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+
+interface QuestionServiceInterface
 {
     public function createQuestion($data);
 
     /**
      * @param $id
-     * @return model
+     * @return Model
      */
     public function getQuestion($id);
+
+    /**
+     * @return Collection
+     */
+    public function getQuestions();
 
     /**
      * @param $question_id

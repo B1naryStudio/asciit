@@ -6,6 +6,8 @@ use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
 use App\Repositories\Contracts\FolderRepository;
 use App\Exceptions\RepositoryException;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -61,7 +63,16 @@ class QuestionService implements QuestionServiceInterface
     }
 
     /**
-     * @param $question_id
+     * @return Collection
+     */
+    public function getQuestions()
+    {
+        $questions = $this->questionRepository->with(['user', 'folder'])->all();
+        return $questions;
+    }
+
+    /**
+     * @param int $question_id
      * @return Collection
      */
     public function getAnswersOfQuestion($question_id)
