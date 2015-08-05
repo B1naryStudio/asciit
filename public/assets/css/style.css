@@ -172,6 +172,7 @@ time,
 .modal-backdrop.in {
     width: 100%;
     height: 100%;
+    z-index: 3;
 }
 
 #popup-layout-view.question-add .select2-container {
@@ -193,7 +194,7 @@ time,
 }
 
 #question-add-layout .controls {
-    width:30px;
+    width: 30px;
     margin-right: auto;
     margin-left: auto;
 }

@@ -65,7 +65,7 @@ class QuestionController extends Controller
             'description' => 'required|max:2048'
         );
 
-        $data = @json_decode($request->get('model'), true);
+        $data = $request->all();
         $validator = Validator::make($data, $rules);
 
         if ($validator->fails()) {
