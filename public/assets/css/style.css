@@ -125,7 +125,7 @@ time,
 
 #popup-layout-view.question-add {
     width: 600px;
-    height: 365px;
+    height: 355px;
     left: 30%;
     background-color: #ffffff;
     top: 20%;
@@ -135,7 +135,9 @@ time,
 
 #popup-layout-view.question-add .control-group.title,
 #popup-layout-view.question-add .control-group.folder {
-    height: 45px;
+    min-height: 45px;
+    float: left;
+    width: 100%;
 }
 
 #popup-layout-view.question-add .control-group.description {
@@ -155,4 +157,24 @@ time,
 
 #popup-layout-view.question-add .select2-container {
     width: 100% !important;
+}
+
+.error {
+    color: red;
+}
+
+.error.all {
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.question-add .form-horizontal {
+    height: 230px;
+}
+
+#question-add-layout .controls {
+    width:30px;
+    margin-right: auto;
+    margin-left: auto;
 }
