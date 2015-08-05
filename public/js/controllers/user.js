@@ -24,11 +24,18 @@ define(['app', 'views/user/login'], function (App, View) {
                     });
                 });
             },
-            logout: function(){
-                App.User.Current.destroy({success: function(model, response){
-                        delete App.User;
-                        Backbone.history.navigate('/', { trigger: true });
-                }}, {wait: true});
+            logout: function() {
+                if (App.User && App.User.Current) {
+                    App.User.Current.destroy({
+                        wait: true,
+                        success: function(model, response) {
+                            delete App.User.Current;
+                            Backbone.history.navigate('/login', { trigger: true });
+                        }
+                    });
+                } else {
+                    Backbone.history.navigate('/login', { trigger: true });
+                }
             }
         });
         User.Controller = new Controller();
