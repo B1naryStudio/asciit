@@ -23,13 +23,16 @@ define(['app'], function (App) {
                 });
             },
             questions: function () {
-                if(!App.User){
+/*                if(!App.User){
                     Backbone.history.navigate('login', { trigger: true })
                 }else{
                     require(['controllers/question'], function (controller) {
                         controller.questions();
                     });
-                }
+                }*/
+                require(['controllers/question'], function (controller) {
+                    controller.questions();
+                });
             },
             question: function (id) {
                 require(['controllers/question'], function (controller) {
