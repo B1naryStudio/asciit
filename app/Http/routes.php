@@ -20,4 +20,6 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::resource('/questions/{id}/answers', 'API\Question\AnswerController');
     Route::resource('/user', 'API\UserController');
     Route::resource('/folders', 'API\FolderController', ['only' => ['index']]);
+    Route::post('/user/login', 'API\UserController@login');
+    Route::delete('/user/login/{id}', 'API\UserController@logout');
 });

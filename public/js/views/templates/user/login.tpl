@@ -1,4 +1,4 @@
-<form action="/user/login">
+<form action="/api/v1/user/login">
     <div class="login-form">
         <div class="form-horizontal">
             <div class="error all"></div>
@@ -10,7 +10,7 @@
 
             <div class="control-group">
                 <label for="password" class="control-label">Password</label>
-                <input type="text" name="password" class="password" placeholder="Password">
+                <input type="password" name="password" class="password" placeholder="Password">
                 <div class="error password"></div>
             </div>
         </div>
