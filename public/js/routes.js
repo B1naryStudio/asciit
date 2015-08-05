@@ -6,7 +6,8 @@ define(['app'], function (App) {
                 '': 'questions',
                 'questions': 'questions',
                 'questions/:id': 'question',
-                'login': 'login'
+                'login': 'login',
+                'logout': 'logout'
             }
         });
 
@@ -16,10 +17,19 @@ define(['app'], function (App) {
                     controller.login();
                 });
             },
-            questions: function () {
-                require(['controllers/question'], function (controller) {
-                    controller.questions();
+            logout: function () {
+                require(['controllers/user'], function (controller) {
+                    controller.logout();
                 });
+            },
+            questions: function () {
+                if(!App.User){
+                    Backbone.history.navigate('login', { trigger: true })
+                }else{
+                    require(['controllers/question'], function (controller) {
+                        controller.questions();
+                    });
+                }
             },
             question: function (id) {
                 require(['controllers/question'], function (controller) {

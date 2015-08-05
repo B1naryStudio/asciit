@@ -6,6 +6,9 @@
         <title>AscIT</title>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" >
         <link href="assets/css/style.css" rel="stylesheet">
+        <script type="text/javascript" src="js/vendor/require/require.min.js"></script>
+        <script type="text/javascript" src="js/require-main.js"></script>
+
     </head>
     <body>
         @include('navbar')
