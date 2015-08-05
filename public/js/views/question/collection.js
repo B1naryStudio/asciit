@@ -13,7 +13,6 @@ define([
         View.Questions = Marionette.CompositeView.extend({
             tagName: 'div',
             id: 'question-list',
-            className: 'row',
             template: QuestionsTpl,
             childView: View.QuestionCollectionRow,
             childViewContainer: '.list',
@@ -21,6 +20,7 @@ define([
             events: {
                 'submit form': 'submit'
             },
+
             submit: function (event) {
                 event.preventDefault();
 
@@ -28,6 +28,15 @@ define([
                 var searchQuery = data['search_query'];
                 // return search query to controller
                 this.trigger('form:submit', searchQuery);
+            },
+
+            onNotFound: function () {
+                Backbone.Validation.callbacks.invalid(this, 'search_query', 'Nothing here...');
+
+                // Turn error indication off;
+                setTimeout(function () {
+                    Backbone.Validation.callbacks.valid(this, 'search_query');
+                }, 1700);
             }
         });
     });

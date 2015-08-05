@@ -20,8 +20,13 @@ define([
                     Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
                         $.when(App.request('question:collection', searchQuery))
                             .done(function (questions) {
-                                questionsView.collection = questions;
-                                questionsView.render();
+                                // If any results
+                                if (questions.length) {
+                                    questionsView.collection = questions;
+                                    questionsView.render();
+                                } else {
+                                    questionsView.triggerMethod('not:found');
+                                }
                         });
                     });
                 });
@@ -60,7 +65,6 @@ define([
 
                                         answersView.triggerMethod('model:refresh', freshModel);
                                     }).fail(function (errors) {
-                                        //console.log(errors);
                                         answersView.triggerMethod('data:invalid', errors);
                                     });
                             });
