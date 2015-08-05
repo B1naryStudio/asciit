@@ -6,7 +6,8 @@ define(['app'], function (App) {
                 '': 'questions',
                 'questions': 'questions',
                 'questions/:id': 'question',
-                'login': 'login'
+                'login': 'login',
+                'tags': 'tags'
             }
         });
 
@@ -39,6 +40,11 @@ define(['app'], function (App) {
             popupClose: function (data) {
                 require(['controllers/popup'], function (controller) {
                     controller.close(data);
+                });
+            },
+            tags: function () {
+                require(['controllers/tag'], function (controller) {
+                    controller.tags();
                 });
             }
         };

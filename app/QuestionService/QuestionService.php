@@ -5,24 +5,27 @@ use App\QuestionService\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
 use App\Repositories\Contracts\FolderRepository;
+use App\Repositories\Contracts\TagRepository;
 use App\Exceptions\RepositoryException;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class QuestionService implements QuestionServiceInterface
 {
     private $questionRepository;
     private $answerRepository;
     private $folderRepository;
+    private $tagRepository;
 
     public function __construct(
         QuestionRepository $questionRepository,
         AnswerRepository $answerRepository,
-        FolderRepository $folderRepository
+        FolderRepository $folderRepository,
+        TagRepository $tagRepository
     ) {
         $this->questionRepository = $questionRepository;
         $this->answerRepository = $answerRepository;
         $this->folderRepository = $folderRepository;
+        $this->tagRepository = $tagRepository;
     }
     
     public function createQuestion($data)
@@ -105,6 +108,20 @@ class QuestionService implements QuestionServiceInterface
             );
         }
         return $folder;
+    }
+
+    public function getTags()
+    {
+        try {
+            $tags = $this->tagRepository->all();
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $tags;
     }
 }
 

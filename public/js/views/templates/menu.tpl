@@ -7,10 +7,9 @@
             <ul class="nav navbar-nav">
                 <li><a id="nav-login" href="/login">Login</a></li>
                 <li><a id="nav-question" href="/questions">Questions</a></li>
-                <li><a href="#">Folders</a></li>
+                <li><a id="nav-tags" href="/tags">Tags</a></li>
                 <li><a id="nav-question-add" href="#">Add question</a></li>
                 <li><a href="#">My questions <span class="badge">2</span></a></li>
-                <!-- Test button for single question page -->
                 <li><a id="nav-question" href="/questions/1">Question1 test</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
