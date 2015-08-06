@@ -29,6 +29,7 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
             },
             logout: function() {
                 if (App.User && App.User.Current) {
+                    debugger;
                     App.User.Current.destroy({
                         wait: true,
                         success: function(model, response) {
