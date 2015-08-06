@@ -18,7 +18,7 @@ define(['app'], function(App) {
             model: Question.Model,
             url: App.prefix + '/api/v1/questions',
             comparator: function (model1, model2) {
-                var compareField = 'updated_at'
+                var compareField = 'updated_at';
 
                 if (model1.get(compareField) > model2.get(compareField)) {
                     return -1; // before
