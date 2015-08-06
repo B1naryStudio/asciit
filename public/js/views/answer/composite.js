@@ -44,6 +44,10 @@ define(['app', 'tpl!views/templates/answer/answers.tpl',
             onModelRefresh: function (freshModel) {
                 this.model = freshModel;
                 this.stickit();
+                this.refreshCounter();
+            },
+            refreshCounter: function () {
+                $(this.el).find('.counter').html(this.model.get('count'));
             },
             onRender: function() {
                 this.stickit();
