@@ -1,26 +1,39 @@
 define(['app'], function(App) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
-            urlRoot: '/api/v1/questions',
-            defaults: {
-                'title': '',
-                'description': ''
+            urlRoot: '/asciit/api/v1/questions',
+            validation: {
+                title: {
+                    required: true,
+                    msg: 'Please enter a title'
+                },
+                description: {
+                    required: true,
+                    msg: 'Please enter a description'
+                }
             }
         });
 
         Question.Collection = Backbone.Collection.extend({
             model: Question.Model,
-            url: '/api/v1/questions'
+            url: '/asciit/api/v1/questions'
         });
 
         var API = {
-            questionCollection: function () {
+            questionCollection: function (searchQuery) {
                 var questions = new Question.Collection();
                 var defer = $.Deferred();
+
+                // If searchQuery exists, set the GET param 'search'
+                searchParam = searchQuery ?
+                    $.param({search: searchQuery})
+                    : {};
+
                 questions.fetch({
                     success: function (data) {
                         defer.resolve(data);
-                    }
+                    },
+                    data: searchParam
                 });
                 return defer.promise();
             },
@@ -45,8 +58,12 @@ define(['app'], function(App) {
                     success: function (data) {
                         defer.resolve(question);
                     },
-                    error: function (data) {
-                        defer.reject(data.validationError);
+                    error: function (data, response) {
+                        if (data.validationError) {
+                            defer.reject(data.validationError);
+                        } else {
+                            defer.reject(response.responseJSON);
+                        }
                     }
                 })) {
                     defer.reject(question.validationError);
@@ -54,8 +71,8 @@ define(['app'], function(App) {
                 return defer.promise();
             }
         };
-        App.reqres.setHandler('question:collection', function () {
-            return API.questionCollection();
+        App.reqres.setHandler('question:collection', function (searchQuery) {
+            return API.questionCollection(searchQuery);
         });
 
         App.reqres.setHandler('question:model', function (id) {

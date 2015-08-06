@@ -35,6 +35,3 @@
     </div>
 </div>
 <div id="answers-region"></div>
-
-
-

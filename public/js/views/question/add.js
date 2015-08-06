@@ -22,7 +22,17 @@ define(['app', 'tpl!views/templates/question/add.tpl', 'select2', 'syphon'], fun
                             continue;
                         }
 
-                        $('.error.' + i).html(errors[i]);
+                        if (errors[i] && Array.isArray(errors[i])) {
+                            for (var j in errors[i]) {
+                                if (!errors[i].hasOwnProperty(j)) {
+                                    continue;
+                                }
+
+                                $('.error.' + i).html(errors[i][j]);
+                            }
+                        } else {
+                            $('.error.' + i).html(errors[i]);
+                        }
                     }
                 }
             },

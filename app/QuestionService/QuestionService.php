@@ -86,7 +86,7 @@ class QuestionService implements QuestionServiceInterface
      */
     public function getQuestions()
     {
-        $questions = $this->questionRepository->with(['user', 'folder'])->all();
+        $questions =$this->questionRepository->with(['user', 'folder'])->all();
         return $questions;
     }
 
@@ -110,7 +110,26 @@ class QuestionService implements QuestionServiceInterface
     
     public function addTagToQuestion($tag_id, $question_id){}
     
-    public function createAnswer($data, $question_id){}
+    public function createAnswer($data, $question_id)
+    {
+        // temporary fix without auth
+        $data['user_id'] = 1;
+
+        $new = $this->answerRepository->create($data);
+
+        try {
+            $answer = $this->answerRepository
+                ->findWithRelations($new->id, ['user']);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage() . ' No such answer',
+                null,
+                $e
+            );
+        }
+
+        return $answer;
+    }
 
     public function getFolders()
     {

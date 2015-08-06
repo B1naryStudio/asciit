@@ -3,25 +3,76 @@ define(['app',
     'views/question/single',
     'views/question/add',
     'views/folder/select',
+    'views/answer/composite',
     'views/tag/select',
     'models/question',
+    'models/answer',
     'models/folder',
     'models/tag'
-], function (App, CollectionView, SingleView, AddView, SelectFolderView, SelectTagView) {
+], function (App, CollectionView, SingleView, AddView, SelectFolderView, AnswersCompositeView, Answer, SelectTagView) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function () {
                 $.when(App.request('question:collection')).done(function (questions) {
-                    var view = new CollectionView.Questions({collection: questions});
-                    App.Main.Layout.getRegion('content').show(view);
+                    var questionsView = new CollectionView({collection: questions});
+                    App.Main.Layout.getRegion('content').show(questionsView);
+
+                    // Updating for search
+                    Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
+                        $.when(App.request('question:collection', searchQuery))
+                            .done(function (questions) {
+                                // If any results
+                                if (questions.length) {
+                                    questionsView.collection = questions;
+                                    questionsView.render();
+                                } else {
+                                    questionsView.triggerMethod('not:found');
+                                }
+                        });
+                    });
                 });
             },
+
             question: function (id) {
-                $.when(App.request('question:model', id)).done(function (question) {
-                    var view = new SingleView({ model: question });
-                    App.Main.Layout.getRegion('content').show(view);
+                require(['models/question'], function () {
+                    $.when(
+                        App.request('question:model', id),
+                        App.request('answer:collection', id)
+                    ).done(function (question, answers) {
+                            // New question layout
+                            var questionView = new SingleView({model: question});
+                            App.Main.Layout.getRegion('content').show(questionView);
+
+                            // New answer model for saving a new answer
+                            var model = new  Answer.Model({
+                                question_id: id,
+                                count: answers.length
+                            });
+
+                            // New answers view
+                            var answersView = new AnswersCompositeView({model: model, collection: answers});
+                            questionView.answersRegion.show(answersView);
+
+                            Question.Controller.listenTo(answersView, 'form:submit', function (model) {
+                                $.when(App.request('answer:add', model))
+                                    .done(function (savedModel) {
+                                        answers.push(savedModel);
+
+                                        // Add model and form clearing
+                                        var freshModel = new  Answer.Model({
+                                            question_id: id,
+                                            count: answers.length
+                                        });
+
+                                        answersView.triggerMethod('model:refresh', freshModel);
+                                    }).fail(function (errors) {
+                                        answersView.triggerMethod('data:invalid', errors);
+                                    });
+                            });
+                        });
                 });
             },
+
             add: function () {
                 $.when(App.request('folder:collection')).done(function (folders) {
                     $.when(App.request('tag:collection')).done(function (tags) {
@@ -55,6 +106,7 @@ define(['app',
                 });
             }
         });
+
         Question.Controller = new Controller();
     });
     return App.Question.Controller;

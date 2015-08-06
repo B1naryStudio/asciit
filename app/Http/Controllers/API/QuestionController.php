@@ -30,9 +30,10 @@ class QuestionController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $questions = $this->questionService->getQuestions();
+
         return Response::json($questions, 200);
     }
 
@@ -56,9 +57,7 @@ class QuestionController extends Controller
     {
         /*if (!Auth::check()) {
             return Response::json([
-                'error' => [
-                    'message' => 'Unauthorized'
-                ]
+                'all' => 'Unauthorized'
             ], 401);
         }*/
 
@@ -67,7 +66,7 @@ class QuestionController extends Controller
             'description' => 'required|max:2048'
         );
 
-        $data = @json_decode($request->get('model'), true);
+        $data = $request->all();
         $validator = Validator::make($data, $rules);
 
         if ($validator->fails()) {
@@ -78,9 +77,7 @@ class QuestionController extends Controller
                 $question = $this->questionService->createQuestion($data);
             } catch (QuestionServiceException $e) {
                 return Response::json([
-                    'error' => [
-                        'message' => $e->getMessage(),
-                    ],
+                    'all' => $e->getMessage(),
                 ], 400);
             }
             return Response::json($question->toArray(), 200);

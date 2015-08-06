@@ -1,7 +1,7 @@
 define(['app'], function (App) {
     App.module('User', function (User, App, Backbone, Marionette, $, _) {
         User.Model = Backbone.Model.extend({
-            urlRoot: '/user/login',
+            urlRoot: '/asciit/api/v1/user/login',
             defaults: {
                 email: '',
                 password: ''
