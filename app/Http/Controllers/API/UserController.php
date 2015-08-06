@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\AuthService\AuthService;
-
+use App\AuthService\Contracts\AuthServiceInterface;
 class UserController extends Controller
 {
-    public function __construct() {
-//        $this->middleware('auth');
+    private $authService;
+
+    public function __construct(AuthServiceInterface $authService) {
+        $this->authService = $authService;
+
+        $this->middleware('guest');
     }
     /**
      * Display a listing of the resource.
@@ -86,18 +89,16 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
+        dd($id); // TODO: remove it
     }
     
     public function login(Request $request)
     {
-        $auth = new AuthService($request->all());
-        return $auth->authenticate();
+        return $this->authService($request->all())->authenticate();
     }
     
     public function logout($id)
     {
-        $auth = new AuthService();
-        return $auth->logout();        
+        return $this->authService->logout();
     }
 }

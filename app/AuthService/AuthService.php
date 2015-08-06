@@ -2,13 +2,14 @@
 
 namespace App\AuthService;
 
+use App\AuthService\Contracts\AuthServiceInterface;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class AuthService extends Controller
+class AuthService implements AuthServiceInterface
 {
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 

@@ -145,6 +145,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\RepositoryServiceProvider::class,
         App\Providers\QuestionServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
 
         /*
          * Third-party providers...
