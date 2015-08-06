@@ -50,7 +50,6 @@ define(['app'], function(App) {
                 if (!model.save([], {
                         wait: true,
                         success: function () {
-                            debugger;
                             defer.resolve(model);
                         },
                         error: function (model, xhr, options) {

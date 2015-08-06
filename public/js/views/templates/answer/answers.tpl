@@ -1,4 +1,6 @@
-<header class="section-header"><%- count %> answers</header>
+<header class="section-header">
+    <span class="counter"><%- count %></span> answers
+</header>
 <ul id="answers" class="list-group"></ul>
 
 <!-- Adding form -->

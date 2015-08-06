@@ -67,7 +67,7 @@ class QuestionService implements QuestionServiceInterface
      */
     public function getQuestions()
     {
-        $questions = $this->questionRepository->with(['user', 'folder'])->all();
+        $questions =$this->questionRepository->with(['user', 'folder'])->all();
         return $questions;
     }
 

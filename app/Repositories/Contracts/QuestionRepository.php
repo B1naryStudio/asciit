@@ -7,6 +7,4 @@ namespace App\Repositories\Contracts;
  * @package namespace App\RepositoriesRepositories;
  */
 interface QuestionRepository extends RepositoryInterface
-{
-    //
-}
+{}

@@ -3,14 +3,21 @@
 namespace App\Repositories\Repositories;
 
 use Prettus\Repository\Criteria\RequestCriteria;
+use App\Repositories\Criteria\QuestionCriteria;
 use App\Repositories\Entities\Question;
 use App\Repositories\Contracts\QuestionRepository;
+
 /**
  * Class QuestionRepositoryEloquent
  * @package namespace App\RepositoriesRepositories;
  */
 class QuestionRepositoryEloquent extends Repository implements QuestionRepository
 {
+    protected $fieldSearchable = [
+        'title' => 'like',
+        'description' => 'like',
+    ];
+
     /**
      * Specify Model class name
      *
@@ -27,5 +34,6 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+        $this->pushCriteria(new QuestionCriteria());
     }
 }

@@ -20,13 +20,20 @@ define(['app'], function(App) {
         });
 
         var API = {
-            questionCollection: function () {
+            questionCollection: function (searchQuery) {
                 var questions = new Question.Collection();
                 var defer = $.Deferred();
+
+                // If searchQuery exists, set the GET param 'search'
+                searchParam = searchQuery ?
+                    $.param({search: searchQuery})
+                    : {};
+
                 questions.fetch({
                     success: function (data) {
                         defer.resolve(data);
-                    }
+                    },
+                    data: searchParam
                 });
                 return defer.promise();
             },
@@ -64,8 +71,8 @@ define(['app'], function(App) {
                 return defer.promise();
             }
         };
-        App.reqres.setHandler('question:collection', function () {
-            return API.questionCollection();
+        App.reqres.setHandler('question:collection', function (searchQuery) {
+            return API.questionCollection(searchQuery);
         });
 
         App.reqres.setHandler('question:model', function (id) {
