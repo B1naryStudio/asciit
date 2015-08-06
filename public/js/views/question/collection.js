@@ -26,17 +26,13 @@ define([
 
                 var data = Backbone.Syphon.serialize(this);
                 var searchQuery = data['search_query'];
+                Backbone.Validation.callbacks.valid(this, 'search_query');
                 // return search query to controller
                 this.trigger('form:submit', searchQuery);
             },
 
             onNotFound: function () {
                 Backbone.Validation.callbacks.invalid(this, 'search_query', 'Nothing here...');
-
-                // Turn error indication off;
-                setTimeout(function () {
-                    Backbone.Validation.callbacks.valid(this, 'search_query');
-                }, 1700);
             }
         });
     });
