@@ -10,7 +10,7 @@ define(['app'], function(App) {
                 }
             },
             initialize: function (options) {
-                this.urlRoot = 'asciit/api/v1/questions/'
+                this.urlRoot = App.prefix + 'api/v1/questions/'
                     + options.question_id
                     + '/answers';
             }
@@ -19,12 +19,12 @@ define(['app'], function(App) {
         Answer.Collection = Backbone.Collection.extend({
             model: Answer.Model,
             url: function () {
-                return 'asciit/api/v1/questions/'
+                return App.prefix + 'api/v1/questions/'
                     + this.question_id
                     + '/answers';
             },
             initialize: function (options) {
-                this.url = 'asciit/api/v1/questions/'
+                this.url = App.prefix + 'api/v1/questions/'
                     + options.question_id
                     + '/answers';
             }
