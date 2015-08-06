@@ -41,7 +41,7 @@ define(['app'], function (App) {
                 }
                 return defer.promise();
             },
-            ////////////////////////
+
             session: function () {
                 var user = new User.Model();
                 var defer = $.Deferred();
@@ -49,26 +49,23 @@ define(['app'], function (App) {
                     wait: true,
                     success: function (model, response, options) {
                         defer.resolve(user);
-                        console.log(model);
                     },
                     error: function (model, response, options) {
                         defer.reject();
-                        console.log(model);
                     }
                 });
                 return defer.promise();
 
             }
-            ///////////////////////////
+
         };
 
         App.reqres.setHandler('user:login', function (email, password) {
             return API.login(email, password);
         });
-        /////////////////
+
         App.reqres.setHandler('user:session', function () {
             return API.session();
         });
-        ///////////////////
     });
 });
