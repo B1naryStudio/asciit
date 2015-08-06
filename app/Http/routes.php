@@ -18,8 +18,9 @@ Route::get('/', function () {
 Route::group(['prefix' => 'asciit/api/v1'], function() {
     Route::resource('/questions', 'API\QuestionController');
     Route::resource('/questions/{id}/answers', 'API\Question\AnswerController');
-    Route::resource('/user', 'API\UserController');
+    Route::resource('/user', 'API\UserController', ['only' => ['index']]);
     Route::resource('/folders', 'API\FolderController', ['only' => ['index']]);
     Route::post('/user/login', 'API\UserController@login');
+    Route::get('/user/login', 'API\UserController@session');
     Route::delete('/user/login/{id}', 'API\UserController@logout');
 });

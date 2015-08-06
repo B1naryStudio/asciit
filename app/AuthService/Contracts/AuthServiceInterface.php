@@ -9,7 +9,7 @@ namespace App\AuthService\Contracts;
 
 interface AuthServiceInterface
 {
-    public function authenticate();
+    public function authenticate($data);
 
     public function logout();
 }

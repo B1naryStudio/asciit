@@ -31,12 +31,45 @@ define(['app', 'views/user/login'], function (App, View) {
                         success: function(model, response) {
                             delete App.User.Current;
                             Backbone.history.navigate('/login', { trigger: true });
+                        },
+                        error: function(model, xhr) {
+                            console.log(JSON.parse(xhr.responseText));
                         }
                     });
                 } else {
                     Backbone.history.navigate('/login', { trigger: true });
                 }
+            },
+            ///////////////////////
+            session: function(obj) {
+                require(['models/user'], function () {
+                    //$.when(App.request('user:session').done(function (model) {
+                    //    //console.log(model);
+                    //    //App.User.Current = model;
+                    //
+                    //}).fail(function (errors) {
+                    //    //console.log('test');
+                    //    //view.triggerMethod('data:invalid', errors);
+                    //}));
+                    //Backbone.history.navigate('/', { trigger: true });
+                        var user = new User.Model();
+                        user.fetch({
+                        wait: true,
+                        success: function (model, response, options) {
+
+                            console.log(model);
+                            obj.success();
+                        },
+                        error: function (model, response, options) {
+                            obj.error();
+                            //console.log(model);
+                        }
+                    });
+
+                })
+                //console.log(1);
             }
+            ////////////////////////
         });
         User.Controller = new Controller();
     });

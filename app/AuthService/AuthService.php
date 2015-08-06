@@ -3,11 +3,12 @@
 namespace App\AuthService;
 
 use App\AuthService\Contracts\AuthServiceInterface;
+use App\AuthService\Exceptions\AuthException;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Response;
 
 class AuthService implements AuthServiceInterface
 {
@@ -16,38 +17,36 @@ class AuthService implements AuthServiceInterface
     protected $email;
     protected $password;
 
-    public function __construct($request=null)
+    public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout']);
-        if (!empty($request)) {
-            $this->email = $request['email'];
-            $this->password = $request['password'];
+    }
+
+    public function authenticate($data)
+    {
+            if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+                return Auth::user();
+            } else {
+                return Response::json(['error' => 'Wrong login or password'], 404);
+            }
+    }
+    
+    public function logout()
+    {
+        try {
+            Auth::logout();
+        } catch(Exception $e) {
+            throw new AuthException($e->getMessage(), null, $e);
         }
     }
 
-    public function authenticate()
+    public function checkUser()
     {
-        $rules = array(
-            'password' => 'required',
-            'email' => 'email|required'
-        );
-        
-        $validator = Validator::make(['email' => $this->email, 'password' => $this->password], $rules);
-        if ($validator->fails()) {
-            return 'Wrong login or password';
-        } else {
-            if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
-                return Auth::user();
-            } else {
-                return 'Wrong login or password';
-            }
+        if(Auth::check()) {
+            return Auth::user();
         }
-    }
-    
-    public function logout(){
-        Auth::logout();
-        if(!Auth::check()){
-            return 1;
+        else {
+            return 'not found';
+//            return Response::json(['error' => 'Not found'], 404);
         }
     }
 }

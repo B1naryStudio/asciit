@@ -11,6 +11,7 @@ define(['app'], function (App) {
             }
         });
 
+
         var API = {
             login: function () {
                 require(['controllers/user'], function (controller) {
@@ -23,6 +24,7 @@ define(['app'], function (App) {
                 });
             },
             questions: function () {
+                console.log(App);
                 if(!App.User){
                     Backbone.history.navigate('login', { trigger: true })
                 }else{
@@ -30,7 +32,7 @@ define(['app'], function (App) {
                         controller.questions();
                     });
                 }
-
+                console.log(App.User);
 /*                require(['controllers/question'], function (controller) {
                     controller.questions();
                 });*/
