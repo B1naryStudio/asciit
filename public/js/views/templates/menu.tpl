@@ -7,7 +7,7 @@
 
     <!-- Site logo -->
     <div class="navbar-header">
-        <a class="navbar-brand" href="#">AskIT</a>
+        <a class="navbar-brand" href="/">AskIT</a>
     </div>
 
     <div class="container">
