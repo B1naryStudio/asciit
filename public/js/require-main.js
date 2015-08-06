@@ -12,7 +12,8 @@ requirejs.config({
         text: 'vendor/require/text',
         tpl: 'vendor/backbone/underscore-tpl',
         syphon: 'vendor/backbone/backbone.syphon',
-        select2: 'vendor/select2/select2'
+        select2: 'vendor/select2/select2',
+        paginator: 'vendor/backbone.paginator/backbone.paginator'
     },
     shim: {
         underscore: {

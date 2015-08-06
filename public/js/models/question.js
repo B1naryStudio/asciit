@@ -1,4 +1,4 @@
-define(['app'], function(App) {
+define(['app', 'paginator'], function(App) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
             urlRoot: App.prefix + '/api/v1/questions',
@@ -14,11 +14,19 @@ define(['app'], function(App) {
             }
         });
 
-        Question.Collection = Backbone.Collection.extend({
+        Question.Collection = Backbone.PageableCollection.extend({
             model: Question.Model,
             url: App.prefix + '/api/v1/questions',
             comparator: function (collection) {
                 return - collection.get('created_at');
+            },
+            state: {
+                firstPage: 1,
+                pageSize: 5
+            },
+            queryParams: {
+                currentPage: "page",
+                pageSize: "page_size"
             }
         });
 

@@ -18,7 +18,7 @@ interface QuestionServiceInterface
     /**
      * @return Collection
      */
-    public function getQuestions();
+    public function getQuestions($pageSize = null);
 
     /**
      * @param $question_id
