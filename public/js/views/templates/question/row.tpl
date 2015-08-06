@@ -17,9 +17,8 @@
                 <p class="limited"><%- description %></p>
             </div>
             <div>
-                <a href=""><span class="label label-default">Default</span></a>
-                <a href=""><span class="label label-default">Default</span></a>
-                <a href=""><span class="label label-default">Default</span></a>
+                <span></span>
+                <div class="tags"></div>
                 <a class="pull-right" href="/questions/<%- id %>">Read more...</a>
             </div>
         </div>

@@ -1,12 +1,12 @@
 define(['app'], function(App) {
     App.module('Tag', function(Tag, App, Backbone, Marionette, $, _) {
         Tag.Model = Backbone.Model.extend({
-            urlRoot: '/api/v1/tags'
+            urlRoot: '/asciit/api/v1/tags'
         });
 
         Tag.Collection = Backbone.Collection.extend({
             model: Tag.Model,
-            url: '/api/v1/tags'
+            url: '/asciit/api/v1/tags'
         });
 
         var API = {

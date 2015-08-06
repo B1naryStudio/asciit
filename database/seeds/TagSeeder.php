@@ -38,19 +38,22 @@ class TagSeeder extends Seeder
         $users = $this->userRepository->all();
         $folders = $this->folderRepository->all();
 
-        for ($i = 0; $i < 10; $i++) {
-            $this->tagRepository->create([
+        $tags = [];
+        for ($i = 0; $i < 3; $i++) {
+            $tags[] = $this->tagRepository->create([
                 'title' => $faker->sentence
             ]);
         }
 
         for ($i = 0; $i < 5; $i++) {
-            $this->questionRepository->create([
+            $model = $this->questionRepository->create([
                 'title' => $faker->sentence,
                 'description' => $faker->realText(1500),
                 'user_id' => $users->random()->id,
                 'folder_id' => $folders->random()->id,
             ]);
+
+            $this->questionRepository->relationsAdd($model, 'tags', $tags);
         }
     }
 }

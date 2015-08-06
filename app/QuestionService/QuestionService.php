@@ -69,7 +69,7 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder']);
+                ->findWithRelations($id, ['user', 'folder', 'tags']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such question',
@@ -86,7 +86,7 @@ class QuestionService implements QuestionServiceInterface
      */
     public function getQuestions()
     {
-        $questions =$this->questionRepository->with(['user', 'folder'])->all();
+        $questions =$this->questionRepository->with(['user', 'folder', 'tags'])->all();
         return $questions;
     }
 

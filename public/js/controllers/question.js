@@ -5,11 +5,11 @@ define(['app',
     'views/folder/select',
     'views/answer/composite',
     'views/tag/select',
-    'models/question',
     'models/answer',
+    'models/question',
     'models/folder',
     'models/tag'
-], function (App, CollectionView, SingleView, AddView, SelectFolderView, AnswersCompositeView, Answer, SelectTagView) {
+], function (App, CollectionView, SingleView, AddView, SelectFolderView, AnswersCompositeView, SelectTagView, Answer) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function () {

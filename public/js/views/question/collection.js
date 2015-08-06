@@ -2,12 +2,20 @@ define([
     'app',
     'tpl!views/templates/question/collection.tpl',
     'tpl!views/templates/question/row.tpl',
+    'views/tag/view',
     'syphon'
-], function (App, QuestionsTpl, QuestionTpl) {
+], function (App, QuestionsTpl, QuestionTpl, TagView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.QuestionCollectionRow = Marionette.ItemView.extend({
+        View.QuestionCollectionRow = Marionette.LayoutView.extend({
             tagName: 'div',
-            template: QuestionTpl
+            template: QuestionTpl,
+            regions: {
+                tag: '.tags'
+            },
+            onShow: function () {
+                console.log(this.model.attributes.tags);
+                this.getRegion('tag').show(new TagView({ collection: this.model.attributes.tags }));
+            }
         });
 
         View.Questions = Marionette.CompositeView.extend({
