@@ -1,9 +1,9 @@
 <?php
 
-namespace App\AuthService;
+namespace App\Services\Auth;
 
-use App\AuthService\Contracts\AuthServiceInterface;
-use App\AuthService\Exceptions\AuthException;
+use App\Services\Auth\Contracts\AuthServiceInterface;
+use App\Services\Auth\Exceptions\AuthException;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
@@ -23,11 +23,11 @@ class AuthService implements AuthServiceInterface
 
     public function authenticate($data)
     {
-            if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-                return Auth::user();
-            } else {
-                return Response::json(['error' => 'Wrong login or password'], 404);
-            }
+        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+            return Auth::user();
+        } else {
+            return Response::json(['error' => 'Wrong login or password'], 404);
+        }
     }
     
     public function logout()

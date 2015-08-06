@@ -5,7 +5,7 @@
  * Date: 8/6/15
  * Time: 9:52 AM
  */
-namespace App\AuthService\Contracts;
+namespace App\Services\Auth\Contracts;
 
 interface AuthServiceInterface
 {

@@ -1,11 +1,11 @@
 <?php
-namespace App\QuestionService;
+namespace App\Services\Questions;
 use App\Exceptions\QuestionServiceException;
-use App\QuestionService\Contracts\QuestionServiceInterface;
+use App\Services\Questions\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
 use App\Repositories\Contracts\FolderRepository;
-use App\Exceptions\RepositoryException;
+use App\Repositories\Exceptions\RepositoryException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 

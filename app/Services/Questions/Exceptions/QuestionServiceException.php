@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions;
+namespace App\Services\Questions\Exceptions;
 
 class QuestionServiceException extends \RuntimeException {
 

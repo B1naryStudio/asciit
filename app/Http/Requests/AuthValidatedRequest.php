@@ -1,11 +1,16 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: Andriy
+ * Date: 06.08.2015
+ * Time: 14:17
+ */
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-
-class AnswerValidatedRequest extends Request
+class AuthValidatedRequest extends Request
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,7 +29,8 @@ class AnswerValidatedRequest extends Request
     public function rules()
     {
         return [
-            'description' => 'required|max:2048'
+            'password' => 'required',
+            'email' => 'email|required'
         ];
     }
 }
