@@ -45,8 +45,7 @@ class AuthService implements AuthServiceInterface
             return Auth::user();
         }
         else {
-            return 'not found';
-//            return Response::json(['error' => 'Not found'], 404);
+            return Response::json(['error' => 'Unauthorized'], 401);
         }
     }
 }

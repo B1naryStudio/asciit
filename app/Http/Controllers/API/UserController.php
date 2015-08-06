@@ -121,10 +121,10 @@ class UserController extends Controller
         return Response::json(null, 200);
     }
 
-    /////////////////////////
+
     public function session()
     {
         return $this->authService->checkUser();
     }
-    /////////////////////////
+
 }

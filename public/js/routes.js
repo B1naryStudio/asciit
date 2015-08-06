@@ -8,7 +8,8 @@ define(['app'], function (App) {
                 'questions/:id': 'question',
                 'login': 'login',
                 'logout': 'logout'
-            }
+            },
+
         });
 
         var API = {
@@ -23,17 +24,18 @@ define(['app'], function (App) {
                 });
             },
             questions: function (searchQuery) {
-/*                if(!App.User){
-                    Backbone.history.navigate('login', { trigger: true })
-                }else{
+               // console.log(App.User.Current);
+               //if(!App.User.Current){
+               //     Backbone.history.navigate('login', { trigger: true })
+               // }else{
                     require(['controllers/question'], function (controller) {
                         controller.questions();
                     });
-                }*/
+                //}
 
-                require(['controllers/question'], function (controller) {
-                    controller.questions(searchQuery);
-                });
+                //require(['controllers/question'], function (controller) {
+                //    controller.questions(searchQuery);
+                //});
             },
             question: function (id) {
                 require(['controllers/question'], function (controller) {
@@ -62,6 +64,8 @@ define(['app'], function (App) {
                 controller: API
             });
         });
+
+
 
         this.listenTo(App, 'popup:show', function (data) {
             API.popupShow(data);
