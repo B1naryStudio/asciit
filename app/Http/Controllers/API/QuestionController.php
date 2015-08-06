@@ -62,7 +62,7 @@ class QuestionController extends Controller
         }
 
         $rules = array(
-            'title' => 'required|regex:/^([A-Za-zА-Яа-я0-9\s]+)$/|max:400',
+            'title' => 'required|max:400',
             'description' => 'required|max:2048'
         );
 
