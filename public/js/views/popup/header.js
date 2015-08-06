@@ -6,6 +6,9 @@ define(['app', 'tpl!views/templates/popup/header.tpl'], function (App, Tpl) {
                 if (this.options.title) {
                     this.$el.find('h2').html(this.options.title);
                 }
+                if (this.options.without_close) {
+                    this.$el.find('.close').hide();
+                }
             },
             remove: function () {
                 Backbone.Validation.unbind(this);

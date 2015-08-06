@@ -11,7 +11,7 @@
             <div><a class="question" href="/questions/<%- id %>"><b><%- title %></b></a></div>
             <div class="folder">
                 <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
-                <%= folder.title %>
+                <%- folder.title %>
             </div>
             <div>
                 <p class="limited"><%- description %></p>

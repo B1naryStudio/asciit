@@ -7,10 +7,15 @@ define(['app', 'views/user/login'], function (App, View) {
                     App.Main.Layout.getRegion('content').show(view);
                     App.trigger('popup:show', {
                         header: {
-                            title: 'Login form'
+                            title: 'Please log in',
+                            without_close: true
                         },
-                        class: 'question-add',
-                        contentView: view
+                        class: 'login',
+                        contentView: view,
+                        modal: {
+                            keyboard: false,
+                            backdrop: 'static'
+                        }
                     });
                     User.Controller.listenTo(view, 'form:submit', function (data) {
                         $.when(App.request('user:login', data.email, data.password)).done(function (model) {
