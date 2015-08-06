@@ -1,7 +1,7 @@
 define(['app'], function(App) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
-            urlRoot: '/asciit/api/v1/questions',
+            urlRoot: App.prefix + '/api/v1/questions',
             validation: {
                 title: {
                     required: true,
@@ -16,7 +16,18 @@ define(['app'], function(App) {
 
         Question.Collection = Backbone.Collection.extend({
             model: Question.Model,
-            url: '/asciit/api/v1/questions'
+            url: App.prefix + '/api/v1/questions',
+            comparator: function (model1, model2) {
+                var compareField = 'updated_at';
+
+                if (model1.get(compareField) > model2.get(compareField)) {
+                    return -1; // before
+                } else if (model2.get(compareField) > model1.get(compareField)) {
+                    return 1; // after
+                } else {
+                    return 0; // equal
+                }
+            }
         });
 
         var API = {
@@ -25,7 +36,7 @@ define(['app'], function(App) {
                 var defer = $.Deferred();
 
                 // If searchQuery exists, set the GET param 'search'
-                searchParam = searchQuery ?
+                var searchParam = searchQuery ?
                     $.param({search: searchQuery})
                     : {};
 
