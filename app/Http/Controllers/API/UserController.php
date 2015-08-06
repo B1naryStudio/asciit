@@ -18,7 +18,7 @@ class UserController extends Controller
     public function __construct(AuthServiceInterface $authService) {
         $this->authService = $authService;
 
-        $this->middleware('guest', ['except' => ['login']]);
+        $this->middleware('guest', ['except' => ['login', 'session']]);
         $this->middleware('auth', ['only' => ['logout']]);
     }
     /**

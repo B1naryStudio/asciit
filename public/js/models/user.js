@@ -1,7 +1,6 @@
 define(['app'], function (App) {
     App.module('User', function (User, App, Backbone, Marionette, $, _) {
         User.Model = Backbone.Model.extend({
-            urlRoot: App.prefix + '/api/v1/user/login',
             defaults: {
                 email: '',
                 password: ''
@@ -16,6 +15,9 @@ define(['app'], function (App) {
                     required: true,
                     msg: 'Please enter your password'
                 }
+            },
+            initialize: function () {
+                this.urlRoot = App.prefix + '/api/v1/user/login';
             }
         });
 
