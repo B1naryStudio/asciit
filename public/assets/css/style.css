@@ -116,23 +116,6 @@ time,
     margin-right: 5px;
 }
 
-.login-form{
-    display: table;
-    margin: auto;
-    border: 1px solid;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.login-form input{
-    float: right;
-    margin-left: 5px;
-}
-
-.error{
-    color: red;
-}
-
 .section-header {
     font-size: 1.2em;
     font-weight: bold;
@@ -149,6 +132,7 @@ time,
 .single-answer {
     margin: 10px 0;
 }
+
 .list-group-item .limited {
 /*    white-space: nowrap;
     word-wrap: break-word;*/
@@ -176,7 +160,6 @@ time,
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
 
 }
-
 
 
 
@@ -237,7 +220,40 @@ time,
 }
 
 #question-add-layout .controls {
-    width: 30px;
+    width: 60px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#popup-layout-view.login {
+    width: 350px;
+    height: 270px;
+    left: 40%;
+    background-color: #ffffff;
+    top: 20%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#popup-layout-view.login .control-group {
+    min-height: 45px;
+    float: left;
+    width: 100%;
+}
+
+#popup-layout-view.login .control-group.buttons {
+    position: absolute;
+    top: 160px;
+    left: 0;
+}
+
+.login-form .form-horizontal {
+    width: 100%;
+    float: left;
+}
+
+.login-form .controls {
+    width: 60px;
     margin-right: auto;
     margin-left: auto;
 }
