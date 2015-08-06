@@ -1,7 +1,7 @@
 define(['app'], function(App) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
-            urlRoot: '/asciit/api/v1/questions',
+            urlRoot: '/api/v1/questions',
             validation: {
                 title: {
                     required: true,
@@ -16,7 +16,10 @@ define(['app'], function(App) {
 
         Question.Collection = Backbone.Collection.extend({
             model: Question.Model,
-            url: '/asciit/api/v1/questions'
+            url: '/api/v1/questions',
+            comparator: function (collection) {
+                return - collection.get('created_at');
+            }
         });
 
         var API = {
