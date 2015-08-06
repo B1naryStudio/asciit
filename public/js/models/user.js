@@ -3,7 +3,8 @@ define(['app'], function (App) {
         User.Model = Backbone.Model.extend({
             defaults: {
                 email: '',
-                password: ''
+                password: '',
+                avatar: ''
             },
             validation: {
                 email: {
