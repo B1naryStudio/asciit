@@ -10,7 +10,7 @@
             <div class="asked_time">Asked at <%- created_at %></div>
             <div><a class="question" href="/questions/<%- id %>"><b><%- title %></b></a></div>
             <div class="folder">
-                <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
                 <%= folder.title %>
             </div>
             <div>
