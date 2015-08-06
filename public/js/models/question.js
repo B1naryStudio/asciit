@@ -17,8 +17,16 @@ define(['app', 'paginator'], function(App) {
         Question.Collection = Backbone.PageableCollection.extend({
             model: Question.Model,
             url: App.prefix + '/api/v1/questions',
-            comparator: function (collection) {
-                return - collection.get('created_at');
+            comparator: function (model1, model2) {
+                var compareField = 'updated_at';
+
+                if (model1.get(compareField) > model2.get(compareField)) {
+                    return -1; // before
+                } else if (model2.get(compareField) > model1.get(compareField)) {
+                    return 1; // after
+                } else {
+                    return 0; // equal
+                }
             },
             state: {
                 firstPage: 1,
