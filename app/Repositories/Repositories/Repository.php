@@ -4,7 +4,7 @@ namespace App\Repositories\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Exceptions\RepositoryException;
+use App\Repositories\Exceptions\RepositoryException;
 use App\Repositories\Contracts\RepositoryInterface;
 
 abstract class Repository extends BaseRepository implements RepositoryInterface

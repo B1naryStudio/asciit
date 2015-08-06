@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\QuestionService\Contracts\QuestionServiceInterface;
-use App\Exceptions\QuestionServiceException;
+use App\Services\Questions\Contracts\QuestionServiceInterface;
+use App\Services\Questions\Exceptions\QuestionServiceException;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;

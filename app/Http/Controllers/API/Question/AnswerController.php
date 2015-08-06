@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\QuestionService\Contracts\QuestionServiceInterface;
+use App\Services\Questions\Contracts\QuestionServiceInterface;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AnswerValidatedRequest;
 

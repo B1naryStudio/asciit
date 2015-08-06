@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\AuthService\Exceptions\AuthException;
+use App\Services\Auth\Exceptions\AuthException;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\AuthService\Contracts\AuthServiceInterface;
+use App\Services\Auth\Contracts\AuthServiceInterface;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AuthValidateRequest;
 

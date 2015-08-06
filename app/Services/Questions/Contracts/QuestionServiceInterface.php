@@ -1,6 +1,6 @@
 <?php
 
-namespace App\QuestionService\Contracts;
+namespace App\Services\Questions\Contracts;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;

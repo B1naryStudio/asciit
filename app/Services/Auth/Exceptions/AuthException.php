@@ -6,7 +6,7 @@
  * Time: 10:26
  */
 
-namespace App\AuthService\Exceptions;
+namespace App\Services\Auth\Exceptions;
 
 
 class AuthException extends \RuntimeException
