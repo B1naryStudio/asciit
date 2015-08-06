@@ -16,6 +16,8 @@ class Question extends Model implements Transformable
 
     protected $hidden = ['question_id'];
 
+    protected $appends = ['answers_count'];
+
     public function user()
     {
         return $this->belongsTo('App\Repositories\Entities\User');
@@ -24,5 +26,15 @@ class Question extends Model implements Transformable
     public function folder()
     {
         return $this->belongsTo('App\Repositories\Entities\Folder');
+    }
+
+    public function answers()
+    {
+        return $this->hasMany('App\Repositories\Entities\Answer');
+    }
+
+    public function getAnswersCountAttribute()
+    {
+        return $this->answers()->count();
     }
 }

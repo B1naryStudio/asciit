@@ -22,8 +22,7 @@ define([
                             .done(function (questions) {
                                 // If any results
                                 if (questions.length) {
-                                    questionsView.collection = questions;
-                                    questionsView.render();
+                                    questionsView.collection.reset(questions.models);
                                 } else {
                                     questionsView.triggerMethod('not:found');
                                 }
