@@ -11,8 +11,9 @@ define([
 ], function (App, CollectionView, SingleView, AddView, SelectFolderView, AnswersCompositeView, Answer) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
-            questions: function () {
-                $.when(App.request('question:collection')).done(function (questions) {
+            // Collection initializing can be with a search query
+            questions: function (searchQuery) {
+                $.when(App.request('question:collection', searchQuery)).done(function (questions) {
                     var questionsView = new CollectionView({collection: questions});
                     App.Main.Layout.getRegion('content').show(questionsView);
 
@@ -22,6 +23,7 @@ define([
                             .done(function (questions) {
                                 // If any results
                                 if (questions.length) {
+                                    Backbone.history.navigate('/questions?' + searchQuery, {triigger: false});
                                     questionsView.collection.reset(questions.models);
                                 } else {
                                     questionsView.triggerMethod('not:found');
