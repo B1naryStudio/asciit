@@ -1,5 +1,6 @@
 define(['marionette', 'bootstrap', 'validation-model'], function (Marionette) {
     var App = new Marionette.Application();
+    App.prefix = 'asciit';
 
     App.addRegions({
         container: 'body'

@@ -1,7 +1,7 @@
 define(['app'], function(App) {
     App.module('Folder', function(Folder, App, Backbone, Marionette, $, _) {
         Folder.Model = Backbone.Model.extend({
-            urlRoot: '/api/v1/folders',
+            urlRoot: App.prefix + '/api/v1/folders',
             defaults: {
                 'title': ''
             }
@@ -9,7 +9,7 @@ define(['app'], function(App) {
 
         Folder.Collection = Backbone.Collection.extend({
             model: Folder.Model,
-            url: '/api/v1/folders'
+            url: App.prefix + '/api/v1/folders'
         });
 
         var API = {
