@@ -11,6 +11,7 @@ use App\Services\Questions\Exceptions\QuestionServiceException;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\QuestionValidatedRequest;
 
 class QuestionController extends Controller
 {
@@ -53,35 +54,20 @@ class QuestionController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(QuestionValidatedRequest $request)
     {
-        if (!Auth::check()) {
-            return Response::json([
-                'all' => 'Unauthorized'
-            ], 401);
-        }
-
-        $rules = array(
-            'title' => 'required|max:400',
-            'description' => 'required|max:2048'
-        );
-
         $data = $request->all();
-        $validator = Validator::make($data, $rules);
 
-        if ($validator->fails()) {
-            return Response::json($validator->getMessageBag(), 400);
-        } else {
-            try {
-                $data['user_id'] = Auth::user()->id;
-                $question = $this->questionService->createQuestion($data);
-            } catch (QuestionServiceException $e) {
-                return Response::json([
-                    'all' => $e->getMessage(),
-                ], 400);
-            }
-            return Response::json($question->toArray(), 200);
+        try {
+            $data['user_id'] = Auth::user()->id;
+            $question = $this->questionService->createQuestion($data);
+        } catch (QuestionServiceException $e) {
+            return Response::json([
+                'all' => $e->getMessage(),
+            ], 400);
         }
+
+        return Response::json($question->toArray(), 200);
     }
 
     /**

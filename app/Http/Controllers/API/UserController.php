@@ -9,7 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Services\Auth\Contracts\AuthServiceInterface;
 use Illuminate\Support\Facades\Response;
-use App\Http\Requests\AuthValidateRequest;
+use App\Http\Requests\AuthValidatedRequest;
 
 class UserController extends Controller
 {
@@ -96,7 +96,7 @@ class UserController extends Controller
         //
     }
     
-    public function login(Request $request)
+    public function login(AuthValidatedRequest $request)
     {
         try {
             $auth = $this->authService->authenticate($request->all());
