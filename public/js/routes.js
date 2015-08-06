@@ -9,7 +9,11 @@ define(['app'], function (App) {
                 'login': 'login',
                 'logout': 'logout'
             },
-
+            execute: function (callback, args, name) {
+                if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
+                    callback.apply(this, args);
+                }
+            }
         });
 
         var API = {
@@ -24,18 +28,9 @@ define(['app'], function (App) {
                 });
             },
             questions: function (searchQuery) {
-               // console.log(App.User.Current);
-               //if(!App.User.Current){
-               //     Backbone.history.navigate('login', { trigger: true })
-               // }else{
-                    require(['controllers/question'], function (controller) {
-                        controller.questions();
-                    });
-                //}
-
-                //require(['controllers/question'], function (controller) {
-                //    controller.questions(searchQuery);
-                //});
+                require(['controllers/question'], function (controller) {
+                    controller.questions(searchQuery);
+                });
             },
             question: function (id) {
                 require(['controllers/question'], function (controller) {
@@ -59,13 +54,18 @@ define(['app'], function (App) {
             }
         };
 
-        App.addInitializer(function(){
-            new Routes.Router({
-                controller: API
-            });
+        this.listenTo(App, 'init:openRoutes', function (url) {
+            App.Routes.isOpen = true;
+            if (!Backbone.history.navigate(url, { trigger: true })) {
+                Backbone.history.loadUrl(url);
+            }
         });
 
-
+        App.addInitializer(function() {
+            new Routes.Router({
+                controller: API
+            })
+        });
 
         this.listenTo(App, 'popup:show', function (data) {
             API.popupShow(data);
@@ -77,6 +77,12 @@ define(['app'], function (App) {
 
         this.listenTo(App, 'question:add', function () {
             API.questionsAdd();
+        });
+
+        this.listenTo(App, 'questions:list', function () {
+            if (!Backbone.history.navigate('/', { trigger: true })) {
+                API.questions();
+            }
         });
 
         $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {

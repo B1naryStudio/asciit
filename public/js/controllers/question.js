@@ -11,7 +11,6 @@ define([
 ], function (App, CollectionView, SingleView, AddView, SelectFolderView, AnswersCompositeView, Answer) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
-            // Collection initializing can be with a search query
             questions: function (searchQuery) {
                 $.when(App.request('question:collection', searchQuery)).done(function (questions) {
                     var questionsView = new CollectionView({collection: questions});
@@ -28,7 +27,7 @@ define([
                                 } else {
                                     questionsView.triggerMethod('not:found');
                                 }
-                        });
+                            });
                     });
                 });
             },
@@ -39,37 +38,37 @@ define([
                         App.request('question:model', id),
                         App.request('answer:collection', id)
                     ).done(function (question, answers) {
-                            // New question layout
-                            var questionView = new SingleView({model: question});
-                            App.Main.Layout.getRegion('content').show(questionView);
+                        // New question layout
+                        var questionView = new SingleView({model: question});
+                        App.Main.Layout.getRegion('content').show(questionView);
 
-                            // New answer model for saving a new answer
-                            var model = new  Answer.Model({
-                                question_id: id,
-                                count: answers.length
-                            });
-
-                            // New answers view
-                            var answersView = new AnswersCompositeView({model: model, collection: answers});
-                            questionView.answersRegion.show(answersView);
-
-                            Question.Controller.listenTo(answersView, 'form:submit', function (model) {
-                                $.when(App.request('answer:add', model))
-                                    .done(function (savedModel) {
-                                        answers.push(savedModel);
-
-                                        // Add model and form clearing
-                                        var freshModel = new  Answer.Model({
-                                            question_id: id,
-                                            count: answers.length
-                                        });
-
-                                        answersView.triggerMethod('model:refresh', freshModel);
-                                    }).fail(function (errors) {
-                                        answersView.triggerMethod('data:invalid', errors);
-                                    });
-                            });
+                        // New answer model for saving a new answer
+                        var model = new  Answer.Model({
+                            question_id: id,
+                            count: answers.length
                         });
+
+                        // New answers view
+                        var answersView = new AnswersCompositeView({model: model, collection: answers});
+                        questionView.answersRegion.show(answersView);
+
+                        Question.Controller.listenTo(answersView, 'form:submit', function (model) {
+                            $.when(App.request('answer:add', model))
+                                .done(function (savedModel) {
+                                    answers.push(savedModel);
+
+                                    // Add model and form clearing
+                                    var freshModel = new  Answer.Model({
+                                        question_id: id,
+                                        count: answers.length
+                                    });
+
+                                    answersView.triggerMethod('model:refresh', freshModel);
+                                }).fail(function (errors) {
+                                    answersView.triggerMethod('data:invalid', errors);
+                                });
+                        });
+                    });
                 });
             },
 
@@ -90,9 +89,7 @@ define([
                     Question.Controller.listenTo(view, 'form:submit', function (data) {
                         $.when(App.request('question:add', data)).done(function (model) {
                             App.trigger('popup:close');
-                            if (Backbone.history.navigate('/', { trigger: true })) {
-                                self.questions();
-                            }
+                            App.trigger('questions:list');
                         }).fail(function (errors) {
                             view.triggerMethod('data:invalid', errors);
                         });

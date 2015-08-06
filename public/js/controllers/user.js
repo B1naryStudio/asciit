@@ -19,9 +19,8 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                 User.Controller.listenTo(view, 'form:submit', function (data) {
                     $.when(App.request('user:login', data.email, data.password)).done(function (model) {
                         App.User.Current = model;
-                        App.trigger('question:collection');
                         App.trigger('popup:close');
-                        Backbone.history.navigate('/', { trigger: true })
+                        App.trigger('init:openRoutes', '/');
                     }).fail(function (errors) {
                         view.triggerMethod('data:invalid', errors);
                     });
@@ -29,7 +28,6 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
             },
             logout: function() {
                 if (App.User && App.User.Current) {
-                    //debugger;
                     App.User.Current.destroy({
                         wait: true,
                         success: function(model, response) {
@@ -44,22 +42,17 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                     Backbone.history.navigate('/login', { trigger: true });
                 }
             },
-
-            session: function(obj) {
+            session: function () {
                 require(['models/user'], function () {
                         var user = new User.Model();
                         user.fetch({
                         wait: true,
                         success: function (model, response, options) {
                             App.User.Current = model;
-                            obj.success();
-                        },
-                        error: function (model, response, options) {
-                            obj.error();
+                            App.trigger('init:openRoutes', Backbone.history.fragment);
                         }
                     });
-
-                })
+                });
             }
         });
         User.Controller = new Controller();
