@@ -7,6 +7,7 @@ define([
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionCollectionRow = Marionette.ItemView.extend({
             tagName: 'div',
+            className: 'question-row',
             template: QuestionTpl
         });
 
