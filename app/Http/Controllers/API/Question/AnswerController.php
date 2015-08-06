@@ -17,6 +17,8 @@ class AnswerController extends Controller
     public function __construct(QuestionServiceInterface $questionService)
     {
         $this->questionService = $questionService;
+
+        $this->middleware('auth');
     }
     /**
      * Display a listing of the resource.

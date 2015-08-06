@@ -17,6 +17,8 @@ class FolderController extends Controller
     public function __construct(QuestionServiceInterface $questionService)
     {
         $this->questionService = $questionService;
+
+        $this->middleware('auth');
     }
 
     /**
