@@ -24,8 +24,8 @@ class QuestionServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(
-            'App\QuestionService\Contracts\QuestionServiceInterface',
-            'App\QuestionService\QuestionService'
+            'App\Services\Questions\Contracts\QuestionServiceInterface',
+            'App\Services\Questions\QuestionService'
         );
     }
 }

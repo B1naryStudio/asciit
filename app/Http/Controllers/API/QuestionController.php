@@ -6,11 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\QuestionService\Contracts\QuestionServiceInterface;
-use App\Exceptions\QuestionServiceException;
+use App\Services\Questions\Contracts\QuestionServiceInterface;
+use App\Services\Questions\Exceptions\QuestionServiceException;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\QuestionValidatedRequest;
 
 class QuestionController extends Controller
 {
@@ -22,7 +23,7 @@ class QuestionController extends Controller
     public function __construct(QuestionServiceInterface $questionService) {
         $this->questionService = $questionService;
 
-//        $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -35,15 +36,7 @@ class QuestionController extends Controller
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
         $questions = $this->questionService->getQuestions($request->get('page_size'));
 
-        return Response::json(
-            [
-                [
-                    'total_entries' => $questions->total(),
-                    'currentPage' => $questions->currentPage()
-                ],
-                $questions->items()
-            ]
-        );
+        return Response::json($questions, 200);
     }
 
     /**
@@ -62,35 +55,20 @@ class QuestionController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(QuestionValidatedRequest $request)
     {
-        /*if (!Auth::check()) {
-            return Response::json([
-                'all' => 'Unauthorized'
-            ], 401);
-        }*/
-
-        $rules = array(
-            'title' => 'required|max:400',
-            'description' => 'required|max:2048'
-        );
-
         $data = $request->all();
-        $validator = Validator::make($data, $rules);
 
-        if ($validator->fails()) {
-            return Response::json($validator->getMessageBag(), 400);
-        } else {
-            try {
-                $data['user_id'] = 1;
-                $question = $this->questionService->createQuestion($data);
-            } catch (QuestionServiceException $e) {
-                return Response::json([
-                    'all' => $e->getMessage(),
-                ], 400);
-            }
-            return Response::json($question->toArray(), 200);
+        try {
+            $data['user_id'] = Auth::user()->id;
+            $question = $this->questionService->createQuestion($data);
+        } catch (QuestionServiceException $e) {
+            return Response::json([
+                'all' => $e->getMessage(),
+            ], 400);
         }
+
+        return Response::json($question->toArray(), 200);
     }
 
     /**

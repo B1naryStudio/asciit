@@ -14,7 +14,7 @@ define(['app', 'paginator'], function(App) {
             }
         });
 
-        Question.Collection = Backbone.PageableCollection.extend({
+        Question.Collection = Backbone.Collection.extend({
             model: Question.Model,
             url: App.prefix + '/api/v1/questions',
             comparator: function (model1, model2) {
@@ -27,7 +27,7 @@ define(['app', 'paginator'], function(App) {
                 } else {
                     return 0; // equal
                 }
-            },
+            }/*,
             state: {
                 firstPage: 1,
                 pageSize: 5
@@ -35,7 +35,7 @@ define(['app', 'paginator'], function(App) {
             queryParams: {
                 currentPage: "page",
                 pageSize: "page_size"
-            }
+            }*/
         });
 
         var API = {
