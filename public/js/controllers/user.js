@@ -3,7 +3,7 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
         var Controller = Marionette.Controller.extend({
             login: function () {
                 var view = new View();
-                App.Main.Layout.getRegion('content').show(view);
+                App.Main.Layout.getRegion('content').$el.html('');
                 App.trigger('popup:show', {
                     header: {
                         title: 'Please log in',
