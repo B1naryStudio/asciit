@@ -1,7 +1,7 @@
 define(['marionette', 'bootstrap', 'validation-model'], function (Marionette, Auth) {
     var App = new Marionette.Application();
 
-    App.prefix = window.location.pathname.replace(/\/(.*)(\/)/, '$1');
+    App.prefix = window.location.pathname.replace(/(\/.*)(\/)/, '$1');
     if (App.prefix === '/') {
         App.prefix = '';
     }
