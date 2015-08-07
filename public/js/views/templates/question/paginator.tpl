@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-md-12 col-md-offset-5">
+    <div class="col-md-7 col-md-offset-5">
         <div>
             <ul class="pagination">
                 <% if (currentPage != 1) { %>
