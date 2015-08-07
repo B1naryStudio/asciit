@@ -36,7 +36,15 @@ class QuestionController extends Controller
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
         $questions = $this->questionService->getQuestions($request->get('page_size'));
 
-        return Response::json($questions, 200);
+        return Response::json(
+            [
+                [
+                    'total_entries' => $questions->total(),
+                    'currentPage' => $questions->currentPage()
+                ],
+                $questions->items()
+            ], 200
+        );
     }
 
     /**

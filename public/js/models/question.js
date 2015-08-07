@@ -14,7 +14,7 @@ define(['app', 'paginator'], function(App) {
             }
         });
 
-        Question.Collection = Backbone.Collection.extend({
+        Question.Collection = Backbone.PageableCollection.extend({
             model: Question.Model,
             url: App.prefix + '/api/v1/questions',
             comparator: function (model1, model2) {
@@ -27,32 +27,32 @@ define(['app', 'paginator'], function(App) {
                 } else {
                     return 0; // equal
                 }
-            }/*,
+            },
             state: {
                 firstPage: 1,
                 pageSize: 5
             },
             queryParams: {
                 currentPage: "page",
-                pageSize: "page_size"
-            }*/
+                pageSize: "page_size",
+                search: function () {
+                    return this.searchQuery;
+                }
+            },
+            initialize: function(options) {
+                this.searchQuery = options.searchQuery;
+            }
         });
 
         var API = {
             questionCollection: function (searchQuery) {
-                var questions = new Question.Collection();
+                var questions = new Question.Collection({searchQuery: searchQuery});
                 var defer = $.Deferred();
-
-                // If searchQuery exists, set the GET param 'search'
-                var searchParam = searchQuery ?
-                    $.param({search: searchQuery})
-                    : {};
 
                 questions.fetch({
                     success: function (data) {
                         defer.resolve(data);
-                    },
-                    data: searchParam
+                    }
                 });
                 return defer.promise();
             },
