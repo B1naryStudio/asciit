@@ -1,45 +1,54 @@
-.navbar-nav {
-    margin-left: 25px;
+/*
+ |------------------------------------------------------------------------------
+ | Main menu
+ |------------------------------------------------------------------------------
+ */
+.menu .navbar-nav {
+    margin-left: -40px;
 }
+
+.menu .login {
+    float: right;
+    margin-right: 15px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Questions list
+ |------------------------------------------------------------------------------
+ */
 
 .questions_list {
     margin-top: 10px;
 }
 
-.questions_list .votes,
-.answers_list {
+.question-row {
+    margin: 10px 0;
+}
+
+.questions_list .votes {
     margin-top: 10px;
 }
 
-.questions_list .col-md-10 div,
-/*.question_view .col-md-10 div,
-.question_view .col-md-2 div,*/
-.answers_list .col-md-2 div,
-.answers_list .col-md-10 div {
+.questions_list .question-info {
+    color: dimgray;
+    font-size: 0.9em;
+    margin-top: 5px
+}
+
+.questions_list .col-md-10 div {
     margin-top: 5px;
 }
 
 .questions_list .col-md-10 .asked_time,
-.questions_list .col-md-10 .folder,
-.answers_list .col-md-10 .answered_time {
+.questions_list .col-md-10 .folder {
     color: dimgray;
     font-size: 0.9em;
 }
 
-.questions_list .glyphicon-folder-close {
-    margin-right: 5px;
-}
-
-.questions_list .col-md-10 .question,
-.answers_list .answers_header,
-.answers_list .your_answer_header {
+.questions_list .col-md-10 .question {
     color: black;
     font-size: 16px;
-}
-
-.answers_list .answers_header,
-.answers_list .your_answer_header {
-    margin-left: 20px;
 }
 
 /*
@@ -77,7 +86,7 @@
 
 /*
  |------------------------------------------------------------------------------
- | Question header
+ | Single question header
  |------------------------------------------------------------------------------
  */
 time {
@@ -98,30 +107,13 @@ time,
     margin-bottom: 5px
 }
 
-.question_view .folder,
+.folder,
 .user-info h5 {
     font-weight: bold;
 }
 
 .icon {
     margin-right: 5px;
-}
-
-.login-form{
-    display: table;
-    margin: auto;
-    border: 1px solid;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.login-form input{
-    float: right;
-    margin-left: 5px;
-}
-
-.error{
-    color: red;
 }
 
 .section-header {
@@ -140,12 +132,35 @@ time,
 .single-answer {
     margin: 10px 0;
 }
+
 .list-group-item .limited {
-    white-space: nowrap;
-    word-wrap: break-word;
+/*    white-space: nowrap;
+    word-wrap: break-word;*/
+    max-height: 4.5em;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
 }
+
+.list-group-item .limited::after {
+    color: #fff;
+    content: ".";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 15em;
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+74,ffffff+74,ffffff+93&amp;0+0,1+74 */
+    background: -moz-linear-gradient(left,  hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,1) 74%, hsla(0,0%,100%,1) 93%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,hsla(0,0%,100%,0)), color-stop(74%,hsla(0,0%,100%,1)), color-stop(93%,hsla(0,0%,100%,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  hsla(0,0%,100%,0) 0%,hsla(0,0%,100%,1) 74%,hsla(0,0%,100%,1) 93%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  hsla(0,0%,100%,0) 0%,hsla(0,0%,100%,1) 74%,hsla(0,0%,100%,1) 93%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  hsla(0,0%,100%,0) 0%,hsla(0,0%,100%,1) 74%,hsla(0,0%,100%,1) 93%); /* IE10+ */
+    background: linear-gradient(to right,  hsla(0,0%,100%,0) 0%,hsla(0,0%,100%,1) 74%,hsla(0,0%,100%,1) 93%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+
+}
+
 
 
 .modal-header h2 {
@@ -205,7 +220,40 @@ time,
 }
 
 #question-add-layout .controls {
-    width: 30px;
+    width: 60px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#popup-layout-view.login {
+    width: 350px;
+    height: 270px;
+    left: 40%;
+    background-color: #ffffff;
+    top: 20%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#popup-layout-view.login .control-group {
+    min-height: 45px;
+    float: left;
+    width: 100%;
+}
+
+#popup-layout-view.login .control-group.buttons {
+    position: absolute;
+    top: 160px;
+    left: 0;
+}
+
+.login-form .form-horizontal {
+    width: 100%;
+    float: left;
+}
+
+.login-form .controls {
+    width: 60px;
     margin-right: auto;
     margin-left: auto;
 }

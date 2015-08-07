@@ -5,6 +5,7 @@ define(['app'], function (App) {
             appRoutes: {
                 '': 'questions',
                 'questions': 'questions',
+                'questions?:query': 'questions',
                 'questions/:id': 'question',
                 'login': 'login',
                 'logout': 'logout',
@@ -23,7 +24,7 @@ define(['app'], function (App) {
                     controller.logout();
                 });
             },
-            questions: function () {
+            questions: function (searchQuery) {
 /*                if(!App.User){
                     Backbone.history.navigate('login', { trigger: true })
                 }else{
@@ -33,7 +34,7 @@ define(['app'], function (App) {
                 }*/
 
                 require(['controllers/question'], function (controller) {
-                    controller.questions();
+                    controller.questions(searchQuery);
                 });
             },
             question: function (id) {

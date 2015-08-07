@@ -1,5 +1,7 @@
-define(['app',
+define([
+    'app',
     'views/question/collection',
+    'views/question/paginator',
     'views/question/single',
     'views/question/add',
     'views/folder/select',
@@ -7,9 +9,8 @@ define(['app',
     'views/tag/select',
     'models/answer',
     'models/question',
-    'models/folder',
-    'models/tag'
-], function (App, CollectionView, SingleView, AddView, SelectFolderView, AnswersCompositeView, SelectTagView, Answer) {
+    'models/folder'
+], function (App, CollectionView, PaginatorView, SingleView, AddView, SelectFolderView, AnswersCompositeView, SelectTagView, Answer) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function () {
@@ -23,8 +24,8 @@ define(['app',
                             .done(function (questions) {
                                 // If any results
                                 if (questions.length) {
-                                    questionsView.collection = questions;
-                                    questionsView.render();
+                                    Backbone.history.navigate('/questions?' + searchQuery, {triigger: false});
+                                    questionsView.collection.reset(questions.models);
                                 } else {
                                     questionsView.triggerMethod('not:found');
                                 }

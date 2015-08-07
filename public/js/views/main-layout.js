@@ -7,6 +7,7 @@ define(['app', 'tpl!views/templates/main-layout.tpl', 'views/menu', 'syphon'], f
             regions: {
                 header:  'header',
                 content: '#page-content-wrapper',
+                extras_bottom: '#extras-bottom-contatiner',
                 popup:   '#popup',
                 footer:  'footer'
             },

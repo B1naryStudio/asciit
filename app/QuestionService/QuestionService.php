@@ -9,6 +9,7 @@ use App\Repositories\Contracts\TagRepository;
 use App\Exceptions\RepositoryException;
 use App\Repositories\Criteria\InCriteria;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -84,9 +85,9 @@ class QuestionService implements QuestionServiceInterface
     /**
      * @return Collection
      */
-    public function getQuestions()
+    public function getQuestions($pageSize = null)
     {
-        $questions =$this->questionRepository->with(['user', 'folder', 'tags'])->all();
+        $questions = $this->questionRepository->with(['user', 'folder', 'tags'])->paginate($pageSize);
         return $questions;
     }
 

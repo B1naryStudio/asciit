@@ -1,20 +1,22 @@
-<nav class="navbar navbar-inverse">
+<nav class="menu navbar navbar-inverse">
+    <!-- Floating login panel, on the right side -->
+    <ul class="login nav navbar-nav navbar-right">
+        <li><img src="http://placehold.it/40x40" class="img-thumbnail"/></li>
+        <li><a href="/logout">Logout</a></li>
+    </ul>
+
+    <!-- Site logo -->
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">AskIT</a>
+    </div>
+
     <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">AskIT</a>
-        </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a id="nav-login" href="/login">Login</a></li>
                 <li><a id="nav-question" href="/questions">Questions</a></li>
-                <!--<li><a href="#">Folders</a></li>-->
                 <li><a id="nav-tags" href="/tags">Tags</a></li>
                 <li><a id="nav-question-add" href="#">Add question</a></li>
-                <!--<li><a href="#">My questions <span class="badge">2</span></a></li>-->
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><img src="http://placehold.it/40x40" class="img-thumbnail"/></li>
-                <li><a href="/logout">Logout</a></li>
             </ul>
         </div>
     </div>

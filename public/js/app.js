@@ -1,6 +1,11 @@
 define(['marionette', 'bootstrap', 'validation-model'], function (Marionette) {
     var App = new Marionette.Application();
 
+    App.prefix = window.location.pathname.replace('/http:\/\/' + window.location.host + '\/(.*)\//', '$1');
+    if (App.prefix === '/') {
+        App.prefix = '';
+    }
+
     App.addRegions({
         container: 'body'
     });

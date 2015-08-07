@@ -40,7 +40,7 @@ define(['app', 'tpl!views/templates/popup/main.tpl'], function (App, Tpl, Header
                 if (this.options.class) {
                     this.$el.addClass(this.options.class);
                 }
-                this.$el.modal('show');
+                this.$el.modal(this.options.modal ? this.options.modal : 'show');
             }
         });
     });

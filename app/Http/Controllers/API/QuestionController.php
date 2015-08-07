@@ -32,9 +32,18 @@ class QuestionController extends Controller
      */
     public function index(Request $request)
     {
-        $questions = $this->questionService->getQuestions();
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
+        $questions = $this->questionService->getQuestions($request->get('page_size'));
 
-        return Response::json($questions, 200);
+        return Response::json(
+            [
+                [
+                    'total_entries' => $questions->total(),
+                    'currentPage' => $questions->currentPage()
+                ],
+                $questions->items()
+            ]
+        );
     }
 
     /**
@@ -62,7 +71,7 @@ class QuestionController extends Controller
         }*/
 
         $rules = array(
-            'title' => 'required|regex:/^([A-Za-zА-Яа-я0-9\s]+)$/|max:400',
+            'title' => 'required|max:400',
             'description' => 'required|max:2048'
         );
 
