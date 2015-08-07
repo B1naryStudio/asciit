@@ -3,17 +3,24 @@ define([
     'tpl!views/templates/question/paginator.tpl'
 ], function (App, PaginatorTpl) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.Paginator = Marionette.View.extend({
+        View.Paginator = Marionette.CompositeView.extend({
             id: 'paginator',
-            template: PaginatorTpl,
             events: {
                 "click .next": "getNextPage",
                 "click .prev": "getPrevPage",
                 "click .page": "goToPage"
             },
+            // If there is user, we can render a new template
+            getTemplate: function() {
+                if (parseInt(this.collection.state['totalPages']) > 1){
+                    return PaginatorTpl;
+                } else {
+                    return _.template('');
+                }
+            },
             render: function () {
-                console.log(this.collection.state);
-                var html = this.template(this.collection.state);
+                var template = this.getTemplate();
+                var html = template(this.collection.state);
                 this.$el.html(html);
                 return this;
             },

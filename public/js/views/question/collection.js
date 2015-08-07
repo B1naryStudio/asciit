@@ -45,6 +45,13 @@ define([
 
             onNotFound: function () {
                 Backbone.Validation.callbacks.invalid(this, 'search_query', 'Nothing here...');
+            },
+            onShow: function () {
+                var query = this.collection.searchQuery;
+                if (query) {
+                    $('#search_query').val(query);
+                    console.log(query);
+                }
             }
         });
     });

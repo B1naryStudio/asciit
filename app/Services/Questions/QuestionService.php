@@ -15,7 +15,6 @@ class QuestionService implements QuestionServiceInterface
     private $questionRepository;
     private $answerRepository;
     private $folderRepository;
-    private $tagRepository;
 
     public function __construct(
         QuestionRepository $questionRepository,
@@ -86,8 +85,9 @@ class QuestionService implements QuestionServiceInterface
      */
     public function getQuestions($pageSize = null)
     {
-        $questions = $this->questionRepository->with(['user', 'folder', 'tags'])->all();
-            //->paginate($pageSize);
+        $questions = $this->questionRepository
+            ->with(['user', 'folder', 'tags'])
+            ->paginate($pageSize);
         return $questions;
     }
 

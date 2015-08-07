@@ -1,4 +1,4 @@
-define(['app', 'paginator'], function(App) {
+define(['app', 'paginator'], function(App, PageableCollection) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
             urlRoot: App.prefix + '/api/v1/questions',
@@ -14,11 +14,14 @@ define(['app', 'paginator'], function(App) {
             }
         });
 
-        Question.Collection = Backbone.Collection.extend({
+        Question.Collection = PageableCollection.extend({
             model: Question.Model,
             url: App.prefix + '/api/v1/questions',
+            sortKey: 'updated_at',
+            order: 'desc',
+
             comparator: function (model1, model2) {
-                var compareField = 'updated_at';
+                var compareField = this.sortKey;
 
                 if (model1.get(compareField) > model2.get(compareField)) {
                     return -1; // before
@@ -27,32 +30,37 @@ define(['app', 'paginator'], function(App) {
                 } else {
                     return 0; // equal
                 }
-            }/*,
+            },
             state: {
                 firstPage: 1,
                 pageSize: 5
             },
             queryParams: {
                 currentPage: "page",
-                pageSize: "page_size"
-            }*/
+                pageSize: "page_size",
+                search: function () {
+                    return this.searchQuery;
+                },
+                orderBy: function () {
+                    return this.sortKey;
+                },
+                sortedBy: 'desc'
+            },
+            initialize: function(options) {
+                this.searchQuery = options.searchQuery;
+                this.sort();
+            }
         });
 
         var API = {
             questionCollection: function (searchQuery) {
-                var questions = new Question.Collection();
+                var questions = new Question.Collection({searchQuery: searchQuery});
                 var defer = $.Deferred();
-
-                // If searchQuery exists, set the GET param 'search'
-                var searchParam = searchQuery ?
-                    $.param({search: searchQuery})
-                    : {};
 
                 questions.fetch({
                     success: function (data) {
                         defer.resolve(data);
-                    },
-                    data: searchParam
+                    }
                 });
                 return defer.promise();
             },
