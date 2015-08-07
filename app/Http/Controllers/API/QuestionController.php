@@ -33,9 +33,18 @@ class QuestionController extends Controller
      */
     public function index(Request $request)
     {
-        $questions = $this->questionService->getQuestions();
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
+        $questions = $this->questionService->getQuestions($request->get('page_size'));
 
-        return Response::json($questions, 200);
+        return Response::json(
+            [
+                [
+                    'total_entries' => $questions->total(),
+                    'currentPage' => $questions->currentPage()
+                ],
+                $questions->items()
+            ]
+        );
     }
 
     /**

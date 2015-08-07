@@ -65,9 +65,9 @@ class QuestionService implements QuestionServiceInterface
     /**
      * @return Collection
      */
-    public function getQuestions()
+    public function getQuestions($pageSize = null)
     {
-        $questions =$this->questionRepository->with(['user', 'folder'])->all();
+        $questions = $this->questionRepository->with(['user', 'folder'])->paginate($pageSize);
         return $questions;
     }
 
