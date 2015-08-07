@@ -3,9 +3,6 @@
  | Main menu
  |------------------------------------------------------------------------------
  */
-.menu .navbar-nav {
-    margin-left: -40px;
-}
 
 .menu .login {
     float: right;
