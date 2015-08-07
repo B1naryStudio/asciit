@@ -37,41 +37,39 @@ define([
             },
 
             question: function (id) {
-                require(['models/question'], function () {
-                    $.when(
-                        App.request('question:model', id),
-                        App.request('answer:collection', id)
-                    ).done(function (question, answers) {
-                        // New question layout
-                        var questionView = new SingleView({model: question});
-                        App.Main.Layout.getRegion('content').show(questionView);
+                $.when(
+                    App.request('question:model', id),
+                    App.request('answer:collection', id)
+                ).done(function (question, answers) {
+                    // New question layout
+                    var questionView = new SingleView({model: question});
+                    App.Main.Layout.getRegion('content').show(questionView);
 
-                        // New answer model for saving a new answer
-                        var model = new  Answer.Model({
-                            question_id: id,
-                            count: answers.length
-                        });
+                    // New answer model for saving a new answer
+                    var model = new  Answer.Model({
+                        question_id: id,
+                        count: answers.length
+                    });
 
-                        // New answers view
-                        var answersView = new AnswersCompositeView({model: model, collection: answers});
-                        questionView.answersRegion.show(answersView);
+                    // New answers view
+                    var answersView = new AnswersCompositeView({model: model, collection: answers});
+                    questionView.answersRegion.show(answersView);
 
-                        Question.Controller.listenTo(answersView, 'form:submit', function (model) {
-                            $.when(App.request('answer:add', model))
-                                .done(function (savedModel) {
-                                    answers.push(savedModel);
+                    Question.Controller.listenTo(answersView, 'form:submit', function (model) {
+                        $.when(App.request('answer:add', model))
+                            .done(function (savedModel) {
+                                answers.push(savedModel);
 
-                                    // Add model and form clearing
-                                    var freshModel = new  Answer.Model({
-                                        question_id: id,
-                                        count: answers.length
-                                    });
-
-                                    answersView.triggerMethod('model:refresh', freshModel);
-                                }).fail(function (errors) {
-                                    answersView.triggerMethod('data:invalid', errors);
+                                // Add model and form clearing
+                                var freshModel = new  Answer.Model({
+                                    question_id: id,
+                                    count: answers.length
                                 });
-                        });
+
+                                answersView.triggerMethod('model:refresh', freshModel);
+                            }).fail(function (errors) {
+                                answersView.triggerMethod('data:invalid', errors);
+                            });
                     });
                 });
             },
@@ -79,8 +77,8 @@ define([
             add: function () {
                 $.when(App.request('folder:collection')).done(function (folders) {
                     $.when(App.request('tag:collection')).done(function (tags) {
-                        var folder_view = new SelectFolderView({ collection: folders });
-                        var tag_view = new SelectTagView({ collection: tags });
+                        var folder_view = new SelectFolderView({collection: folders});
+                        var tag_view = new SelectTagView({collection: tags});
                         var view = new AddView({
                             folder_view: folder_view,
                             tag_view: tag_view
@@ -93,14 +91,13 @@ define([
                             contentView: view
                         });
 
-                    var self = this;
-
-                    Question.Controller.listenTo(view, 'form:submit', function (data) {
-                        $.when(App.request('question:add', data)).done(function (model) {
-                            App.trigger('popup:close');
-                            App.trigger('questions:list');
-                        }).fail(function (errors) {
-                            view.triggerMethod('data:invalid', errors);
+                        Question.Controller.listenTo(view, 'form:submit', function (data) {
+                            $.when(App.request('question:add', data)).done(function (model) {
+                                App.trigger('popup:close');
+                                App.trigger('questions:list');
+                            }).fail(function (errors) {
+                                view.triggerMethod('data:invalid', errors);
+                            });
                         });
                     });
                 });

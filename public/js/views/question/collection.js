@@ -3,6 +3,7 @@ define([
     'tpl!views/templates/question/collection.tpl',
     'tpl!views/templates/question/row.tpl',
     'views/tag/view',
+    'models/tag',
     'syphon'
 ], function (App, QuestionsTpl, QuestionTpl, TagView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
@@ -14,8 +15,10 @@ define([
                 tag: '.tags'
             },
             onShow: function () {
-                console.log(this.model.attributes.tags);
-                this.getRegion('tag').show(new TagView({ collection: this.model.attributes.tags }));
+                var self = this;
+                $.when(App.request('tag:reset', this.model.attributes.tags)).done(function (tags) {
+                    self.getRegion('tag').show(new TagView({ collection: tags }));
+                });
             }
         });
 

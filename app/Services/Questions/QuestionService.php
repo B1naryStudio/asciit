@@ -1,6 +1,5 @@
 <?php
-namespace App\Services\Questions;
-use App\Exceptions\QuestionServiceException;
+namespace App\Services\Questions;;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
@@ -8,9 +7,8 @@ use App\Repositories\Contracts\FolderRepository;
 use App\Repositories\Exceptions\RepositoryException;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\TagRepository;
-use App\Exceptions\RepositoryException;
 use App\Repositories\Criteria\InCriteria;
-use Illuminate\Database\Eloquent\Model;
+use App\Services\Questions\Exceptions\QuestionServiceException;
 
 class QuestionService implements QuestionServiceInterface
 {

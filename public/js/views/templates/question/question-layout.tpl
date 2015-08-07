@@ -5,6 +5,7 @@
             <img src="<%- user.avatar %>" width="100" height="100" alt="100x100" class="img-thumbnail">
             <h5><%= user.first_name + ' ' + user.last_name %></h5>
         </figure>
+        <div class="tags"></div>
     </div>
     <div class="col-md-10">
         <!-- Question header -->

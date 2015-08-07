@@ -248,3 +248,50 @@ time,
     margin-right: auto;
     margin-left: auto;
 }
+
+#question-list .tags {
+    margin-right: 85px;
+}
+
+#question-list .tags li {
+    float: left;
+}
+
+#question-view .tags li {
+    float: left;
+}
+
+#question-view .tags  {
+    float: left;
+    margin: 20px 0 30px 0;
+}
+
+.tags ul {
+    margin: 0;
+    padding: 0;
+}
+
+.tags li {
+    list-style: none;
+    background-color: #e4e4e4;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: default;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}
+
+.tags li a {
+    display: block;
+    width: 100%;
+    padding: 0 5px;
+    text-decoration: none;
+    color: #000000;
+}
+
+.pull-right {
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+}
