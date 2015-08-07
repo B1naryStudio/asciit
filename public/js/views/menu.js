@@ -18,8 +18,8 @@ define(['app', 'tpl!views/templates/menu.tpl', 'tpl!views/templates/menu-unautho
                 'mouseout @ui.email_button' : 'foldMenu'
             },
             // If there is user, we can render a new template
-            getTemplate: function(){
-                if (this.model.get("id")){
+            getTemplate: function() {
+                if (this.model.get('id')){
                     return MenuTpl;
                 } else {
                     return MenuUnauthTpl;
