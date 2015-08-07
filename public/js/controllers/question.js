@@ -15,9 +15,9 @@ define([
             questions: function (searchQuery) {
                 $.when(App.request('question:collection', searchQuery)).done(function (questions) {
                     var questionsView = new CollectionView({collection: questions});
-                    //var paginatorView = new PaginatorView({collection: questions});
+                    var paginatorView = new PaginatorView({collection: questions});
                     App.Main.Layout.getRegion('content').show(questionsView);
-                    //App.Main.Layout.getRegion('extras_bottom').show(paginatorView);
+                    App.Main.Layout.getRegion('extras_bottom').show(paginatorView);
 
                     // Updating for search
                     Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
@@ -27,6 +27,8 @@ define([
                                 if (questions.length) {
                                     Backbone.history.navigate('/questions?' + searchQuery, {trigger: false});
                                     questionsView.collection.reset(questions.models);
+                                    paginatorView.collection = questions;
+                                    paginatorView.render();
                                 } else {
                                     questionsView.triggerMethod('not:found');
                                 }
