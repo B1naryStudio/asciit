@@ -15,7 +15,7 @@ define([
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery) {
                 $.when(App.request('question:collection', searchQuery)).done(function (questions) {
-                    var questionsView = new CollectionView({collection: questions, searchQuery: searchQuery});
+                    var questionsView = new CollectionView({collection: questions.sort(), searchQuery: searchQuery});
                     var paginatorView = new PaginatorView({collection: questions});
                     var collectionLayout = new CollectionLayout();
                     App.Main.Layout.getRegion('content').show(collectionLayout);
