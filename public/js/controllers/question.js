@@ -1,6 +1,7 @@
 define([
     'app',
     'views/question/collection',
+    'views/question/collection_layout',
     'views/question/paginator',
     'views/question/single',
     'views/question/add',
@@ -9,15 +10,17 @@ define([
     'models/answer',
     'models/question',
     'models/folder'
-], function (App, CollectionView, PaginatorView, SingleView, AddView, SelectFolderView, AnswersCompositeView, Answer) {
+], function (App, CollectionView, CollectionLayout, PaginatorView, SingleView, AddView, SelectFolderView, AnswersCompositeView, Answer) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery) {
                 $.when(App.request('question:collection', searchQuery)).done(function (questions) {
                     var questionsView = new CollectionView({collection: questions, searchQuery: searchQuery});
                     var paginatorView = new PaginatorView({collection: questions});
-                    App.Main.Layout.getRegion('content').show(questionsView);
-                    App.Main.Layout.getRegion('extras_bottom').show(paginatorView);
+                    var collectionLayout = new CollectionLayout();
+                    App.Main.Layout.getRegion('content').show(collectionLayout);
+                    collectionLayout.getRegion('collectionRegion').show(questionsView);
+                    collectionLayout.getRegion('paginatorRegion').show(paginatorView);
 
                     // Updating for search
                     Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
