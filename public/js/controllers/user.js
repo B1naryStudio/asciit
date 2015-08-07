@@ -21,7 +21,7 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                         App.User.Current = model;
                         App.trigger('popup:close');
                         App.trigger('init:openRoutes', '/');
-                        //App.Main.Menu.triggerMethod('user:authorized', App.User.Current);
+                        App.Main.Menu.triggerMethod('user:authorized', App.User.Current);
                     }).fail(function (errors) {
                         view.triggerMethod('data:invalid', errors);
                     });
@@ -51,7 +51,7 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                         wait: true,
                         success: function (model, response, options) {
                             App.User.Current = model;
-                            //App.Main.Menu.triggerMethod('user:authorized', App.User.Current);
+                            App.Main.Menu.triggerMethod('user:authorized', App.User.Current);
                             App.trigger('init:openRoutes', Backbone.history.fragment);
                         }
                     });
