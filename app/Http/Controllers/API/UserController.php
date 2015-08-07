@@ -2,16 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Services\Auth\Exceptions\AuthException;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\AuthService\AuthService;
+use App\Services\Auth\Contracts\AuthServiceInterface;
+use Illuminate\Support\Facades\Response;
+use App\Http\Requests\AuthValidatedRequest;
 
 class UserController extends Controller
 {
-    public function __construct() {
-//        $this->middleware('auth');
+    private $authService;
+
+    public function __construct(AuthServiceInterface $authService) {
+        $this->authService = $authService;
+
+        $this->middleware('auth', ['only' => ['logout']]);
     }
     /**
      * Display a listing of the resource.
@@ -86,18 +93,36 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
+        //
     }
     
-    public function login(Request $request)
+    public function login(AuthValidatedRequest $request)
     {
-        $auth = new AuthService($request->all());
-        return $auth->authenticate();
+        try {
+            $auth = $this->authService->authenticate($request->all());
+        } catch (AuthException $e) {
+            return Response::json([
+                'error' => [$e->getMessage()]
+            ], 500);
+        }
+        return $auth;
+
     }
     
     public function logout($id)
     {
-        $auth = new AuthService();
-        return $auth->logout();        
+        try {
+            $this->authService->logout();
+        } catch (AuthException $e){
+            return Response::json([
+                'error' => [$e->getMessage()]
+            ], 500);
+        }
+        return Response::json(null, 200);
+    }
+
+    public function session()
+    {
+        return $this->authService->checkUser();
     }
 }

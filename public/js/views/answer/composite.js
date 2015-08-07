@@ -36,7 +36,6 @@ define(['app', 'tpl!views/templates/answer/answers.tpl',
             },
             onDataInvalid: function (errors) {
                 for (var field in errors) {
-                    //console.log('Error in ' + field + ': ' + errors[field] );
                     Backbone.Validation.callbacks.invalid(this, field, errors[field]);
                 }
             },
