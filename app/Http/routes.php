@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('/', function () {
+    return view('base');
+});
+
 Route::group(['prefix' => 'api/v1'], function() {
     Route::resource('/questions', 'API\QuestionController');
     Route::resource('/questions/{id}/answers', 'API\Question\AnswerController');

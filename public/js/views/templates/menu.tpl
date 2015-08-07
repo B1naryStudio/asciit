@@ -1,7 +1,7 @@
 <nav class="menu navbar navbar-inverse">
     <!-- Floating login panel, on the right side -->
     <ul class="login nav navbar-nav navbar-right">
-        <li><img src="<%= avatar %>" width="50" height="50" class="avatar img-rounded"/></li>
+        <li><img src="/" width="50" height="50" class="avatar img-rounded"/></li>
         <li class="dropdown email">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= email %><b class="caret"></b></a>
             <ul class="dropdown-menu">
