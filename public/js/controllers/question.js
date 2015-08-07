@@ -11,7 +11,7 @@ define([
     'models/answer',
     'models/question',
     'models/folder'
-], function (App, CollectionView, CollectionLayout, PaginatorView, SingleView, AddView, SelectFolderView, AnswersCompositeVieww, SelectTagView, Answer) {
+], function (App, CollectionView, CollectionLayout, PaginatorView, SingleView, AddView, SelectFolderView, AnswersCompositeView, SelectTagView, Answer) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery) {
