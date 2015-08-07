@@ -10,9 +10,9 @@
         <div class="col-md-10">
             <!-- Votes -->
             <div class="vote">
-                <a href=""><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
+                <a href="#"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
                 <span>5</span>
-                <a href=""><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+                <a href="#"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
             </div>
 
             <!-- Text -->

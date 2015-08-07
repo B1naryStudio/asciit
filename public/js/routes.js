@@ -5,10 +5,14 @@ define(['app'], function (App) {
             appRoutes: {
                 '': 'questions',
                 'questions': 'questions',
-                'questions?:query': 'questions',
                 'questions/:id': 'question',
                 'login': 'login',
                 'logout': 'logout'
+            },
+            execute: function (callback, args, name) {
+                if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
+                    callback.apply(this, args);
+                }
             }
         });
 
@@ -24,14 +28,6 @@ define(['app'], function (App) {
                 });
             },
             questions: function (searchQuery) {
-/*                if(!App.User){
-                    Backbone.history.navigate('login', { trigger: true })
-                }else{
-                    require(['controllers/question'], function (controller) {
-                        controller.questions();
-                    });
-                }*/
-
                 require(['controllers/question'], function (controller) {
                     controller.questions(searchQuery);
                 });
@@ -58,10 +54,17 @@ define(['app'], function (App) {
             }
         };
 
-        App.addInitializer(function(){
+        this.listenTo(App, 'init:openRoutes', function (url) {
+            App.Routes.isOpen = true;
+            if (!Backbone.history.navigate(url, { trigger: true })) {
+                Backbone.history.loadUrl(url);
+            }
+        });
+
+        App.addInitializer(function() {
             new Routes.Router({
                 controller: API
-            });
+            })
         });
 
         this.listenTo(App, 'popup:show', function (data) {
@@ -74,6 +77,12 @@ define(['app'], function (App) {
 
         this.listenTo(App, 'question:add', function () {
             API.questionsAdd();
+        });
+
+        this.listenTo(App, 'questions:list', function () {
+            if (!Backbone.history.navigate('/', { trigger: true })) {
+                API.questions();
+            }
         });
 
         $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {

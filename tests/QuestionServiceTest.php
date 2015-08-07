@@ -1,10 +1,9 @@
 <?php
 
 use Mockery as m;
-use App\QuestionService\QuestionService;
-use App\Repositories\Repositories\QuestionRepositoryEloquent;
+use App\Services\Questions\QuestionService;
 use App\Repositories\Entities\Question;
-use App\Exceptions\RepositoryException;
+use App\Repositories\Exceptions\RepositoryException;
 
 class QuestionServiceTest extends TestCase
 {
