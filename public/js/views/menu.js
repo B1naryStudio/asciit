@@ -15,7 +15,8 @@ define(['app', 'tpl!views/templates/menu.tpl', 'tpl!views/templates/menu-unautho
                 'click @ui.question' : 'question',
                 'click @ui.question_add' : 'questionAdd',
                 'mouseover @ui.email_button' : 'unfoldMenu',
-                'mouseout @ui.email_button' : 'foldMenu'
+                'mouseout @ui.email_button' : 'foldMenu',
+                'click @ui.tags' : 'tags'
             },
             // If there is user, we can render a new template
             getTemplate: function() {
@@ -50,6 +51,10 @@ define(['app', 'tpl!views/templates/menu.tpl', 'tpl!views/templates/menu-unautho
             onUserLeave: function () {
                 this.model.clear({silent: true});
                 this.render();
+            },
+            tags: function () {
+                this.$el.find('.navbar-nav .active').removeClass('active');
+                this.ui.questions.closest('li').addClass('active');
             }
         });
         Main.Menu = new MenuView({model: new App.User.Model});

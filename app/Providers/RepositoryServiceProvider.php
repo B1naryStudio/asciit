@@ -42,5 +42,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\AnswerRepository',
             'App\Repositories\Repositories\AnswerRepositoryEloquent'
         );
+
+        $this->app->singleton(
+            'App\Repositories\Contracts\TagRepository',
+            'App\Repositories\Repositories\TagRepositoryEloquent'
+        );
     }
 }

@@ -37,4 +37,9 @@ class Question extends Model implements Transformable
     {
         return $this->answers()->count();
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Repositories\Entities\Tag', 'tag_q_and_a', 'q_and_a_id', 'tag_id');
+    }
 }

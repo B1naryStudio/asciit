@@ -22,4 +22,5 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::post('/user/login', 'API\UserController@login');
     Route::get('/user/login', 'API\UserController@session');
     Route::delete('/user/login/{id}', 'API\UserController@logout');
+    Route::resource('/tags', 'API\TagController', ['only' => ['index']]);
 });

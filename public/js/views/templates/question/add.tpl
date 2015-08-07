@@ -1,6 +1,12 @@
 <form action="/questions">
     <div class="form-horizontal">
         <div class="error all"></div>
+        <div class="control-group folder">
+            <label for="folder" class="control-label col-sm-2">Folder</label>
+            <div class="col-sm-10 folder-select-wrapper"></div>
+            <div class="error folder"></div>
+        </div>
+
         <div class="control-group title">
             <label for="email" class="control-label col-sm-2">Title</label>
             <div class="col-sm-10">
@@ -10,9 +16,9 @@
         </div>
 
         <div class="control-group folder">
-            <label for="folder" class="control-label col-sm-2">Folder</label>
-            <div class="col-sm-10 folder-select-wrapper"></div>
-            <div class="error folder"></div>
+            <label for="tag" class="control-label col-sm-2">Tags</label>
+            <div class="col-sm-10 tag-select-wrapper"></div>
+            <div class="error tag"></div>
         </div>
 
         <div class="control-group description">

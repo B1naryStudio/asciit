@@ -5,10 +5,12 @@ define(['app', 'tpl!views/templates/question/add.tpl', 'select2', 'syphon'], fun
             id: 'question-add-layout',
             template: AddTpl,
             regions: {
-                select: '.folder-select-wrapper'
+                folder_select: '.folder-select-wrapper',
+                tag_select: '.tag-select-wrapper'
             },
             onShow: function () {
-                this.getRegion('select').show(this.options.folder_view);
+                this.getRegion('folder_select').show(this.options.folder_view);
+                this.getRegion('tag_select').show(this.options.tag_view);
             },
             onDataInvalid: function (errors) {
                 $('.error').html('');

@@ -7,7 +7,8 @@ define(['app'], function (App) {
                 'questions': 'questions',
                 'questions/:id': 'question',
                 'login': 'login',
-                'logout': 'logout'
+                'logout': 'logout',
+                'tags': 'tags'
             },
             execute: function (callback, args, name) {
                 if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
@@ -50,6 +51,11 @@ define(['app'], function (App) {
             popupClose: function (data) {
                 require(['controllers/popup'], function (controller) {
                     controller.close(data);
+                });
+            },
+            tags: function () {
+                require(['controllers/tag'], function (controller) {
+                    controller.tags();
                 });
             }
         };
