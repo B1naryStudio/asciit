@@ -1,1 +1,0 @@
-<a href="/tags/<%- title %>"><%- title %></a>

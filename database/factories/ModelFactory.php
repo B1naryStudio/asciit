@@ -11,6 +11,11 @@
 |
 */
 
-/*
- * We don't need the factories, because we save the models via a repository.
- */
+$factory->define(App\User::class, function ($faker) {
+    return [
+        'name' => $faker->name,
+        'email' => $faker->email,
+        'password' => str_random(10),
+        'remember_token' => str_random(10),
+    ];
+});

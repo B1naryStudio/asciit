@@ -4,7 +4,7 @@
         <title>Laravel</title>
 
         <link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-        
+
         <style>
             html, body {
                 height: 100%;
@@ -39,11 +39,7 @@
         <div class="container">
             <div class="content">
                 <div class="title">Laravel 5</div>
-                <a href="login">login</a>
             </div>
         </div>
     </body>
-    <script src="<?php echo asset('/js/vendor/require/require.min.js')?>"></script>
-    <script src="<?php echo asset('/js/require-main.js')?>"></script>
-    
 </html>

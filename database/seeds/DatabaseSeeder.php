@@ -14,18 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        DB::transaction(function () {
-            DB::statement('SET foreign_key_checks = 0;');
-            DB::table('users')->truncate();
-            DB::table('folders')->truncate();
-            DB::table('q_and_a')->truncate();
-            DB::statement('SET foreign_key_checks = 1;');
-
-            $this->call(UsersSeeder::class);
-            $this->call(FoldersSeeder::class);
-            $this->call(QuestionsSeeder::class);
-            $this->call(AnswersSeeder::class);
-        });
+        // $this->call(UserTableSeeder::class);
 
         Model::reguard();
     }
