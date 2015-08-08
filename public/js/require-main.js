@@ -13,7 +13,9 @@ requirejs.config({
         tpl: 'vendor/backbone/underscore-tpl',
         syphon: 'vendor/backbone/backbone.syphon',
         select2: 'vendor/select2/select2',
-        paginator: 'vendor/backbone.paginator/backbone.paginator'
+        paginator: 'vendor/backbone.paginator/backbone.paginator',
+        ckeditor: 'vendor/ckeditor/ckeditor',
+        'ckeditor.adapter': 'vendor/ckeditor/adapters/jquery'
     },
     shim: {
         underscore: {
@@ -31,7 +33,8 @@ requirejs.config({
         bootstrap: ['jquery'],
         validation: ['backbone'],
         tpl: ['text'],
-        syphon: ['backbone']
+        syphon: ['backbone'],
+        'ckeditor.adapter': ['ckeditor']
     }
 });
 

@@ -1,7 +1,12 @@
-define(['app', 'tpl!views/templates/answer/answers.tpl',
+define([
+    'app',
+    'tpl!views/templates/answer/answers.tpl',
     'tpl!views/templates/answer/single-answer.tpl',
+    'models/answer',
+    'ckeditor',
+    'ckeditor.adapter',
     'stickit'
-], function (App, AnswersTpl, SingleAnswerTpl) {
+], function (App, AnswersTpl, SingleAnswerTpl, Answer) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerCompositeView = Marionette.CompositeView.extend({
             template: SingleAnswerTpl
@@ -14,20 +19,15 @@ define(['app', 'tpl!views/templates/answer/answers.tpl',
             childView: View.SingleAnswerCompositeView,
             childViewContainer: '#answers',
 
-            bindings: {
-                '[name=description]': {
-                    observe: 'description',
-                    setOptions: {
-                        validate: true
-                    }
-                }
-            },
             events: {
                 'submit form': 'submit'
             },
 
             submit: function (event) {
                 event.preventDefault();
+
+                var data = Backbone.Syphon.serialize(this);
+                this.model.set(data);
 
                 if (this.model.isValid(true)) {
                     // To event in controller
@@ -42,15 +42,16 @@ define(['app', 'tpl!views/templates/answer/answers.tpl',
             // Refresh model and form for the futher using without view rendering
             onModelRefresh: function (freshModel) {
                 this.model = freshModel;
-                this.stickit();
                 this.refreshCounter();
+
+                // Erase the editor value.
+                $('#description').val('');
             },
             refreshCounter: function () {
                 $(this.el).find('.counter').html(this.model.get('count'));
             },
-            onRender: function() {
-                this.stickit();
-                return this;
+            onShow: function () {
+                $('#description').ckeditor().editor;
             },
             initialize: function () {
                 Backbone.Validation.bind(this);

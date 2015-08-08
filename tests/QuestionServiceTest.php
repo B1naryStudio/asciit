@@ -12,6 +12,7 @@ class QuestionServiceTest extends TestCase
     protected $questionRepo;
     protected $answerRepo;
     protected $folderRepo;
+    protected $tagRepo;
 
     public function setUp()
     {
@@ -39,10 +40,12 @@ class QuestionServiceTest extends TestCase
         $this->questionRepo = m::mock('App\Repositories\Repositories\QuestionRepositoryEloquent');
         $this->answerRepo = m::mock('App\Repositories\Repositories\AnswerRepositoryEloquent');
         $this->folderRepo = m::mock('App\Repositories\Repositories\FolderRepositoryEloquent');
+        $this->tagRepo = m::mock('App\Repositories\Repositories\TagRepositoryEloquent');
         $this->questionService = new QuestionService(
             $this->questionRepo,
             $this->answerRepo,
-            $this->folderRepo
+            $this->folderRepo,
+            $this->tagRepo
         );
     }
 
@@ -74,7 +77,7 @@ class QuestionServiceTest extends TestCase
     public function testGetQuestionReturnsWithRelations()
     {
         $this->questionRepo->shouldReceive('findWithRelations')
-            ->with($this->question->id, ['user', 'folder'])
+            ->with($this->question->id, ['user', 'folder', 'tags'])
             ->once()
             ->andReturn($this->question);
 
@@ -85,7 +88,7 @@ class QuestionServiceTest extends TestCase
     }
 
     /**
-     * @expectedException App\Exceptions\QuestionServiceException
+     * @expectedException App\Services\Questions\Exceptions\QuestionServiceException
      * @expectedExceptionMessage Entity is not found! No such question
      */
     public function testGetQuestionThrowsException()
