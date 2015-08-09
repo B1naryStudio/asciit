@@ -1,24 +1,8 @@
-Skip to content
-This repository
-Pull requests
-Issues
-Gist
-@Antarus66
-Unwatch 1
-Star 0
-Fork 0
-Antarus66/social
-Branch: master  social/css/normalize.css
-@Antarus66Antarus66 on Jun 2, 2014 Add files for normalize and ico
-1 contributor
-RawBlameHistory    425 lines (340 sloc)  7.782 kB
-    /*! normalize.css v3.0.1 | MIT License | git.io/normalize */
-
-    /**
-     * 1. Set default font family to sans-serif.
-     * 2. Prevent iOS text size adjust after orientation change, without disabling
-     *    user zoom.
-     */
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
 
 html {
     font-family: sans-serif; /* 1 */
@@ -50,7 +34,6 @@ figcaption,
 figure,
 footer,
 header,
-hgroup,
 main,
 nav,
 section,
@@ -437,5 +420,5 @@ td,
 th {
     padding: 0;
 }
-Status API Training Shop Blog About Help
-© 2015 GitHub, Inc. Terms Privacy Security Contact
+
+

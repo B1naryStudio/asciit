@@ -17,7 +17,8 @@
 
             <!-- Text -->
             <time>Answered at <%- created_at %></time>
-            <p><%= description %></p>
+            <p contenteditable="true"><%= description %></p>
+            <button class="edit-button btn btn-default btn-xs">Edit</button>
 
             <!-- Comments -->
             <div class="comments">
