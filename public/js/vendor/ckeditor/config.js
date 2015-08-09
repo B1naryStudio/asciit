@@ -11,28 +11,28 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserImageUploadUrl = '/ckeditor/pictures'; //TODO: upl backend
 
     // The toolbar groups arrangement, optimized for two toolbar rows.
-/*
-    config.toolbarGroups = [
-        { name: 'styles' },
-        { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-        { name: 'colors' },
-        { name: 'align',       groups: [ 'align'] },
-        { name: 'paragraph',   groups: ['list', 'indent', 'blocks'] },
-        { name: 'insert', groups: ['Image', 'Table', 'HorizontalRule', 'SpecialChar', 'Maximize']},
-        { name: 'forms' },
-        { name: 'others' },
-        { name: 'document',	   groups: ['document', 'doctools' ] },
-        { name: 'tools', groups: [ 'Maximize' ] },
-    ];
-*/
+    /*
+     config.toolbarGroups = [
+     { name: 'styles' },
+     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+     { name: 'colors' },
+     { name: 'align',       groups: [ 'align'] },
+     { name: 'paragraph',   groups: ['list', 'indent', 'blocks'] },
+     { name: 'insert', groups: ['Image', 'Table', 'HorizontalRule', 'SpecialChar', 'Maximize']},
+     { name: 'forms' },
+     { name: 'others' },
+     { name: 'document',	   groups: ['document', 'doctools' ] },
+     { name: 'tools', groups: [ 'Maximize' ] },
+     ];
+     */
 
     config.toolbar = [
         { name: 'basicstyles', items: [
             'Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript', '-', 'RemoveFormat'
         ]},
-/*        { name: 'styles', items: [
-            'Styles', 'Format', 'Font', 'FontSize'
-        ]},*/
+        /*        { name: 'styles', items: [
+         'Styles', 'Format', 'Font', 'FontSize'
+         ]},*/
         { name: 'justify', items: [
             'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'
         ]},
@@ -64,5 +64,5 @@ CKEDITOR.editorConfig = function( config ) {
     config.removeDialogTabs = 'image:advanced;link:advanced';
 
     // Color of the toolbar
-    config.uiColor = '#eeeeee';
+    //config.uiColor = '#f5f5f5';
 };

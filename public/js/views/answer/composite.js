@@ -14,7 +14,7 @@ define([
 
         View.AnswersCompositeView = Marionette.CompositeView.extend({
             tagName: 'section',
-            className: 'answers-list',
+            id: 'answers-list',
             template: AnswersTpl,
             childView: View.SingleAnswerCompositeView,
             childViewContainer: '#answers',
