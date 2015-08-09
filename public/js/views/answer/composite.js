@@ -45,14 +45,17 @@ define([
                 this.refreshCounter();
 
                 // Erase the editor value.
-                $('#description').val('');
+                this.editor.setData('');
             },
             refreshCounter: function () {
                 $(this.el).find('.counter').html(this.model.get('count'));
             },
             onShow: function () {
-                $('#description').ckeditor().editor;
-            },
+                this.editor = $('#description').ckeditor({
+                    image2_alignClasses: [ 'image-align-left', 'image-align-center', 'image-align-right' ],
+                    image2_disableResizer: true
+                }).editor;
+           },
             initialize: function () {
                 Backbone.Validation.bind(this);
             },
