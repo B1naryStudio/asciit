@@ -8,24 +8,7 @@ CKEDITOR.editorConfig = function( config ) {
     // For complete reference see:
     // http://docs.ckeditor.com/#!/api/CKEDITOR.config
 
-    config.filebrowserImageUploadUrl = '/ckeditor/pictures'; //TODO: upl backend
-
-    // The toolbar groups arrangement, optimized for two toolbar rows.
-    /*
-     config.toolbarGroups = [
-     { name: 'styles' },
-     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-     { name: 'colors' },
-     { name: 'align',       groups: [ 'align'] },
-     { name: 'paragraph',   groups: ['list', 'indent', 'blocks'] },
-     { name: 'insert', groups: ['Image', 'Table', 'HorizontalRule', 'SpecialChar', 'Maximize']},
-     { name: 'forms' },
-     { name: 'others' },
-     { name: 'document',	   groups: ['document', 'doctools' ] },
-     { name: 'tools', groups: [ 'Maximize' ] },
-     ];
-     */
-
+    // The toolbar groups and items arrangement
     config.toolbar = [
         { name: 'basicstyles', items: [
             'Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript', '-', 'RemoveFormat'
@@ -53,6 +36,9 @@ CKEDITOR.editorConfig = function( config ) {
         ]},
     ];
 
+    // The path for images uploading
+    config.filebrowserImageUploadUrl = '/ckeditor/pictures'; //TODO: upl backend
+
     // Remove some buttons provided by the standard plugins, which are
     // not needed in the Standard(s) toolbar.
     //config.removeButtons = 'Underline,Subscript,Superscript';
@@ -63,8 +49,9 @@ CKEDITOR.editorConfig = function( config ) {
     // Simplify the dialog windows.
     config.removeDialogTabs = 'image:advanced;link:advanced';
 
+    // Downloaded skins: icy_orange, minimalist, moono
     config.skin = 'icy_orange';
 
-    // Color of the toolbar
+    // Color of the toolbar (changes '-' placeholders color)
     //config.uiColor = '#f5f5f5';
 };

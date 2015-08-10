@@ -26,7 +26,7 @@
             </div>
         </div>
         <!-- Text -->
-        <p><%- description %></p>
+        <p><%= description %></p>
         <!-- Comments -->
         <div class="comments">
             <header class="section-header">

@@ -9,7 +9,25 @@ define([
 ], function (App, AnswersTpl, SingleAnswerTpl, Answer) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerCompositeView = Marionette.CompositeView.extend({
-            template: SingleAnswerTpl
+            template: SingleAnswerTpl,
+            ui: {
+                editButton: '.edit-button',
+                saveButton: '.save-button'
+            },
+
+            events: {
+                'click @ui.editButton': 'onEdit',
+                'click @ui.saveButton': 'onSave'
+            },
+
+            onEdit: function (event) {
+                var field = this.$el.find('.description');
+                field.attr('contenteditable', true);
+
+                this.editor = field.ckeditor({
+                    startupFocus: true
+                }).editor;
+            }
         });
 
         View.AnswersCompositeView = Marionette.CompositeView.extend({
@@ -20,10 +38,10 @@ define([
             childViewContainer: '#answers',
 
             events: {
-                'submit form': 'submit'
+                'submit form': 'onSubmit'
             },
 
-            submit: function (event) {
+            onSubmit: function (event) {
                 event.preventDefault();
 
                 var data = Backbone.Syphon.serialize(this);
@@ -51,10 +69,7 @@ define([
                 $(this.el).find('.counter').html(this.model.get('count'));
             },
             onShow: function () {
-                this.editor = $('#description').ckeditor({
-                    image2_alignClasses: [ 'image-align-left', 'image-align-center', 'image-align-right' ],
-                    image2_disableResizer: true
-                }).editor;
+                this.editor = $('#description').ckeditor().editor;
            },
             initialize: function () {
                 Backbone.Validation.bind(this);
