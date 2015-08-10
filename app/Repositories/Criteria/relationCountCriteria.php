@@ -6,22 +6,28 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface as Repository;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
-class InCriteria implements CriteriaInterface
+class relationCountCriteria implements CriteriaInterface
 {
     /**
      * @var string
      */
-    private $field;
+    private $base_field;
 
     /**
-     * @var array
+     * @var strings
      */
-    private $values;
+    private $relation_field;
 
-    public function __construct($field, array $values)
+    /*
+     * @var string
+     */
+    private $method;
+
+    public function __construct($method, $base_field, $relation_field)
     {
-        $this->values = $values;
-        $this->field = $field;
+        $this->method = $method;
+        $this->base_field = $base_field;
+        $this->relation_field = $relation_field;
     }
 
     /**
@@ -31,6 +37,7 @@ class InCriteria implements CriteriaInterface
      */
     public function apply($model, Repository $repository)
     {
-        return $model->whereIn($this->field, $this->values);
+        $method = $this->method;
+        return $model->$method()->groupBy($this->base_field);
     }
 }

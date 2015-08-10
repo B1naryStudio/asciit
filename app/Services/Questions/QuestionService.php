@@ -1,5 +1,7 @@
 <?php
 namespace App\Services\Questions;;
+use App\Repositories\Criteria\relationCountCriteria;
+use App\Repositories\Criteria\relationLikeCriteria;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
@@ -9,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\TagRepository;
 use App\Repositories\Criteria\InCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
+use Illuminate\Support\Facades\DB;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -85,6 +88,10 @@ class QuestionService implements QuestionServiceInterface
      */
     public function getQuestions($pageSize = null, $data = array())
     {
+        if (!empty($data['tag'])) {
+            $this->questionRepository->pushCriteria(new relationLikeCriteria('tags', 'title', $data['tag']));
+        }
+
         $questions = $this->questionRepository
             ->with(['user', 'folder', 'tags'])
             ->paginate($pageSize);
@@ -146,10 +153,11 @@ class QuestionService implements QuestionServiceInterface
         return $folder;
     }
 
-    public function getTags()
+    public function getTags($pageSize = null)
     {
+        $this->tagRepository->pushCriteria(new relationCountCriteria('questions', 'tag_id', 'q_and_a_id'));
         try {
-            $tags = $this->tagRepository->all();
+            $tags = $this->tagRepository->with(['questions'])->paginate($pageSize, [DB::raw('count(*) as total')]);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),

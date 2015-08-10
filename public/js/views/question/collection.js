@@ -17,7 +17,22 @@ define([
             onShow: function () {
                 var self = this;
                 $.when(App.request('tag:reset', this.model.attributes.tags)).done(function (tags) {
-                    self.getRegion('tag').show(new TagView({ collection: tags }));
+                    self.getRegion('tag').show(new TagView({ collection: tags, searchTag: self.options.searchTag() }));
+                });
+            }
+        });
+
+        View.QuestionCollectionRow = Marionette.LayoutView.extend({
+            tagName: 'div',
+            className: 'question-row',
+            template: QuestionTpl,
+            regions: {
+                tag: '.tags'
+            },
+            onShow: function () {
+                var self = this;
+                $.when(App.request('tag:reset', this.model.attributes.tags)).done(function (tags) {
+                    self.getRegion('tag').show(new TagView({ collection: tags, searchTag: self.options.searchTag() }));
                 });
             }
         });
@@ -50,8 +65,15 @@ define([
                 var query = this.collection.searchQuery;
                 if (query) {
                     $('#search_query').val(query);
-                    console.log(query);
                 }
+            },
+            initialize: function (options) {
+                var self = this;
+                this.childViewOptions = {
+                    searchTag: function () {
+                        return self.options.searchTag;
+                    }
+                };
             }
         });
     });

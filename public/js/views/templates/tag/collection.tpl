@@ -1,8 +1,7 @@
-<div class="row tags_list">
-    <div class="col-md-12">
-        <div class="list-group list">
+<div class="tags_list tags">
+    <div class="title">Most popular tags: </div>
+    <ul class="list-group list">
 
-        </div>
-    </div>
+    </ul>
 </div>
 

@@ -9,6 +9,8 @@ namespace App\Repositories\Contracts;
 
 use Prettus\Repository\Contracts\RepositoryInterface as BaseRepositoryInterface;
 
+use Prettus\Repository\Contracts\CriteriaInterface;
+
 interface RepositoryInterface extends BaseRepositoryInterface
 {
     /**
@@ -35,4 +37,6 @@ interface RepositoryInterface extends BaseRepositoryInterface
      * @return collection
      */
     public function findByFieldWithRelations($fieldName, $fieldValue, $relations, $columns = ['*']);
+
+    public function pushCriteria(CriteriaInterface $criteria);
 }

@@ -18,7 +18,7 @@ interface QuestionServiceInterface
     /**
      * @return Collection
      */
-    public function getQuestions($pageSize = null);
+    public function getQuestions($pageSize = null, $data = array());
 
     /**
      * @param $question_id
@@ -40,5 +40,5 @@ interface QuestionServiceInterface
 
     public function getFolders();
 
-    public function getTags();
+    public function getTags($pageSize = null);
 }

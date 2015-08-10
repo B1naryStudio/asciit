@@ -44,17 +44,21 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                 orderBy: function () {
                     return this.sortKey;
                 },
+                tag: function () {
+                    return this.searchTag;
+                },
                 sortedBy: 'desc'
             },
             initialize: function(options) {
                 this.searchQuery = options.searchQuery;
+                this.searchTag = options.searchTag;
                 this.sort();
             }
         });
 
         var API = {
-            questionCollection: function (searchQuery) {
-                var questions = new Question.Collection({searchQuery: searchQuery});
+            questionCollection: function (searchQuery, searchTag) {
+                var questions = new Question.Collection({ searchQuery: searchQuery, searchTag: searchTag });
                 var defer = $.Deferred();
 
                 questions.fetch({
@@ -98,8 +102,8 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                 return defer.promise();
             }
         };
-        App.reqres.setHandler('question:collection', function (searchQuery) {
-            return API.questionCollection(searchQuery);
+        App.reqres.setHandler('question:collection', function (searchQuery, searchTag) {
+            return API.questionCollection(searchQuery, searchTag);
         });
 
         App.reqres.setHandler('question:model', function (id) {

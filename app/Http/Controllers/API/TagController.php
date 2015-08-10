@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
@@ -23,9 +24,9 @@ class TagController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tags = $this->questionService->getTags();
+        $tags = $this->questionService->getTags($request->get('page_size'));
 
         return Response::json($tags, 200);
     }

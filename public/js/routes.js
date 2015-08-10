@@ -9,7 +9,7 @@ define(['app'], function (App) {
                 'login': 'login',
                 'logout': 'logout',
                 'tags': 'tags',
-                'tags/:search': 'tagsSearch'
+                'tags/:tag': 'tagSearch'
             },
             execute: function (callback, args, name) {
                 if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
@@ -31,7 +31,7 @@ define(['app'], function (App) {
             },
             questions: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
-                    controller.questions(searchQuery);
+                    controller.questions(searchQuery, '');
                 });
             },
             question: function (id) {
@@ -54,9 +54,14 @@ define(['app'], function (App) {
                     controller.close(data);
                 });
             },
-            tagsSearch: function () {
+            tags: function () {
                 require(['controllers/tag'], function (controller) {
                     controller.tags();
+                });
+            },
+            tagSearch: function (searchQuery) {
+                require(['controllers/question'], function (controller) {
+                    controller.questions('', searchQuery);
                 });
             }
         };

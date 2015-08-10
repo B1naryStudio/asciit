@@ -259,6 +259,10 @@ time,
     float: left;
 }
 
+.tags_list.tags li {
+    float: left;
+}
+
 #question-view .tags  {
     float: left;
     margin: 20px 0 30px 0;
@@ -280,6 +284,10 @@ time,
     padding: 0 5px;
 }
 
+.tags li.search {
+    background-color: #ffff00;
+}
+
 .tags li a {
     display: block;
     width: 100%;
@@ -292,4 +300,15 @@ time,
     position: absolute;
     bottom: 0;
     right: 15px;
+}
+
+.tags_list .list {
+    float: left;
+    margin-bottom: 20px;
+}
+
+.tags_list .title {
+    float: left;
+    width: 130px;
+    padding-top: 5px;
 }
