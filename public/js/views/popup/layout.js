@@ -3,7 +3,7 @@ define(['app', 'tpl!views/templates/popup/main.tpl'], function (App, Tpl, Header
         Popup.Layout = Marionette.LayoutView.extend({
             tagName: 'div',
             id: 'popup-layout-view',
-            className: 'modal',
+            className: 'modal panel panel-default',
             template: Tpl,
             regions: {
                 header:  '.modal-header',

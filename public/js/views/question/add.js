@@ -20,7 +20,8 @@ define([
                 this.getRegion('tag_select').show(this.options.tag_view);
 
                 this.editor = this.$el.find('[name=description]').ckeditor({
-                    height: '400px'
+                    height: '400px',
+                    uiColor: '#f5f5f5'
                 }).editor;
             },
             onDataInvalid: function (errors) {
