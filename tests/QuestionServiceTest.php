@@ -69,6 +69,9 @@ class QuestionServiceTest extends TestCase
         $this->tagRepo->shouldReceive('create')
             ->andReturn($this->tag);
 
+        $this->tagRepo->shouldReceive('createSeveral')
+            ->andReturn([$this->tag]);
+
         $this->questionRepo->shouldReceive('relationsAdd');
     }
 

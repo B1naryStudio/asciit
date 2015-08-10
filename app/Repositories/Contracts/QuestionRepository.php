@@ -9,6 +9,4 @@ use App\Repositories\Entities\Question;
  * @package namespace App\RepositoriesRepositories;
  */
 interface QuestionRepository extends RepositoryInterface
-{
-    public function relationsAdd(Question $model, $method, array $data);
-}
+{}

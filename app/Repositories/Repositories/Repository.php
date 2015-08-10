@@ -56,4 +56,9 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
 
         return static::create($attributes);
     }
+
+    public function relationsAdd($model, $method, array $data)
+    {
+        $model->$method()->saveMany($data);
+    }
 }
