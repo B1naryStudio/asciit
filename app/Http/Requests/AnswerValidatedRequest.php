@@ -24,7 +24,7 @@ class AnswerValidatedRequest extends Request
     public function rules()
     {
         return [
-            'description' => 'required|max:2048'
+            'description' => 'required|max:16383'
         ];
     }
 }

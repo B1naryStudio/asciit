@@ -152,6 +152,7 @@ return [
          */
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Creativeorange\Gravatar\GravatarServiceProvider::class,
+        Intervention\Image\ImageServiceProviderLaravel5::class,
     ],
 
     /*
@@ -182,6 +183,7 @@ return [
         'File'      => Illuminate\Support\Facades\File::class,
         'Gravatar'  => Creativeorange\Gravatar\Facades\Gravatar::class,
         'Hash'      => Illuminate\Support\Facades\Hash::class,
+        'Image'     => Intervention\Image\Facades\Image::class,
         'Input'     => Illuminate\Support\Facades\Input::class,
         'Inspiring' => Illuminate\Foundation\Inspiring::class,
         'Lang'      => Illuminate\Support\Facades\Lang::class,

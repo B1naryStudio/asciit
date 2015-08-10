@@ -15,7 +15,7 @@
                 <%- folder.title %>
             </div>
             <div>
-                <p class="limited"><%- description %></p>
+                <div class="limited"><%= description %></div>
             </div>
             <div>
                 <span></span>

@@ -149,38 +149,23 @@ time,
 
 }
 
+/*
+ |------------------------------------------------------------------------------
+ | Answers list
+ |------------------------------------------------------------------------------
+ */
+.new-answer .panel-body {
+    padding: 0;
+}
 
-
+/*
+ |------------------------------------------------------------------------------
+ | Popups
+ |------------------------------------------------------------------------------
+ */
 .modal-header h2 {
     margin-top: 0;
     margin-bottom: 0;
-}
-
-#popup-layout-view.question-add {
-    width: 600px;
-    height: 355px;
-    left: 30%;
-    background-color: #ffffff;
-    top: 20%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-#popup-layout-view.question-add .control-group.title,
-#popup-layout-view.question-add .control-group.folder {
-    min-height: 45px;
-    float: left;
-    width: 100%;
-}
-
-#popup-layout-view.question-add .control-group.description {
-    height: 100px;
-    margin-bottom: 20px;
-}
-
-#popup-layout-view.question-add .control-group.description textarea {
-    height: 100px;
-    resize: none;
 }
 
 .modal-backdrop.in {
@@ -189,9 +174,32 @@ time,
     z-index: 3;
     position: fixed;
 }
+/*
+ |------------------------------------------------------------------------------
+ | Add question popup
+ |------------------------------------------------------------------------------
+ */
+#popup-layout-view.question-add {
+    left: 10%;
+    right: 10%;
+    top: 10%;
+    bottom: auto;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: absolute;
+}
+
+/*#popup-layout-view.question-add .modal-body {
+    overflow: scroll;
+}*/
 
 #popup-layout-view.question-add .select2-container {
     width: 100% !important;
+}
+
+#popup-layout-view.question-add .description label {
+    margin-bottom: 5px;
 }
 
 .error {
@@ -204,16 +212,16 @@ time,
     margin-bottom: 5px;
 }
 
-.question-add .form-horizontal {
-    height: 230px;
-}
-
 #question-add-layout .controls {
-    width: 60px;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 15px 0 0 0;
+    text-align: center;
 }
 
+/*
+ |------------------------------------------------------------------------------
+ | Login popup
+ |------------------------------------------------------------------------------
+ */
 #popup-layout-view.login {
     width: 350px;
     height: 270px;
@@ -247,6 +255,11 @@ time,
     margin-left: auto;
 }
 
+/*
+ |------------------------------------------------------------------------------
+ | Tags
+ |------------------------------------------------------------------------------
+ */
 #question-list .tags {
     margin-right: 85px;
 }

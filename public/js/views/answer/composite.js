@@ -1,33 +1,51 @@
-define(['app', 'tpl!views/templates/answer/answers.tpl',
+define([
+    'app',
+    'tpl!views/templates/answer/answers.tpl',
     'tpl!views/templates/answer/single-answer.tpl',
+    'models/answer',
+    'ckeditor',
+    'ckeditor.adapter',
     'stickit'
-], function (App, AnswersTpl, SingleAnswerTpl) {
+], function (App, AnswersTpl, SingleAnswerTpl, Answer) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerCompositeView = Marionette.CompositeView.extend({
-            template: SingleAnswerTpl
+            template: SingleAnswerTpl,
+            ui: {
+                editButton: '.edit-button',
+                saveButton: '.save-button'
+            },
+
+            events: {
+                'click @ui.editButton': 'onEdit',
+                'click @ui.saveButton': 'onSave'
+            },
+
+            onEdit: function (event) {
+                var field = this.$el.find('.description');
+                field.attr('contenteditable', true);
+
+                this.editor = field.ckeditor({
+                    startupFocus: true
+                }).editor;
+            }
         });
 
         View.AnswersCompositeView = Marionette.CompositeView.extend({
             tagName: 'section',
-            className: 'answers-list',
+            id: 'answers-list',
             template: AnswersTpl,
             childView: View.SingleAnswerCompositeView,
             childViewContainer: '#answers',
 
-            bindings: {
-                '[name=description]': {
-                    observe: 'description',
-                    setOptions: {
-                        validate: true
-                    }
-                }
-            },
             events: {
-                'submit form': 'submit'
+                'submit form': 'onSubmit'
             },
 
-            submit: function (event) {
+            onSubmit: function (event) {
                 event.preventDefault();
+
+                var data = Backbone.Syphon.serialize(this);
+                this.model.set(data);
 
                 if (this.model.isValid(true)) {
                     // To event in controller
@@ -42,16 +60,19 @@ define(['app', 'tpl!views/templates/answer/answers.tpl',
             // Refresh model and form for the futher using without view rendering
             onModelRefresh: function (freshModel) {
                 this.model = freshModel;
-                this.stickit();
                 this.refreshCounter();
+
+                // Erase the editor value.
+                this.editor.setData('');
             },
             refreshCounter: function () {
                 $(this.el).find('.counter').html(this.model.get('count'));
             },
-            onRender: function() {
-                this.stickit();
-                return this;
-            },
+            onShow: function () {
+                this.editor = $('#description').ckeditor({
+                    height: '500px'
+                }).editor;
+           },
             initialize: function () {
                 Backbone.Validation.bind(this);
             },

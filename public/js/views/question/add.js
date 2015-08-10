@@ -11,6 +11,10 @@ define(['app', 'tpl!views/templates/question/add.tpl', 'select2', 'syphon'], fun
             onShow: function () {
                 this.getRegion('folder_select').show(this.options.folder_view);
                 this.getRegion('tag_select').show(this.options.tag_view);
+
+                this.editor = this.$el.find('[name=description]').ckeditor({
+                    height: '400px'
+                }).editor;
             },
             onDataInvalid: function (errors) {
                 $('.error').html('');

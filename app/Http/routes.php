@@ -23,4 +23,6 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::get('/user/login', 'API\UserController@session');
     Route::delete('/user/login/{id}', 'API\UserController@logout');
     Route::resource('/tags', 'API\TagController', ['only' => ['index']]);
+    Route::post('/images', 'API\ImageController@store');
+    Route::get('/images/{filename}', 'API\ImageController@show');
 });

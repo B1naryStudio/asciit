@@ -17,7 +17,7 @@
 
             <!-- Text -->
             <time>Answered at <%- created_at %></time>
-            <p><%- description %></p>
+            <div class="description"><%= description %></div>
 
             <!-- Comments -->
             <div class="comments">

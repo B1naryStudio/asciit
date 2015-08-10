@@ -43,7 +43,7 @@ class User extends Model implements Transformable, AuthenticatableContract
     public function getAvatarAttribute($avatar)
     {
         if (empty($avatar)) {
-            return Gravatar::get($this->attributes['email']);
+            return Gravatar::get($this->attributes['email'], ['fallback' => 'identicon']);
         }
 
         return $avatar;
