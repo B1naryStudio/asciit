@@ -1,4 +1,11 @@
-define(['app', 'tpl!views/templates/question/add.tpl', 'select2', 'syphon'], function (App, AddTpl) {
+define([
+    'app',
+    'tpl!views/templates/question/add.tpl',
+    'select2',
+    'syphon',
+    'ckeditor',
+    'ckeditor.adapter',
+], function (App, AddTpl) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.AddForm = Marionette.LayoutView.extend({
             tagName: 'div',
@@ -13,7 +20,8 @@ define(['app', 'tpl!views/templates/question/add.tpl', 'select2', 'syphon'], fun
                 this.getRegion('tag_select').show(this.options.tag_view);
 
                 this.editor = this.$el.find('[name=description]').ckeditor({
-                    height: '400px'
+                    height: '400px',
+                    uiColor: '#f5f5f5'
                 }).editor;
             },
             onDataInvalid: function (errors) {

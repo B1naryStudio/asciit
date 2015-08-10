@@ -5,7 +5,6 @@ define([
     'models/answer',
     'ckeditor',
     'ckeditor.adapter',
-    'stickit'
 ], function (App, AnswersTpl, SingleAnswerTpl, Answer) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerCompositeView = Marionette.CompositeView.extend({
