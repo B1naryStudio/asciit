@@ -8,7 +8,8 @@ define(['app'], function (App) {
                 'questions/:id': 'question',
                 'login': 'login',
                 'logout': 'logout',
-                'tags': 'tags'
+                'tags': 'tags',
+                'tags/:search': 'tagsSearch'
             },
             execute: function (callback, args, name) {
                 if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
@@ -53,7 +54,7 @@ define(['app'], function (App) {
                     controller.close(data);
                 });
             },
-            tags: function () {
+            tagsSearch: function () {
                 require(['controllers/tag'], function (controller) {
                     controller.tags();
                 });

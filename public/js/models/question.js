@@ -36,8 +36,8 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                 pageSize: 5
             },
             queryParams: {
-                currentPage: "page",
-                pageSize: "page_size",
+                currentPage: 'page',
+                pageSize: 'page_size',
                 search: function () {
                     return this.searchQuery;
                 },

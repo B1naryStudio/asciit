@@ -83,7 +83,7 @@ class QuestionService implements QuestionServiceInterface
     /**
      * @return Collection
      */
-    public function getQuestions($pageSize = null)
+    public function getQuestions($pageSize = null, $data = array())
     {
         $questions = $this->questionRepository
             ->with(['user', 'folder', 'tags'])
