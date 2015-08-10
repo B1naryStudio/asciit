@@ -48,11 +48,11 @@ class ImageController extends Controller
                 'url'      => $url
             ], 200);
         } else {
+            // For CKEditor API
+            // (http://docs.ckeditor.com/#!/guide/dev_file_browser_api)
             $funcNum = $request->get('CKEditorFuncNum');
             $message = 'Image was loading successfully';
 
-            // For CKEditor API
-            // (http://docs.ckeditor.com/#!/guide/dev_file_browser_api)
             return "<script type='text/javascript'>
                         window.parent.CKEDITOR.tools.callFunction(
                             $funcNum,

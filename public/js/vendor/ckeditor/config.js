@@ -12,42 +12,21 @@ define(['app'], function (App) {
         config.toolbar = [
             {
                 name: 'basicstyles', items: [
-                'Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript', '-', 'RemoveFormat'
-            ]
-            },
-            /*        { name: 'styles', items: [
-             'Styles', 'Format', 'Font', 'FontSize'
-             ]},*/
-            {
-                name: 'justify', items: [
-                'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'
-            ]
-            },
-            {
-                name: 'colors', items: [
-                'TextColor', 'BGColor'
-            ]
-            },
+                'Bold', 'Italic', 'Underline', 'Strike'
+            ]},
             {
                 name: 'paragraph', items: [
-                'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent',
-            ]
-            },
-            {
-                name: 'insert', items: [
-                'Table', 'HorizontalRule', 'Symbol', 'Blockquote',
-            ]
-            },
+                'NumberedList', 'BulletedList', 'Table', 'HorizontalRule',
+                'Blockquote'
+            ]},
             {
                 name: 'media', items: [
                 'Image', 'CodeSnippet', 'SimpleLink'
-            ]
-            },
+            ]},
             {
                 name: 'tools', items: [
                 'Maximize'
-            ]
-            },
+            ]},
         ];
 
         // The path for images uploading via modal window
