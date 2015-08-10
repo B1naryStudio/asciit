@@ -1,4 +1,11 @@
-define(['app', 'tpl!views/templates/question/add.tpl', 'select2', 'syphon'], function (App, AddTpl) {
+define([
+    'app',
+    'tpl!views/templates/question/add.tpl',
+    'select2',
+    'syphon',
+    'ckeditor',
+    'ckeditor.adapter',
+], function (App, AddTpl) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.AddForm = Marionette.LayoutView.extend({
             tagName: 'div',
