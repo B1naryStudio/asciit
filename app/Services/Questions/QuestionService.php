@@ -43,13 +43,16 @@ class QuestionService implements QuestionServiceInterface
                     $tmp[$tag->title] = $tag;
                 }
                 $tags = [];
+                $not_exist = [];
                 foreach ($data['tag'] as $title) {
                     if (empty($tmp[$title])) {
-                        $tag = $this->tagRepository->create(['title' => $title]);
+                        $not_exist[] = ['title' => $title];
                     } else {
-                        $tag = $tmp[$title];
+                        $tags[] = $tmp[$title];
                     }
-                    $tags[] = $tag;
+                }
+                if (!empty($not_exist)) {
+                    $tags = array_merge($tags, $this->tagRepository->createSeveral($not_exist));
                 }
                 $this->questionRepository->relationsAdd($question, 'tags', $tags);
             }

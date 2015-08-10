@@ -2,9 +2,11 @@
 
 namespace App\Repositories\Repositories;
 
+use App\Repositories\Criteria\InCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\Tag;
 use App\Repositories\Contracts\TagRepository;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class TagRepositoryEloquent
@@ -28,5 +30,33 @@ class TagRepositoryEloquent extends Repository implements TagRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function createSeveral(array $attributes)
+    {
+        foreach ($attributes as $model_attributes) {
+            if ( !is_null($this->validator) ) {
+                $this->validator->with($model_attributes)
+                    ->passesOrFail( ValidatorInterface::RULE_CREATE );
+            }
+        }
+
+        $model = $this->makeModel();
+        DB::table($model->getTable())->insert($attributes);
+
+        $titles = [];
+        foreach ($attributes as $attribute) {
+            $titles[] = $attribute['title'];
+        }
+
+        $this->pushCriteria(new InCriteria('title', $titles));
+
+        $tags = [];
+        $all = $this->all();
+        foreach ($all as $tag) {
+            $tags[] = $tag;
+        }
+
+        return $tags;
     }
 }
