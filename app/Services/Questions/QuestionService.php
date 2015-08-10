@@ -33,23 +33,26 @@ class QuestionService implements QuestionServiceInterface
         try {
             $folder = $this->folderRepository->firstOrCreate(['title' => $data['folder']]);
             $data['folder_id'] = $folder->id;
-            $this->tagRepository->pushCriteria(new InCriteria('title', $data['tag']));
-            $tags = $this->tagRepository->all();
-            $tmp = [];
-            foreach ($tags as $tag) {
-                $tmp[$tag->title] = $tag;
-            }
-            $tags = [];
-            foreach ($data['tag'] as $title) {
-                if (empty($tmp[$title])) {
-                    $tag = $this->tagRepository->create(['title' => $title]);
-                } else {
-                    $tag = $tmp[$title];
-                }
-                $tags[] = $tag;
-            }
             $question = $this->questionRepository->create($data);
-            $this->questionRepository->relationsAdd($question, 'tags', $tags);
+
+            if (!empty($data['tag'])) {
+                $this->tagRepository->pushCriteria(new InCriteria('title', $data['tag']));
+                $tags = $this->tagRepository->all();
+                $tmp = [];
+                foreach ($tags as $tag) {
+                    $tmp[$tag->title] = $tag;
+                }
+                $tags = [];
+                foreach ($data['tag'] as $title) {
+                    if (empty($tmp[$title])) {
+                        $tag = $this->tagRepository->create(['title' => $title]);
+                    } else {
+                        $tag = $tmp[$title];
+                    }
+                    $tags[] = $tag;
+                }
+                $this->questionRepository->relationsAdd($question, 'tags', $tags);
+            }
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
