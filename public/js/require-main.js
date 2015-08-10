@@ -14,6 +14,7 @@ requirejs.config({
         syphon: 'vendor/backbone/backbone.syphon',
         select2: 'vendor/select2/select2',
         paginator: 'vendor/backbone.paginator/backbone.paginator',
+        'ckeditor.config': 'vendor/ckeditor/config',
         ckeditor: 'vendor/ckeditor/ckeditor',
         'ckeditor.adapter': 'vendor/ckeditor/adapters/jquery'
     },
@@ -34,7 +35,8 @@ requirejs.config({
         validation: ['backbone'],
         tpl: ['text'],
         syphon: ['backbone'],
-        'ckeditor.adapter': ['ckeditor']
+        'ckeditor.config': ['ckeditor'],
+        'ckeditor.adapter': ['ckeditor', 'ckeditor.config']
     }
 });
 
