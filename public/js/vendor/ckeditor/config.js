@@ -50,8 +50,10 @@ define(['app'], function (App) {
             },
         ];
 
-        // The path for images uploading
-        config.filebrowserImageUploadUrl = App.prefix + '/api/v1/images'; //TODO: upl backend
+        // The path for images uploading via modal window
+        config.filebrowserImageUploadUrl = App.prefix + '/api/v1/images';
+        // By Drag'n'Drop
+        config.imageUploadUrl = App.prefix + '/api/v1/images?responceType=json';
 
         // Remove some buttons provided by the standard plugins, which are
         // not needed in the Standard(s) toolbar.

@@ -37,18 +37,30 @@ class ImageController extends Controller
         Image::make($image->getRealPath())
             ->resize(600, null, function ($constraint) {
                 $constraint->upsize();
+                $constraint->aspectRatio();
             })
             ->save(storage_path('app') .  $path);
 
-        $funcNum = $request->get('CKEditorFuncNum');
-        $message = 'Image was loading successfully';
+        if ($request->get('responceType') && $request->get('responceType') == 'json') {
+            return Response::json([
+                'fileName' => $fileName,
+                'uploaded' => 1,
+                'url'      => $url
+            ], 200);
+        } else {
+            $funcNum = $request->get('CKEditorFuncNum');
+            $message = 'Image was loading successfully';
 
-        // Callback for CKEditor API (http://docs.ckeditor.com/#!/guide/dev_file_browser_api)
-        return "<script type='text/javascript'>
-                    window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '$message');
-                </script>";
-
-
+            // For CKEditor API
+            // (http://docs.ckeditor.com/#!/guide/dev_file_browser_api)
+            return "<script type='text/javascript'>
+                        window.parent.CKEDITOR.tools.callFunction(
+                            $funcNum,
+                            '$url',
+                            '$message'
+                        );
+                    </script>";
+        }
     }
 
     /**

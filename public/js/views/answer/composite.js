@@ -69,7 +69,9 @@ define([
                 $(this.el).find('.counter').html(this.model.get('count'));
             },
             onShow: function () {
-                this.editor = $('#description').ckeditor().editor;
+                this.editor = $('#description').ckeditor({
+                    height: '500px'
+                }).editor;
            },
             initialize: function () {
                 Backbone.Validation.bind(this);
