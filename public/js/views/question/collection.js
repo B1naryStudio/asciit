@@ -49,7 +49,7 @@ define([
             onShow: function () {
                 var query = this.collection.searchQuery;
                 if (query) {
-                    $('#search_query').val(query);
+                    $('#search_query').val(query).focus();
                     console.log(query);
                 }
             }

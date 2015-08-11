@@ -29,10 +29,7 @@ define([
                             .done(function (questions) {
                                 // If any results
                                 if (questions.length) {
-                                    Backbone.history.navigate('/questions?' + searchQuery, {trigger: false});
-                                    questionsView.collection.reset(questions.models);
-                                    paginatorView.collection = questions;
-                                    paginatorView.render();
+                                    Backbone.history.navigate('/questions?' + searchQuery, {trigger: true});
                                 } else {
                                     questionsView.triggerMethod('not:found');
                                 }
