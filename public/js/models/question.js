@@ -2,6 +2,7 @@ define(['app', 'paginator'], function(App, PageableCollection) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
             urlRoot: App.prefix + '/api/v1/questions',
+            imgUploadingUrl: App.prefix + '/api/v1/images',
             validation: {
                 title: {
                     required: true,

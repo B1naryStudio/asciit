@@ -82,6 +82,7 @@ define([
                         var folder_view = new SelectFolderView({collection: folders});
                         var tag_view = new SelectTagView({collection: tags});
                         var view = new AddView({
+                            model: new Question.Model(),
                             folder_view: folder_view,
                             tag_view: tag_view
                         });

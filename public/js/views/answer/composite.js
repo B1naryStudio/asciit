@@ -24,7 +24,12 @@ define([
                 field.attr('contenteditable', true);
 
                 this.editor = field.ckeditor({
-                    startupFocus: true
+                    startupFocus: true,
+                    extraPlugins: 'image2,imageresize',
+                    // Too complicated to load App by requirejs in ckeditor/config:
+                    // Mismatched anonymous define() module or work only on 1st loading
+                    filebrowserImageUploadUrl: this.model.imgUploadingUrl,
+                    imageUploadUrl: this.model.imgUploadingUrl + '?responceType=json'
                 }).editor;
             }
         });
@@ -69,7 +74,12 @@ define([
             },
             onShow: function () {
                 this.editor = $('#description').ckeditor({
-                    height: '500px'
+                    height: '500px',
+                    extraPlugins: 'image2,imageresize',
+                    // Too complicated to load App by requirejs in ckeditor/config:
+                    // Mismatched anonymous define() module or work only on 1st loading
+                    filebrowserImageUploadUrl: App.prefix + '/api/v1/images',
+                    imageUploadUrl: App.prefix + '/api/v1/images?responceType=json'
                 }).editor;
            },
             initialize: function () {

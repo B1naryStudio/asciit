@@ -1,6 +1,7 @@
 define([
     'app',
     'tpl!views/templates/question/add.tpl',
+    'models/question',
     'select2',
     'syphon',
     'ckeditor',
@@ -21,7 +22,12 @@ define([
 
                 this.editor = this.$el.find('[name=description]').ckeditor({
                     height: '400px',
-                    uiColor: '#f5f5f5'
+                    uiColor: '#f5f5f5',
+                    extraPlugins: 'image2,imageresize',
+                    // Too complicated to load App by requirejs in ckeditor/config:
+                    // Mismatched anonymous define() module or work only on 1st loading
+                    filebrowserImageUploadUrl: this.model.imgUploadingUrl,
+                    imageUploadUrl: this.model.imgUploadingUrl + '?responceType=json'
                 }).editor;
             },
             onDataInvalid: function (errors) {
