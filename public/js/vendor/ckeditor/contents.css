@@ -6,7 +6,6 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 body
 {
 	/* Font */
-	font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
 	font-size: 12px;
 
 	/* Text color */
@@ -20,7 +19,8 @@ body
 
 .cke_editable
 {
-	font-size: 13px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 14px;
 	line-height: 1.6;
 }
 
@@ -89,12 +89,12 @@ img.left
 	padding: 5px;
 }
 
-pre
-{
-	white-space: pre-wrap; /* CSS 2.1 */
-	word-wrap: break-word; /* IE7 */
-	-moz-tab-size: 4;
-	tab-size: 4;
+pre {
+    background: inherit;
+    padding: 0;
+    color: #333;
+    font-size: 12px;
+    border-radius: 0;
 }
 
 .marker

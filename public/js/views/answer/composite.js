@@ -3,9 +3,11 @@ define([
     'tpl!views/templates/answer/answers.tpl',
     'tpl!views/templates/answer/single-answer.tpl',
     'models/answer',
+    'ckeditor.custom.settings',
     'ckeditor',
     'ckeditor.adapter',
-], function (App, AnswersTpl, SingleAnswerTpl, Answer) {
+    'highlight'
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, EditorSettings) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerCompositeView = Marionette.CompositeView.extend({
             template: SingleAnswerTpl,
@@ -23,14 +25,14 @@ define([
                 var field = this.$el.find('.description');
                 field.attr('contenteditable', true);
 
-                this.editor = field.ckeditor({
-                    startupFocus: true,
-                    extraPlugins: 'image2,imageresize',
-                    // Too complicated to load App by requirejs in ckeditor/config:
-                    // Mismatched anonymous define() module or work only on 1st loading
-                    filebrowserImageUploadUrl: this.model.imgUploadingUrl,
-                    imageUploadUrl: this.model.imgUploadingUrl + '?responceType=json'
-                }).editor;
+                EditorSettings.startupFocus = true;
+                this.editor = field.ckeditor(EditorSettings).editor;
+            },
+            onShow: function () {
+                // Highligting code-snippets
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
             }
         });
 
@@ -73,14 +75,8 @@ define([
                 $(this.el).find('.counter').html(this.model.get('count'));
             },
             onShow: function () {
-                this.editor = $('#description').ckeditor({
-                    height: '500px',
-                    extraPlugins: 'image2,imageresize',
-                    // Too complicated to load App by requirejs in ckeditor/config:
-                    // Mismatched anonymous define() module or work only on 1st loading
-                    filebrowserImageUploadUrl: App.prefix + '/api/v1/images',
-                    imageUploadUrl: App.prefix + '/api/v1/images?responceType=json'
-                }).editor;
+                EditorSettings.height = '500px';
+                this.editor = $('#description').ckeditor(EditorSettings).editor;
            },
             initialize: function () {
                 Backbone.Validation.bind(this);

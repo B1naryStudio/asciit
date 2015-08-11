@@ -1,12 +1,13 @@
 define([
     'app',
     'tpl!views/templates/question/add.tpl',
+    'ckeditor.custom.settings',
     'models/question',
     'select2',
     'syphon',
     'ckeditor',
     'ckeditor.adapter',
-], function (App, AddTpl) {
+], function (App, AddTpl, EditorSettings) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.AddForm = Marionette.LayoutView.extend({
             tagName: 'div',
@@ -20,15 +21,10 @@ define([
                 this.getRegion('folder_select').show(this.options.folder_view);
                 this.getRegion('tag_select').show(this.options.tag_view);
 
-                this.editor = this.$el.find('[name=description]').ckeditor({
-                    height: '400px',
-                    uiColor: '#f5f5f5',
-                    extraPlugins: 'image2,imageresize',
-                    // Too complicated to load App by requirejs in ckeditor/config:
-                    // Mismatched anonymous define() module or work only on 1st loading
-                    filebrowserImageUploadUrl: this.model.imgUploadingUrl,
-                    imageUploadUrl: this.model.imgUploadingUrl + '?responceType=json'
-                }).editor;
+                EditorSettings.height = '400px';
+                EditorSettings.uiColor = '#f5f5f5';
+                this.editor = this.$el.find('[name=description]')
+                    .ckeditor(EditorSettings).editor;
             },
             onDataInvalid: function (errors) {
                 $('.error').html('');

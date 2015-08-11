@@ -1,7 +1,6 @@
 define(['app'], function(App) {
     App.module('Answer', function(Answer, App, Backbone, Marionette, $, _) {
         Answer.Model = Backbone.Model.extend({
-            imgUploadingUrl: App.prefix + '/api/v1/images',
             defaults: {
                 'description': ''
             },
