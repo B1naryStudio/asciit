@@ -120,10 +120,6 @@ class QuestionService implements QuestionServiceInterface
     
     public function addVote($entry_id){}
     
-    public function getTag($title){}
-    
-    public function addTagToQuestion($tag_id, $question_id){}
-    
     public function createAnswer($data, $question_id)
     {
         // temporary fix without auth

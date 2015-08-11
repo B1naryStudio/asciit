@@ -14,6 +14,10 @@ use App\Repositories\Criteria\InCriteria;
  */
 class TagRepositoryEloquent extends Repository implements TagRepository
 {
+    protected $fieldSearchable = [
+        'title' => 'like'
+    ];
+
     /**
      * Specify Model class name
      *
@@ -40,9 +44,9 @@ class TagRepositoryEloquent extends Repository implements TagRepository
 
         $model = $this->makeModel();
         $r = $model->$relation()
-            ->select('tags.*')
+            ->select($model->getTable() . '.*')
             ->selectRaw('count(*) as total')
-            ->join('tags', 'tags.id', '=', $table . '.tag_id')
+            ->join($model->getTable(), $model->getTable() . '.id', '=', $table . '.tag_id')
             ->groupBy('tag_id')
             ->orWhereNotNull($table . '.tag_id')
             ->orderBy($order[0], $order[1])

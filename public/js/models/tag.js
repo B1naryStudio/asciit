@@ -12,12 +12,12 @@ define(['app'], function(App) {
                     return this.type;
                 },
                 page_size: function () {
-                    return this.page_size;
+                    return this.pageSize;
                 }
             },
             initialize: function(options) {
                 this.type = options && options.type ? options.type : 'select';
-                this.page_size = options && options.page_size ? options.page_size : 5;
+                this.pageSize = options && options.page_size ? options.page_size : 5;
             }
         });
 

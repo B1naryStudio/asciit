@@ -39,7 +39,7 @@ class TagsSeeder extends Seeder
         $folders = $this->folderRepository->all();
 
         $tags = [];
-        while (count($tags) < 30) {
+        while (count($tags) < 100) {
             $title = $faker->word;
             if (empty($tags[$title])) {
                 $tags[$title] = ['title' => $title];
