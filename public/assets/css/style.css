@@ -243,11 +243,9 @@ time,
     margin-right: 85px;
 }
 
-#question-list .tags li {
-    float: left;
-}
-
-#question-view .tags li {
+#question-list .tags li,
+#question-view .tags li,
+.tags_list.tags li {
     float: left;
 }
 

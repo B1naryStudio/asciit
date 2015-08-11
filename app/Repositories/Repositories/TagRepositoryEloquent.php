@@ -5,6 +5,8 @@ namespace App\Repositories\Repositories;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\Tag;
 use App\Repositories\Contracts\TagRepository;
+use Illuminate\Support\Facades\DB;
+use App\Repositories\Criteria\InCriteria;
 
 /**
  * Class TagRepositoryEloquent

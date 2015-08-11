@@ -38,18 +38,17 @@ class TagsSeeder extends Seeder
         $users = $this->userRepository->all();
         $folders = $this->folderRepository->all();
 
-        $tmp = [];
         $tags = [];
-        while (count($tmp) < 30) {
-            $title = $faker->sentence;
+        while (count($tags) < 30) {
+            $title = $faker->word;
             if (empty($tags[$title])) {
                 $tags[$title] = ['title' => $title];
             }
         }
         $tags = $this->tagRepository->createSeveral(array_values($tags));
-        $tags = array_slice($tags, 0, 5);
+        $tmp = array_slice($tags, 0, 3);
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $model = $this->questionRepository->create([
                 'title' => $faker->sentence,
                 'description' => $faker->realText(1500),
@@ -57,7 +56,19 @@ class TagsSeeder extends Seeder
                 'folder_id' => $folders->random()->id,
             ]);
 
-            $this->questionRepository->relationsAdd($model, 'tags', $tags);
+            $this->questionRepository->relationsAdd($model, 'tags', $tmp);
+        }
+
+        $tmp = array_slice($tags, 2, 4);
+        for ($i = 0; $i < 7; $i++) {
+            $model = $this->questionRepository->create([
+                'title' => $faker->sentence,
+                'description' => $faker->realText(1500),
+                'user_id' => $users->random()->id,
+                'folder_id' => $folders->random()->id,
+            ]);
+
+            $this->questionRepository->relationsAdd($model, 'tags', $tmp);
         }
     }
 }
