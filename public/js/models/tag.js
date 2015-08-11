@@ -6,12 +6,24 @@ define(['app'], function(App) {
 
         Tag.Collection = Backbone.Collection.extend({
             model: Tag.Model,
-            url: App.prefix + '/api/v1/tags'
+            url: App.prefix + '/api/v1/tags',
+            queryParams: {
+                type: function () {
+                    return this.type;
+                },
+                page_size: function () {
+                    return this.pageSize;
+                }
+            },
+            initialize: function(options) {
+                this.type = options && options.type ? options.type : 'select';
+                this.pageSize = options && options.page_size ? options.page_size : 5;
+            }
         });
 
         var API = {
             tagCollection: function (data) {
-                var tags = new Tag.Collection();
+                var tags = new Tag.Collection(data);
                 var defer = $.Deferred();
                 tags.fetch({
                     data: data,

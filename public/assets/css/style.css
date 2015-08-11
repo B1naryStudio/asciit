@@ -14,6 +14,7 @@
  | Questions list
  |------------------------------------------------------------------------------
  */
+
 .questions_list {
     margin-top: 10px;
 }
@@ -171,9 +172,9 @@ time,
     background: #aaaaaa;
 }
 
-    .modal-header h3 {
-        font-weight: bold;
-    }
+.modal-header h3 {
+    font-weight: bold;
+}
 
 /*
  |------------------------------------------------------------------------------
@@ -242,11 +243,9 @@ time,
     margin-right: 85px;
 }
 
-#question-list .tags li {
-    float: left;
-}
-
-#question-view .tags li {
+#question-list .tags li,
+#question-view .tags li,
+.tags_list.tags li {
     float: left;
 }
 
@@ -297,7 +296,58 @@ pre {
     padding: 0;
 }
 
-    pre code.hljs {
-        font-family: monospace, monospace;
+pre code.hljs {
+    font-family: monospace, monospace;
+}
+
+.tags_list .list {
+    float: left;
+    margin-bottom: 20px;
+}
+
+.tags_list .title {
+    float: left;
+    width: 100%;
+    padding-top: 5px;
+}
+
+#tags-region {
+    position: absolute;
+    width: 100px;
+    right: 15px;
+    top: 200px;
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 528px;
+    }
+}
+
+@media (min-width: 900px) {
+    .container {
+        width: 660px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        width: 752px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 960px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        width: 1100px;
     }
 
+    #tags-region {
+        width: 130px;
+    }
+}

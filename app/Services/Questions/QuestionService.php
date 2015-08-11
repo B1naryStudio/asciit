@@ -1,5 +1,7 @@
 <?php
 namespace App\Services\Questions;;
+use App\Repositories\Criteria\relationCountCriteria;
+use App\Repositories\Criteria\RelationLikeCriteria;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
@@ -9,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\TagRepository;
 use App\Repositories\Criteria\InCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
+use Illuminate\Support\Facades\DB;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -89,8 +92,12 @@ class QuestionService implements QuestionServiceInterface
     /**
      * @return Collection
      */
-    public function getQuestions($pageSize = null)
+    public function getQuestions($pageSize = null, $data = array())
     {
+        if (!empty($data['tag'])) {
+            $this->questionRepository->pushCriteria(new RelationLikeCriteria('tags', 'title', $data['tag']));
+        }
+
         $questions = $this->questionRepository
             ->with(['user', 'folder', 'tags'])
             ->paginate($pageSize);
@@ -112,10 +119,6 @@ class QuestionService implements QuestionServiceInterface
     public function addComment($data, $entry, $comment_id=null){}
     
     public function addVote($entry_id){}
-    
-    public function getTag($title){}
-    
-    public function addTagToQuestion($tag_id, $question_id){}
     
     public function createAnswer($data, $question_id)
     {
@@ -152,10 +155,24 @@ class QuestionService implements QuestionServiceInterface
         return $folder;
     }
 
-    public function getTags()
+    public function getTags($pageSize = null)
     {
         try {
-            $tags = $this->tagRepository->all();
+            $tags = $this->tagRepository->paginate(10);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $tags->items();
+    }
+
+    public function getTagsPopular($pageSize = null)
+    {
+        try {
+            $tags = $this->tagRepository->getRelationCount('questions', 'tag_q_and_a', $pageSize);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),

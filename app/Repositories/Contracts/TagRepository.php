@@ -2,15 +2,13 @@
 
 namespace App\Repositories\Contracts;
 
-use Prettus\Repository\Contracts\CriteriaInterface;
-
 /**
  * Interface TagRepository
  * @package namespace App\RepositoriesRepositories;
  */
 interface TagRepository extends RepositoryInterface
 {
-    public function pushCriteria(CriteriaInterface $criteria);
+    public function getRelationCount($relation, $table, $count, $order = array());
 
     public function createSeveral(array $attributes);
 }

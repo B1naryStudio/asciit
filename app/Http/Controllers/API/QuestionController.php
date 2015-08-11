@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use App\Services\Questions\Exceptions\QuestionServiceException;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\QuestionValidatedRequest;
 
@@ -33,8 +31,16 @@ class QuestionController extends Controller
      */
     public function index(Request $request)
     {
-        /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-        $questions = $this->questionService->getQuestions($request->get('page_size'));
+        $search = $request->get('search');
+        $tag = $request->get('tag');
+
+        if (empty($search) && !empty($tag)) {
+            /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
+            $questions = $this->questionService->getQuestions($request->get('page_size'), ['tag' => $tag]);
+        } else {
+            /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
+            $questions = $this->questionService->getQuestions($request->get('page_size'));
+        }
 
         return Response::json(
             [

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
+
 class ImageController extends Controller
 {
     protected $localImagePath = '/images/';

@@ -6,7 +6,7 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface as Repository;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
-class InCriteria implements CriteriaInterface
+class RelationLikeCriteria implements CriteriaInterface
 {
     /**
      * @var string
@@ -14,13 +14,19 @@ class InCriteria implements CriteriaInterface
     private $field;
 
     /**
-     * @var array
+     * @var strings
      */
-    private $values;
+    private $value;
 
-    public function __construct($field, array $values)
+    /*
+     * @var string
+     */
+    private $method;
+
+    public function __construct($method, $field, $value)
     {
-        $this->values = $values;
+        $this->method = $method;
+        $this->value = $value;
         $this->field = $field;
     }
 
@@ -31,6 +37,8 @@ class InCriteria implements CriteriaInterface
      */
     public function apply($model, Repository $repository)
     {
-        return $model->whereIn($this->field, $this->values);
+        return $model->whereHas($this->method, function ($query) {
+            $query->where($this->field, 'like', $this->value);
+        });
     }
 }

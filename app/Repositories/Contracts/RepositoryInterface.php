@@ -9,6 +9,8 @@ namespace App\Repositories\Contracts;
 
 use Prettus\Repository\Contracts\RepositoryInterface as BaseRepositoryInterface;
 
+use Prettus\Repository\Contracts\CriteriaInterface;
+
 interface RepositoryInterface extends BaseRepositoryInterface
 {
     /**
@@ -49,4 +51,6 @@ interface RepositoryInterface extends BaseRepositoryInterface
      * @return mixed
      */
     public function relationsAdd($model, $method, array $data);
+
+    public function pushCriteria(CriteriaInterface $criteria);
 }

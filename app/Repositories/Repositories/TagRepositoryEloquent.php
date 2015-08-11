@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Repositories;
 
-use App\Repositories\Criteria\InCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\Tag;
 use App\Repositories\Contracts\TagRepository;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\Criteria\InCriteria;
 
 /**
  * Class TagRepositoryEloquent
@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\DB;
  */
 class TagRepositoryEloquent extends Repository implements TagRepository
 {
+    protected $fieldSearchable = [
+        'title' => 'like'
+    ];
+
     /**
      * Specify Model class name
      *
@@ -30,6 +34,26 @@ class TagRepositoryEloquent extends Repository implements TagRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    public function getRelationCount($relation, $table, $count, $order = array())
+    {
+        if (empty($order)) {
+            $order = array('total', 'desc');
+        }
+
+        $model = $this->makeModel();
+        $r = $model->$relation()
+            ->select($model->getTable() . '.*')
+            ->selectRaw('count(*) as total')
+            ->join($model->getTable(), $model->getTable() . '.id', '=', $table . '.tag_id')
+            ->groupBy('tag_id')
+            ->orWhereNotNull($table . '.tag_id')
+            ->orderBy($order[0], $order[1])
+            ->orderBy('title')
+            ->limit($count);
+
+        return $r->get();
     }
 
     public function createSeveral(array $attributes)

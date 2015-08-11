@@ -18,7 +18,7 @@ interface QuestionServiceInterface
     /**
      * @return Collection
      */
-    public function getQuestions($pageSize = null);
+    public function getQuestions($pageSize = null, $data = array());
 
     /**
      * @param $question_id
@@ -32,13 +32,11 @@ interface QuestionServiceInterface
 
     public function addVote($entry_id);
 
-    public function getTag($title);
-
-    public function addTagToQuestion($tag_id, $question_id);
-
     public function createAnswer($data, $question_id);
 
     public function getFolders();
 
-    public function getTags();
+    public function getTags($pageSize = null);
+
+    public function getTagsPopular($pageSize = null);
 }

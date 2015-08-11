@@ -19,12 +19,14 @@ class DatabaseSeeder extends Seeder
             DB::table('users')->truncate();
             DB::table('folders')->truncate();
             DB::table('q_and_a')->truncate();
+            DB::table('tags')->truncate();
             DB::statement('SET foreign_key_checks = 1;');
 
             $this->call(UsersSeeder::class);
             $this->call(FoldersSeeder::class);
             $this->call(QuestionsSeeder::class);
             $this->call(AnswersSeeder::class);
+            $this->call(TagsSeeder::class);
         });
 
         Model::reguard();

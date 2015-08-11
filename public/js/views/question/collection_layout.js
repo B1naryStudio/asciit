@@ -9,8 +9,9 @@ define([
             tagname: 'div',
             template: CollectionLayoutTpl,
             regions: {
-                'collectionRegion': '#collection-region',
-                'paginatorRegion': '#paginator-region'
+                collectionRegion: '#collection-region',
+                paginatorRegion: '#paginator-region',
+                tagsRegion: '#tags-region'
             }
         });
     });
