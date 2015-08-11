@@ -34,21 +34,18 @@ define([
                         collectionLayout.getRegion('paginatorRegion').show(paginatorView);
                         collectionLayout.getRegion('tagsRegion').show(tagsView);
 
-                        // Updating for search
-                        Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
-                            questionsView.options.searchTag = '';
-                            $.when(App.request('question:collection', searchQuery, ''))
-                                .done(function (questions) {
-                                    // If any results
-                                    if (questions.length) {
-                                        Backbone.history.navigate('/questions?' + searchQuery, {trigger: false});
-                                        questionsView.collection.reset(questions.models);
-                                        paginatorView.collection = questions;
-                                        paginatorView.render();
-                                    } else {
-                                        questionsView.triggerMethod('not:found');
-                                    }
-                                });
+                    // Updating for search
+                    Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
+                        questionsView.options.searchTag = '';
+                        $.when(App.request('question:collection', searchQuery, ''))
+                            .done(function (questions) {
+                                // If any results
+                                if (questions.length) {
+                                    Backbone.history.navigate('/questions?' + searchQuery, {trigger: true});
+                                } else {
+                                    questionsView.triggerMethod('not:found');
+                                }
+                            });
                         });
                     });
                 });

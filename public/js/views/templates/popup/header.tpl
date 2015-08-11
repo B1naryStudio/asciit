@@ -1,2 +1,2 @@
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-<h2>Lorem Ipsum</h2>
+<h3 class="panel-title">Lorem Ipsum</h3>

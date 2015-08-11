@@ -12,7 +12,7 @@ define(['app', 'tpl!views/templates/menu.tpl', 'tpl!views/templates/menu-unautho
             },
             events: {
                 'click @ui.login' : 'login',
-                'click @ui.question' : 'question',
+                'click @ui.questions' : 'questions',
                 'click @ui.question_add' : 'questionAdd',
                 'mouseover @ui.email_button' : 'unfoldMenu',
                 'mouseout @ui.email_button' : 'foldMenu',
@@ -30,7 +30,7 @@ define(['app', 'tpl!views/templates/menu.tpl', 'tpl!views/templates/menu-unautho
                 this.$el.find('.navbar-nav .active').removeClass('active');
                 this.ui.login.closest('li').addClass('active');
             },
-            question: function () {
+            questions: function () {
                 this.$el.find('.navbar-nav .active').removeClass('active');
                 this.ui.questions.closest('li').addClass('active');
             },

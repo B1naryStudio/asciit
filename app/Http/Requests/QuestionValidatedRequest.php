@@ -25,7 +25,7 @@ class QuestionValidatedRequest extends Request
     {
         return [
             'title' => 'required|max:400',
-            'description' => 'required|max:2048'
+            'description' => 'required|max:16383'
         ];
     }
 }

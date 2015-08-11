@@ -9,18 +9,18 @@
         </div>
         <div class="col-md-10">
             <div class="asked_time">Asked at <%- created_at %></div>
-            <div><a class="question" href="/questions/<%- id %>"><b><%- title %></b></a></div>
+            <div><a class="question" href="#questions/<%- id %>"><b><%- title %></b></a></div>
             <div class="folder">
                 <span class="icon glyphicon glyphicon-folder-close" aria-hidden="true"></span>
                 <%- folder.title %>
             </div>
             <div>
-                <p class="limited"><%- description %></p>
+                <div class="limited"><%= description %></div>
             </div>
             <div>
                 <span></span>
                 <div class="tags"></div>
-                <a class="pull-right" href="/questions/<%- id %>">Read more...</a>
+                <a class="pull-right" href="#questions/<%- id %>">Read more...</a>
             </div>
         </div>
     </div>

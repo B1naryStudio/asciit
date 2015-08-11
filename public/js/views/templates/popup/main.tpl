@@ -1,2 +1,6 @@
-<div class="modal-header"></div>
-<div class="modal-body"></div>
+<div class="panel-heading modal-header">
+    Panel title
+</div>
+<div class="panel-body modal-body">
+    Panel content
+</div>

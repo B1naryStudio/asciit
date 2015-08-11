@@ -36,9 +36,4 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
         $this->pushCriteria(app(RequestCriteria::class));
         $this->pushCriteria(new QuestionCriteria());
     }
-
-    public function relationsAdd(Question $model, $method, array $data)
-    {
-        $model->$method()->saveMany($data);
-    }
 }

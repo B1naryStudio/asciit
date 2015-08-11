@@ -122,8 +122,6 @@ time,
 }
 
 .list-group-item .limited {
-/*    white-space: nowrap;
-    word-wrap: break-word;*/
     max-height: 4.5em;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -149,40 +147,20 @@ time,
 
 }
 
-
-
-.modal-header h2 {
-    margin-top: 0;
-    margin-bottom: 0;
+/*
+ |------------------------------------------------------------------------------
+ | Answers list
+ |------------------------------------------------------------------------------
+ */
+.new-answer .panel-body {
+    padding: 0;
 }
 
-#popup-layout-view.question-add {
-    width: 600px;
-    height: 355px;
-    left: 30%;
-    background-color: #ffffff;
-    top: 20%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-#popup-layout-view.question-add .control-group.title,
-#popup-layout-view.question-add .control-group.folder {
-    min-height: 45px;
-    float: left;
-    width: 100%;
-}
-
-#popup-layout-view.question-add .control-group.description {
-    height: 100px;
-    margin-bottom: 20px;
-}
-
-#popup-layout-view.question-add .control-group.description textarea {
-    height: 100px;
-    resize: none;
-}
-
+/*
+ |------------------------------------------------------------------------------
+ | Popups
+ |------------------------------------------------------------------------------
+ */
 .modal-backdrop.in {
     width: 100%;
     height: 100%;
@@ -190,8 +168,33 @@ time,
     position: fixed;
 }
 
+.modal-header {
+    background: #aaaaaa;
+}
+
+.modal-header h3 {
+    font-weight: bold;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Add question popup
+ |------------------------------------------------------------------------------
+ */
+#popup-layout-view.question-add {
+    left: 10%;
+    right: 10%;
+    top: 10%;
+    bottom: auto;
+    position: absolute;
+}
+
 #popup-layout-view.question-add .select2-container {
     width: 100% !important;
+}
+
+#popup-layout-view.question-add .description label {
+    margin-bottom: 5px;
 }
 
 .error {
@@ -204,49 +207,38 @@ time,
     margin-bottom: 5px;
 }
 
-.question-add .form-horizontal {
-    height: 230px;
-}
-
 #question-add-layout .controls {
-    width: 60px;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 15px 0 0 0;
+    text-align: center;
 }
 
+/*
+ |------------------------------------------------------------------------------
+ | Login popup
+ |------------------------------------------------------------------------------
+ */
 #popup-layout-view.login {
     width: 350px;
-    height: 270px;
     left: 40%;
-    background-color: #ffffff;
     top: 20%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    bottom: auto;
 }
 
 #popup-layout-view.login .control-group {
-    min-height: 45px;
-    float: left;
-    width: 100%;
-}
-
-#popup-layout-view.login .control-group.buttons {
-    position: absolute;
-    top: 160px;
-    left: 0;
-}
-
-.login-form .form-horizontal {
-    width: 100%;
-    float: left;
+    min-height: 30px;
+    margin-top: 15px;
 }
 
 .login-form .controls {
     width: 60px;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 20px auto 0;
 }
 
+/*
+ |------------------------------------------------------------------------------
+ | Tags
+ |------------------------------------------------------------------------------
+ */
 #question-list .tags {
     margin-right: 85px;
 }
@@ -256,10 +248,6 @@ time,
 }
 
 #question-view .tags li {
-    float: left;
-}
-
-.tags_list.tags li {
     float: left;
 }
 
@@ -284,10 +272,6 @@ time,
     padding: 0 5px;
 }
 
-.tags li.search {
-    background-color: #ffff00;
-}
-
 .tags li a {
     display: block;
     width: 100%;
@@ -300,6 +284,22 @@ time,
     position: absolute;
     bottom: 0;
     right: 15px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Code blocks
+ |------------------------------------------------------------------------------
+ */
+pre {
+    border: none;
+    border-radius: 0;
+    background: inherit;
+    padding: 0;
+}
+
+pre code.hljs {
+    font-family: monospace, monospace;
 }
 
 .tags_list .list {

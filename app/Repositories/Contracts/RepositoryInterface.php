@@ -38,5 +38,19 @@ interface RepositoryInterface extends BaseRepositoryInterface
      */
     public function findByFieldWithRelations($fieldName, $fieldValue, $relations, $columns = ['*']);
 
+    /**
+     * @param array $attributes
+     * @return model
+     */
+    public function firstOrCreate(array $attributes);
+
+    /**
+     * @param $model
+     * @param $method
+     * @param array $data
+     * @return mixed
+     */
+    public function relationsAdd($model, $method, array $data);
+
     public function pushCriteria(CriteriaInterface $criteria);
 }
