@@ -1,4 +1,8 @@
-define(['marionette', 'bootstrap', 'validation-model'], function (Marionette, Auth) {
+define([
+    'marionette',
+    'bootstrap',
+    'validation-model'
+], function (Marionette) {
     var App = new Marionette.Application();
 
     App.prefix = window.location.pathname.replace(/(\/.*)(\/)/, '$1');
@@ -14,7 +18,19 @@ define(['marionette', 'bootstrap', 'validation-model'], function (Marionette, Au
         require(['views/main-layout'], function (layout) {
             App.container.show(layout);
         });
+
+        App.codeSnippetTheme = options.codeSnippetTheme ?
+                               options.codeSnippetTheme :
+                               'github';
+        // Loading css
+        loadCSS('js/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/' +
+        App.codeSnippetTheme + '.css');
     });
+
+    var loadCSS = function(href) {
+        var cssLink = $("<link rel='stylesheet' type='text/css' href='"+href+"'>");
+        $("head").append(cssLink);
+    };
 
     App.on('start', function () {
         require(['routes'], function () {

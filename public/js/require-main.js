@@ -15,7 +15,9 @@ requirejs.config({
         select2: 'vendor/select2/select2',
         paginator: 'vendor/backbone.paginator/backbone.paginator',
         ckeditor: 'vendor/ckeditor/ckeditor',
-        'ckeditor.adapter': 'vendor/ckeditor/adapters/jquery'
+        'ckeditor.custom.settings': 'vendor/ckeditor/custom-instance-settings',
+        'ckeditor.adapter': 'vendor/ckeditor/adapters/jquery',
+        'highlight': 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack'
     },
     shim: {
         underscore: {
@@ -39,5 +41,7 @@ requirejs.config({
 });
 
 require(['app'], function (App) {
-    App.start();
+    App.start({
+        codeSnippetTheme: 'github'
+    });
 });

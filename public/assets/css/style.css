@@ -284,3 +284,20 @@ time,
     bottom: 0;
     right: 15px;
 }
+
+/*
+ |------------------------------------------------------------------------------
+ | Code blocks
+ |------------------------------------------------------------------------------
+ */
+pre {
+    border: none;
+    border-radius: 0;
+    background: inherit;
+    padding: 0;
+}
+
+    pre code.hljs {
+        font-family: monospace, monospace;
+    }
+

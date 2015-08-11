@@ -19,6 +19,11 @@ define([
                 $.when(App.request('tag:reset', this.model.attributes.tags)).done(function (tags) {
                     self.getRegion('tag').show(new TagView({ collection: tags }));
                 });
+
+                // Highligting code-snippets
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
             }
         });
 
