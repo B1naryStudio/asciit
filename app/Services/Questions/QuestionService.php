@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Questions;;
 use App\Repositories\Criteria\relationCountCriteria;
-use App\Repositories\Criteria\relationLikeCriteria;
+use App\Repositories\Criteria\RelationLikeCriteria;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
@@ -89,7 +89,7 @@ class QuestionService implements QuestionServiceInterface
     public function getQuestions($pageSize = null, $data = array())
     {
         if (!empty($data['tag'])) {
-            $this->questionRepository->pushCriteria(new relationLikeCriteria('tags', 'title', $data['tag']));
+            $this->questionRepository->pushCriteria(new RelationLikeCriteria('tags', 'title', $data['tag']));
         }
 
         $questions = $this->questionRepository
@@ -155,9 +155,22 @@ class QuestionService implements QuestionServiceInterface
 
     public function getTags($pageSize = null)
     {
-        $this->tagRepository->pushCriteria(new relationCountCriteria('questions', 'tag_id', 'q_and_a_id'));
         try {
-            $tags = $this->tagRepository->with(['questions'])->paginate($pageSize, [DB::raw('count(*) as total')]);
+            $tags = $this->tagRepository->paginate(10);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $tags->items();
+    }
+
+    public function getTagsPopular($pageSize = null)
+    {
+        try {
+            $tags = $this->tagRepository->getRelationCount('questions', 'tag_q_and_a', $pageSize);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),

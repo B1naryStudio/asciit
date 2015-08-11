@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             $this->call(FoldersSeeder::class);
             $this->call(QuestionsSeeder::class);
             $this->call(AnswersSeeder::class);
+            $this->call(TagsSeeder::class);
         });
 
         Model::reguard();

@@ -309,6 +309,47 @@ time,
 
 .tags_list .title {
     float: left;
-    width: 130px;
+    width: 100%;
     padding-top: 5px;
+}
+
+#tags-region {
+    position: absolute;
+    width: 100px;
+    right: 15px;
+    top: 200px;
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 528px;
+    }
+}
+
+@media (min-width: 900px) {
+    .container {
+        width: 660px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        width: 752px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 960px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        width: 1100px;
+    }
+
+    #tags-region {
+        width: 130px;
+    }
 }

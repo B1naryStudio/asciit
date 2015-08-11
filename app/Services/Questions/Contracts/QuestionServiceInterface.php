@@ -41,4 +41,6 @@ interface QuestionServiceInterface
     public function getFolders();
 
     public function getTags($pageSize = null);
+
+    public function getTagsPopular($pageSize = null);
 }

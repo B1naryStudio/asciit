@@ -9,7 +9,6 @@ define(['app', 'tpl!views/templates/tag/collection.tpl',
 
         View.Tags = Marionette.CompositeView.extend({
             tagName: 'div',
-            className: 'row',
             template: TagsTpl,
             childView: View.TagCollectionRow,
             childViewContainer: '.list'

@@ -6,7 +6,7 @@ use Prettus\Repository\Contracts\CriteriaInterface;
 use Prettus\Repository\Contracts\RepositoryInterface as Repository;
 use Prettus\Repository\Contracts\RepositoryInterface;
 
-class relationLikeCriteria implements CriteriaInterface
+class RelationLikeCriteria implements CriteriaInterface
 {
     /**
      * @var string

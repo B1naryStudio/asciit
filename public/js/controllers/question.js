@@ -18,21 +18,21 @@ define([
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery, searchTag) {
                 $.when(App.request('question:collection', searchQuery, searchTag)).done(function (questions) {
-                    //$.when(App.request('tag:collection')).done(function (tags) {
+                    $.when(App.request('tag:collection', { type: 'popular', page_size: 5 })).done(function (tags) {
                         var questionsView = new CollectionView({
                             collection: questions.sort(),
                             searchQuery: searchQuery,
                             searchTag: searchTag
                         });
                         var paginatorView = new PaginatorView({ collection: questions });
-                        /*var tagsView = new TagsView({
+                        var tagsView = new TagsView({
                             collection: tags
-                        });*/
+                        });
                         var collectionLayout = new CollectionLayout();
                         App.Main.Layout.getRegion('content').show(collectionLayout);
                         collectionLayout.getRegion('collectionRegion').show(questionsView);
                         collectionLayout.getRegion('paginatorRegion').show(paginatorView);
-                        //collectionLayout.getRegion('tagsRegion').show(tagsView);
+                        collectionLayout.getRegion('tagsRegion').show(tagsView);
 
                         // Updating for search
                         Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
@@ -49,7 +49,7 @@ define([
                                         questionsView.triggerMethod('not:found');
                                     }
                                 });
-                        //});
+                        });
                     });
                 });
             },
@@ -94,7 +94,7 @@ define([
 
             add: function () {
                 $.when(App.request('folder:collection')).done(function (folders) {
-                    $.when(App.request('tag:collection')).done(function (tags) {
+                    $.when(App.request('tag:collection', { type: 'select', page_size: 10 })).done(function (tags) {
                         var folder_view = new SelectFolderView({collection: folders});
                         var tag_view = new SelectTagView({collection: tags});
                         var view = new AddView({

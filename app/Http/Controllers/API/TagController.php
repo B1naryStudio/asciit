@@ -26,7 +26,12 @@ class TagController extends Controller
      */
     public function index(Request $request)
     {
-        $tags = $this->questionService->getTags($request->get('page_size'));
+        $is_popular = $request->get('type') === 'popular';
+        if (!empty($is_popular)) {
+            $tags = $this->questionService->getTagsPopular($request->get('page_size'));
+        } else {
+            $tags = $this->questionService->getTags($request->get('page_size'));
+        }
 
         return Response::json($tags, 200);
     }

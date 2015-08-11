@@ -7,7 +7,7 @@ use App\Repositories\Contracts\FolderRepository;
 use App\Repositories\Contracts\UserRepository;
 use Faker\Factory;
 
-class TagSeeder extends Seeder
+class TagsSeeder extends Seeder
 {
     private $tagRepository;
     private $folderRepository;
@@ -38,14 +38,18 @@ class TagSeeder extends Seeder
         $users = $this->userRepository->all();
         $folders = $this->folderRepository->all();
 
+        $tmp = [];
         $tags = [];
-        for ($i = 0; $i < 3; $i++) {
-            $tags[] = $this->tagRepository->create([
-                'title' => $faker->sentence
-            ]);
+        while (count($tmp) < 30) {
+            $title = $faker->sentence;
+            if (empty($tags[$title])) {
+                $tags[$title] = ['title' => $title];
+            }
         }
+        $tags = $this->tagRepository->createSeveral(array_values($tags));
+        $tags = array_slice($tags, 0, 5);
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $model = $this->questionRepository->create([
                 'title' => $faker->sentence,
                 'description' => $faker->realText(1500),
