@@ -9,12 +9,15 @@ define([
             ui: {
                 likeButton:    '.like',
                 dislikeButton: '.dislike',
-                cancelButton:  '.cancel'
+                cancelButton:  '.cancel',
+                ratingCounter: '.counter'
             },
             events: {
                 'click @ui.likeButton':    'onLike',
                 'click @ui.dislikeButton': 'onDislike',
-                'click @ui.cancelButton':  'onCancel'
+                'click @ui.cancelButton':  'onCancel',
+                'mouseover @ui.ratingCounter': 'showSeparateRating',
+                'mouseout @ui.ratingCounter': 'showUnitedRating'
             },
 
             onLike: function () {
@@ -50,6 +53,27 @@ define([
             },
             onDataInvalid: function (errors) {
                 console.log(errors);
+            },
+            showSeparateRating: function () {
+                var counter = this.$el.find(this.ui.ratingCounter);
+                counter.addClass('divided');
+                counter.html(
+                    this.collection.where({sign: 0}).length
+                        + '/'
+                        + this.collection.where({sign: 1}).length
+                );
+            },
+            showUnitedRating: function () {
+                var counter = this.$el.find(this.ui.ratingCounter);
+                var self = this;
+
+                setTimeout(function () {
+                    counter.removeClass('divided');
+                    counter.html(
+                        self.collection.where({sign: 1}).length
+                        - self.collection.where({sign: 0}).length
+                    );
+                }, 700);
             },
             render: function () {
                 // Calculate rating

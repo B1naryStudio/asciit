@@ -71,6 +71,14 @@
 
 .votes span {
     margin: 0 5px;
+    position: relative;
+}
+
+.votes span.divided {
+    font-size: 0.8em;
+    position: relative;
+    margin: 0 3px;
+    top: -2px;
 }
 
 .votes i {
