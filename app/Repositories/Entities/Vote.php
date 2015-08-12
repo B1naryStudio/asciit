@@ -12,7 +12,7 @@ class Vote extends Model implements Transformable
 
     protected $fillable = ['sign', 'user_id', 'q_and_a_id'];
 
-    protected $timestamps = false;
+    public $timestamps = false;
 
     public function user()
     {
