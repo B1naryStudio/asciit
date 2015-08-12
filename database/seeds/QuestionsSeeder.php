@@ -34,7 +34,7 @@ class QuestionsSeeder extends Seeder
         $users = $this->userRepository->all();
         $folders = $this->folderRepository->all();
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $this->questionRepository->create([
                 'title' => $faker->sentence,
                 'description' => $faker->realText(1500),

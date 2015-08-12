@@ -7,28 +7,33 @@ use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
 use App\Repositories\Contracts\FolderRepository;
 use App\Repositories\Exceptions\RepositoryException;
-use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Contracts\TagRepository;
+use App\Repositories\Contracts\VoteRepository;
+use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Criteria\InCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionService implements QuestionServiceInterface
 {
     private $questionRepository;
     private $answerRepository;
     private $folderRepository;
+    private $tagRepository;
+    private $voteRepository;
 
     public function __construct(
         QuestionRepository $questionRepository,
         AnswerRepository $answerRepository,
         FolderRepository $folderRepository,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
+        VoteRepository $voteRepository
     ) {
         $this->questionRepository = $questionRepository;
         $this->answerRepository = $answerRepository;
         $this->folderRepository = $folderRepository;
         $this->tagRepository = $tagRepository;
+        $this->voteRepository = $voteRepository;
     }
     
     public function createQuestion($data)
@@ -118,16 +123,39 @@ class QuestionService implements QuestionServiceInterface
     
     public function addComment($data, $entry, $comment_id=null){}
 
-    public function addVote($entry_id)
-    {}
+    public function addVote($data)
+    {
+        $data['user_id'] = Auth::user()->id;
+
+        $same = $this->voteRepository->firstWhere([
+            'user_id'    => $data['user_id'],
+            'q_and_a_id' => $data['q_and_a_id'],
+        ]);
+
+        // If this like is unique
+        if (!$same) {
+            return $this->voteRepository->create($data);
+        } else {
+            throw new QuestionServiceException('User can\'t vote twice!');
+        }
+    }
 
     public function removeVote($vote_id)
-    {}
+    {
+        try {
+            return $this->voteRepository->delete($vote_id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage() . ' Can\'t unlike it.',
+                null,
+                $e
+            );
+        }
+    }
     
     public function createAnswer($data, $question_id)
     {
-        // temporary fix without auth
-        $data['user_id'] = 1;
+        $data['user_id'] = Auth::user()->id;
 
         $new = $this->answerRepository->create($data);
 

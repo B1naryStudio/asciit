@@ -42,7 +42,10 @@ define([
                 });
 
                 var votes = new Vote.Collection(this.model.get('votes'));
-                var votesView = new VotesCompositeView({collection: votes});
+                var votesView = new VotesCompositeView({
+                    collection: votes,
+                    q_and_a_id: this.model.id
+                });
                 this.getRegion('votes').show(votesView);
             }
         });

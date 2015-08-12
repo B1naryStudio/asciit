@@ -53,4 +53,6 @@ interface RepositoryInterface extends BaseRepositoryInterface
     public function relationsAdd($model, $method, array $data);
 
     public function pushCriteria(CriteriaInterface $criteria);
+
+    public function firstWhere(array $where , $columns = array('*'));
 }

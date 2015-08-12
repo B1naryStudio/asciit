@@ -12,21 +12,52 @@ define(['app'], function(App) {
             url: App.prefix + '/api/v1/votes'
         });
 
-/*        var API = {
-            folderCollection: function () {
-                var folders = new Folder.Collection();
+        var API = {
+            addVote: function (model) {
                 var defer = $.Deferred();
-                folders.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    }
-                });
+
+                if (!model.save([], {
+                        wait: true,
+                        success: function () {
+                            defer.resolve(model);
+                        },
+                        error: function (model, xhr, options) {
+                            var errors = JSON.parse(xhr.responseText);
+                            defer.reject(errors);
+                            console.log(errors);
+                        }
+                    })) {
+                    defer.reject({'description': 'Server error, voting is impossible.'});
+                }
+
+                return defer.promise();
+            },
+            cancelVote: function (model) {
+                var defer = $.Deferred();
+
+                if (!model.destroy({
+                        wait: true,
+                        success: function () {
+                            defer.resolve(model);
+                        },
+                        error: function (model, xhr, options) {
+                            var errors = JSON.parse(xhr.responseText);
+                            defer.reject(errors);
+                            console.log(errors);
+                        }
+                    })) {
+                    defer.reject({'description': 'Server error, unvoting is impossible.'});
+                }
+
                 return defer.promise();
             }
         };
-        App.reqres.setHandler('folder:collection', function () {
-            return API.folderCollection();
-        });*/
+        App.reqres.setHandler('vote:add', function (model) {
+            return API.addVote(model);
+        });
+        App.reqres.setHandler('vote:cancel', function (model) {
+            return API.cancelVote(model);
+        });
     });
 
     return App.Vote;

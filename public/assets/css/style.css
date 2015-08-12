@@ -54,22 +54,31 @@
  |------------------------------------------------------------------------------
  */
 .votes {
-    color: dimgray;
+    color: #333333;
 }
 
 .question_view .votes {
     font-size: 25px;
     padding-top: 20px;
+    text-align: center;
 }
 
 .single-answer .votes {
     float: right;
-    margin: 5px 0 0 10px;
+    margin: 5px 0 0 15px;
     font-size: 20px;
 }
 
 .votes span {
-    margin-right: 10px;
+    margin: 0 5px;
+}
+
+.votes i {
+    text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
+}
+
+.voted {
+    color: #000080;
 }
 
 /*

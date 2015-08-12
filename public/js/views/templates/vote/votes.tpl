@@ -1,3 +1,4 @@
-<a href="#"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
+<a href="#" class="dislike"><i class="fa fa-minus-square"></i></a>
 <span><%- rating %></span>
-<a href="#"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
+<a href="#" class="like"><i class="fa fa-plus-square"></i></a>
+
