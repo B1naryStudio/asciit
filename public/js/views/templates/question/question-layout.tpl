@@ -18,7 +18,7 @@
             </div>
             <!-- Voting block -->
             <div class="col-md-2">
-                <div class="vote">
+                <div class="votes">
                     <a href="#"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
                     <span>5</span>
                     <a href="#"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>

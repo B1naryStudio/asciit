@@ -22,7 +22,7 @@
                         <div class="folder"><span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>Folder</div>
                     </div>
                     <div class="col-md-2">
-                        <div class="vote">
+                        <div class="votes">
                             <a href=""><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
                             <span>5</span>
                             <a href=""><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
@@ -81,7 +81,7 @@
                                         <div class="answered_time">Answered May 1 2012 at 19:42</div>
                                     </div>
                                     <div class="col-md-2">
-                                        <div class="vote">
+                                        <div class="votes">
                                             <a href=""><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
                                             <span>5</span>
                                             <a href=""><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>

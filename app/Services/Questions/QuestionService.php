@@ -77,7 +77,7 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder', 'tags']);
+                ->findWithRelations($id, ['user', 'folder', 'tags', 'votes']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such question',
@@ -99,7 +99,7 @@ class QuestionService implements QuestionServiceInterface
         }
 
         $questions = $this->questionRepository
-            ->with(['user', 'folder', 'tags'])
+            ->with(['user', 'folder', 'tags', 'votes'])
             ->paginate($pageSize);
         return $questions;
     }
@@ -111,14 +111,18 @@ class QuestionService implements QuestionServiceInterface
     public function getAnswersOfQuestion($question_id)
     {
         return $this->answerRepository
-            ->findByFieldWithRelations('question_id', $question_id, ['user']);
+            ->findByFieldWithRelations('question_id', $question_id, ['user', 'votes']);
     }
     
     public function getEntryComments($question_id){}
     
     public function addComment($data, $entry, $comment_id=null){}
-    
-    public function addVote($entry_id){}
+
+    public function addVote($entry_id)
+    {}
+
+    public function removeVote($vote_id)
+    {}
     
     public function createAnswer($data, $question_id)
     {

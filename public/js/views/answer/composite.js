@@ -3,14 +3,21 @@ define([
     'tpl!views/templates/answer/answers.tpl',
     'tpl!views/templates/answer/single-answer.tpl',
     'models/answer',
+    'models/vote',
+    'views/vote/composite',
     'ckeditor.custom.settings',
     'ckeditor',
     'ckeditor.adapter',
     'highlight'
-], function (App, AnswersTpl, SingleAnswerTpl, Answer, EditorSettings) {
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, VotesCompositeView, EditorSettings) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.SingleAnswerCompositeView = Marionette.CompositeView.extend({
+        View.SingleAnswerLayoutView = Marionette.LayoutView.extend({
             template: SingleAnswerTpl,
+
+            regions: {
+                votes: '.votes'
+            },
+
             ui: {
                 editButton: '.edit-button',
                 saveButton: '.save-button'
@@ -33,6 +40,10 @@ define([
                 $('pre code').each(function(i, block) {
                     hljs.highlightBlock(block);
                 });
+
+                var votes = new Vote.Collection(this.model.get('votes'));
+                var votesView = new VotesCompositeView({collection: votes});
+                this.getRegion('votes').show(votesView);
             }
         });
 
@@ -40,7 +51,7 @@ define([
             tagName: 'section',
             id: 'answers-list',
             template: AnswersTpl,
-            childView: View.SingleAnswerCompositeView,
+            childView: View.SingleAnswerLayoutView,
             childViewContainer: '#answers',
 
             events: {

@@ -103,7 +103,7 @@ class QuestionServiceTest extends TestCase
     public function testGetQuestionReturnsWithRelations()
     {
         $this->questionRepo->shouldReceive('findWithRelations')
-            ->with($this->question->id, ['user', 'folder', 'tags'])
+            ->with($this->question->id, ['user', 'folder', 'tags', 'votes'])
             ->once()
             ->andReturn($this->question);
 
@@ -130,7 +130,7 @@ class QuestionServiceTest extends TestCase
     {
         $this->answerRepo->shouldReceive('findByFieldWithRelations')
             ->once()
-            ->with('question_id', $this->question->id, ['user'])
+            ->with('question_id', $this->question->id, ['user', 'votes'])
             ->andReturn([$this->question]);
 
         $this->assertSame(
