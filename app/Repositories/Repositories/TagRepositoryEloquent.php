@@ -18,6 +18,15 @@ class TagRepositoryEloquent extends Repository implements TagRepository
         'title' => 'like'
     ];
 
+    protected $relations = [
+        'questions' => [
+            'table' => 'tag_q_and_a',
+            'foreignKey' =>  'tag_id',
+            'otherKey' => 'q_and_a_id',
+            'count' => 'question_count'
+        ]
+    ];
+
     /**
      * Specify Model class name
      *
@@ -34,26 +43,6 @@ class TagRepositoryEloquent extends Repository implements TagRepository
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
-    }
-
-    public function getRelationCount($relation, $table, $count, $order = array())
-    {
-        if (empty($order)) {
-            $order = array('total', 'desc');
-        }
-
-        $model = $this->makeModel();
-        $r = $model->$relation()
-            ->select($model->getTable() . '.*')
-            ->selectRaw('count(*) as total')
-            ->join($model->getTable(), $model->getTable() . '.id', '=', $table . '.tag_id')
-            ->groupBy('tag_id')
-            ->orWhereNotNull($table . '.tag_id')
-            ->orderBy($order[0], $order[1])
-            ->orderBy('title')
-            ->limit($count);
-
-        return $r->get();
     }
 
     public function createSeveral(array $attributes)

@@ -18,6 +18,15 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
         'description' => 'like',
     ];
 
+    protected $relations = [
+        'answers' => [
+            'table' => 'q_and_a',
+            'foreignKey' =>  'question_id',
+            'otherKey' => 'question_id',
+            'count' => 'answers_count'
+        ]
+    ];
+
     /**
      * Specify Model class name
      *

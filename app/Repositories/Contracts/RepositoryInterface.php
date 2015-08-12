@@ -53,4 +53,8 @@ interface RepositoryInterface extends BaseRepositoryInterface
     public function relationsAdd($model, $method, array $data);
 
     public function pushCriteria(CriteriaInterface $criteria);
+
+    public function getRelationRecordCount($relation);
+
+    public function loadRelationPopular($relation, $count, $where = array());
 }
