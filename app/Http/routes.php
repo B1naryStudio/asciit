@@ -31,4 +31,5 @@ Route::group(['prefix' => 'api/v1'], function() {
 Route::group(['prefix' => 'api/v1/widget'], function() {
     Route::get('/questions/recent', 'API\WidgetController@questionsRecent');
     Route::get('/questions/popular', 'API\WidgetController@questionsPopular');
+    Route::get('/questions/upvoted', 'API\WidgetController@questionsUpvoted');
 });

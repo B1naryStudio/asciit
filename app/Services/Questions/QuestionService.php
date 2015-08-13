@@ -82,7 +82,8 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder', 'tags', 'votes']);
+                ->withRelationCount()
+                ->findWithRelations($id, ['user', 'folder', 'tags']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such question',
@@ -104,7 +105,7 @@ class QuestionService implements QuestionServiceInterface
         }
 
         $questions = $this->questionRepository
-            ->with(['user', 'folder', 'tags', 'votes'])
+            ->with(['user', 'folder', 'tags'])
             ->paginate($pageSize);
         return $questions;
     }
@@ -220,6 +221,22 @@ class QuestionService implements QuestionServiceInterface
         try {
             $questions = $this->questionRepository->loadRelationPopular('answers', $pageSize, [
                 ['q_and_a.question_id is not null']
+            ]);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $questions;
+    }
+
+    public function getQuestionsUpvoted($pageSize = null)
+    {
+        try {
+            $questions = $this->questionRepository->loadRelationPopular('votes', $pageSize, [
+                ['main.question_id is null']
             ]);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(

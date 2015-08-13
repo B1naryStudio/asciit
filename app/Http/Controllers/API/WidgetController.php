@@ -38,7 +38,7 @@ class WidgetController extends Controller
     }
 
     /**
-     * Display a listing of the recent questions.
+     * Display a listing of the popular questions.
      *
      * @return Response
      */
@@ -50,6 +50,23 @@ class WidgetController extends Controller
         }
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
         $questions = $this->questionService->getQuestionsPopular($count);
+
+        return Response::json($questions, 200);
+    }
+
+    /**
+     * Display a listing of the upvoted questions.
+     *
+     * @return Response
+     */
+    public function questionsUpvoted(Request $request)
+    {
+        $count = $request->get('count');
+        if (empty($count)) {
+            $count = 3;
+        }
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
+        $questions = $this->questionService->getQuestionsUpvoted($count);
 
         return Response::json($questions, 200);
     }

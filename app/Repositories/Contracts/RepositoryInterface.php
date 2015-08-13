@@ -60,7 +60,13 @@ interface RepositoryInterface extends BaseRepositoryInterface
 
     public function loadRelationPopular($relation, $count, $where = array());
 
+    /**
+     * @return RepositoryInterface
+     */
     public function withRelationCount();
 
+    /**
+     * @return RepositoryInterface
+     */
     public function withoutRelationCount();
 }

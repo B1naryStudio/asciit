@@ -25,7 +25,21 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
             'table' => 'q_and_a',
             'foreignKey' =>  'question_id',
             'otherKey' => 'question_id',
-            'count' => 'answers_count'
+            'count' => 'answers_count',
+            'fields' => [
+                'count(*)' => 'answers_count'
+            ]
+        ],
+        'votes' => [
+            'table' => 'votes',
+            'foreignKey' =>  'q_and_a_id',
+            'otherKey' => 'q_and_a_id',
+            'count' => 'votes_count',
+            'fields' => [
+                'sum(if(sign>0, 1, -1))' => 'votes_count',
+                'sum(if(sign>0, 1, 0))' => 'votes_like',
+                'sum(if(sign>0, 0, 1))' => 'votes_dislike'
+            ]
         ]
     ];
 

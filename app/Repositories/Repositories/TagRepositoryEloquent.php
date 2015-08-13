@@ -23,7 +23,8 @@ class TagRepositoryEloquent extends Repository implements TagRepository
             'table' => 'tag_q_and_a',
             'foreignKey' =>  'tag_id',
             'otherKey' => 'q_and_a_id',
-            'count' => 'question_count'
+            'count' => 'question_count',
+            'fields' => ['count(*)' => 'question_count']
         ]
     ];
 

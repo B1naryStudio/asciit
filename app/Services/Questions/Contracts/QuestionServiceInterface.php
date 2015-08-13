@@ -43,4 +43,6 @@ interface QuestionServiceInterface
     public function getTagsPopular($pageSize = null);
 
     public function getQuestionsPopular($pageSize = null);
+
+    public function getQuestionsUpvoted($pageSize = null);
 }

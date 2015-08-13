@@ -1,7 +1,7 @@
 define([
     'app',
     'models/vote',
-    'tpl!views/templates/vote/votes.tpl',
+    'tpl!views/templates/vote/votes.tpl'
 ], function (App, Vote, VotesTpl) {
     App.module('Vote.Views', function (Views, App, Backbone, Marionette, $, _) {
         Views.VotesCompositeView = Marionette.CompositeView.extend({
@@ -27,7 +27,6 @@ define([
             onDislike: function () {
                 this.model.set('sign', 0);
                 this.submit(this.model);
-
             },
             submit: function () {
                 var self = this;

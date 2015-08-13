@@ -27,7 +27,21 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     public function find($id, $columns = ['*'])
     {
         try {
-            return parent::find($id, $columns);
+            $result = parent::find($id, $columns);
+            foreach ($this->relations as $relation => $options) {
+                $tmp = $this
+                    ->getRelationRecordCount($relation)
+                    ->whereIn('main.id', [$id])->get()->all();
+
+                $tmp2 = [];
+                foreach ($options['fields'] as $field) {
+                    foreach ($tmp as $record) {
+                        $tmp2[$record->id] = $record->$field;
+                    }
+                    $result->$field = $tmp2[$id];
+                }
+            }
+            return $result;
         } catch (ModelNotFoundException $e) {
             throw new RepositoryException('Entity is not found!', null, $e);
         }
@@ -117,9 +131,13 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             $model = $model->getModel();
         }
 
-        $query->select(['main.*'])
-            ->selectRaw('count(*) as ' . $this->relations[$relation]['count'])
-            ->join(
+        $query->select(['main.*']);
+
+        foreach ($this->relations[$relation]['fields'] as $field => $name) {
+            $query->selectRaw($field . ' as ' . $name);
+        }
+
+        $query->join(
                 $model->getTable() . ' as main',
                 'main.id',
                 '=',
@@ -172,19 +190,20 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
                 $id[] = $item->id;
             });
 
-            foreach ($this->relations as $relation) {
+            foreach ($this->relations as $relation => $options) {
                 $tmp = $this
                     ->getRelationRecordCount($relation)
                     ->whereIn('main.id', $id)->get()->all();
 
                 $tmp2 = [];
-                $field = $this->relations[$relation]['count'];
-                foreach ($tmp as $record) {
-                    $tmp2[$record->id] = $record->$field;
+                foreach ($options['fields'] as $field) {
+                    foreach ($tmp as $record) {
+                        $tmp2[$record->id] = $record->$field;
+                    }
+                    $collection = $collection->each(function ($item, $key) use ($field, $tmp2) {
+                        $item[$field] = $tmp2[$item->id];
+                    });
                 }
-                $collection = $collection->each(function ($item, $key) use ($field, $tmp2) {
-                    $item[$field] = $tmp2[$item->id];
-                });
             }
         }
 
@@ -207,13 +226,15 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
                     ->whereIn('main.id', $id)->get()->all();
 
                 $tmp2 = [];
-                $field = $options['count'];
-                foreach ($tmp as $record) {
-                    $tmp2[$record->id] = $record->$field;
-                }
 
-                foreach ($paginator->items() as &$item) {
-                    $item[$field] = $tmp2[$item->id];
+                foreach ($options['fields'] as $field) {
+                    foreach ($tmp as $record) {
+                        $tmp2[$record->id] = $record->$field;
+                    }
+
+                    foreach ($paginator->items() as &$item) {
+                        $item[$field] = $tmp2[$item->id];
+                    }
                 }
                 unset($item);
             }
