@@ -1,6 +1,6 @@
 <div class="new-answer" >
     <header class="section-header">
-        <span class="counter"><%- count %></span> answers
+        <span class="counter answers"><%- count %></span> answers
     </header>
     <ul id="answers" class="list-group"></ul>
 

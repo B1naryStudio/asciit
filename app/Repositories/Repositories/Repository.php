@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Repositories\Exceptions\RepositoryException;
@@ -13,7 +14,7 @@ use Illuminate\Database\Query\Expression;
 
 abstract class Repository extends BaseRepository implements RepositoryInterface
 {
-    protected $relations;
+    protected $relations = [];
 
     protected $with_relation_count = false;
 
@@ -28,20 +29,35 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     {
         try {
             $result = parent::find($id, $columns);
-            foreach ($this->relations as $relation => $options) {
-                $tmp = $this
-                    ->getRelationRecordCount($relation)
-                    ->whereIn('main.id', [$id])->get()->all();
+            if ($this->with_relation_count) {
+                foreach ($this->relations as $relation => $options) {
+                    $tmp = $this
+                        ->getRelationRecordCount($relation)
+                        ->whereIn('main.id', [$id])->get()->all();
 
-                $tmp2 = [];
-                foreach ($options['fields'] as $field) {
-                    foreach ($tmp as $record) {
-                        $tmp2[$record->id] = $record->$field;
+                    $tmp2 = [];
+                    foreach ($options['fields'] as $field) {
+                        foreach ($tmp as $record) {
+                            $tmp2[$record->id] = $record->$field;
+                        }
+                        $result->$field = !empty($tmp2[$id]) ? $tmp2[$id] : 0;
                     }
-                    $result->$field = $tmp2[$id];
                 }
             }
             return $result;
+        } catch (ModelNotFoundException $e) {
+            throw new RepositoryException('Entity is not found!', null, $e);
+        }
+    }
+
+    public function findByField($field, $value = null, $columns = array('*'))
+    {
+        try {
+            $collection = parent::findByField($field, $value, $columns);
+            if ($this->with_relation_count) {
+                $collection = $this->setCountedFields($collection);
+            }
+            return $collection;
         } catch (ModelNotFoundException $e) {
             throw new RepositoryException('Entity is not found!', null, $e);
         }
@@ -185,26 +201,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         $collection = parent::all($columns);
 
         if ($this->with_relation_count) {
-            $id = [];
-            $collection->each(function ($item, $key) use (&$id) {
-                $id[] = $item->id;
-            });
-
-            foreach ($this->relations as $relation => $options) {
-                $tmp = $this
-                    ->getRelationRecordCount($relation)
-                    ->whereIn('main.id', $id)->get()->all();
-
-                $tmp2 = [];
-                foreach ($options['fields'] as $field) {
-                    foreach ($tmp as $record) {
-                        $tmp2[$record->id] = $record->$field;
-                    }
-                    $collection = $collection->each(function ($item, $key) use ($field, $tmp2) {
-                        $item[$field] = !empty($tmp2[$item->id]) ? $tmp2[$item->id] : 0;
-                    });
-                }
-            }
+            $collection = $this->setCountedFields($collection);
         }
 
         return $collection;
@@ -241,5 +238,35 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         }
 
         return $paginator;
+    }
+
+    /**
+     * @param $collection Collection
+     * @return Collection
+     */
+    protected function setCountedFields($collection)
+    {
+        $id = [];
+        $collection->each(function ($item, $key) use (&$id) {
+            $id[] = $item->id;
+        });
+
+        foreach ($this->relations as $relation => $options) {
+            $tmp = $this
+                ->getRelationRecordCount($relation)
+                ->whereIn('main.id', $id)->get()->all();
+
+            $tmp2 = [];
+            foreach ($options['fields'] as $field) {
+                foreach ($tmp as $record) {
+                    $tmp2[$record->id] = $record->$field;
+                }
+                $collection = $collection->each(function ($item, $key) use ($field, $tmp2) {
+                    $item[$field] = !empty($tmp2[$item->id]) ? $tmp2[$item->id] : 0;
+                });
+            }
+        }
+
+        return $collection;
     }
 }

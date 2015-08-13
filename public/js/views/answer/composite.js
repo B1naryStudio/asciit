@@ -11,7 +11,7 @@ define([
     'ckeditor',
     'ckeditor.adapter',
     'highlight'
-], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, VotesView, EditorSettings, Comment, CommentsCompositeView) {
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, Votes, EditorSettings, Comment, CommentsCompositeView) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend({
             template: SingleAnswerTpl,
@@ -47,6 +47,8 @@ define([
                 var vote = this.model.get('vote');
                 var votesView = new Votes({
                     vote: vote,
+                    likes: this.model.get('vote_likes'),
+                    dislikes: this.model.get('vote_dislikes'),
                     q_and_a_id: this.model.id
                 });
                 this.getRegion('votes').show(votesView);
@@ -125,7 +127,7 @@ define([
                 this.editor.setData('');
             },
             refreshCounter: function () {
-                $(this.el).find('.counter').html(this.model.get('count'));
+                this.$el.find('.counter.answers').html(this.model.get('count'));
             },
             onShow: function () {
                 EditorSettings.height = '500px';

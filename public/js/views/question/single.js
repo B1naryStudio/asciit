@@ -41,6 +41,8 @@ define([
                 var vote = this.model.get('vote');
                 var votesView = new VotesView({
                     vote: vote,
+                    likes: this.model.get('vote_likes'),
+                    dislikes: this.model.get('vote_dislikes'),
                     q_and_a_id: this.model.id
                 });
                 this.getRegion('votes').show(votesView);
