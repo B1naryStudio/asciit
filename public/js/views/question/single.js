@@ -27,7 +27,6 @@ define([
             showForm: function(e) {
                 e.stopPropagation();
                 var el = $(e.target).parents('.question_view').siblings('#comments-region').find('section .comment-form');
-                console.log(el);
                 el.toggle();
                 $(e.target).toggleClass('form-open');
                 el.focus();
