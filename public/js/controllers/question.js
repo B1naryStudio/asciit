@@ -33,6 +33,7 @@ define([
                         collectionLayout.getRegion('collectionRegion').show(questionsView);
                         collectionLayout.getRegion('paginatorRegion').show(paginatorView);
                         collectionLayout.getRegion('tagsRegion').show(tagsView);
+                        //questionsView.getRegion('popularTags').show(tagsView);
 
                     // Updating for search
                     Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {

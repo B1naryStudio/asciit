@@ -15,9 +15,9 @@
  |------------------------------------------------------------------------------
  */
 
-.questions_list {
+/*.questions_list {
     margin-top: 10px;
-}
+}*/
 
 .question-row {
     margin: 10px 0;
@@ -33,17 +33,17 @@
     margin-top: 5px
 }
 
-.questions_list .col-md-10 div {
+/*.questions_list .col-md-10 div {
     margin-top: 5px;
-}
+}*/
 
-.questions_list .col-md-10 .asked_time,
-.questions_list .col-md-10 .folder {
+.questions_list /*.col-md-10 */.asked_time,
+.questions_list /*.col-md-10*/ .folder {
     color: dimgray;
     font-size: 0.9em;
 }
 
-.questions_list .col-md-10 .question {
+.questions_list /*.col-md-10 */.question {
     color: black;
     font-size: 16px;
 }
@@ -256,6 +256,10 @@ time,
  | Tags
  |------------------------------------------------------------------------------
  */
+.tags_list {
+    margin-top: 50px;
+}
+
 #question-list .tags {
     margin-right: 85px;
 }
@@ -303,7 +307,7 @@ time,
 
 /*
  |------------------------------------------------------------------------------
- | Code blocks
+ | Code-snippet blocks
  |------------------------------------------------------------------------------
  */
 pre {
@@ -328,12 +332,12 @@ pre code.hljs {
     padding-top: 5px;
 }
 
-#tags-region {
+/*#tags-region {
     position: absolute;
     width: 100px;
     right: 15px;
     top: 200px;
-}
+}*/
 
 @media (min-width: 768px) {
     .container {
@@ -364,7 +368,7 @@ pre code.hljs {
         width: 1100px;
     }
 
-    #tags-region {
+/*    #tags-region {
         width: 130px;
-    }
+    }*/
 }
