@@ -9,18 +9,18 @@
         </div>
         <div class="col-md-10">
             <div class="row">
-                    <div class="col-md-11 question-header">
-                        <div class="asked_time">Asked at <%- created_at %></div>
-                        <div><a class="question" href="#questions/<%- id %>"><b><%- title %></b></a></div>
-                        <div class="folder">
-                            <span class="icon glyphicon glyphicon-folder-close" aria-hidden="true"></span>
-                            <%- folder.title %>
-                        </div>
+                <div class="col-md-10 question-header">
+                    <div class="asked_time">Asked at <%- created_at %></div>
+                    <div><a class="question" href="#questions/<%- id %>"><b><%- title %></b></a></div>
+                    <div class="folder">
+                        <span class="icon glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+                        <%- folder.title %>
                     </div>
-                    <div class="col-md-1 question-preview">
-                        <i class="fa fa-thumbs-o-up fa-6"></i>
-                        <%- vote_value %>
-                    </div>
+                </div>
+                <div class="col-md-2 question-preview">
+                    <i class="fa fa-thumbs-up fa-6"></i>
+                    <%- vote_value %>
+                </div>
             </div>
             <div class="row">
                 <div>
@@ -29,7 +29,7 @@
                 <div>
                     <span></span>
                     <div class="tags"></div>
-                    <a class="pull-right" href="#questions/<%- id %>">Read more...</a>
+                    <a class="more" href="#questions/<%- id %>">Read more...</a>
                 </div>
             </div>
         </div>

@@ -43,6 +43,7 @@
     display: inline-block;
     float: right;
     margin-top: 8px;
+    margin-right: 15px;
 }
 
 /*
@@ -168,6 +169,15 @@ time,
  */
 .new-answer .panel-body {
     padding: 0;
+}
+
+.new-answer-controls {
+    text-align: center;
+    margin: 15px auto 50px;
+}
+
+.new-answer-controls input {
+    width: 80px;
 }
 
 /*

@@ -1,11 +1,11 @@
-<div class="new-answer" >
+<div class="answers-list" >
     <header class="section-header">
         <span class="counter answers"><%- count %></span> answers
     </header>
     <ul id="answers" class="list-group"></ul>
 
     <!-- Adding form -->
-    <div class="panel panel-default">
+    <div class="panel panel-default new-answer">
         <div class="panel-heading">
             <h3 class="panel-title">Your answer:</h3>
         </div>
@@ -16,5 +16,8 @@
             </form>
         </div>
     </div>
-    <input class="submit-btn btn btn-success" type="submit" form='new-answer-form' value="Save">
+
+    <div class="new-answer-controls">
+        <input class="submit-btn btn btn-success" type="submit" form='new-answer-form' value="Save">
+    </div>
 </div>

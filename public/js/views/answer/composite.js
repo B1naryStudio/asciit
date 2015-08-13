@@ -108,10 +108,10 @@ define([
                 var data = Backbone.Syphon.serialize($('#new-answer-form')[0]);
                 this.model.set(data);
 
-                if (this.model.isValid(true)) {
+                //if (this.model.isValid(true)) {
                     // To event in controller
                     this.trigger('form:submit', this.model);
-                }
+                //}
             },
             onDataInvalid: function (errors) {
                 for (var field in errors) {
@@ -130,7 +130,7 @@ define([
                 this.$el.find('.counter.answers').html(this.model.get('count'));
             },
             onShow: function () {
-                EditorSettings.height = '500px';
+                EditorSettings.height = '350px';
                 this.editor = $('#description').ckeditor(EditorSettings).editor;
            },
             initialize: function () {
