@@ -171,9 +171,7 @@ class QuestionService implements QuestionServiceInterface
 
     public function getTagsPopular($pageSize = null)
     {
-        //$this->tagRepository->pushCriteria(new PopularCriteria('questions', 'tag_id', 'tag_id', $pageSize));
         try {
-            //$tags = $this->tagRepository->all();
             $tags = $this->tagRepository->loadRelationPopular('questions', $pageSize);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
@@ -187,19 +185,7 @@ class QuestionService implements QuestionServiceInterface
 
     public function getQuestionsPopular($pageSize = null)
     {
-        /*$this->questionRepository->pushCriteria(new PopularCriteria(
-            'answers',
-            'question_id',
-            'question_id',
-            $pageSize,
-            [
-                ['q_and_a.question_id is not null']
-            ]
-        ));*/
-
         try {
-            //$questions = $this->questionRepository->all();
-
             $questions = $this->questionRepository->loadRelationPopular('answers', $pageSize, [
                 ['q_and_a.question_id is not null']
             ]);

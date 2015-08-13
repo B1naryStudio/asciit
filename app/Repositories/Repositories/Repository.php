@@ -121,7 +121,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     public function withRelationCount()
     {
         $this->with_relation_count = true;
-        return true;
+        return $this;
     }
 
     public function withoutRelationCount()

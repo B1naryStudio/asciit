@@ -57,4 +57,8 @@ interface RepositoryInterface extends BaseRepositoryInterface
     public function getRelationRecordCount($relation);
 
     public function loadRelationPopular($relation, $count, $where = array());
+
+    public function withRelationCount();
+
+    public function withoutRelationCount();
 }
