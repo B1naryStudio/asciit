@@ -15,9 +15,24 @@ define([
             template: QuestionLayoutTpl,
             regions: {
                 answersRegion: '#answers-region',
+                commentsRegion: '#comments-region',
                 tag: '.tags',
                 votes: '.votes'
             },
+
+            events: {
+                'click .show-form' : 'showForm',
+            },
+
+            showForm: function(e) {
+                e.stopPropagation();
+                var el = $(e.target).parents('.question_view').siblings('#comments-region').find('section .comment-form');
+                console.log(el);
+                el.toggle();
+                $(e.target).toggleClass('form-open');
+                el.focus();
+            },
+
             onShow: function () {
                 var self = this;
                 $.when(App.request('tag:reset', this.model.get('tags'))).done(function (tags) {

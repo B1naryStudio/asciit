@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Criteria\InCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\Contracts\CommentRepository;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -21,19 +22,22 @@ class QuestionService implements QuestionServiceInterface
     private $folderRepository;
     private $tagRepository;
     private $voteRepository;
+    private $commentRepository;
 
     public function __construct(
         QuestionRepository $questionRepository,
         AnswerRepository $answerRepository,
         FolderRepository $folderRepository,
         TagRepository $tagRepository,
-        VoteRepository $voteRepository
+        VoteRepository $voteRepository,
+        CommentRepository $commentRepository
     ) {
         $this->questionRepository = $questionRepository;
         $this->answerRepository = $answerRepository;
         $this->folderRepository = $folderRepository;
         $this->tagRepository = $tagRepository;
         $this->voteRepository = $voteRepository;
+        $this->commentRepository = $commentRepository;
     }
     
     public function createQuestion($data)
@@ -82,7 +86,7 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder', 'tags', 'votes']);
+                ->findWithRelations($id, ['user', 'folder', 'tags', 'votes', 'comment.user']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such question',
@@ -116,7 +120,7 @@ class QuestionService implements QuestionServiceInterface
     public function getAnswersOfQuestion($question_id)
     {
         return $this->answerRepository
-            ->findByFieldWithRelations('question_id', $question_id, ['user', 'votes']);
+            ->findByFieldWithRelations('question_id', $question_id, ['user', 'votes', 'comment.user']);
     }
     
     public function getEntryComments($question_id){}
@@ -213,6 +217,27 @@ class QuestionService implements QuestionServiceInterface
             );
         }
         return $tags;
+    }
+
+    public function createComment($data, $question_id)
+    {
+        // temporary fix without auth
+        $data['user_id'] = Auth::user()->id;
+
+        $new = $this->commentRepository->create($data);
+
+        try {
+            $comment = $this->commentRepository
+                ->findWithRelations($new->id, ['user']);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage() . ' No such answer',
+                null,
+                $e
+            );
+        }
+
+        return $comment;
     }
 }
 

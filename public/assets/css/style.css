@@ -368,3 +368,23 @@ pre code.hljs {
         width: 130px;
     }
 }
+
+.comments-region, .comment-form {
+    width: 83%;
+    margin-left: 17%;
+}
+
+.comment-form {
+    display: none;
+}
+
+.form-open {
+    /*color: #333;*/
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.single-comment {
+    border: none;
+    border-top: 1px solid #ddd;
+}
