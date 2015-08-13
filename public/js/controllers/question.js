@@ -18,7 +18,7 @@ define([
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery, searchTag) {
                 $.when(App.request('question:collection', searchQuery, searchTag)).done(function (questions) {
-                    $.when(App.request('tag:collection', { type: 'popular', page_size: 5 })).done(function (tags) {
+                    $.when(App.request('tag:collection', { type: 'popular', page_size: 10 })).done(function (tags) {
                         var questionsView = new CollectionView({
                             collection: questions.sort(),
                             searchQuery: searchQuery,
@@ -33,7 +33,6 @@ define([
                         collectionLayout.getRegion('collectionRegion').show(questionsView);
                         collectionLayout.getRegion('paginatorRegion').show(paginatorView);
                         collectionLayout.getRegion('tagsRegion').show(tagsView);
-                        //questionsView.getRegion('popularTags').show(tagsView);
 
                     // Updating for search
                     Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {

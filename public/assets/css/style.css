@@ -14,11 +14,6 @@
  | Questions list
  |------------------------------------------------------------------------------
  */
-
-/*.questions_list {
-    margin-top: 10px;
-}*/
-
 .question-row {
     margin: 10px 0;
 }
@@ -33,19 +28,21 @@
     margin-top: 5px
 }
 
-/*.questions_list .col-md-10 div {
-    margin-top: 5px;
-}*/
-
-.questions_list /*.col-md-10 */.asked_time,
-.questions_list /*.col-md-10*/ .folder {
+.questions_list .asked_time,
+.questions_list .folder {
     color: dimgray;
     font-size: 0.9em;
 }
 
-.questions_list /*.col-md-10 */.question {
+.questions_list .question {
     color: black;
     font-size: 16px;
+}
+
+.questions_list .more {
+    display: inline-block;
+    float: right;
+    margin-top: 5px;
 }
 
 /*
@@ -143,6 +140,7 @@ time,
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
+    padding-right: 15px;
 }
 
 .list-group-item .limited::after {
@@ -260,10 +258,6 @@ time,
     margin-top: 50px;
 }
 
-#question-list .tags {
-    margin-right: 85px;
-}
-
 #question-list .tags li,
 #question-view .tags li,
 .tags_list.tags li {
@@ -273,6 +267,10 @@ time,
 #question-view .tags  {
     float: left;
     margin: 20px 0 30px 0;
+}
+
+#question-list .tags {
+    padding: 0;
 }
 
 .tags ul {
@@ -299,10 +297,15 @@ time,
     color: #000000;
 }
 
-.pull-right {
-    position: absolute;
-    bottom: 0;
-    right: 15px;
+.tags_list .list {
+    float: left;
+    margin-bottom: 20px;
+}
+
+.tags_list .title {
+    float: left;
+    width: 100%;
+    padding-top: 5px;
 }
 
 /*
@@ -321,24 +324,11 @@ pre code.hljs {
     font-family: monospace, monospace;
 }
 
-.tags_list .list {
-    float: left;
-    margin-bottom: 20px;
-}
-
-.tags_list .title {
-    float: left;
-    width: 100%;
-    padding-top: 5px;
-}
-
-/*#tags-region {
-    position: absolute;
-    width: 100px;
-    right: 15px;
-    top: 200px;
-}*/
-
+/*
+ |------------------------------------------------------------------------------
+ | Media
+ |------------------------------------------------------------------------------
+ */
 @media (min-width: 768px) {
     .container {
         width: 528px;
@@ -367,8 +357,4 @@ pre code.hljs {
     .container {
         width: 1100px;
     }
-
-/*    #tags-region {
-        width: 130px;
-    }*/
 }
