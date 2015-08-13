@@ -11,8 +11,10 @@
         </div>
         <div class="panel-body">
             <form class="form-horisontal" id="new-answer-form">
-                <textarea name="description" id="description" rows="6"></textarea>
-                <span class="help-block hidden"></span>
+                <div class="form-group">
+                    <textarea name="description" id="description" rows="6"></textarea>
+                    <span class="help-block hidden"></span>
+                </div>
             </form>
         </div>
     </div>

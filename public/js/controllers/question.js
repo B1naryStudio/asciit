@@ -15,7 +15,9 @@ define([
     'models/question',
     'models/folder',
     'models/tag'
-], function (App, CollectionView, CollectionLayout, PaginatorView, SingleView, AddView, SelectFolderView, AnswersCompositeView, SelectTagView, TagsView, Answer, CommentsCompositeView, Comment) {
+], function (App, CollectionView, CollectionLayout, PaginatorView, SingleView,
+             AddView, SelectFolderView, AnswersCompositeView, SelectTagView,
+             TagsView, Answer, CommentsCompositeView, Comment) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery, searchTag) {
@@ -78,14 +80,14 @@ define([
                                 answers.push(savedModel);
 
                                 // Add model and form clearing
-                                var freshModel = new  Answer.Model({
+                                var freshModel = new Answer.Model({
                                     question_id: id,
                                     count: answers.length
                                 });
 
                                 answersView.triggerMethod('model:refresh', freshModel);
                             }).fail(function (errors) {
-                                answersView.triggerMethod('data:invalid', errors);
+                                answersView.triggerMethod('model:invalid', errors);
                             });
                     });
 

@@ -108,12 +108,12 @@ define([
                 var data = Backbone.Syphon.serialize($('#new-answer-form')[0]);
                 this.model.set(data);
 
-                //if (this.model.isValid(true)) {
+                if (this.model.isValid(true)) {
                     // To event in controller
                     this.trigger('form:submit', this.model);
-                //}
+                }
             },
-            onDataInvalid: function (errors) {
+            onModelInvalid: function (errors) {
                 for (var field in errors) {
                     Backbone.Validation.callbacks.invalid(this, field, errors[field]);
                 }

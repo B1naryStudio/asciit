@@ -171,6 +171,13 @@ time,
     padding: 0;
 }
 
+.new-answer .form-group {
+    margin: 0;
+}
+.new-answer .help-block {
+    margin-left: 10px;
+}
+
 .new-answer-controls {
     text-align: center;
     margin: 15px auto 50px;

@@ -57,7 +57,7 @@ define(['app'], function(App) {
                             defer.reject(errors);
                         }
                     })) {
-                    defer.reject({'description': 'Server error, saving is impossible.'});
+                    defer.reject({'description': 'Server error, saving is impossible!'});
                 }
 
                 return defer.promise();
