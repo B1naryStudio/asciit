@@ -49,7 +49,7 @@ class QuestionController extends Controller
                     'currentPage' => $questions->currentPage()
                 ],
                 $questions->items()
-            ], 200
+            ], 200, [], JSON_NUMERIC_CHECK
         );
     }
 
@@ -82,7 +82,7 @@ class QuestionController extends Controller
             ], 400);
         }
 
-        return Response::json($question->toArray(), 200);
+        return Response::json($question->toArray(), 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -99,7 +99,7 @@ class QuestionController extends Controller
             return Response::json(['error' => $e->getMessage()], 404);
         }
 
-        return Response::json($question->toArray(), 200);
+        return Response::json($question->toArray(), 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
