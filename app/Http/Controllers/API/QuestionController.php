@@ -57,7 +57,7 @@ class QuestionController extends Controller
                     'currentPage' => $questions->currentPage()
                 ],
                 $questions->items()
-            ], 200
+            ], 200, [], JSON_NUMERIC_CHECK
         );
     }
 
@@ -90,7 +90,7 @@ class QuestionController extends Controller
             ], 400);
         }
 
-        return Response::json($question->toArray(), 200);
+        return Response::json($question->toArray(), 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -107,40 +107,6 @@ class QuestionController extends Controller
             return Response::json(['error' => $e->getMessage()], 404);
         }
 
-        return Response::json($question->toArray(), 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        return Response::json($question->toArray(), 200, [], JSON_NUMERIC_CHECK);
     }
 }

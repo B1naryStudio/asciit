@@ -33,6 +33,6 @@ class TagController extends Controller
             $tags = $this->questionService->getTags($request->get('page_size'));
         }
 
-        return Response::json($tags, 200);
+        return Response::json($tags, 200, [], JSON_NUMERIC_CHECK);
     }
 }

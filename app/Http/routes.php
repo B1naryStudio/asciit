@@ -26,6 +26,7 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::post('/images', 'API\ImageController@store');
     Route::get('/images/{filename}', 'API\ImageController@show');
     Route::resource('/votes', 'API\VoteController', ['only' => ['store', 'destroy']]);
+    Route::resource('/questions/{id}/comments', 'API\Question\CommentController', ['only' => ['store']]);
 });
 
 Route::group(['prefix' => 'api/v1/widget'], function() {

@@ -39,7 +39,7 @@ class VoteController extends Controller
             return Response::json(['error' => $e->getMessage()], 406);
         }
 
-        return Response::json($vote->toArray(), 200);
+        return Response::json($vote->toArray(), 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -56,6 +56,6 @@ class VoteController extends Controller
             return Response::json(['error' => $e->getMessage()], 406);
         }
 
-        return Response::json($removed, 200);
+        return Response::json($removed, 200, [], JSON_NUMERIC_CHECK);
     }
 }

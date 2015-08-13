@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api\Question;
 
-use App\Services\Auth\Exceptions\AuthException;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Services\Auth\Contracts\AuthServiceInterface;
+use App\Services\Questions\Contracts\QuestionServiceInterface;
 use Illuminate\Support\Facades\Response;
-use App\Http\Requests\AuthValidatedRequest;
+use App\Http\Requests\CommentValidatedRequest;
 
-class UserController extends Controller
+class CommentController extends Controller
 {
-    private $authService;
 
-    public function __construct(AuthServiceInterface $authService) {
-        $this->authService = $authService;
+    private $questionService;
 
-        $this->middleware('auth', ['only' => ['logout']]);
+    public function __construct(QuestionServiceInterface $questionService)
+    {
+        $this->questionService = $questionService;
+
+        $this->middleware('auth');
     }
     /**
      * Display a listing of the resource.
@@ -46,9 +47,19 @@ class UserController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(CommentValidatedRequest $request, $question_id)
     {
-        //
+        try {
+            $comment = $this->questionService->createComment($request->all(), $question_id);
+        } catch (QuestionServiceException $e) {
+            return Response::json([
+                'error' => [
+                    'message' => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        return Response::json($comment->toArray(), 201);
     }
 
     /**
@@ -94,36 +105,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-    
-    public function login(AuthValidatedRequest $request)
-    {
-        try {
-            $auth = $this->authService->authenticate($request->all());
-        } catch (AuthException $e) {
-            return Response::json([
-                'error' => [$e->getMessage()]
-            ], 500);
-        }
-        return $auth;
-
-    }
-    
-    public function logout($id)
-    {
-        try {
-            $this->authService->logout();
-        } catch (AuthException $e){
-            return Response::json([
-                'error' => [$e->getMessage()]
-            ], 500);
-        }
-        return Response::json(null, 200, [], JSON_NUMERIC_CHECK);
-    }
-
-    public function session()
-    {
-        $res = $this->authService->checkUser();
-        return Response::json($res, 200, [], JSON_NUMERIC_CHECK);
     }
 }

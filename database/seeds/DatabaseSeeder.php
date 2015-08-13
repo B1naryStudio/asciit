@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             DB::table('folders')->truncate();
             DB::table('q_and_a')->truncate();
             DB::table('tags')->truncate();
+            DB::table('comment')->truncate();
             DB::table('votes')->truncate();
             DB::statement('SET foreign_key_checks = 1;');
 
@@ -29,6 +30,8 @@ class DatabaseSeeder extends Seeder
             $this->call(TagsSeeder::class);
             $this->call(AnswersSeeder::class);
             $this->call(VotesSeeder::class);
+            $this->call(CommentForAnswerSeeder::class);
+            $this->call(CommentForQuestionSeeder::class);
         });
 
         Model::reguard();
