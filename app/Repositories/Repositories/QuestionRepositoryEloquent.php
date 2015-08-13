@@ -13,6 +13,8 @@ use App\Repositories\Contracts\QuestionRepository;
  */
 class QuestionRepositoryEloquent extends Repository implements QuestionRepository
 {
+    protected $with_relation_count = true;
+
     protected $fieldSearchable = [
         'title' => 'like',
         'description' => 'like',

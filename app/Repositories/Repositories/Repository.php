@@ -14,6 +14,8 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
 {
     protected $relations;
 
+    protected $with_relation_count = false;
+
     /**
      * Find data by id
      *
@@ -114,5 +116,77 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             ->limit($count)
             ->get()
             ->all();
+    }
+
+    public function withRelationCount()
+    {
+        $this->with_relation_count = true;
+        return true;
+    }
+
+    public function withoutRelationCount()
+    {
+        $this->with_relation_count = false;
+        return $this;
+    }
+
+    public function all($columns = array('*'))
+    {
+        $collection = parent::all($columns);
+
+        if ($this->with_relation_count) {
+            $id = [];
+            $collection->each(function ($item, $key) {
+                $id[] = $item->id;
+            });
+
+            foreach ($this->relations as $relation) {
+                $tmp = $this
+                    ->getRelationRecordCount($relation)
+                    ->whereIn('main.id', $id)->get()->all();
+
+                $tmp2 = [];
+                $field = $this->relations[$relation]['count'];
+                foreach ($tmp as $record) {
+                    $tmp2[$record->id] = $record->$field;
+                }
+                $collection = $collection->each(function ($item, $key) use ($field, $tmp2) {
+                    $item[$field] = $tmp2[$item->id];
+                });
+            }
+        }
+
+        return $collection;
+    }
+
+    public function paginate($limit = null, $columns = array('*'))
+    {
+        $paginator = parent::paginate($limit, $columns);
+
+        if ($this->with_relation_count) {
+            $id = [];
+            foreach ($paginator->items() as $item) {
+                $id[] = $item->id;
+            }
+
+            foreach ($this->relations as $relation => $options) {
+                $tmp = $this
+                    ->getRelationRecordCount($relation)
+                    ->whereIn('main.id', $id)->get()->all();
+
+                $tmp2 = [];
+                $field = $options['count'];
+                foreach ($tmp as $record) {
+                    $tmp2[$record->id] = $record->$field;
+                }
+
+                foreach ($paginator->items() as &$item) {
+                    $item[$field] = $tmp2[$item->id];
+                }
+                unset($item);
+            }
+        }
+
+        return $paginator;
     }
 }
