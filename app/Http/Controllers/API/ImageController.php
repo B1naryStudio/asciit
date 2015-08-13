@@ -47,7 +47,7 @@ class ImageController extends Controller
                 'fileName' => $fileName,
                 'uploaded' => 1,
                 'url'      => $url
-            ], 200);
+            ], 200, [], JSON_NUMERIC_CHECK);
         } else {
             // For CKEditor API
             // (http://docs.ckeditor.com/#!/guide/dev_file_browser_api)
@@ -82,16 +82,5 @@ class ImageController extends Controller
         }
 
         return Image::make($path)->response('jpg'); //will ensure a jpg is always returned
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
