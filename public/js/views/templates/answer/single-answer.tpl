@@ -8,12 +8,8 @@
             </figure>
         </div>
         <div class="col-md-10">
-            <!-- Votes -->
-            <div class="vote">
-                <a href="#"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
-                <span>5</span>
-                <a href="#"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
-            </div>
+            <!-- Votes region -->
+            <div class="votes"></div>
 
             <!-- Text -->
             <time>Answered at <%- created_at %></time>

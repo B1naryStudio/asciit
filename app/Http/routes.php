@@ -25,4 +25,5 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::resource('/tags', 'API\TagController', ['only' => ['index']]);
     Route::post('/images', 'API\ImageController@store');
     Route::get('/images/{filename}', 'API\ImageController@show');
+    Route::resource('/votes', 'API\VoteController', ['only' => ['store', 'destroy']]);
 });

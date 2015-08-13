@@ -6,6 +6,7 @@ use Prettus\Repository\Eloquent\BaseRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Repositories\Exceptions\RepositoryException;
 use App\Repositories\Contracts\RepositoryInterface;
+use Illuminate\Database\QueryException;
 
 abstract class Repository extends BaseRepository implements RepositoryInterface
 {
@@ -23,6 +24,37 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             return parent::find($id, $columns);
         } catch (ModelNotFoundException $e) {
             throw new RepositoryException('Entity is not found!', null, $e);
+        }
+    }
+
+    public function firstWhere(array $where , $columns = array('*'))
+    {
+        $results = parent::findWhere($where, $columns);
+
+        if ($results) {
+            return $results->first();
+        }
+
+        return [];
+    }
+
+    public function create(array $attributes)
+    {
+        try {
+            return parent::create($attributes);
+        } catch (QueryException $e) {
+            throw new RepositoryException('Cannot save the entity!', null, $e);
+        }
+    }
+
+    public function delete($id)
+    {
+        $model = $this->find($id);
+
+        if (parent::delete($id)) {
+            return $model;
+        } else {
+            throw new RepositoryException('Cannot delete the model!');
         }
     }
 

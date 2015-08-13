@@ -25,4 +25,9 @@ class Answer extends Model implements Transformable
     {
         return $this->belongsTo('App\Repositories\Entities\Question');
     }
+
+    public function votes()
+    {
+        return $this->hasMany('App\Repositories\Entities\Vote', 'q_and_a_id');
+    }
 }

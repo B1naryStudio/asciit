@@ -53,23 +53,40 @@
  | Votes block
  |------------------------------------------------------------------------------
  */
-.vote {
-    color: dimgray;
+.votes {
+    color: #333333;
 }
 
-.question_view .vote {
+.question_view .votes {
     font-size: 25px;
     padding-top: 20px;
+    text-align: center;
 }
 
-.single-answer .vote {
+.single-answer .votes {
     float: right;
-    margin: 5px 0 0 10px;
+    margin: 5px 0 0 15px;
     font-size: 20px;
 }
 
-.vote span {
-    margin-right: 10px;
+.votes span {
+    margin: 0 5px;
+    position: relative;
+}
+
+.votes span.divided {
+    font-size: 0.8em;
+    position: relative;
+    margin: 0 3px;
+    top: -2px;
+}
+
+.votes i {
+    text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
+}
+
+.voted {
+    color: #000080;
 }
 
 /*
