@@ -18,6 +18,7 @@ class QuestionServiceTest extends TestCase
     protected $answerRepo;
     protected $folderRepo;
     protected $tagRepo;
+    protected $voteRepo;
 
     public function setUp()
     {
@@ -53,11 +54,13 @@ class QuestionServiceTest extends TestCase
         $this->answerRepo = m::mock('App\Repositories\Repositories\AnswerRepositoryEloquent');
         $this->folderRepo = m::mock('App\Repositories\Repositories\FolderRepositoryEloquent');
         $this->tagRepo = m::mock('App\Repositories\Repositories\TagRepositoryEloquent');
+        $this->voteRepo = m::mock('App\Repositories\Repositories\VoteRepositoryEloquent');
         $this->questionService = new QuestionService(
             $this->questionRepo,
             $this->answerRepo,
             $this->folderRepo,
-            $this->tagRepo
+            $this->tagRepo,
+            $this->voteRepo
         );
 
         $this->tagRepo->shouldReceive('pushCriteria')
