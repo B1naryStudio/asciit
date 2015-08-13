@@ -104,11 +104,7 @@ class QuestionController extends Controller
         try {
             $question = $this->questionService->getQuestion($id);
         } catch (QuestionServiceException $e) {
-            return Response::json([
-                'error' => [
-                    'message' => $e->getMessage(),
-                ],
-            ], 404);
+            return Response::json(['error' => $e->getMessage()], 404);
         }
 
         return Response::json($question->toArray(), 200);

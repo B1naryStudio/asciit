@@ -53,22 +53,22 @@
  | Votes block
  |------------------------------------------------------------------------------
  */
-.vote {
+.votes {
     color: dimgray;
 }
 
-.question_view .vote {
+.question_view .votes {
     font-size: 25px;
     padding-top: 20px;
 }
 
-.single-answer .vote {
+.single-answer .votes {
     float: right;
     margin: 5px 0 0 10px;
     font-size: 20px;
 }
 
-.vote span {
+.votes span {
     margin-right: 10px;
 }
 

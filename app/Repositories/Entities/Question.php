@@ -35,4 +35,9 @@ class Question extends Model implements Transformable
     {
         return $this->belongsToMany('App\Repositories\Entities\Tag', 'tag_q_and_a', 'q_and_a_id', 'tag_id');
     }
+
+    public function votes()
+    {
+        return $this->hasMany('App\Repositories\Entities\Vote', 'q_and_a_id');
+    }
 }

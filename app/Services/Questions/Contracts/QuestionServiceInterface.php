@@ -32,6 +32,8 @@ interface QuestionServiceInterface
 
     public function addVote($entry_id);
 
+    public function removeVote($vote_id);
+
     public function createAnswer($data, $question_id);
 
     public function getFolders();

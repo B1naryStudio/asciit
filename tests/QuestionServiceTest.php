@@ -18,6 +18,7 @@ class QuestionServiceTest extends TestCase
     protected $answerRepo;
     protected $folderRepo;
     protected $tagRepo;
+    protected $voteRepo;
 
     public function setUp()
     {
@@ -53,11 +54,13 @@ class QuestionServiceTest extends TestCase
         $this->answerRepo = m::mock('App\Repositories\Repositories\AnswerRepositoryEloquent');
         $this->folderRepo = m::mock('App\Repositories\Repositories\FolderRepositoryEloquent');
         $this->tagRepo = m::mock('App\Repositories\Repositories\TagRepositoryEloquent');
+        $this->voteRepo = m::mock('App\Repositories\Repositories\VoteRepositoryEloquent');
         $this->questionService = new QuestionService(
             $this->questionRepo,
             $this->answerRepo,
             $this->folderRepo,
-            $this->tagRepo
+            $this->tagRepo,
+            $this->voteRepo
         );
 
         $this->tagRepo->shouldReceive('pushCriteria')
@@ -103,7 +106,7 @@ class QuestionServiceTest extends TestCase
     public function testGetQuestionReturnsWithRelations()
     {
         $this->questionRepo->shouldReceive('findWithRelations')
-            ->with($this->question->id, ['user', 'folder', 'tags'])
+            ->with($this->question->id, ['user', 'folder', 'tags', 'votes'])
             ->once()
             ->andReturn($this->question);
 
@@ -130,7 +133,7 @@ class QuestionServiceTest extends TestCase
     {
         $this->answerRepo->shouldReceive('findByFieldWithRelations')
             ->once()
-            ->with('question_id', $this->question->id, ['user'])
+            ->with('question_id', $this->question->id, ['user', 'votes'])
             ->andReturn([$this->question]);
 
         $this->assertSame(
