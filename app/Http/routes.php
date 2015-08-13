@@ -28,3 +28,9 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::resource('/votes', 'API\VoteController', ['only' => ['store', 'destroy']]);
     Route::resource('/questions/{id}/comments', 'API\Question\CommentController', ['only' => ['store']]);
 });
+
+Route::group(['prefix' => 'api/v1/widget'], function() {
+    Route::get('/questions/recent', 'API\WidgetController@questionsRecent');
+    Route::get('/questions/popular', 'API\WidgetController@questionsPopular');
+    Route::get('/questions/upvoted', 'API\WidgetController@questionsUpvoted');
+});

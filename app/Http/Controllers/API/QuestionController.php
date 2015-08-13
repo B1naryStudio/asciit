@@ -42,6 +42,14 @@ class QuestionController extends Controller
             $questions = $this->questionService->getQuestions($request->get('page_size'));
         }
 
+        $r =  [
+            [
+                'total_entries' => $questions->total(),
+                'currentPage' => $questions->currentPage()
+            ],
+            $questions->items()
+        ];
+
         return Response::json(
             [
                 [

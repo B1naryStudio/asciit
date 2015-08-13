@@ -43,4 +43,8 @@ interface QuestionServiceInterface
     public function getTagsPopular($pageSize = null);
 
     public function createComment($data, $question_id);
+
+    public function getQuestionsPopular($pageSize = null);
+
+    public function getQuestionsUpvoted($pageSize = null);
 }

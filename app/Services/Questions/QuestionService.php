@@ -108,7 +108,7 @@ class QuestionService implements QuestionServiceInterface
         }
 
         $questions = $this->questionRepository
-            ->with(['user', 'folder', 'tags', 'votes'])
+            ->with(['user', 'folder', 'tags'])
             ->paginate($pageSize);
         return $questions;
     }
@@ -208,7 +208,7 @@ class QuestionService implements QuestionServiceInterface
     public function getTagsPopular($pageSize = null)
     {
         try {
-            $tags = $this->tagRepository->getRelationCount('questions', 'tag_q_and_a', $pageSize);
+            $tags = $this->tagRepository->loadRelationPopular('questions', $pageSize);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -238,6 +238,38 @@ class QuestionService implements QuestionServiceInterface
         }
 
         return $comment;
+    }
+
+    public function getQuestionsPopular($pageSize = null)
+    {
+        try {
+            $questions = $this->questionRepository->loadRelationPopular('answers', $pageSize, [
+                ['q_and_a.question_id is not null']
+            ]);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $questions;
+    }
+
+    public function getQuestionsUpvoted($pageSize = null)
+    {
+        try {
+            $questions = $this->questionRepository->loadRelationPopular('votes', $pageSize, [
+                ['main.question_id is null']
+            ]);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $questions;
     }
 }
 

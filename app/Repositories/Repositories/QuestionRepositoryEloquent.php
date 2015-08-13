@@ -13,9 +13,34 @@ use App\Repositories\Contracts\QuestionRepository;
  */
 class QuestionRepositoryEloquent extends Repository implements QuestionRepository
 {
+    protected $with_relation_count = true;
+
     protected $fieldSearchable = [
         'title' => 'like',
         'description' => 'like',
+    ];
+
+    protected $relations = [
+        'answers' => [
+            'table' => 'q_and_a',
+            'foreignKey' =>  'question_id',
+            'otherKey' => 'question_id',
+            'count' => 'answers_count',
+            'fields' => [
+                'count(*)' => 'answers_count'
+            ]
+        ],
+        'votes' => [
+            'table' => 'votes',
+            'foreignKey' =>  'q_and_a_id',
+            'otherKey' => 'q_and_a_id',
+            'count' => 'votes_count',
+            'fields' => [
+                'sum(if(sign>0, 1, -1))' => 'votes_count',
+                'sum(if(sign>0, 1, 0))' => 'votes_like',
+                'sum(if(sign>0, 0, 1))' => 'votes_dislike'
+            ]
+        ]
     ];
 
     /**
