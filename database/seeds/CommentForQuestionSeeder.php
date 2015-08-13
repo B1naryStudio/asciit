@@ -2,24 +2,24 @@
 
 use Illuminate\Database\Seeder;
 use App\Repositories\Contracts\UserRepository;
+use App\Repositories\Contracts\CommentRepository;
 use App\Repositories\Contracts\QuestionRepository;
-use App\Repositories\Contracts\AnswerRepository;
 use Faker\Factory;
 
-class AnswersSeeder extends Seeder
+class CommentForQuestionSeeder extends Seeder
 {
     private $userRepository;
     private $questionRepository;
-    private $answerRepository;
+    private $commentRepository;
 
     public function __construct(
         UserRepository $userRepository,
         QuestionRepository $questionRepository,
-        AnswerRepository $answerRepository
+        CommentRepository $commentRepository
     ) {
         $this->userRepository = $userRepository;
         $this->questionRepository = $questionRepository;
-        $this->answerRepository = $answerRepository;
+        $this->commentRepository = $commentRepository;
     }
 
     /**
@@ -35,10 +35,10 @@ class AnswersSeeder extends Seeder
         $questions = $this->questionRepository->all();
 
         for ($i = 0; $i < 50; $i++) {
-            $this->answerRepository->create([
-                'description' => $faker->realText(500),
+            $this->commentRepository->create([
+                'text' => $faker->realText(500),
                 'user_id'     => $users->random()->id,
-                'question_id' => $questions->random()->id
+                'q_and_a_id' => $questions->random()->id
             ]);
         }
     }

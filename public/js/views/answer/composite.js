@@ -6,16 +6,19 @@ define([
     'models/vote',
     'views/vote/composite',
     'ckeditor.custom.settings',
+    'models/comment',
+    'views/comment/composite',
     'ckeditor',
     'ckeditor.adapter',
     'highlight'
-], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, VotesCompositeView, EditorSettings) {
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, Votes, EditorSettings, Comment, CommentsCompositeView) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend({
             template: SingleAnswerTpl,
 
             regions: {
-                votes: '.votes'
+                votes: '.votes',
+                comments: '.answers-comments-region'
             },
 
             ui: {
@@ -41,12 +44,42 @@ define([
                     hljs.highlightBlock(block);
                 });
 
-                var votes = new Vote.Collection(this.model.get('votes'));
-                var votesView = new VotesCompositeView({
-                    collection: votes,
+                var vote = this.model.get('vote');
+                var votesView = new Votes({
+                    vote: vote,
+                    likes: this.model.get('vote_likes'),
+                    dislikes: this.model.get('vote_dislikes'),
                     q_and_a_id: this.model.id
                 });
                 this.getRegion('votes').show(votesView);
+
+                // Comments
+                var commentModel = new Comment.Model({
+                    q_and_a_id: this.model.attributes.id
+                });
+                var commentCollection = new Comment.Collection(this.model.get('comment'));
+                var commentsView = new CommentsCompositeView({
+                    model: commentModel,
+                    collection: commentCollection,
+                    id: this.id
+                });
+                this.getRegion('comments').show(commentsView);
+
+                this.listenTo(commentsView, 'form:submit', function (model) {
+                    $.when(App.request('comment:add', model))
+                        .done(function (savedModel) {
+                            commentCollection.push(savedModel);
+                            // Add model and form clearing
+                            var newModel = new Comment.Model({
+                                q_and_a_id: savedModel.attributes.q_and_a_id
+                            });
+
+                            commentsView.triggerMethod('model:refresh', newModel);
+                        }).fail(function (errors) {
+                            console.log(errors);
+                            commentsView.triggerMethod('data:invalid', errors);
+                        });
+                });
             }
         });
 
@@ -58,13 +91,21 @@ define([
             childViewContainer: '#answers',
 
             events: {
-                'submit form': 'onSubmit'
+                'submit form': 'onSubmit',
+                'click .show-form' : 'showForm'
+            },
+
+            showForm: function(e) {
+                e.stopPropagation();
+                var el = $(e.target).parents('.row').siblings('.answers-comments-region').find('section .comment-form');
+                el.toggle();
+                $(e.target).toggleClass('form-open');
+                el.focus();
             },
 
             onSubmit: function (event) {
                 event.preventDefault();
-
-                var data = Backbone.Syphon.serialize(this);
+                var data = Backbone.Syphon.serialize($('#new-answer-form')[0]);
                 this.model.set(data);
 
                 if (this.model.isValid(true)) {
@@ -86,13 +127,16 @@ define([
                 this.editor.setData('');
             },
             refreshCounter: function () {
-                $(this.el).find('.counter').html(this.model.get('count'));
+                this.$el.find('.counter.answers').html(this.model.get('count'));
             },
             onShow: function () {
                 EditorSettings.height = '500px';
                 this.editor = $('#description').ckeditor(EditorSettings).editor;
            },
             initialize: function () {
+                this.childViewOptions = {
+                    id: this.id
+                };
                 Backbone.Validation.bind(this);
             },
             remove: function() {

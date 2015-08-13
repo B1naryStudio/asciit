@@ -8,7 +8,5 @@ namespace App\Repositories\Contracts;
  */
 interface TagRepository extends RepositoryInterface
 {
-    public function getRelationCount($relation, $table, $count, $order = array());
-
     public function createSeveral(array $attributes);
 }

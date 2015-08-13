@@ -10,10 +10,12 @@ define([
     'views/tag/select',
     'views/tag/collection',
     'models/answer',
+    'views/comment/composite',
+    'models/comment',
     'models/question',
     'models/folder',
     'models/tag'
-], function (App, CollectionView, CollectionLayout, PaginatorView, SingleView, AddView, SelectFolderView, AnswersCompositeView, SelectTagView, TagsView, Answer) {
+], function (App, CollectionView, CollectionLayout, PaginatorView, SingleView, AddView, SelectFolderView, AnswersCompositeView, SelectTagView, TagsView, Answer, CommentsCompositeView, Comment) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery, searchTag) {
@@ -86,6 +88,32 @@ define([
                                 answersView.triggerMethod('data:invalid', errors);
                             });
                     });
+
+                        // New comments to question view
+                        var commentModel = new Comment.Model({
+                            q_and_a_id: id
+                        });
+
+                        var collectionComments = new Comment.Collection(question.attributes.comment);
+                        var commentsView = new CommentsCompositeView({model: commentModel, collection: collectionComments, id: id});
+                        questionView.commentsRegion.show(commentsView);
+
+                        Question.Controller.listenTo(commentsView, 'form:submit', function (model) {
+
+                            $.when(App.request('comment:add', model))
+                                .done(function (savedModel) {
+                                    collectionComments.push(savedModel);
+                                    // Add model and form clearing
+                                    var newModel = new Comment.Model({
+                                        question_id: id
+                                    });
+
+                                    commentsView.triggerMethod('model:refresh', newModel);
+                                }).fail(function (errors) {
+                                    console.log(errors);
+                                    commentsView.triggerMethod('data:invalid', errors);
+                                });
+                        });
                 });
             },
 

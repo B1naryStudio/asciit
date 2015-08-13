@@ -55,4 +55,18 @@ interface RepositoryInterface extends BaseRepositoryInterface
     public function pushCriteria(CriteriaInterface $criteria);
 
     public function firstWhere(array $where , $columns = array('*'));
+
+    public function getRelationRecordCount($relation);
+
+    public function loadRelationPopular($relation, $count, $where = array());
+
+    /**
+     * @return RepositoryInterface
+     */
+    public function withRelationCount();
+
+    /**
+     * @return RepositoryInterface
+     */
+    public function withoutRelationCount();
 }

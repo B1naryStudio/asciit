@@ -28,9 +28,10 @@
         <!-- Comments -->
         <div class="comments">
             <header class="section-header">
-                <button class="btn btn-default btn-xs">Add comment</button>
+                <button class="btn btn-default btn-xs show-form">Add comment</button>
             </header>
         </div>
     </div>
 </div>
+<div id="comments-region"></div>
 <div id="answers-region"></div>

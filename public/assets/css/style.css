@@ -159,7 +159,6 @@ time,
     background: -ms-linear-gradient(left,  hsla(0,0%,100%,0) 0%,hsla(0,0%,100%,1) 74%,hsla(0,0%,100%,1) 93%); /* IE10+ */
     background: linear-gradient(to right,  hsla(0,0%,100%,0) 0%,hsla(0,0%,100%,1) 74%,hsla(0,0%,100%,1) 93%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
-
 }
 
 /*
@@ -377,4 +376,37 @@ pre code.hljs {
     .container {
         width: 1100px;
     }
+}
+
+.comments-region, .comment-form {
+    width: 83%;
+    margin-left: 17%;
+}
+
+.comment-form {
+    display: none;
+}
+
+.form-open {
+    /*color: #333;*/
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.single-comment {
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+.question-header {
+    padding-left: 0;
+}
+
+.question-preview {
+    font-size: 22px;
+    padding-right: 0;
+}
+
+.question-preview .fa-thumbs-o-up {
+    font-size: 28px;
 }
