@@ -11,7 +11,7 @@ define([
     'ckeditor',
     'ckeditor.adapter',
     'highlight'
-], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, VotesCompositeView, EditorSettings, Comment, CommentsCompositeView) {
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, VotesView, EditorSettings, Comment, CommentsCompositeView) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend({
             template: SingleAnswerTpl,
@@ -44,30 +44,32 @@ define([
                     hljs.highlightBlock(block);
                 });
 
-                var votes = new Vote.Collection(this.model.get('votes'));
-                var votesView = new VotesCompositeView({
-                    collection: votes,
+                var vote = this.model.get('vote');
+                var votesView = new Votes({
+                    vote: vote,
                     q_and_a_id: this.model.id
                 });
                 this.getRegion('votes').show(votesView);
 
                 // Comments
                 var commentModel = new Comment.Model({
-                    q_and_a_id: this.model.attributes.id,
+                    q_and_a_id: this.model.attributes.id
                 });
-                var commentCollection = new Comment.Collection(this.model.attributes.comment);
-                var commentsView = new CommentsCompositeView({model: commentModel, collection: commentCollection, id: this.id});
+                var commentCollection = new Comment.Collection(this.model.get('comment'));
+                var commentsView = new CommentsCompositeView({
+                    model: commentModel,
+                    collection: commentCollection,
+                    id: this.id
+                });
                 this.getRegion('comments').show(commentsView);
 
                 this.listenTo(commentsView, 'form:submit', function (model) {
                     $.when(App.request('comment:add', model))
                         .done(function (savedModel) {
-
                             commentCollection.push(savedModel);
-                            console.log(savedModel);
                             // Add model and form clearing
                             var newModel = new Comment.Model({
-                                q_and_a_id: savedModel.attributes.q_and_a_id,
+                                q_and_a_id: savedModel.attributes.q_and_a_id
                             });
 
                             commentsView.triggerMethod('model:refresh', newModel);

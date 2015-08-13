@@ -186,7 +186,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
 
         if ($this->with_relation_count) {
             $id = [];
-            $collection->each(function ($item, $key) {
+            $collection->each(function ($item, $key) use (&$id) {
                 $id[] = $item->id;
             });
 
@@ -201,7 +201,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
                         $tmp2[$record->id] = $record->$field;
                     }
                     $collection = $collection->each(function ($item, $key) use ($field, $tmp2) {
-                        $item[$field] = $tmp2[$item->id];
+                        $item[$field] = !empty($tmp2[$item->id]) ? $tmp2[$item->id] : 0;
                     });
                 }
             }
@@ -233,7 +233,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
                     }
 
                     foreach ($paginator->items() as &$item) {
-                        $item[$field] = $tmp2[$item->id];
+                        $item[$field] = !empty($tmp2[$item->id]) ? $tmp2[$item->id] : 0;
                     }
                 }
                 unset($item);

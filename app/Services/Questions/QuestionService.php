@@ -86,7 +86,11 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder', 'tags', 'votes', 'comment.user']);
+                ->findWithRelations($id, ['user', 'folder', 'tags', 'comment.user']);
+            $question->vote = $this->voteRepository->findWhere([
+                'q_and_a_id' => $id,
+                'user_id' => Auth::user()->id
+            ]);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such question',

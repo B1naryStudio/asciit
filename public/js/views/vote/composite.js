@@ -4,7 +4,7 @@ define([
     'tpl!views/templates/vote/votes.tpl'
 ], function (App, Vote, VotesTpl) {
     App.module('Vote.Views', function (Views, App, Backbone, Marionette, $, _) {
-        Views.VotesCompositeView = Marionette.CompositeView.extend({
+        Views.Votes = Marionette.ItemView.extend({
             template: VotesTpl,
             ui: {
                 likeButton:    '.like',
@@ -33,7 +33,6 @@ define([
 
                 $.when(App.request('vote:add', this.model))
                     .done(function (savedModel) {
-                        self.collection.push(savedModel);
                         self.render();
                     }).fail(function (errors) {
                         self.onDataInvalid(errors);
@@ -44,7 +43,6 @@ define([
 
                 $.when(App.request('vote:cancel', this.model))
                     .done(function (deletedModel) {
-                        self.collection.remove(deletedModel);
                         self.render();
                     }).fail(function (errors) {
                         self.onDataInvalid(errors);
@@ -57,9 +55,9 @@ define([
                 var counter = this.$el.find(this.ui.ratingCounter);
                 counter.addClass('divided');
                 counter.html(
-                    this.collection.where({sign: 0}).length
+                    0
                         + '/'
-                        + this.collection.where({sign: 1}).length
+                        + 0
                 );
             },
             showUnitedRating: function () {
@@ -69,24 +67,25 @@ define([
                 setTimeout(function () {
                     counter.removeClass('divided');
                     counter.html(
-                        self.collection.where({sign: 1}).length
-                        - self.collection.where({sign: 0}).length
+                        0
+                        - 0
                     );
                 }, 700);
             },
             render: function () {
                 // Calculate rating
-                var rating = this.collection.where({sign: 1}).length
-                    - this.collection.where({sign: 0}).length;
+                var rating = 0
+                    - 0;
 
                 // Moving rating parameter to template
                 this.$el.html(this.template({
                     rating: rating
                 }));
 
+                debugger;
                 // Model refreshing
-                this.model = this.collection.findWhere({'user_id': App.User.Current.id})
-                    || new Vote.Model({'q_and_a_id': this.q_and_a_id});
+                this.model = this.collection.findWhere({ user_id: App.User.Current.id })
+                    || new Vote.Model({ q_and_a_id: this.q_and_a_id });
 
                 this.onShow();
             },
@@ -102,10 +101,11 @@ define([
                 }
             },
             initialize: function (options) {
+                debugger;
                 this.q_and_a_id = options.q_and_a_id;
             }
         });
     });
 
-    return Vote.Views.VotesCompositeView;
+    return Vote.Views.Votes;
 });
