@@ -113,7 +113,7 @@ define([
                     this.trigger('form:submit', this.model);
                 }
             },
-            onDataInvalid: function (errors) {
+            onModelInvalid: function (errors) {
                 for (var field in errors) {
                     Backbone.Validation.callbacks.invalid(this, field, errors[field]);
                 }
@@ -130,7 +130,7 @@ define([
                 this.$el.find('.counter.answers').html(this.model.get('count'));
             },
             onShow: function () {
-                EditorSettings.height = '500px';
+                EditorSettings.height = '350px';
                 this.editor = $('#description').ckeditor(EditorSettings).editor;
            },
             initialize: function () {

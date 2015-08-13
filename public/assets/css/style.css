@@ -14,11 +14,6 @@
  | Questions list
  |------------------------------------------------------------------------------
  */
-
-.questions_list {
-    margin-top: 10px;
-}
-
 .question-row {
     margin: 10px 0;
 }
@@ -33,19 +28,22 @@
     margin-top: 5px
 }
 
-.questions_list .col-md-10 div {
-    margin-top: 5px;
-}
-
-.questions_list .col-md-10 .asked_time,
-.questions_list .col-md-10 .folder {
+.questions_list .asked_time,
+.questions_list .folder {
     color: dimgray;
     font-size: 0.9em;
 }
 
-.questions_list .col-md-10 .question {
+.questions_list .question {
     color: black;
     font-size: 16px;
+}
+
+.questions_list .more {
+    display: inline-block;
+    float: right;
+    margin-top: 8px;
+    margin-right: 15px;
 }
 
 /*
@@ -143,6 +141,7 @@ time,
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
+    padding-right: 15px;
 }
 
 .list-group-item .limited::after {
@@ -170,6 +169,22 @@ time,
  */
 .new-answer .panel-body {
     padding: 0;
+}
+
+.new-answer .form-group {
+    margin: 0;
+}
+.new-answer .help-block {
+    margin-left: 10px;
+}
+
+.new-answer-controls {
+    text-align: center;
+    margin: 15px auto 50px;
+}
+
+.new-answer-controls input {
+    width: 80px;
 }
 
 /*
@@ -255,19 +270,32 @@ time,
  | Tags
  |------------------------------------------------------------------------------
  */
-#question-list .tags {
-    margin-right: 85px;
-}
-
-#question-list .tags li,
-#question-view .tags li,
-.tags_list.tags li {
-    float: left;
+.tags_list {
+    margin-top: 50px;
 }
 
 #question-view .tags  {
-    float: left;
+    display: table;   /* Allow the centering to work */
+    text-align: center;
     margin: 20px 0 30px 0;
+}
+
+    #question-list .tags li,
+    .tags_list.tags li {
+        float: left;
+    }
+
+    #question-view .tags ul {
+        min-width: 150px;
+        list-style: none;
+    }
+
+    #question-view .tags li {
+        display: inline-block;
+    }
+
+#question-list .tags {
+    padding: 0;
 }
 
 .tags ul {
@@ -275,34 +303,50 @@ time,
     padding: 0;
 }
 
-.tags li {
-    list-style: none;
-    background-color: #e4e4e4;
-    border: 1px solid #aaa;
-    border-radius: 4px;
-    cursor: default;
-    margin-right: 5px;
-    margin-top: 5px;
-    padding: 0 5px;
+    .tags li {
+        list-style: none;
+        font-size: 0.8em;
+        background-color: #EEEEEE;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: default;
+        margin-right: 5px;
+        margin-top: 5px;
+        padding: 0 5px;
+    }
+
+
+        .tags li a {
+            display: block;
+            width: 100%;
+            padding: 3px 8px;
+            text-decoration: none;
+            color: #444;
+        }
+
+.tags_list .list {
+    float: left;
+    margin-bottom: 20px;
 }
 
-.tags li a {
-    display: block;
+.tags_list .title {
+    float: left;
     width: 100%;
-    padding: 0 5px;
-    text-decoration: none;
-    color: #000000;
+    padding-top: 5px;
 }
 
-.pull-right {
-    position: absolute;
-    bottom: 0;
-    right: 15px;
+.tags .search {
+    background: #009933;
+    border: none;
 }
+
+    .tags .search a {
+        color: #fff;
+    }
 
 /*
  |------------------------------------------------------------------------------
- | Code blocks
+ | Code-snippet blocks
  |------------------------------------------------------------------------------
  */
 pre {
@@ -316,24 +360,11 @@ pre code.hljs {
     font-family: monospace, monospace;
 }
 
-.tags_list .list {
-    float: left;
-    margin-bottom: 20px;
-}
-
-.tags_list .title {
-    float: left;
-    width: 100%;
-    padding-top: 5px;
-}
-
-#tags-region {
-    position: absolute;
-    width: 100px;
-    right: 15px;
-    top: 200px;
-}
-
+/*
+ |------------------------------------------------------------------------------
+ | Media
+ |------------------------------------------------------------------------------
+ */
 @media (min-width: 768px) {
     .container {
         width: 528px;
@@ -361,10 +392,6 @@ pre code.hljs {
 @media (min-width: 1600px) {
     .container {
         width: 1100px;
-    }
-
-    #tags-region {
-        width: 130px;
     }
 }
 

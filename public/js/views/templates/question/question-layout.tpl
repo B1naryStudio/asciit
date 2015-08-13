@@ -1,11 +1,13 @@
 <div class="row question_view">
     <div class="col-md-2 text-center">
         <!-- User's avatar and name -->
-        <figure class="user-info text-center">
-            <img src="<%- user.avatar %>" width="100" height="100" alt="100x100" class="img-thumbnail">
-            <h5><%= user.first_name + ' ' + user.last_name %></h5>
-        </figure>
-        <div class="tags"></div>
+        <div class="row">
+            <figure class="user-info text-center">
+                <img src="<%- user.avatar %>" width="100" height="100" alt="100x100" class="img-thumbnail">
+                <h5><%= user.first_name + ' ' + user.last_name %></h5>
+            </figure>
+        </div>
+        <div class="tags row"></div>
     </div>
     <div class="col-md-10">
         <!-- Question header -->

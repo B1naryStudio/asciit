@@ -3,15 +3,20 @@
 use Mockery as m;
 use App\Services\Questions\QuestionService;
 use App\Repositories\Entities\Question;
+use App\Repositories\Entities\Answer;
 use App\Repositories\Entities\Folder;
 use App\Repositories\Entities\Tag;
+use App\Repositories\Entities\User;
+use App\Repositories\Entities\Vote;
 use App\Repositories\Exceptions\RepositoryException;
 
 class QuestionServiceTest extends TestCase
 {
     protected $question;
+    protected $answer;
     protected $folder;
     protected $tag;
+    protected $vote;
 
     protected $questionService;
     protected $questionRepo;
@@ -19,6 +24,7 @@ class QuestionServiceTest extends TestCase
     protected $folderRepo;
     protected $tagRepo;
     protected $voteRepo;
+    protected $commentRepo;
 
     public function setUp()
     {
@@ -43,6 +49,15 @@ class QuestionServiceTest extends TestCase
             'folder'      => ['title' => 'Eyebrows']
         ]);
 
+        $this->answer = new Answer([
+            'id'          => 2,
+            'description' => $questionDescription,
+        ]);
+
+        $this->user = new User([
+            'id' => 1
+        ]);
+
         $this->folder = new Folder();
         $this->folder->forceFill([
             'id' => 1
@@ -50,17 +65,26 @@ class QuestionServiceTest extends TestCase
 
         $this->tag = new Tag();
 
+        $this->vote = new Vote([
+            'id' => 1,
+            'q_and_a_id' => 1,
+            'user_id' => 1
+        ]);
+
         $this->questionRepo = m::mock('App\Repositories\Repositories\QuestionRepositoryEloquent');
         $this->answerRepo = m::mock('App\Repositories\Repositories\AnswerRepositoryEloquent');
         $this->folderRepo = m::mock('App\Repositories\Repositories\FolderRepositoryEloquent');
         $this->tagRepo = m::mock('App\Repositories\Repositories\TagRepositoryEloquent');
         $this->voteRepo = m::mock('App\Repositories\Repositories\VoteRepositoryEloquent');
+        $this->commentRepo = m::mock('App\Repositories\Repositories\CommentRepositoryEloquent');
+
         $this->questionService = new QuestionService(
             $this->questionRepo,
             $this->answerRepo,
             $this->folderRepo,
             $this->tagRepo,
-            $this->voteRepo
+            $this->voteRepo,
+            $this->commentRepo
         );
 
         $this->tagRepo->shouldReceive('pushCriteria')
@@ -76,6 +100,14 @@ class QuestionServiceTest extends TestCase
             ->andReturn([$this->tag]);
 
         $this->questionRepo->shouldReceive('relationsAdd');
+
+        $this->voteRepo->shouldReceive('findWhere')
+            ->andReturn($this->vote);
+
+        $this->answerRepo->shouldReceive('withRelationCount')
+            ->andReturn($this->answerRepo);
+
+        Auth::shouldReceive('user')->andReturn($this->user);
     }
 
     public function tearDown()
@@ -106,7 +138,7 @@ class QuestionServiceTest extends TestCase
     public function testGetQuestionReturnsWithRelations()
     {
         $this->questionRepo->shouldReceive('findWithRelations')
-            ->with($this->question->id, ['user', 'folder', 'tags', 'votes'])
+            ->with($this->question->id, ['user', 'folder', 'tags', 'comment.user'])
             ->once()
             ->andReturn($this->question);
 
@@ -133,7 +165,7 @@ class QuestionServiceTest extends TestCase
     {
         $this->answerRepo->shouldReceive('findByFieldWithRelations')
             ->once()
-            ->with('question_id', $this->question->id, ['user', 'votes'])
+            ->with('question_id', $this->question->id, ['user', 'comment.user'])
             ->andReturn([$this->question]);
 
         $this->assertSame(

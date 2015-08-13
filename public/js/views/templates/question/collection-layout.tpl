@@ -1,3 +1,6 @@
-<div id="tags-region"></div>
-<div id="collection-region"></div>
-<div id="paginator-region"></div>
+
+<div class="col-md-10">
+    <div class="row" id="collection-region"></div>
+    <div class="row" id="paginator-region"></div>
+</div>
+<div class="col-md-2" id="tags-region"></div>
