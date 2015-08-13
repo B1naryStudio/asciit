@@ -27,7 +27,8 @@ class AnswerController extends Controller
      */
     public function index($question_id)
     {
-        return $this->questionService->getAnswersOfQuestion($question_id);
+        $answers = $this->questionService->getAnswersOfQuestion($question_id);
+        return Response::json($answers->toArray(), 201, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -58,7 +59,7 @@ class AnswerController extends Controller
             ], 404);
         }
 
-        return Response::json($answer->toArray(), 201);
+        return Response::json($answer->toArray(), 201, [], JSON_NUMERIC_CHECK);
     }
 
     /**

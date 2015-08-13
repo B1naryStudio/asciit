@@ -118,11 +118,12 @@ class UserController extends Controller
                 'error' => [$e->getMessage()]
             ], 500);
         }
-        return Response::json(null, 200);
+        return Response::json(null, 200, [], JSON_NUMERIC_CHECK);
     }
 
     public function session()
     {
-        return $this->authService->checkUser();
+        $res = $this->authService->checkUser();
+        return Response::json($res, 200, [], JSON_NUMERIC_CHECK);
     }
 }

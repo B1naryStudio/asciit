@@ -30,6 +30,6 @@ class FolderController extends Controller
     {
         $folders = $this->questionService->getFolders();
 
-        return Response::json($folders, 200);
+        return Response::json($folders, 200, [], JSON_NUMERIC_CHECK);
     }
 }
