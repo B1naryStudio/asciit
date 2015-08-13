@@ -34,11 +34,11 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
             'table' => 'votes',
             'foreignKey' =>  'q_and_a_id',
             'otherKey' => 'q_and_a_id',
-            'count' => 'votes_count',
+            'count' => 'vote_value',
             'fields' => [
-                'sum(if(sign>0, 1, -1))' => 'votes_count',
-                'sum(if(sign>0, 1, 0))' => 'votes_like',
-                'sum(if(sign>0, 0, 1))' => 'votes_dislike'
+                'sum(if(sign>0, 1, -1))' => 'vote_value',
+                'sum(if(sign>0, 1, 0))' => 'vote_likes',
+                'sum(if(sign>0, 0, 1))' => 'vote_dislikes'
             ]
         ]
     ];

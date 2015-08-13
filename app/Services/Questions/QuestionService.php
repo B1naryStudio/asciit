@@ -86,7 +86,12 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder', 'tags', 'votes', 'comment.user']);
+                ->findWithRelations($id, ['user', 'folder', 'tags', 'comment.user']);
+            $tmp = $this->voteRepository->findWhere([
+                'q_and_a_id' => $id,
+                'user_id' => Auth::user()->id
+            ]);
+            $question->vote = $tmp->first();;
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such question',
@@ -120,7 +125,8 @@ class QuestionService implements QuestionServiceInterface
     public function getAnswersOfQuestion($question_id)
     {
         return $this->answerRepository
-            ->findByFieldWithRelations('question_id', $question_id, ['user', 'votes', 'comment.user']);
+            ->withRelationCount()
+            ->findByFieldWithRelations('question_id', $question_id, ['user', 'comment.user']);
     }
     
     public function getEntryComments($question_id){}
@@ -164,7 +170,7 @@ class QuestionService implements QuestionServiceInterface
         $new = $this->answerRepository->create($data);
 
         try {
-            $answer = $this->answerRepository
+            $answer = $this->answerRepository->withRelationCount()
                 ->findWithRelations($new->id, ['user']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(

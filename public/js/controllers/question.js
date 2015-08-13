@@ -14,8 +14,7 @@ define([
     'models/comment',
     'models/question',
     'models/folder',
-    'models/tag',
-
+    'models/tag'
 ], function (App, CollectionView, CollectionLayout, PaginatorView, SingleView, AddView, SelectFolderView, AnswersCompositeView, SelectTagView, TagsView, Answer, CommentsCompositeView, Comment) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
@@ -92,7 +91,7 @@ define([
 
                         // New comments to question view
                         var commentModel = new Comment.Model({
-                            q_and_a_id: id,
+                            q_and_a_id: id
                         });
 
                         var collectionComments = new Comment.Collection(question.attributes.comment);
@@ -106,7 +105,7 @@ define([
                                     collectionComments.push(savedModel);
                                     // Add model and form clearing
                                     var newModel = new Comment.Model({
-                                        question_id: id,
+                                        question_id: id
                                     });
 
                                     commentsView.triggerMethod('model:refresh', newModel);

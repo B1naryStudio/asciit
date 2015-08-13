@@ -8,12 +8,20 @@
             <!--<div class="question-info">Comments: 2</div>-->
         </div>
         <div class="col-md-10">
-            <div class="asked_time">Asked at <%- created_at %></div>
-            <div><a class="question" href="#questions/<%- id %>"><b><%- title %></b></a></div>
-            <div class="folder">
-                <span class="icon glyphicon glyphicon-folder-close" aria-hidden="true"></span>
-                <%- folder.title %>
+            <div class="col-md-11 question-header">
+                <div class="asked_time">Asked at <%- created_at %></div>
+                <div><a class="question" href="#questions/<%- id %>"><b><%- title %></b></a></div>
+                <div class="folder">
+                    <span class="icon glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+                    <%- folder.title %>
+                </div>
             </div>
+            <div class="col-md-1 question-preview">
+                <i class="fa fa-thumbs-o-up fa-6"></i>
+                <%- vote_value %>
+            </div>
+        </div>
+        <div class="col-md-10">
             <div>
                 <div class="limited"><%= description %></div>
             </div>

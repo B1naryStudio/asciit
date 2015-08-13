@@ -4,7 +4,7 @@ define([
     'tpl!views/templates/vote/votes.tpl'
 ], function (App, Vote, VotesTpl) {
     App.module('Vote.Views', function (Views, App, Backbone, Marionette, $, _) {
-        Views.VotesCompositeView = Marionette.CompositeView.extend({
+        Views.Votes = Marionette.ItemView.extend({
             template: VotesTpl,
             ui: {
                 likeButton:    '.like',
@@ -33,7 +33,11 @@ define([
 
                 $.when(App.request('vote:add', this.model))
                     .done(function (savedModel) {
-                        self.collection.push(savedModel);
+                        if (savedModel.get('sign')) {
+                            self.options.likes++;
+                        } else {
+                            self.options.dislikes++;
+                        }
                         self.render();
                     }).fail(function (errors) {
                         self.onDataInvalid(errors);
@@ -41,10 +45,15 @@ define([
             },
             onCancel: function () {
                 var self = this;
-
                 $.when(App.request('vote:cancel', this.model))
                     .done(function (deletedModel) {
-                        self.collection.remove(deletedModel);
+                        delete self.options.data;
+                        if (deletedModel.get('sign')) {
+                            self.options.likes--;
+                        } else {
+                            self.options.dislikes--;
+                        }
+                        self.updateModel();
                         self.render();
                     }).fail(function (errors) {
                         self.onDataInvalid(errors);
@@ -57,9 +66,9 @@ define([
                 var counter = this.$el.find(this.ui.ratingCounter);
                 counter.addClass('divided');
                 counter.html(
-                    this.collection.where({sign: 0}).length
+                    this.options.likes
                         + '/'
-                        + this.collection.where({sign: 1}).length
+                        + this.options.dislikes
                 );
             },
             showUnitedRating: function () {
@@ -69,24 +78,18 @@ define([
                 setTimeout(function () {
                     counter.removeClass('divided');
                     counter.html(
-                        self.collection.where({sign: 1}).length
-                        - self.collection.where({sign: 0}).length
+                        self.options.likes - self.options.dislikes
                     );
                 }, 700);
             },
             render: function () {
                 // Calculate rating
-                var rating = this.collection.where({sign: 1}).length
-                    - this.collection.where({sign: 0}).length;
+                var rating = this.options.likes - this.options.dislikes;
 
                 // Moving rating parameter to template
                 this.$el.html(this.template({
                     rating: rating
                 }));
-
-                // Model refreshing
-                this.model = this.collection.findWhere({'user_id': App.User.Current.id})
-                    || new Vote.Model({'q_and_a_id': this.q_and_a_id});
 
                 this.onShow();
             },
@@ -102,10 +105,18 @@ define([
                 }
             },
             initialize: function (options) {
-                this.q_and_a_id = options.q_and_a_id;
+                this.options.data = options.vote;
+                this.options.q_and_a_id = options.q_and_a_id;
+                this.options.likes = options.likes;
+                this.options.dislikes = options.dislikes;
+                this.updateModel();
+            },
+            updateModel: function () {
+                var data = this.options.data ? this.options.data : { q_and_a_id: this.options.q_and_a_id };
+                this.model = new Vote.Model(data);
             }
         });
     });
 
-    return Vote.Views.VotesCompositeView;
+    return Vote.Views.Votes;
 });

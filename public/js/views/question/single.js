@@ -7,7 +7,7 @@ define([
     'views/vote/composite',
     'stickit',
     'highlight'
-], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, Vote, VotesCompositeView) {
+], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, Vote, VotesView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionLayout = Marionette.LayoutView.extend({
             tagname: 'div',
@@ -21,7 +21,7 @@ define([
             },
 
             events: {
-                'click .show-form' : 'showForm',
+                'click .show-form' : 'showForm'
             },
 
             showForm: function(e) {
@@ -38,9 +38,11 @@ define([
                     self.getRegion('tag').show(new TagView({ collection: tags }));
                 });
 
-                var votes = new Vote.Collection(this.model.get('votes'));
-                var votesView = new VotesCompositeView({
-                    collection: votes,
+                var vote = this.model.get('vote');
+                var votesView = new VotesView({
+                    vote: vote,
+                    likes: this.model.get('vote_likes'),
+                    dislikes: this.model.get('vote_dislikes'),
                     q_and_a_id: this.model.id
                 });
                 this.getRegion('votes').show(votesView);
