@@ -17,8 +17,9 @@
 
             <!-- Comments -->
             <div class="comments">
-                <button class="btn btn-default btn-xs">Add comment</button>
+                <button class="btn btn-default btn-xs show-form">Add comment</button>
             </div>
         </div>
     </div>
+    <div class="answers-comments-region"></div>
 </div>
