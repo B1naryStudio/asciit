@@ -66,9 +66,9 @@ define([
                 var counter = this.$el.find(this.ui.ratingCounter);
                 counter.addClass('divided');
                 counter.html(
-                    this.options.likes
+                    this.options.dislikes
                         + '/'
-                        + this.options.dislikes
+                        + this.options.likes
                 );
             },
             showUnitedRating: function () {
