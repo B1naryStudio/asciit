@@ -1,4 +1,4 @@
-define(['app'], function(App) {
+define(['app', 'moment'], function(App, moment) {
     App.module('Comment', function(Comment, App, Backbone, Marionette, $, _) {
         Comment.Model = Backbone.Model.extend({
             defaults: {
@@ -13,6 +13,14 @@ define(['app'], function(App) {
                 this.urlRoot = App.prefix + '/api/v1/questions/'
                     + options.question_id
                     + '/comments';
+                this.attachLocalDates();
+                this.on('sync', this.attachLocalDates);
+            },
+            attachLocalDates: function () {
+                var updatedLocal = moment.utc(this.get('updated_at')).toDate();
+                this.set('updated_local', moment(updatedLocal).format('MMMM Do YYYY, h:mm:ss a'));
+                var createdLocal = moment.utc(this.get('created_at')).toDate();
+                this.set('created_local', moment(createdLocal).format('MMMM Do YYYY, h:mm:ss a'));
             }
         });
 
@@ -31,21 +39,9 @@ define(['app'], function(App) {
         });
 
         var API = {
-            //getAnswers: function (question_id) {
-            //    var answers = new Answer.Collection({question_id: question_id});
-            //    var defer = $.Deferred();
-            //
-            //    answers.fetch({
-            //        success: function (data) {
-            //            defer.resolve(data);
-            //        }
-            //    });
-            //
-            //    return defer.promise();
-            //},
-
             addComment: function (model) {
                 var defer = $.Deferred();
+                model.set('created_at', moment().format('MMMM Do YYYY, h:mm:ss a'));
 
                 if (!model.save([], {
                         wait: true,

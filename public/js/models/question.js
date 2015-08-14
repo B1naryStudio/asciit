@@ -1,4 +1,4 @@
-define(['app', 'paginator'], function(App, PageableCollection) {
+define(['app', 'paginator', 'moment'], function(App, PageableCollection, moment) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend({
             urlRoot: App.prefix + '/api/v1/questions',
@@ -11,6 +11,16 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                     required: true,
                     msg: 'Please enter a description'
                 }
+            },
+            initialize: function (options) {
+                this.attachLocalDates();
+                this.on('sync', this.attachLocalDates);
+            },
+            attachLocalDates: function () {
+                var updatedLocal = moment.utc(this.get('updated_at')).toDate();
+                this.set('updated_local', moment(updatedLocal).format('MMMM Do YYYY, h:mm:ss a'));
+                var createdLocal = moment.utc(this.get('created_at')).toDate();
+                this.set('created_local', moment(createdLocal).format('MMMM Do YYYY, h:mm:ss a'));
             }
         });
 
@@ -50,6 +60,7 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                 sortedBy: 'desc'
             },
             initialize: function(options) {
+                debugger;
                 this.searchQuery = options.searchQuery;
                 this.searchTag = options.searchTag;
                 this.sort();

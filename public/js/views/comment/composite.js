@@ -5,11 +5,8 @@ define(['app',
 ], function (App, CommentsTpl, SingleCommentTpl) {
     App.module('Comment.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleCommentCompositeView = Marionette.CompositeView.extend({
-            template: SingleCommentTpl,
-            initialize: function(){
-            },
+            template: SingleCommentTpl
         });
-
 
         View.CommentsCompositeView = Marionette.CompositeView.extend({
             tagName: 'section',
