@@ -1,4 +1,4 @@
-define(['app'], function(App) {
+define(['app', 'moment'], function(App, moment) {
     App.module('Answer', function(Answer, App, Backbone, Marionette, $, _) {
         Answer.Model = Backbone.Model.extend({
             defaults: {
@@ -11,8 +11,17 @@ define(['app'], function(App) {
             },
             initialize: function (options) {
                 this.urlRoot = App.prefix + '/api/v1/questions/'
-                    + options.question_id
-                    + '/answers';
+                + options.question_id
+                + '/answers';
+
+                this.attachLocalDates();
+                this.on('sync', this.attachLocalDates);
+            },
+            attachLocalDates: function () {
+                var updatedLocal = moment.utc(this.get('updated_at')).toDate();
+                this.set('updated_local', moment(updatedLocal).format('MMMM Do YYYY, h:mm:ss a'));
+                var createdLocal = moment.utc(this.get('created_at')).toDate();
+                this.set('created_local', moment(createdLocal).format('MMMM Do YYYY, h:mm:ss a'));
             }
         });
 
@@ -46,6 +55,7 @@ define(['app'], function(App) {
 
             addAnswer: function (model) {
                 var defer = $.Deferred();
+                model.set('created_at', moment().format('MMMM Do YYYY, h:mm:ss a'));
 
                 if (!model.save([], {
                         wait: true,

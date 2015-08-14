@@ -12,7 +12,7 @@
             <div class="votes"></div>
 
             <!-- Text -->
-            <time>Answered at <%- created_at %></time>
+            <time>Answered at <%- created_local %></time>
             <div class="description"><%= description %></div>
 
             <!-- Comments -->

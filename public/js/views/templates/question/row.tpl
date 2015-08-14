@@ -10,7 +10,7 @@
         <div class="col-md-10">
             <div class="row">
                 <div class="col-md-10 question-header">
-                    <div class="asked_time">Asked at <%- created_at %></div>
+                    <div class="asked_time">Asked at <%- created_local %></div>
                     <div><a class="question" href="#questions/<%- id %>"><b><%- title %></b></a></div>
                     <div class="folder">
                         <span class="icon glyphicon glyphicon-folder-close" aria-hidden="true"></span>

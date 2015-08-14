@@ -10,7 +10,7 @@
         <div class="col-md-10">
 
             <!-- Text -->
-            <time>Commented at <%- created_at %></time>
+            <time>Commented at <%- created_local %></time>
             <p><%- text %></p>
         </div>
     </div>
