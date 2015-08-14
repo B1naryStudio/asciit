@@ -22,7 +22,7 @@ define([
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery, searchTag) {
                 $.when(App.request('question:collection', searchQuery, searchTag)).done(function (questions) {
-                    $('#spinner').addClass('bar');
+                    //$('#spinner').addClass('bar');
                     $.when(App.request('tag:collection', { type: 'popular', page_size: 10 })).done(function (tags) {
                         var questionsView = new CollectionView({
                             collection: questions.sort(),
@@ -39,7 +39,7 @@ define([
                         collectionLayout.getRegion('paginatorRegion').show(paginatorView);
                         collectionLayout.getRegion('tagsRegion').show(tagsView);
 
-                        $('#spinner').removeClass('bar');
+                        //$('#spinner').removeClass('bar');
 
                     // Updating for search
                     Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
