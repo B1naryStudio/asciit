@@ -72,9 +72,6 @@ define([
             success(resp);
 
         };
-        //if(options.success){
-        //    App.queryFlag.push(true);
-        //}
         return sync(method, model, options);
     };
 
