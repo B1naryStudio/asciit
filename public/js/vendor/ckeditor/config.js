@@ -36,6 +36,46 @@
             },
         ];
 
+        config.codeSnippet_languages = {
+            actionscript: 'ActionScript',
+            apache: 'Apache',
+            bash: 'Bash',
+            brainfuck: 'Brainfuck',
+            css: 'CSS',
+            csharp: 'C#',
+            cpp: 'C++',
+            coffeescript: 'CoffeeScript',
+            dart: 'Dart',
+            diff: 'Diff',
+            erlang: 'Erlang',
+            fortran: 'Fortran',
+            haskell: 'Haskell',
+            http: 'HTTP',
+            html:    'HTML, XML',
+            ini: 'Ini',
+            x86am: 'Intel x86 Assembly',
+            java: 'Java',
+            javascript: 'JavaScript',
+            json: 'JSON',
+            lua: 'Lua',
+            lisp: 'Lisp',
+            makefile: 'Makefile',
+            markdown: 'Markdown',
+            nginx: 'Nginx',
+            objectivec: 'Objective C',
+            oxygene: 'Oxygene',
+            php: 'PHP',
+            perl: 'Perl',
+            python: 'Python',
+            prolog: 'Prolog',
+            ruby: 'Ruby',
+            scala: 'Scala',
+            smalltalk: 'Smalltalk',
+            SQL: 'SQL',
+            swift: 'Swift',
+            vim: 'Vim Script'
+        };
+
         // Remove some buttons provided by the standard plugins, which are
         // not needed in the Standard(s) toolbar.
         //config.removeButtons = 'Underline,Subscript,Superscript';
