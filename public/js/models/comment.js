@@ -1,6 +1,9 @@
-define(['app', 'moment'], function(App, moment) {
+define([
+    'app',
+    'models/related-timestamps-model'
+], function(App, RelatedTimestampsModel) {
     App.module('Comment', function(Comment, App, Backbone, Marionette, $, _) {
-        Comment.Model = Backbone.Model.extend({
+        Comment.Model = RelatedTimestampsModel.extend({
             defaults: {
                 'text': ''
             },
@@ -13,14 +16,9 @@ define(['app', 'moment'], function(App, moment) {
                 this.urlRoot = App.prefix + '/api/v1/questions/'
                     + options.question_id
                     + '/comments';
+
                 this.attachLocalDates();
                 this.on('sync', this.attachLocalDates);
-            },
-            attachLocalDates: function () {
-                var updatedLocal = moment.utc(this.get('updated_at')).toDate();
-                this.set('updated_local', moment(updatedLocal).format('MMMM Do YYYY, h:mm:ss a'));
-                var createdLocal = moment.utc(this.get('created_at')).toDate();
-                this.set('created_local', moment(createdLocal).format('MMMM Do YYYY, h:mm:ss a'));
             }
         });
 
@@ -41,7 +39,6 @@ define(['app', 'moment'], function(App, moment) {
         var API = {
             addComment: function (model) {
                 var defer = $.Deferred();
-                model.set('created_at', moment().format('MMMM Do YYYY, h:mm:ss a'));
 
                 if (!model.save([], {
                         wait: true,
