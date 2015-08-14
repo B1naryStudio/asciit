@@ -21,8 +21,10 @@ define([
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery, searchTag) {
-                $.when(App.request('question:collection', searchQuery, searchTag)).done(function (questions) {
-                    $.when(App.request('tag:collection', { type: 'popular', page_size: 10 })).done(function (tags) {
+                $.when(
+                    App.request('question:collection', searchQuery, searchTag),
+                    App.request('tag:collection', { type: 'popular', page_size: 10 })
+                ).done(function (questions, tags) {
                         var questionsView = new CollectionView({
                             collection: questions.sort(),
                             searchQuery: searchQuery,
@@ -40,17 +42,14 @@ define([
 
                     // Updating for search
                     Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
-                        questionsView.options.searchTag = '';
-                        $.when(App.request('question:collection', searchQuery, ''))
-                            .done(function (questions) {
-                                // If any results
-                                if (questions.length) {
-                                    Backbone.history.navigate('/questions?' + searchQuery, {trigger: true});
-                                } else {
-                                    questionsView.triggerMethod('not:found');
-                                }
-                            });
-                        });
+                        if (/tag\:(.+)/.test(searchQuery)) {
+                            var query = searchQuery.replace(/tag\:(.+)/, '$1');
+                            questionsView.options.searchQuery = '';
+                            Backbone.history.navigate('/tags/' + query, {trigger: true});
+                        } else {
+                            questionsView.options.searchTag = '';
+                            Backbone.history.navigate('/questions?' + searchQuery, {trigger: true});
+                        }
                     });
                 });
             },
