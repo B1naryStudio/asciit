@@ -14,7 +14,7 @@
         <div class="row">
             <!-- Time, title, folder -->
             <div class="col-md-10">
-                <time>Asked at <%- created_local %></time>
+                <time>Asked <%- created_relative %></time>
                 <h2><%- title %></h2>
                 <div class="folder"><span class="icon glyphicon glyphicon-folder-open"></span> <%- folder.title %></div>
             </div>
