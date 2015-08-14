@@ -5,6 +5,8 @@ define([
 ], function (Marionette) {
     var App = new Marionette.Application();
 
+    App.queryFlag = [];
+
     App.prefix = window.location.pathname.replace(/(\/.*)(\/)/, '$1');
     if (App.prefix === '/') {
         App.prefix = '';
@@ -46,16 +48,29 @@ define([
     var sync = Backbone.sync;
 
     Backbone.sync = function (method, model, options) {
+        App.queryFlag.push(true);
         var error = function () {};
+        var success = function () {};
         if (options.error) {
             error = options.error;
         }
         options.error = function (xhr, textStatus, errorThrown) {
+            App.queryFlag.pop();
+            App.trigger('spinner:check');
             if (xhr.status === 401 ) {
                 Backbone.history.navigate('/login', { trigger: true });
             } else {
                 error(xhr, textStatus, errorThrown);
             }
+        };
+        if (options.success) {
+            success = options.success;
+        }
+        options.success = function (resp) {
+            App.queryFlag.pop();
+            App.trigger('spinner:check');
+            success(resp);
+
         };
         return sync(method, model, options);
     };
