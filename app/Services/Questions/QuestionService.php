@@ -143,7 +143,7 @@ class QuestionService implements QuestionServiceInterface
     // Attaching likes in easy obvious one-query way.
     private function attachVotesShortInfo(&$model, $votes)
     {
-        $likes = $votes->where('sign', 1)->count();
+        $likes = $votes->whereLoose('sign', 1)->count();
         $dislikes = $votes->count() - $likes;
         $rating = $likes - $dislikes;
         $users_vote = $votes->where('user_id', Auth::user()->id)->first();

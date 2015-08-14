@@ -31,6 +31,7 @@ define(['app', 'tpl!views/templates/tag/select-row.tpl', 'select2'], function (A
                             processResults: function (data, params) {
                                 for (var i = 0; i < data.length; i++ ) {
                                     data[i].text = params.term;
+                                    data[i].id = params.term;
                                 }
                                 return {
                                     results: data
@@ -51,7 +52,6 @@ define(['app', 'tpl!views/templates/tag/select-row.tpl', 'select2'], function (A
                             if (!repo.title) {
                                 repo.title = repo.text;
                             }
-
                             return SelectRowTpl(repo);
                         },
                         templateSelection: function (repo) {
