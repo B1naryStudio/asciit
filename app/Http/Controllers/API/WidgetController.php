@@ -32,8 +32,18 @@ class WidgetController extends Controller
         if (empty($count)) {
             $count = 3;
         }
+        $where = [];
+        $date = $request->get('date_start');
+        if (!empty($date)) {
+            $where['date_start'] = $date;
+        }
+        $date = $request->get('date_end');
+        if (!empty($date)) {
+            $where['date_end'] = $date;
+        }
+
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-        $questions = $this->questionService->getQuestions($count);
+        $questions = $this->questionService->getQuestions($count, $where);
 
         $questions = $this->addLinks($request, $questions);
 
@@ -51,8 +61,18 @@ class WidgetController extends Controller
         if (empty($count)) {
             $count = 3;
         }
+        $where = [];
+        $date = $request->get('date_start');
+        if (!empty($date)) {
+            $where['date_start'] = $date;
+        }
+        $date = $request->get('date_end');
+        if (!empty($date)) {
+            $where['date_end'] = $date;
+        }
+
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-        $questions = $this->questionService->getQuestionsPopular($count);
+        $questions = $this->questionService->getQuestionsPopular($count, $where);
 
         $questions = $this->addLinks($request, $questions);
 
@@ -70,8 +90,18 @@ class WidgetController extends Controller
         if (empty($count)) {
             $count = 3;
         }
+        $where = [];
+        $date = $request->get('date_start');
+        if (!empty($date)) {
+            $where['date_start'] = $date;
+        }
+        $date = $request->get('date_end');
+        if (!empty($date)) {
+            $where['date_end'] = $date;
+        }
+
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-        $questions = $this->questionService->getQuestionsUpvoted($count);
+        $questions = $this->questionService->getQuestionsUpvoted($count, $where);
 
         $questions = $this->addLinks($request, $questions);
 
@@ -89,8 +119,18 @@ class WidgetController extends Controller
         if (empty($count)) {
             $count = 3;
         }
+        $where = [];
+        $date = $request->get('date_start');
+        if (!empty($date)) {
+            $where['date_start'] = $date;
+        }
+        $date = $request->get('date_end');
+        if (!empty($date)) {
+            $where['date_end'] = $date;
+        }
+
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-        $questions = $this->questionService->getQuestionsTopCommented($count);
+        $questions = $this->questionService->getQuestionsTopCommented($count, $where);
 
         $questions = $this->addLinks($request, $questions);
 

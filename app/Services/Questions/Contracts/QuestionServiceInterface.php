@@ -26,10 +26,6 @@ interface QuestionServiceInterface
      */
     public function getAnswersOfQuestion($question_id);
 
-    public function getEntryComments($question_id);
-
-    public function addComment($data, $entry, $comment_id = null);
-
     public function addVote($entry_id);
 
     public function removeVote($vote_id);
@@ -44,9 +40,9 @@ interface QuestionServiceInterface
 
     public function createComment($data, $question_id);
 
-    public function getQuestionsPopular($pageSize = null);
+    public function getQuestionsPopular($pageSize = null, $data = array());
 
-    public function getQuestionsUpvoted($pageSize = null);
+    public function getQuestionsUpvoted($pageSize = null, $data = array());
 
-    public function getQuestionsTopCommented($pageSize = null);
+    public function getQuestionsTopCommented($pageSize = null, $data = array());
 }
