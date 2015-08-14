@@ -165,7 +165,11 @@ class QuestionServiceTest extends TestCase
     {
         $this->answerRepo->shouldReceive('findByFieldWithRelations')
             ->once()
-            ->with('question_id', $this->question->id, ['user', 'comment.user'])
+            ->with(
+                'question_id',
+                $this->question->id,
+                ['user', 'comment.user', 'votes']
+            )
             ->andReturn([$this->question]);
 
         $this->assertSame(
