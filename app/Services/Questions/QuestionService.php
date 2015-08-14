@@ -86,7 +86,7 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder', 'tags', 'comment.user']);
+                ->findWithRelations($id, ['user', 'folder', 'tags', 'comments.user']);
             $tmp = $this->voteRepository->findWhere([
                 'q_and_a_id' => $id,
                 'user_id' => Auth::user()->id
@@ -128,7 +128,7 @@ class QuestionService implements QuestionServiceInterface
             ->findByFieldWithRelations(
                 'question_id',
                 $question_id,
-                ['user', 'comment.user', 'votes']
+                ['user', 'comments.user', 'votes']
             );
 
         foreach ($answers as $answer) {
@@ -294,6 +294,22 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $questions = $this->questionRepository->loadRelationPopular('votes', $pageSize, [
+                ['main.question_id is null']
+            ]);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $questions;
+    }
+
+    public function getQuestionsTopCommented($pageSize = null)
+    {
+        try {
+            $questions = $this->questionRepository->loadRelationPopular('comments', $pageSize, [
                 ['main.question_id is null']
             ]);
         } catch (RepositoryException $e) {
