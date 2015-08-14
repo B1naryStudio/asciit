@@ -40,6 +40,8 @@ define([
                         collectionLayout.getRegion('paginatorRegion').show(paginatorView);
                         collectionLayout.getRegion('tagsRegion').show(tagsView);
 
+                        //$('#spinner').removeClass('bar');
+
                     // Updating for search
                     Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
                         if (/tag\:(.+)/.test(searchQuery)) {
@@ -106,12 +108,12 @@ define([
                                     collectionComments.push(savedModel);
                                     // Add model and form clearing
                                     var newModel = new Comment.Model({
-                                        question_id: id
+                                        q_and_a_id: id
                                     });
 
                                     commentsView.triggerMethod('model:refresh', newModel);
                                 }).fail(function (errors) {
-                                    console.log(errors);
+                                    //console.log(errors);
                                     commentsView.triggerMethod('data:invalid', errors);
                                 });
                         });
