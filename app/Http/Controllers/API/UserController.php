@@ -123,7 +123,14 @@ class UserController extends Controller
 
     public function session()
     {
-        $res = $this->authService->checkUser();
-        return Response::json($res, 200, [], JSON_NUMERIC_CHECK);
+        try {
+            $user = $this->authService->getUser();
+        } catch (AuthException $e){
+            return Response::json([
+                'error' => [$e->getMessage()]
+            ], 401);
+        }
+
+        return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
     }
 }
