@@ -29,7 +29,7 @@ define([
                 var el = $(e.target).parents('.question_view').siblings('#comments-region').find('section .comment-form');
                 el.toggle();
                 $(e.target).toggleClass('form-open');
-                el.focus();
+                el.find('textarea').focus();
             },
 
             onShow: function () {

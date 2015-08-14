@@ -100,7 +100,7 @@ define([
                 var el = $(e.target).parents('.row').siblings('.answers-comments-region').find('section .comment-form');
                 el.toggle();
                 $(e.target).toggleClass('form-open');
-                el.focus();
+                el.find('textarea').focus();
             },
 
             onSubmit: function (event) {
