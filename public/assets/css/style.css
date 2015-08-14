@@ -427,3 +427,37 @@ pre code.hljs {
 .question-preview .fa-thumbs-o-up {
     font-size: 28px;
 }
+
+/* SPINNER START*/
+
+.bar {
+    position: absolute;
+    left: 35%;
+    z-index: 100;
+    top: 50%;
+    width: 30%;
+    height: 20px;
+    border: 1px solid #2980b9;
+    border-radius: 3px;
+    background-image:
+    repeating-linear-gradient(
+            -45deg,
+            #2980b9,
+            #2980b9 11px,
+            #eee 10px,
+            #eee 20px /* determines size */
+    );
+    background-size: 28px 28px;
+    animation: move .5s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 28px 0;
+    }
+}
+
+/* SPINNER END*/

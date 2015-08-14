@@ -15,6 +15,10 @@ define(['app'], function (App) {
                 if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
                     callback.apply(this, args);
                 }
+            },
+            onRoute: function (name, path, arguments) {
+                $('#spinner').addClass('bar');
+                //console.log(App.queryFlag);
             }
         });
 
@@ -77,6 +81,13 @@ define(['app'], function (App) {
             new Routes.Router({
                 controller: API
             })
+        });
+
+        this.listenTo(App, 'spinner:check', function(){
+            //debugger;
+           if(App.queryFlag.length == 0) {
+                $('#spinner').removeClass('bar');
+           }
         });
 
         this.listenTo(App, 'popup:show', function (data) {
