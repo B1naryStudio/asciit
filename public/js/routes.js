@@ -14,17 +14,15 @@ define(['app'], function (App) {
             execute: function (callback, args, name) {
                 if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
                     callback.apply(this, args);
+                    $('#spinner').addClass('bar');
                 }
             },
-            onRoute: function (name, path, arguments) {
-                $('#spinner').addClass('bar');
-                //console.log(App.queryFlag);
-            }
         });
 
         var API = {
             login: function () {
                 require(['controllers/user'], function (controller) {
+                    App.trigger('spinner:check');
                     controller.login();
                 });
             },
