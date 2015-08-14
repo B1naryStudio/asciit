@@ -40,19 +40,21 @@ define([
                         collectionLayout.getRegion('paginatorRegion').show(paginatorView);
                         collectionLayout.getRegion('tagsRegion').show(tagsView);
 
-                        //$('#spinner').removeClass('bar');
-
-                    // Updating for search
-                    Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
-                        if (/tag\:(.+)/.test(searchQuery)) {
-                            var query = searchQuery.replace(/tag\:(.+)/, '$1');
-                            questionsView.options.searchQuery = '';
-                            Backbone.history.navigate('/tags/' + query, {trigger: true});
-                        } else {
-                            questionsView.options.searchTag = '';
-                            Backbone.history.navigate('/questions?' + searchQuery, {trigger: true});
+                        if (!questions.length) {
+                            questionsView.triggerMethod('not:found');
                         }
-                    });
+
+                        // Updating for search
+                        Question.Controller.listenTo(questionsView, 'form:submit', function (searchQuery) {
+                            if (/tag\:(.+)/.test(searchQuery)) {
+                                var query = searchQuery.replace(/tag\:(.+)/, '$1');
+                                questionsView.options.searchQuery = '';
+                                Backbone.history.navigate('/tags/' + query, {trigger: true});
+                            } else {
+                                questionsView.options.searchTag = '';
+                                Backbone.history.navigate('/questions?' + searchQuery, {trigger: true});
+                            }
+                        });
                 });
             },
 

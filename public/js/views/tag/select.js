@@ -30,7 +30,7 @@ define(['app', 'tpl!views/templates/tag/select-row.tpl', 'select2'], function (A
                             },
                             processResults: function (data, params) {
                                 for (var i = 0; i < data.length; i++ ) {
-                                    data[i].text = params.term;
+                                    data[i].text = data[i]['title'];
                                     data[i].id = data[i]['title'];
                                 }
                                 return {
