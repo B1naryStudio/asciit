@@ -41,7 +41,7 @@ class Question extends Model implements Transformable
         return $this->hasMany('App\Repositories\Entities\Vote', 'q_and_a_id');
     }
 
-    public function comment()
+    public function comments()
     {
         return $this->hasMany('App\Repositories\Entities\Comment', 'q_and_a_id');
     }

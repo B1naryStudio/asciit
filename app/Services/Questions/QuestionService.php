@@ -1,6 +1,8 @@
 <?php
 namespace App\Services\Questions;;
-use App\Repositories\Criteria\relationCountCriteria;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Criteria\RelationLikeCriteria;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
@@ -9,10 +11,8 @@ use App\Repositories\Contracts\FolderRepository;
 use App\Repositories\Exceptions\RepositoryException;
 use App\Repositories\Contracts\TagRepository;
 use App\Repositories\Contracts\VoteRepository;
-use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Criteria\InCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
-use Illuminate\Support\Facades\Auth;
 use App\Repositories\Contracts\CommentRepository;
 
 class QuestionService implements QuestionServiceInterface
@@ -86,7 +86,7 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder', 'tags', 'comment.user']);
+                ->findWithRelations($id, ['user', 'folder', 'tags', 'comments.user']);
             $tmp = $this->voteRepository->findWhere([
                 'q_and_a_id' => $id,
                 'user_id' => Auth::user()->id
@@ -128,7 +128,7 @@ class QuestionService implements QuestionServiceInterface
             ->findByFieldWithRelations(
                 'question_id',
                 $question_id,
-                ['user', 'comment.user', 'votes']
+                ['user', 'comments.user', 'votes']
             );
 
         foreach ($answers as $answer) {
@@ -156,10 +156,6 @@ class QuestionService implements QuestionServiceInterface
             $model->vote = $users_vote;
         }
     }
-    
-    public function getEntryComments($question_id){}
-    
-    public function addComment($data, $entry, $comment_id=null){}
 
     public function addVote($data)
     {
@@ -274,12 +270,19 @@ class QuestionService implements QuestionServiceInterface
         return $comment;
     }
 
-    public function getQuestionsPopular($pageSize = null)
+    public function getQuestionsPopular($pageSize = null, $data = array())
     {
+        $where = [
+            'q_and_a.question_id is not null'
+        ];
+        if (!empty($data['date_start'])) {
+            $where[] = ['main.created_at', '>=', $data['date_start']];
+        }
+        if (!empty($data['date_end'])) {
+            $where[] = ['main.created_at', '<=', $data['date_end']];
+        }
         try {
-            $questions = $this->questionRepository->loadRelationPopular('answers', $pageSize, [
-                ['q_and_a.question_id is not null']
-            ]);
+            $questions = $this->questionRepository->loadRelationPopular('answers', $pageSize, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -290,12 +293,42 @@ class QuestionService implements QuestionServiceInterface
         return $questions;
     }
 
-    public function getQuestionsUpvoted($pageSize = null)
+    public function getQuestionsUpvoted($pageSize = null, $data = array())
     {
+        $where = [
+            'main.question_id is null'
+        ];
+        if (!empty($data['date_start'])) {
+            $where[] = ['main.created_at', '>=', $data['date_start']];
+        }
+        if (!empty($data['date_end'])) {
+            $where[] = ['main.created_at', '<=', $data['date_end']];
+        }
         try {
-            $questions = $this->questionRepository->loadRelationPopular('votes', $pageSize, [
-                ['main.question_id is null']
-            ]);
+            $questions = $this->questionRepository->loadRelationPopular('votes', $pageSize, $where);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $questions;
+    }
+
+    public function getQuestionsTopCommented($pageSize = null, $data = array())
+    {
+        $where = [
+            'main.question_id is null'
+        ];
+        if (!empty($data['date_start'])) {
+            $where[] = ['main.created_at', '>=', $data['date_start']];
+        }
+        if (!empty($data['date_end'])) {
+            $where[] = ['main.created_at', '<=', $data['date_end']];
+        }
+        try {
+            $questions = $this->questionRepository->loadRelationPopular('comments', $pageSize, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
