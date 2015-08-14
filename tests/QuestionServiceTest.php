@@ -3,15 +3,28 @@
 use Mockery as m;
 use App\Services\Questions\QuestionService;
 use App\Repositories\Entities\Question;
+use App\Repositories\Entities\Answer;
+use App\Repositories\Entities\Folder;
+use App\Repositories\Entities\Tag;
+use App\Repositories\Entities\User;
+use App\Repositories\Entities\Vote;
 use App\Repositories\Exceptions\RepositoryException;
 
 class QuestionServiceTest extends TestCase
 {
     protected $question;
+    protected $answer;
+    protected $folder;
+    protected $tag;
+    protected $vote;
+
     protected $questionService;
     protected $questionRepo;
     protected $answerRepo;
     protected $folderRepo;
+    protected $tagRepo;
+    protected $voteRepo;
+    protected $commentRepo;
 
     public function setUp()
     {
@@ -36,14 +49,65 @@ class QuestionServiceTest extends TestCase
             'folder'      => ['title' => 'Eyebrows']
         ]);
 
+        $this->answer = new Answer([
+            'id'          => 2,
+            'description' => $questionDescription,
+        ]);
+
+        $this->user = new User([
+            'id' => 1
+        ]);
+
+        $this->folder = new Folder();
+        $this->folder->forceFill([
+            'id' => 1
+        ]);
+
+        $this->tag = new Tag();
+
+        $this->vote = new Vote([
+            'id' => 1,
+            'q_and_a_id' => 1,
+            'user_id' => 1
+        ]);
+
         $this->questionRepo = m::mock('App\Repositories\Repositories\QuestionRepositoryEloquent');
         $this->answerRepo = m::mock('App\Repositories\Repositories\AnswerRepositoryEloquent');
         $this->folderRepo = m::mock('App\Repositories\Repositories\FolderRepositoryEloquent');
+        $this->tagRepo = m::mock('App\Repositories\Repositories\TagRepositoryEloquent');
+        $this->voteRepo = m::mock('App\Repositories\Repositories\VoteRepositoryEloquent');
+        $this->commentRepo = m::mock('App\Repositories\Repositories\CommentRepositoryEloquent');
+
         $this->questionService = new QuestionService(
             $this->questionRepo,
             $this->answerRepo,
-            $this->folderRepo
+            $this->folderRepo,
+            $this->tagRepo,
+            $this->voteRepo,
+            $this->commentRepo
         );
+
+        $this->tagRepo->shouldReceive('pushCriteria')
+            ->andReturn($this->tagRepo);
+
+        $this->tagRepo->shouldReceive('all')
+            ->andReturn([]);
+
+        $this->tagRepo->shouldReceive('create')
+            ->andReturn($this->tag);
+
+        $this->tagRepo->shouldReceive('createSeveral')
+            ->andReturn([$this->tag]);
+
+        $this->questionRepo->shouldReceive('relationsAdd');
+
+        $this->voteRepo->shouldReceive('findWhere')
+            ->andReturn($this->vote);
+
+        $this->answerRepo->shouldReceive('withRelationCount')
+            ->andReturn($this->answerRepo);
+
+        Auth::shouldReceive('user')->andReturn($this->user);
     }
 
     public function tearDown()
@@ -74,7 +138,7 @@ class QuestionServiceTest extends TestCase
     public function testGetQuestionReturnsWithRelations()
     {
         $this->questionRepo->shouldReceive('findWithRelations')
-            ->with($this->question->id, ['user', 'folder'])
+            ->with($this->question->id, ['user', 'folder', 'tags', 'comment.user'])
             ->once()
             ->andReturn($this->question);
 
@@ -85,7 +149,7 @@ class QuestionServiceTest extends TestCase
     }
 
     /**
-     * @expectedException App\Exceptions\QuestionServiceException
+     * @expectedException App\Services\Questions\Exceptions\QuestionServiceException
      * @expectedExceptionMessage Entity is not found! No such question
      */
     public function testGetQuestionThrowsException()
@@ -95,5 +159,65 @@ class QuestionServiceTest extends TestCase
             ->andThrow(RepositoryException::class, 'Entity is not found!');
 
         $this->questionService->getQuestion(1);
+    }
+
+    public function testGetAnswersOfQuestion()
+    {
+        $this->answerRepo->shouldReceive('findByFieldWithRelations')
+            ->once()
+            ->with(
+                'question_id',
+                $this->question->id,
+                ['user', 'comment.user', 'votes']
+            )
+            ->andReturn([$this->question]);
+
+        $this->assertSame(
+            $this->questionService->getAnswersOfQuestion($this->question->id),
+            [$this->question]
+        );
+    }
+
+    /*
+     * method can create questions
+     */
+    public function testCreateQuestionCreates()
+    {
+        $newQuestionData = [
+            'folder' => 'PHP',
+            'tag'    => ['tests'],
+            'folder_id' => $this->folder->id
+        ];
+
+        $this->folderRepo->shouldReceive('firstOrCreate')
+            ->andReturn($this->folder);
+
+        $this->questionRepo->shouldReceive('create')
+            ->once()
+            ->with($newQuestionData)
+            ->andReturn($this->question);
+
+        $this->assertEquals(
+            $this->questionService->createQuestion($newQuestionData),
+            $this->question
+        );
+    }
+
+    public function testCreateQuestionSavesWithFolder()
+    {
+        $newQuestionData = [
+            'folder' => 'PHP',
+            'tag'    => ['tests'],
+        ];
+
+        $this->folderRepo->shouldReceive('firstOrCreate')
+            ->once()
+            ->with(['title' => $newQuestionData['folder']])
+            ->andReturn($this->folder);
+
+        $this->questionRepo->shouldReceive('create')
+            ->andReturn($this->question);
+
+        $this->questionService->createQuestion($newQuestionData);
     }
 }

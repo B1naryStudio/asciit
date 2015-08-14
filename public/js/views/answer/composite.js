@@ -1,40 +1,119 @@
-define(['app', 'tpl!views/templates/answer/answers.tpl',
+define([
+    'app',
+    'tpl!views/templates/answer/answers.tpl',
     'tpl!views/templates/answer/single-answer.tpl',
-    'stickit'
-], function (App, AnswersTpl, SingleAnswerTpl) {
+    'models/answer',
+    'models/vote',
+    'views/vote/composite',
+    'ckeditor.custom.settings',
+    'models/comment',
+    'views/comment/composite',
+    'ckeditor',
+    'ckeditor.adapter',
+    'highlight'
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, Votes, EditorSettings, Comment, CommentsCompositeView) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.SingleAnswerCompositeView = Marionette.CompositeView.extend({
-            template: SingleAnswerTpl
+        View.SingleAnswerLayoutView = Marionette.LayoutView.extend({
+            template: SingleAnswerTpl,
+
+            regions: {
+                votes: '.votes',
+                comments: '.answers-comments-region'
+            },
+
+            ui: {
+                editButton: '.edit-button',
+                saveButton: '.save-button'
+            },
+
+            events: {
+                'click @ui.editButton': 'onEdit',
+                'click @ui.saveButton': 'onSave'
+            },
+
+            onEdit: function (event) {
+                var field = this.$el.find('.description');
+                field.attr('contenteditable', true);
+
+                EditorSettings.startupFocus = true;
+                this.editor = field.ckeditor(EditorSettings).editor;
+            },
+            onShow: function () {
+                // Highligting code-snippets
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                var vote = this.model.get('vote');
+                var votesView = new Votes({
+                    vote: vote,
+                    likes: this.model.get('vote_likes'),
+                    dislikes: this.model.get('vote_dislikes'),
+                    q_and_a_id: this.model.id
+                });
+                this.getRegion('votes').show(votesView);
+
+                // Comments
+                var commentModel = new Comment.Model({
+                    q_and_a_id: this.model.attributes.id
+                });
+                var commentCollection = new Comment.Collection(this.model.get('comment'));
+                var commentsView = new CommentsCompositeView({
+                    model: commentModel,
+                    collection: commentCollection,
+                    id: this.id
+                });
+                this.getRegion('comments').show(commentsView);
+
+                this.listenTo(commentsView, 'form:submit', function (model) {
+                    $.when(App.request('comment:add', model))
+                        .done(function (savedModel) {
+                            commentCollection.push(savedModel);
+                            // Add model and form clearing
+                            var newModel = new Comment.Model({
+                                q_and_a_id: savedModel.attributes.q_and_a_id
+                            });
+
+                            commentsView.triggerMethod('model:refresh', newModel);
+                        }).fail(function (errors) {
+                            console.log(errors);
+                            commentsView.triggerMethod('data:invalid', errors);
+                        });
+                });
+            }
         });
 
         View.AnswersCompositeView = Marionette.CompositeView.extend({
             tagName: 'section',
-            className: 'answers-list',
+            id: 'answers-list',
             template: AnswersTpl,
-            childView: View.SingleAnswerCompositeView,
+            childView: View.SingleAnswerLayoutView,
             childViewContainer: '#answers',
 
-            bindings: {
-                '[name=description]': {
-                    observe: 'description',
-                    setOptions: {
-                        validate: true
-                    }
-                }
-            },
             events: {
-                'submit form': 'submit'
+                'submit form': 'onSubmit',
+                'click .show-form' : 'showForm'
             },
 
-            submit: function (event) {
+            showForm: function(e) {
+                e.stopPropagation();
+                var el = $(e.target).parents('.row').siblings('.answers-comments-region').find('section .comment-form');
+                el.toggle();
+                $(e.target).toggleClass('form-open');
+                el.find('textarea').focus();
+            },
+
+            onSubmit: function (event) {
                 event.preventDefault();
+                var data = Backbone.Syphon.serialize($('#new-answer-form')[0]);
+                this.model.set(data);
 
                 if (this.model.isValid(true)) {
                     // To event in controller
                     this.trigger('form:submit', this.model);
                 }
             },
-            onDataInvalid: function (errors) {
+            onModelInvalid: function (errors) {
                 for (var field in errors) {
                     Backbone.Validation.callbacks.invalid(this, field, errors[field]);
                 }
@@ -42,17 +121,22 @@ define(['app', 'tpl!views/templates/answer/answers.tpl',
             // Refresh model and form for the futher using without view rendering
             onModelRefresh: function (freshModel) {
                 this.model = freshModel;
-                this.stickit();
                 this.refreshCounter();
+
+                // Erase the editor value.
+                this.editor.setData('');
             },
             refreshCounter: function () {
-                $(this.el).find('.counter').html(this.model.get('count'));
+                this.$el.find('.counter.answers').html(this.model.get('count'));
             },
-            onRender: function() {
-                this.stickit();
-                return this;
-            },
+            onShow: function () {
+                EditorSettings.height = '350px';
+                this.editor = $('#description').ckeditor(EditorSettings).editor;
+           },
             initialize: function () {
+                this.childViewOptions = {
+                    id: this.id
+                };
                 Backbone.Validation.bind(this);
             },
             remove: function() {

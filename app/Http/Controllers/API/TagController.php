@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
@@ -23,10 +24,15 @@ class TagController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tags = $this->questionService->getTags();
+        $is_popular = $request->get('type') === 'popular';
+        if (!empty($is_popular)) {
+            $tags = $this->questionService->getTagsPopular($request->get('page_size'));
+        } else {
+            $tags = $this->questionService->getTags($request->get('page_size'));
+        }
 
-        return Response::json($tags, 200);
+        return Response::json($tags, 200, [], JSON_NUMERIC_CHECK);
     }
 }

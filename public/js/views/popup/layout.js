@@ -1,9 +1,9 @@
-define(['app', 'tpl!views/templates/popup/main.tpl'], function (App, Tpl, Header) {
+define(['app', 'tpl!views/templates/popup/main.tpl', 'views/popup/header'], function (App, Tpl, Header) {
     App.module('Popup', function (Popup, App, Backbone, Marionette, $, _) {
         Popup.Layout = Marionette.LayoutView.extend({
             tagName: 'div',
             id: 'popup-layout-view',
-            className: 'modal',
+            className: 'modal panel panel-default',
             template: Tpl,
             regions: {
                 header:  '.modal-header',
@@ -26,20 +26,20 @@ define(['app', 'tpl!views/templates/popup/main.tpl'], function (App, Tpl, Header
                 this.destroy();
             },
             onShow: function() {
-                var self = this;
                 var header_data = {};
                 if (this.options.header) {
                     header_data = this.options.header;
                 }
-                require(['views/popup/header'], function (View) {
-                    self.getRegion('header').show(new View(header_data));
-                });
+
+                this.getRegion('header').show(new Header(header_data));
+
                 if (this.options.contentView) {
-                    self.getRegion('content').show(this.options.contentView);
+                    this.getRegion('content').show(this.options.contentView);
                 }
                 if (this.options.class) {
                     this.$el.addClass(this.options.class);
                 }
+
                 this.$el.modal(this.options.modal ? this.options.modal : 'show');
             }
         });

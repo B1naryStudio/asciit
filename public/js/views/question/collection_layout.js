@@ -7,10 +7,12 @@ define([
     App.module('Collection.Views', function (View, App, Backbone, Marionette, $, _) {
         View.CollectionLayout = Marionette.LayoutView.extend({
             tagname: 'div',
+            className: 'row',
             template: CollectionLayoutTpl,
             regions: {
-                'collectionRegion': '#collection-region',
-                'paginatorRegion': '#paginator-region'
+                collectionRegion: '#collection-region',
+                paginatorRegion: '#paginator-region',
+                tagsRegion: '#tags-region'
             }
         });
     });

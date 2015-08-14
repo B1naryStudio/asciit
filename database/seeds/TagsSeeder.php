@@ -7,7 +7,7 @@ use App\Repositories\Contracts\FolderRepository;
 use App\Repositories\Contracts\UserRepository;
 use Faker\Factory;
 
-class TagSeeder extends Seeder
+class TagsSeeder extends Seeder
 {
     private $tagRepository;
     private $folderRepository;
@@ -39,11 +39,14 @@ class TagSeeder extends Seeder
         $folders = $this->folderRepository->all();
 
         $tags = [];
-        for ($i = 0; $i < 3; $i++) {
-            $tags[] = $this->tagRepository->create([
-                'title' => $faker->sentence
-            ]);
+        while (count($tags) < 100) {
+            $title = $faker->word;
+            if (empty($tags[$title])) {
+                $tags[$title] = ['title' => $title];
+            }
         }
+        $tags = $this->tagRepository->createSeveral(array_values($tags));
+        $tmp = array_slice($tags, 0, 3);
 
         for ($i = 0; $i < 5; $i++) {
             $model = $this->questionRepository->create([
@@ -53,7 +56,19 @@ class TagSeeder extends Seeder
                 'folder_id' => $folders->random()->id,
             ]);
 
-            $this->questionRepository->relationsAdd($model, 'tags', $tags);
+            $this->questionRepository->relationsAdd($model, 'tags', $tmp);
+        }
+
+        $tmp = array_slice($tags, 2, 4);
+        for ($i = 0; $i < 7; $i++) {
+            $model = $this->questionRepository->create([
+                'title' => $faker->sentence,
+                'description' => $faker->realText(1500),
+                'user_id' => $users->random()->id,
+                'folder_id' => $folders->random()->id,
+            ]);
+
+            $this->questionRepository->relationsAdd($model, 'tags', $tmp);
         }
     }
 }

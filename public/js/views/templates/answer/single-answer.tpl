@@ -8,21 +8,18 @@
             </figure>
         </div>
         <div class="col-md-10">
-            <!-- Votes -->
-            <div class="vote">
-                <a href="#"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></a>
-                <span>5</span>
-                <a href="#"><span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span></a>
-            </div>
+            <!-- Votes region -->
+            <div class="votes"></div>
 
             <!-- Text -->
-            <time>Answered at <%- created_at %></time>
-            <p><%- description %></p>
+            <time>Answered <%- created_relative %></time>
+            <div class="description"><%= description %></div>
 
             <!-- Comments -->
             <div class="comments">
-                <button class="btn btn-default btn-xs">Add comment</button>
+                <button class="btn btn-default btn-xs show-form">Add comment</button>
             </div>
         </div>
     </div>
+    <div class="answers-comments-region"></div>
 </div>

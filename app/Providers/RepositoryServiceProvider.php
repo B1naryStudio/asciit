@@ -47,5 +47,15 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\TagRepository',
             'App\Repositories\Repositories\TagRepositoryEloquent'
         );
+
+        $this->app->singleton(
+            'App\Repositories\Contracts\VoteRepository',
+            'App\Repositories\Repositories\VoteRepositoryEloquent'
+        );
+
+        $this->app->singleton(
+            'App\Repositories\Contracts\CommentRepository',
+            'App\Repositories\Repositories\CommentRepositoryEloquent'
+        );
     }
 }

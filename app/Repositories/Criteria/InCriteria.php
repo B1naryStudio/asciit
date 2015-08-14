@@ -25,7 +25,7 @@ class InCriteria implements CriteriaInterface
     }
 
     /**
-     * @param $model Model
+     * @param $model \Illuminate\Database\Eloquent\Model
      * @param RepositoryInterface $repository
      * @return mixed
      */

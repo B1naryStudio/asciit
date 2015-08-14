@@ -1,6 +1,9 @@
-define(['app'], function(App) {
+define([
+    'app',
+    'models/related-timestamps-model',
+], function(App, RelatedTimestampsModel) {
     App.module('Answer', function(Answer, App, Backbone, Marionette, $, _) {
-        Answer.Model = Backbone.Model.extend({
+        Answer.Model = RelatedTimestampsModel.extend({
             defaults: {
                 'description': ''
             },
@@ -11,8 +14,11 @@ define(['app'], function(App) {
             },
             initialize: function (options) {
                 this.urlRoot = App.prefix + '/api/v1/questions/'
-                    + options.question_id
-                    + '/answers';
+                + options.question_id
+                + '/answers';
+
+                this.attachLocalDates();
+                this.on('sync', this.attachLocalDates);
             }
         });
 
@@ -57,7 +63,7 @@ define(['app'], function(App) {
                             defer.reject(errors);
                         }
                     })) {
-                    defer.reject({'description': 'Server error, saving is impossible.'});
+                    defer.reject({'description': 'Server error, saving is impossible!'});
                 }
 
                 return defer.promise();

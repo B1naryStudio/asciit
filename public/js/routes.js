@@ -8,18 +8,21 @@ define(['app'], function (App) {
                 'questions/:id': 'question',
                 'login': 'login',
                 'logout': 'logout',
-                'tags': 'tags'
+                'tags': 'tags',
+                'tags/:tag': 'tagSearch'
             },
             execute: function (callback, args, name) {
                 if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
                     callback.apply(this, args);
+                    $('#spinner').addClass('bar');
                 }
-            }
+            },
         });
 
         var API = {
             login: function () {
                 require(['controllers/user'], function (controller) {
+                    App.trigger('spinner:check');
                     controller.login();
                 });
             },
@@ -30,7 +33,7 @@ define(['app'], function (App) {
             },
             questions: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
-                    controller.questions(searchQuery);
+                    controller.questions(searchQuery, '');
                 });
             },
             question: function (id) {
@@ -57,6 +60,11 @@ define(['app'], function (App) {
                 require(['controllers/tag'], function (controller) {
                     controller.tags();
                 });
+            },
+            tagSearch: function (searchQuery) {
+                require(['controllers/question'], function (controller) {
+                    controller.questions('', searchQuery);
+                });
             }
         };
 
@@ -71,6 +79,13 @@ define(['app'], function (App) {
             new Routes.Router({
                 controller: API
             })
+        });
+
+        this.listenTo(App, 'spinner:check', function(){
+            //debugger;
+           if(App.queryFlag.length == 0) {
+                $('#spinner').removeClass('bar');
+           }
         });
 
         this.listenTo(App, 'popup:show', function (data) {

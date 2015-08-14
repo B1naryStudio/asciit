@@ -1,20 +1,25 @@
-<header class="section-header">
-    <span class="counter"><%- count %></span> answers
-</header>
-<ul id="answers" class="list-group"></ul>
+<div class="answers-list" >
+    <header class="section-header">
+        <span class="counter answers"><%- count %></span> answers
+    </header>
+    <ul id="answers" class="list-group"></ul>
 
-<!-- Adding form -->
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Your answer:</h3>
+    <!-- Adding form -->
+    <div class="panel panel-default new-answer">
+        <div class="panel-heading">
+            <h3 class="panel-title">Your answer:</h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-horisontal" id="new-answer-form">
+                <div class="form-group">
+                    <textarea name="description" id="description" rows="6"></textarea>
+                    <span class="help-block hidden"></span>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="panel-body">
-        <form class="form-horisontal">
-            <div class="form-group ">
-                <textarea class="form-control" name="description" id="description" rows="6"></textarea>
-                <span class="help-block hidden"></span>
-            </div>
-            <input class="submit-btn btn btn-success" type="submit" value="Save">
-        </form>
+
+    <div class="new-answer-controls">
+        <input class="submit-btn btn btn-success" type="submit" form='new-answer-form' value="Save">
     </div>
 </div>

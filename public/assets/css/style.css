@@ -3,9 +3,6 @@
  | Main menu
  |------------------------------------------------------------------------------
  */
-.menu .navbar-nav {
-    margin-left: -40px;
-}
 
 .menu .login {
     float: right;
@@ -17,11 +14,6 @@
  | Questions list
  |------------------------------------------------------------------------------
  */
-
-.questions_list {
-    margin-top: 10px;
-}
-
 .question-row {
     margin: 10px 0;
 }
@@ -36,19 +28,22 @@
     margin-top: 5px
 }
 
-.questions_list .col-md-10 div {
-    margin-top: 5px;
-}
-
-.questions_list .col-md-10 .asked_time,
-.questions_list .col-md-10 .folder {
+.questions_list .asked_time,
+.questions_list .folder {
     color: dimgray;
     font-size: 0.9em;
 }
 
-.questions_list .col-md-10 .question {
+.questions_list .question {
     color: black;
     font-size: 16px;
+}
+
+.questions_list .more {
+    display: inline-block;
+    float: right;
+    margin-top: 8px;
+    margin-right: 15px;
 }
 
 /*
@@ -56,23 +51,40 @@
  | Votes block
  |------------------------------------------------------------------------------
  */
-.vote {
-    color: dimgray;
+.votes {
+    color: #333333;
 }
 
-.question_view .vote {
+.question_view .votes {
     font-size: 25px;
     padding-top: 20px;
+    text-align: center;
 }
 
-.single-answer .vote {
+.single-answer .votes {
     float: right;
-    margin: 5px 0 0 10px;
+    margin: 5px 0 0 15px;
     font-size: 20px;
 }
 
-.vote span {
-    margin-right: 10px;
+.votes span {
+    margin: 0 5px;
+    position: relative;
+}
+
+.votes span.divided {
+    font-size: 0.8em;
+    position: relative;
+    margin: 0 3px;
+    top: -2px;
+}
+
+.votes i {
+    text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
+}
+
+.voted {
+    color: #000080;
 }
 
 /*
@@ -125,12 +137,11 @@ time,
 }
 
 .list-group-item .limited {
-/*    white-space: nowrap;
-    word-wrap: break-word;*/
     max-height: 4.5em;
     overflow: hidden;
     text-overflow: ellipsis;
     position: relative;
+    padding-right: 15px;
 }
 
 .list-group-item .limited::after {
@@ -149,43 +160,38 @@ time,
     background: -ms-linear-gradient(left,  hsla(0,0%,100%,0) 0%,hsla(0,0%,100%,1) 74%,hsla(0,0%,100%,1) 93%); /* IE10+ */
     background: linear-gradient(to right,  hsla(0,0%,100%,0) 0%,hsla(0,0%,100%,1) 74%,hsla(0,0%,100%,1) 93%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
-
 }
 
-
-
-.modal-header h2 {
-    margin-top: 0;
-    margin-bottom: 0;
+/*
+ |------------------------------------------------------------------------------
+ | Answers list
+ |------------------------------------------------------------------------------
+ */
+.new-answer .panel-body {
+    padding: 0;
 }
 
-#popup-layout-view.question-add {
-    width: 600px;
-    height: 355px;
-    left: 30%;
-    background-color: #ffffff;
-    top: 20%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.new-answer .form-group {
+    margin: 0;
+}
+.new-answer .help-block {
+    margin-left: 10px;
 }
 
-#popup-layout-view.question-add .control-group.title,
-#popup-layout-view.question-add .control-group.folder {
-    min-height: 45px;
-    float: left;
-    width: 100%;
+.new-answer-controls {
+    text-align: center;
+    margin: 15px auto 50px;
 }
 
-#popup-layout-view.question-add .control-group.description {
-    height: 100px;
-    margin-bottom: 20px;
+.new-answer-controls input {
+    width: 80px;
 }
 
-#popup-layout-view.question-add .control-group.description textarea {
-    height: 100px;
-    resize: none;
-}
-
+/*
+ |------------------------------------------------------------------------------
+ | Popups
+ |------------------------------------------------------------------------------
+ */
 .modal-backdrop.in {
     width: 100%;
     height: 100%;
@@ -193,8 +199,33 @@ time,
     position: fixed;
 }
 
+.modal-header {
+    background: #aaaaaa;
+}
+
+.modal-header h3 {
+    font-weight: bold;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Add question popup
+ |------------------------------------------------------------------------------
+ */
+#popup-layout-view.question-add {
+    left: 10%;
+    right: 10%;
+    top: 10%;
+    bottom: auto;
+    position: absolute;
+}
+
 #popup-layout-view.question-add .select2-container {
     width: 100% !important;
+}
+
+#popup-layout-view.question-add .description label {
+    margin-bottom: 5px;
 }
 
 .error {
@@ -207,64 +238,64 @@ time,
     margin-bottom: 5px;
 }
 
-.question-add .form-horizontal {
-    height: 230px;
-}
-
 #question-add-layout .controls {
-    width: 60px;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 15px 0 0 0;
+    text-align: center;
 }
 
+/*
+ |------------------------------------------------------------------------------
+ | Login popup
+ |------------------------------------------------------------------------------
+ */
 #popup-layout-view.login {
     width: 350px;
-    height: 270px;
     left: 40%;
-    background-color: #ffffff;
     top: 20%;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    bottom: auto;
 }
 
 #popup-layout-view.login .control-group {
-    min-height: 45px;
-    float: left;
-    width: 100%;
-}
-
-#popup-layout-view.login .control-group.buttons {
-    position: absolute;
-    top: 160px;
-    left: 0;
-}
-
-.login-form .form-horizontal {
-    width: 100%;
-    float: left;
+    min-height: 30px;
+    margin-top: 15px;
 }
 
 .login-form .controls {
     width: 60px;
-    margin-right: auto;
-    margin-left: auto;
+    margin: 20px auto 0;
 }
 
-#question-list .tags {
-    margin-right: 85px;
-}
-
-#question-list .tags li {
-    float: left;
-}
-
-#question-view .tags li {
-    float: left;
+/*
+ |------------------------------------------------------------------------------
+ | Tags
+ |------------------------------------------------------------------------------
+ */
+.tags_list {
+    margin-top: 50px;
 }
 
 #question-view .tags  {
-    float: left;
+    display: table;   /* Allow the centering to work */
+    text-align: center;
     margin: 20px 0 30px 0;
+}
+
+    #question-list .tags li,
+    .tags_list.tags li {
+        float: left;
+    }
+
+    #question-view .tags ul {
+        min-width: 150px;
+        list-style: none;
+    }
+
+    #question-view .tags li {
+        display: inline-block;
+    }
+
+#question-list .tags {
+    padding: 0;
 }
 
 .tags ul {
@@ -272,27 +303,161 @@ time,
     padding: 0;
 }
 
-.tags li {
-    list-style: none;
-    background-color: #e4e4e4;
-    border: 1px solid #aaa;
-    border-radius: 4px;
-    cursor: default;
-    margin-right: 5px;
-    margin-top: 5px;
-    padding: 0 5px;
+    .tags li {
+        list-style: none;
+        font-size: 0.8em;
+        background-color: #EEEEEE;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: default;
+        margin-right: 5px;
+        margin-top: 5px;
+        padding: 0 5px;
+    }
+
+
+        .tags li a {
+            display: block;
+            width: 100%;
+            padding: 3px 8px;
+            text-decoration: none;
+            color: #444;
+        }
+
+.tags_list .list {
+    float: left;
+    margin-bottom: 20px;
 }
 
-.tags li a {
-    display: block;
+.tags_list .title {
+    float: left;
     width: 100%;
-    padding: 0 5px;
-    text-decoration: none;
-    color: #000000;
+    padding-top: 5px;
 }
 
-.pull-right {
-    position: absolute;
-    bottom: 0;
-    right: 15px;
+.tags .search {
+    background: #009933;
+    border: none;
 }
+
+    .tags .search a {
+        color: #fff;
+    }
+
+/*
+ |------------------------------------------------------------------------------
+ | Code-snippet blocks
+ |------------------------------------------------------------------------------
+ */
+pre {
+    border: none;
+    border-radius: 0;
+    background: inherit;
+    padding: 0;
+}
+
+pre code.hljs {
+    font-family: monospace, monospace;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Media
+ |------------------------------------------------------------------------------
+ */
+@media (min-width: 768px) {
+    .container {
+        width: 528px;
+    }
+}
+
+@media (min-width: 900px) {
+    .container {
+        width: 660px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        width: 752px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 960px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .container {
+        width: 1100px;
+    }
+}
+
+.comments-region, .comment-form {
+    width: 83%;
+    margin-left: 17%;
+}
+
+.comment-form {
+    display: none;
+}
+
+.form-open {
+    /*color: #333;*/
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+.single-comment {
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+.question-header {
+    padding-left: 0;
+}
+
+.question-preview {
+    font-size: 22px;
+    padding-right: 0;
+}
+
+.question-preview .fa-thumbs-o-up {
+    font-size: 28px;
+}
+
+/* SPINNER START*/
+
+.bar {
+    position: absolute;
+    left: 35%;
+    z-index: 100;
+    top: 50%;
+    width: 30%;
+    height: 20px;
+    border: 1px solid #2980b9;
+    border-radius: 3px;
+    background-image:
+    repeating-linear-gradient(
+            -45deg,
+            #2980b9,
+            #2980b9 11px,
+            #eee 10px,
+            #eee 20px /* determines size */
+    );
+    background-size: 28px 28px;
+    animation: move .5s linear infinite;
+}
+
+@keyframes move {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 28px 0;
+    }
+}
+
+/* SPINNER END*/

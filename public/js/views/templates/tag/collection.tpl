@@ -1,8 +1,6 @@
-<div class="row tags_list">
-    <div class="col-md-12">
-        <div class="list-group list">
-
-        </div>
+<div class="panel panel-default tags_list tags">
+    <div class="panel-heading title">Most popular tags:</div>
+    <div class="panel-body">
+        <ul class="list-group list"></ul>
     </div>
 </div>
-

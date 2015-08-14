@@ -1,6 +1,10 @@
-define(['app', 'paginator'], function(App, PageableCollection) {
+define([
+    'app',
+    'paginator',
+    'models/related-timestamps-model',
+], function(App, PageableCollection, RelatedTimestampsModel) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
-        Question.Model = Backbone.Model.extend({
+        Question.Model = RelatedTimestampsModel.extend({
             urlRoot: App.prefix + '/api/v1/questions',
             validation: {
                 title: {
@@ -11,6 +15,10 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                     required: true,
                     msg: 'Please enter a description'
                 }
+            },
+            initialize: function (options) {
+                this.attachLocalDates();
+                this.on('sync', this.attachLocalDates);
             }
         });
 
@@ -36,25 +44,30 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                 pageSize: 5
             },
             queryParams: {
-                currentPage: "page",
-                pageSize: "page_size",
+                currentPage: 'page',
+                pageSize: 'page_size',
                 search: function () {
                     return this.searchQuery;
                 },
                 orderBy: function () {
                     return this.sortKey;
                 },
+                tag: function () {
+                    return this.searchTag;
+                },
                 sortedBy: 'desc'
             },
             initialize: function(options) {
+                debugger;
                 this.searchQuery = options.searchQuery;
+                this.searchTag = options.searchTag;
                 this.sort();
             }
         });
 
         var API = {
-            questionCollection: function (searchQuery) {
-                var questions = new Question.Collection({searchQuery: searchQuery});
+            questionCollection: function (searchQuery, searchTag) {
+                var questions = new Question.Collection({ searchQuery: searchQuery, searchTag: searchTag });
                 var defer = $.Deferred();
 
                 questions.fetch({
@@ -80,6 +93,7 @@ define(['app', 'paginator'], function(App, PageableCollection) {
             questionAdd: function (data) {
                 var question = new Question.Model();
                 var defer = $.Deferred();
+
                 if (!question.save(data, {
                     wait: true,
                     success: function (data) {
@@ -98,8 +112,8 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                 return defer.promise();
             }
         };
-        App.reqres.setHandler('question:collection', function (searchQuery) {
-            return API.questionCollection(searchQuery);
+        App.reqres.setHandler('question:collection', function (searchQuery, searchTag) {
+            return API.questionCollection(searchQuery, searchTag);
         });
 
         App.reqres.setHandler('question:model', function (id) {

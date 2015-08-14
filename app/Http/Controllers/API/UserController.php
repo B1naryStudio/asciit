@@ -118,11 +118,19 @@ class UserController extends Controller
                 'error' => [$e->getMessage()]
             ], 500);
         }
-        return Response::json(null, 200);
+        return Response::json(null, 200, [], JSON_NUMERIC_CHECK);
     }
 
     public function session()
     {
-        return $this->authService->checkUser();
+        try {
+            $user = $this->authService->getUser();
+        } catch (AuthException $e){
+            return Response::json([
+                'error' => [$e->getMessage()]
+            ], 401);
+        }
+
+        return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
     }
 }

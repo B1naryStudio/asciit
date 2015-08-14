@@ -13,7 +13,12 @@ requirejs.config({
         tpl: 'vendor/backbone/underscore-tpl',
         syphon: 'vendor/backbone/backbone.syphon',
         select2: 'vendor/select2/select2',
-        paginator: 'vendor/backbone.paginator/backbone.paginator'
+        paginator: 'vendor/backbone.paginator/backbone.paginator',
+        ckeditor: 'vendor/ckeditor/ckeditor',
+        'ckeditor.custom.settings': 'vendor/ckeditor/custom-instance-settings',
+        'ckeditor.adapter': 'vendor/ckeditor/adapters/jquery',
+        'highlight': 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack',
+        'moment': 'vendor/moment/moment-with-locales.min'
     },
     shim: {
         underscore: {
@@ -31,10 +36,13 @@ requirejs.config({
         bootstrap: ['jquery'],
         validation: ['backbone'],
         tpl: ['text'],
-        syphon: ['backbone']
+        syphon: ['backbone'],
+        'ckeditor.adapter': ['ckeditor']
     }
 });
 
 require(['app'], function (App) {
-    App.start();
+    App.start({
+        codeSnippetTheme: 'github'
+    });
 });

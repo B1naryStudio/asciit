@@ -9,6 +9,8 @@ namespace App\Repositories\Contracts;
 
 use Prettus\Repository\Contracts\RepositoryInterface as BaseRepositoryInterface;
 
+use Prettus\Repository\Contracts\CriteriaInterface;
+
 interface RepositoryInterface extends BaseRepositoryInterface
 {
     /**
@@ -35,4 +37,36 @@ interface RepositoryInterface extends BaseRepositoryInterface
      * @return collection
      */
     public function findByFieldWithRelations($fieldName, $fieldValue, $relations, $columns = ['*']);
+
+    /**
+     * @param array $attributes
+     * @return model
+     */
+    public function firstOrCreate(array $attributes);
+
+    /**
+     * @param $model
+     * @param $method
+     * @param array $data
+     * @return mixed
+     */
+    public function relationsAdd($model, $method, array $data);
+
+    public function pushCriteria(CriteriaInterface $criteria);
+
+    public function firstWhere(array $where , $columns = array('*'));
+
+    public function getRelationRecordCount($relation);
+
+    public function loadRelationPopular($relation, $count, $where = array());
+
+    /**
+     * @return RepositoryInterface
+     */
+    public function withRelationCount();
+
+    /**
+     * @return RepositoryInterface
+     */
+    public function withoutRelationCount();
 }

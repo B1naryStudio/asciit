@@ -39,12 +39,12 @@ class AuthService implements AuthServiceInterface
         }
     }
 
-    public function checkUser()
+    public function getUser()
     {
         if (Auth::check()) {
             return Auth::user();
         } else {
-            return Response::json(['error' => 'Unauthorized'], 401);
+            throw new AuthException('User is not authorized');
         }
     }
 }

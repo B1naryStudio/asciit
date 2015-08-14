@@ -6,9 +6,9 @@ define([
         View.Paginator = Marionette.CompositeView.extend({
             id: 'paginator',
             events: {
-                "click .next": "getNextPage",
-                "click .prev": "getPrevPage",
-                "click .page": "goToPage"
+                'click .next': 'getNextPage',
+                'click .prev': 'getPrevPage',
+                'click .page': 'goToPage'
             },
             // If there is user, we can render a new template
             getTemplate: function() {
