@@ -124,9 +124,37 @@ class QuestionService implements QuestionServiceInterface
      */
     public function getAnswersOfQuestion($question_id)
     {
-        return $this->answerRepository
-            ->withRelationCount()
-            ->findByFieldWithRelations('question_id', $question_id, ['user', 'comment.user']);
+        $answers = $this->answerRepository
+            ->findByFieldWithRelations(
+                'question_id',
+                $question_id,
+                ['user', 'comment.user', 'votes']
+            );
+
+        foreach ($answers as $answer) {
+            $votes = collect($answer->votes);
+            unset($answer->votes);
+            $this->attachVotesShortInfo($answer, $votes);
+        }
+
+        return $answers;
+    }
+
+    // Attaching likes in easy obvious one-query way.
+    private function attachVotesShortInfo(&$model, $votes)
+    {
+        $likes = $votes->where('sign', 1)->count();
+        $dislikes = $votes->count() - $likes;
+        $rating = $likes - $dislikes;
+        $users_vote = $votes->where('user_id', Auth::user()->id)->first();
+
+        $model->vote_likes = $likes;
+        $model->vote_dislikes = $dislikes;
+        $model->vote_value = $rating;
+
+        if ($users_vote){
+            $model->vote = $users_vote;
+        }
     }
     
     public function getEntryComments($question_id){}
