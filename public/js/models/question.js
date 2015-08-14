@@ -1,6 +1,10 @@
-define(['app', 'paginator', 'moment'], function(App, PageableCollection, moment) {
+define([
+    'app',
+    'paginator',
+    'models/related-timestamps-model',
+], function(App, PageableCollection, RelatedTimestampsModel) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
-        Question.Model = Backbone.Model.extend({
+        Question.Model = RelatedTimestampsModel.extend({
             urlRoot: App.prefix + '/api/v1/questions',
             validation: {
                 title: {
@@ -15,12 +19,6 @@ define(['app', 'paginator', 'moment'], function(App, PageableCollection, moment)
             initialize: function (options) {
                 this.attachLocalDates();
                 this.on('sync', this.attachLocalDates);
-            },
-            attachLocalDates: function () {
-                var updatedLocal = moment.utc(this.get('updated_at')).toDate();
-                this.set('updated_local', moment(updatedLocal).format('MMMM Do YYYY, h:mm:ss a'));
-                var createdLocal = moment.utc(this.get('created_at')).toDate();
-                this.set('created_local', moment(createdLocal).format('MMMM Do YYYY, h:mm:ss a'));
             }
         });
 
@@ -95,6 +93,7 @@ define(['app', 'paginator', 'moment'], function(App, PageableCollection, moment)
             questionAdd: function (data) {
                 var question = new Question.Model();
                 var defer = $.Deferred();
+
                 if (!question.save(data, {
                     wait: true,
                     success: function (data) {

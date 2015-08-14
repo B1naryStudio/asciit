@@ -15,7 +15,6 @@ define(['app',
             childView: View.SingleCommentCompositeView,
             childViewContainer: '.comments-region',
 
-
             events: {
                 'submit .comments-form': 'submit'
             },
