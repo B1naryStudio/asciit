@@ -27,21 +27,6 @@ define([
             }
         });
 
-        View.QuestionCollectionRow = Marionette.LayoutView.extend({
-            tagName: 'div',
-            className: 'question-row',
-            template: QuestionTpl,
-            regions: {
-                tag: '.tags'
-            },
-            onShow: function () {
-                var self = this;
-                $.when(App.request('tag:reset', this.model.attributes.tags)).done(function (tags) {
-                    self.getRegion('tag').show(new TagView({ collection: tags, searchTag: self.options.searchTag() }));
-                });
-            }
-        });
-
         View.Questions = Marionette.CompositeView.extend({
             tagName: 'div',
             id: 'question-list',
