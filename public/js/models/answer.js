@@ -18,7 +18,7 @@ define([
                 + '/answers';
 
                 this.attachLocalDates();
-                this.on('sync', this.attachLocalDates);
+                this.on('change', this.attachLocalDates);
             }
         });
 
