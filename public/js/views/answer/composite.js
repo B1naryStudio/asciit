@@ -97,7 +97,9 @@ define([
 
             showForm: function(e) {
                 e.stopPropagation();
-                var el = $(e.target).parents('.row').siblings('.answers-comments-region').find('section .comment-form');
+                var el = $(e.target).parents('.row')
+                    .siblings('.answers-comments-region')
+                    .find('section .comment-form');
                 el.toggle();
                 $(e.target).toggleClass('form-open');
                 el.find('textarea').focus();
@@ -132,6 +134,8 @@ define([
             onShow: function () {
                 EditorSettings.height = '350px';
                 this.editor = $('#description').ckeditor(EditorSettings).editor;
+                //for focus from parent
+                this.trigger('editor:created', this.editor);
            },
             initialize: function () {
                 this.childViewOptions = {

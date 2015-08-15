@@ -28,7 +28,8 @@
         <!-- Comments -->
         <div class="comments">
             <header class="section-header">
-                <button class="btn btn-default btn-xs show-form">Add comment</button>
+                <button class="btn btn-default btn-xs add-comment">Add comment</button>
+                <button class="btn btn-default btn-xs add-answer">Add answer</button>
             </header>
         </div>
     </div>
