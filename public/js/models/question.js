@@ -115,9 +115,12 @@ define([
                 return defer.promise();
             }
         };
-        App.reqres.setHandler('question:collection', function (searchQuery, searchTag) {
-            return API.questionCollection(searchQuery, searchTag);
-        });
+        App.reqres.setHandler(
+            'question:collection',
+            function (searchQuery, searchTag) {
+                return API.questionCollection(searchQuery, searchTag);
+            }
+        );
 
         App.reqres.setHandler('question:model', function (id) {
             return API.questionGet(id);

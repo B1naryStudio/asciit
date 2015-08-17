@@ -1,6 +1,6 @@
 define([
     'app',
-    'models/related-timestamps-model',
+    'models/related-timestamps-model'
 ], function(App, RelatedTimestampsModel) {
     App.module('Answer', function(Answer, App, Backbone, Marionette, $, _) {
         Answer.Model = RelatedTimestampsModel.extend({

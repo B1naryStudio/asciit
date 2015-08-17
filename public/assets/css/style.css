@@ -209,6 +209,26 @@ time,
 
 /*
  |------------------------------------------------------------------------------
+ | User avatar
+ |------------------------------------------------------------------------------
+ */
+.img-thumbnail.big {
+    width: 100px;
+    height: 100px;
+}
+
+.img-thumbnail.medium {
+    width: 70px;
+    height: 70px;
+}
+
+.avatar.small {
+    width: 50px;
+    height: 50px;
+}
+
+/*
+ |------------------------------------------------------------------------------
  | Add question popup
  |------------------------------------------------------------------------------
  */
@@ -280,19 +300,19 @@ time,
     margin: 20px 0 30px 0;
 }
 
-    #question-list .tags li,
-    .tags_list.tags li {
-        float: left;
-    }
+#question-list .tags li,
+.tags_list.tags li {
+    float: left;
+}
 
-    #question-view .tags ul {
-        min-width: 150px;
-        list-style: none;
-    }
+#question-view .tags ul {
+    min-width: 150px;
+    list-style: none;
+}
 
-    #question-view .tags li {
-        display: inline-block;
-    }
+#question-view .tags li {
+    display: inline-block;
+}
 
 #question-list .tags {
     padding: 0;
@@ -303,26 +323,26 @@ time,
     padding: 0;
 }
 
-    .tags li {
-        list-style: none;
-        font-size: 0.8em;
-        background-color: #EEEEEE;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        cursor: default;
-        margin-right: 5px;
-        margin-top: 5px;
-        padding: 0 5px;
-    }
+.tags li {
+    list-style: none;
+    font-size: 0.8em;
+    background-color: #EEEEEE;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: default;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}
 
 
-        .tags li a {
-            display: block;
-            width: 100%;
-            padding: 3px 8px;
-            text-decoration: none;
-            color: #444;
-        }
+.tags li a {
+    display: block;
+    width: 100%;
+    padding: 3px 8px;
+    text-decoration: none;
+    color: #444;
+}
 
 .tags_list .list {
     float: left;

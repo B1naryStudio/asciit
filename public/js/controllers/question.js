@@ -92,34 +92,53 @@ define([
                         });
 
                         // New answers view
-                        var answersView = new AnswersCompositeView({model: model, collection: answers});
-                        Question.Controller.listenTo(answersView, 'editor:created', function (editor) {
-                            questionView.newAnswerEditor = editor;
+                        var answersView = new AnswersCompositeView({
+                            model: model,
+                            collection: answers
                         });
+                        Question.Controller.listenTo(
+                            answersView,
+                            'editor:created',
+                            function (editor) {
+                                questionView.newAnswerEditor = editor;
+                            }
+                        );
                         questionView.answersRegion.show(answersView);
 
-                        Question.Controller.listenTo(answersView, 'form:submit', function (model) {
-                            $.when(App.request('answer:add', model))
-                                .done(function (savedModel) {
-                                    answers.push(savedModel);
+                        Question.Controller.listenTo(
+                            answersView,
+                            'form:submit',
+                            function (model) {
+                                $.when(App.request('answer:add', model))
+                                    .done(function (savedModel) {
+                                        answers.push(savedModel);
 
-                                    // Add model and form clearing
-                                    var freshModel = new Answer.Model({
-                                        question_id: id,
-                                        count: answers.length
+                                        // Add model and form clearing
+                                        var freshModel = new Answer.Model({
+                                            question_id: id,
+                                            count: answers.length
+                                        });
+
+                                        answersView.triggerMethod(
+                                            'model:refresh',
+                                            freshModel
+                                        );
+                                    }).fail(function (errors) {
+                                        answersView.triggerMethod(
+                                            'model:invalid',
+                                            errors
+                                        );
                                     });
-
-                                    answersView.triggerMethod('model:refresh', freshModel);
-                                }).fail(function (errors) {
-                                    answersView.triggerMethod('model:invalid', errors);
-                                });
-                        });
+                            }
+                        );
                         // New comments to question view
                     var commentModel = new Comment.Model({
                         q_and_a_id: id
                     });
 
-                    var collectionComments = new Comment.Collection(question.attributes.comment);
+                    var collectionComments = new Comment.Collection(
+                        question.attributes.comment
+                    );
                     var commentsView = new CommentsCompositeView({
                         model: commentModel,
                         collection: collectionComments,
@@ -139,10 +158,16 @@ define([
                                         q_and_a_id: id
                                     });
 
-                                    commentsView.triggerMethod('model:refresh', newModel);
+                                    commentsView.triggerMethod(
+                                        'model:refresh',
+                                        newModel
+                                    );
                                 }).fail(function (errors) {
                                     //console.log(errors);
-                                    commentsView.triggerMethod('data:invalid', errors);
+                                    commentsView.triggerMethod(
+                                        'data:invalid',
+                                        errors
+                                    );
                                 });
                         }
                     );
@@ -150,43 +175,44 @@ define([
             },
 
             add: function () {
-                $.when(App.request('folder:collection')).done(function (folders) {
-                    $.when(App.request('tag:collection', {
+                $.when(
+                    App.request('folder:collection'),
+                    App.request('tag:collection', {
                         type: 'select',
                         page_size: 10
-                    })).done(function (tags) {
-                        var folder_view = new SelectFolderView({
-                            collection: folders
-                        });
-                        var tag_view = new SelectTagView({
-                            collection: tags
-                        });
-                        var view = new AddView({
-                            folder_view: folder_view,
-                            tag_view: tag_view
-                        });
-                        App.trigger('popup:show', {
-                            header: {
-                                title: 'Add new question'
-                            },
-                            class: 'question-add',
-                            contentView: view
-                        });
+                    })
+                ).done(function (folders, tags) {
+                    var folder_view = new SelectFolderView({
+                        collection: folders
+                    });
+                    var tag_view = new SelectTagView({
+                        collection: tags
+                    });
+                    var view = new AddView({
+                        folder_view: folder_view,
+                        tag_view: tag_view
+                    });
+                    App.trigger('popup:show', {
+                        header: {
+                            title: 'Add new question'
+                        },
+                        class: 'question-add',
+                        contentView: view
+                    });
 
-                        Question.Controller.listenTo(
-                            view,
-                            'form:submit',
-                            function (data) {
-                                $.when(App.request('question:add', data))
-                                    .done(function (model) {
-                                        App.trigger('popup:close');
-                                        App.trigger('questions:list');
+                    Question.Controller.listenTo(
+                        view,
+                        'form:submit',
+                        function (data) {
+                            $.when(App.request('question:add', data))
+                                .done(function (model) {
+                                    App.trigger('popup:close');
+                                    App.trigger('questions:list');
                                 }).fail(function (errors) {
                                     view.triggerMethod('data:invalid', errors);
                                 });
-                            }
-                        );
-                    });
+                        }
+                    );
                 });
             }
         });

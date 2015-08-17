@@ -8,7 +8,7 @@ define([
     'stickit',
     'highlight',
     'ckeditor',
-    'ckeditor.adapter',
+    'ckeditor.adapter'
 ], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, Vote, VotesView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionLayout = Marionette.LayoutView.extend({

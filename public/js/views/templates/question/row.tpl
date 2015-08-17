@@ -29,7 +29,7 @@
                 <div>
                     <span></span>
                     <div class="tags"></div>
-                    <a class="more" href="#questions/<%- id %>">Read more...</a>
+                    <a class="more" href="/questions/<%- id %>">Read more...</a>
                 </div>
             </div>
         </div>
