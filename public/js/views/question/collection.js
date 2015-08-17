@@ -1,11 +1,12 @@
 define([
     'app',
     'tpl!views/templates/question/collection.tpl',
+    'tpl!views/templates/question/collection-empty.tpl',
     'tpl!views/templates/question/row.tpl',
     'views/tag/view',
     'models/tag',
     'syphon'
-], function (App, QuestionsTpl, QuestionTpl, TagView) {
+], function (App, QuestionsTpl, QuestionsEmptyTpl, QuestionTpl, TagView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionCollectionRow = Marionette.LayoutView.extend({
             tagName: 'div',
