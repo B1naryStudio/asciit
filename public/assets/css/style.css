@@ -52,7 +52,7 @@
  |------------------------------------------------------------------------------
  */
 .votes {
-    color: #333333;
+    color: #444444;
 }
 
 .question_view .votes {
@@ -420,7 +420,7 @@ pre code.hljs {
 }
 
 .question-preview {
-    font-size: 22px;
+    font-size: 18px;
     padding-right: 0;
 }
 
