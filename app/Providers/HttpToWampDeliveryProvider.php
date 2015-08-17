@@ -3,12 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use ZMQContext;
 
-class AppServiceProvider extends ServiceProvider
+class HttpToWampDeliveryProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * Bootstrap the application services.
      *
      * @return void
      */
@@ -18,16 +17,15 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register any application services.
+     * Register the application services.
      *
      * @return void
      */
     public function register()
     {
-        $this->app->singleton('ZMQContext', function () {
-                return new ZMQContext();
-            }
+        $this->app->bind(
+            'App\WebSocket\Contracts\HttpToWampDelivery',
+            'App\WebSocket\ZeroMQDelivery'
         );
-
     }
 }

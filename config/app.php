@@ -146,6 +146,7 @@ return [
         App\Providers\RepositoryServiceProvider::class,
         App\Providers\QuestionServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        App\Providers\HttpToWampDeliveryProvider::class,
 
         /*
          * Third-party providers...
