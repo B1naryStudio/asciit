@@ -45,4 +45,6 @@ interface QuestionServiceInterface
     public function getQuestionsUpvoted($pageSize = null, $data = array());
 
     public function getQuestionsTopCommented($pageSize = null, $data = array());
+
+    public function getQuestionsByUser($pageSize = null);
 }

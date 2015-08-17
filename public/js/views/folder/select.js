@@ -1,4 +1,8 @@
-define(['app', 'tpl!views/templates/folder/select-row.tpl', 'select2'], function (App, SelectRowTpl) {
+define([
+    'app',
+    'tpl!views/templates/folder/select-row.tpl',
+    'select2'
+], function (App, SelectRowTpl) {
     App.module('Folder.Views', function (View, App, Backbone, Marionette, $, _) {
         View.FolderSelectRow = Marionette.ItemView.extend({
             tagName: 'option',

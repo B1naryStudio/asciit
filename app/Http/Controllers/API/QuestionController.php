@@ -91,4 +91,24 @@ class QuestionController extends Controller
 
         return Response::json($question->toArray(), 200, [], JSON_NUMERIC_CHECK);
     }
+
+    public function my(Request $request)
+    {
+        try {
+            $questions = $this->questionService
+                ->getQuestionsByUser($request->get('page_size'));
+        } catch (QuestionServiceException $e) {
+            return Response::json(['error' => $e->getMessage()], 404);
+        }
+
+        return Response::json(
+            [
+                [
+                    'total_entries' => $questions->total(),
+                    'currentPage' => $questions->currentPage()
+                ],
+                $questions->items()
+            ], 200, [], JSON_NUMERIC_CHECK
+        );
+    }
 }

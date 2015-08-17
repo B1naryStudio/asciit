@@ -3,7 +3,7 @@
         <!-- User info -->
         <div class="col-md-2">
             <figure class="user-info text-center">
-                <img src="<%- user.avatar %>" width="100" height="100" alt="100x100" class="img-thumbnail">
+                <img src="<%- user.avatar %>" alt="100x100" class="img-thumbnail big">
                 <h5><%= user.first_name + ' ' + user.last_name %></h5>
             </figure>
         </div>

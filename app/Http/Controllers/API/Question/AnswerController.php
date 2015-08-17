@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AnswerValidatedRequest;
+use App\Services\Questions\Exceptions\QuestionServiceException;
 
 class AnswerController extends Controller
 {
@@ -50,5 +51,25 @@ class AnswerController extends Controller
         }
 
         return Response::json($answer->toArray(), 201, [], JSON_NUMERIC_CHECK);
+    }
+
+    public function my(Request $request)
+    {
+        try {
+            $answers = $this->questionService
+                ->getAnswersByUser($request->get('page_size'));
+        } catch (QuestionServiceException $e) {
+            return Response::json(['error' => $e->getMessage()], 404);
+        }
+
+        return Response::json(
+            [
+                [
+                    'total_entries' => $answers->total(),
+                    'currentPage' => $answers->currentPage()
+                ],
+                $answers->items()
+            ], 200, [], JSON_NUMERIC_CHECK
+        );
     }
 }

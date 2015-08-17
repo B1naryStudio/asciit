@@ -4,14 +4,15 @@ define([
     'tpl!views/templates/answer/single-answer.tpl',
     'models/answer',
     'models/vote',
-    'views/vote/composite',
+    'views/vote/single',
     'ckeditor.custom.settings',
     'models/comment',
-    'views/comment/composite',
+    'views/comment/collection',
     'ckeditor',
     'ckeditor.adapter',
     'highlight'
-], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, Votes, EditorSettings, Comment, CommentsCompositeView) {
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, Votes,
+             EditorSettings, Comment, CommentsCompositeView) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend({
             template: SingleAnswerTpl,
@@ -80,6 +81,9 @@ define([
                             commentsView.triggerMethod('data:invalid', errors);
                         });
                 });
+            },
+            initialize: function (options) {
+                this.$el.attr('id', 'answer-' + this.model.get('id'));
             }
         });
 
@@ -97,7 +101,8 @@ define([
 
             showForm: function(e) {
                 e.stopPropagation();
-                var el = $(e.target).parents('.row')
+                var el = $(e.target)
+                    .parents('.row')
                     .siblings('.answers-comments-region')
                     .find('section .comment-form');
                 el.toggle();
@@ -117,7 +122,15 @@ define([
             },
             onModelInvalid: function (errors) {
                 for (var field in errors) {
-                    Backbone.Validation.callbacks.invalid(this, field, errors[field]);
+                    if (!errors.hasOwnProperty(field)) {
+                        continue;
+                    }
+
+                    Backbone.Validation.callbacks.invalid(
+                        this,
+                        field,
+                        errors[field]
+                    );
                 }
             },
             // Refresh model and form for the futher using without view rendering
@@ -136,8 +149,14 @@ define([
                 this.editor = $('#description').ckeditor(EditorSettings).editor;
                 //for focus from parent
                 this.trigger('editor:created', this.editor);
-           },
-            initialize: function () {
+
+                if (this.options.answer_id) {
+                    $('html, body').scrollTop(this.$el.find('#answer-' + this.options.answer_id).focus().offset().top);
+                } else {
+                    $('html, body').scrollTop(0);
+                }
+            },
+            initialize: function (options) {
                 this.childViewOptions = {
                     id: this.id
                 };

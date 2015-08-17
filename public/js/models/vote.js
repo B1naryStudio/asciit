@@ -27,7 +27,9 @@ define(['app'], function(App) {
                             console.log(errors);
                         }
                     })) {
-                    defer.reject({'description': 'Server error, voting is impossible.'});
+                    defer.reject({
+                        description: 'Server error, voting is impossible.'
+                    });
                 }
 
                 return defer.promise();
@@ -46,7 +48,9 @@ define(['app'], function(App) {
                             console.log(errors);
                         }
                     })) {
-                    defer.reject({'description': 'Server error, unvoting is impossible.'});
+                    defer.reject({
+                        description: 'Server error, unvoting is impossible.'
+                    });
                 }
 
                 return defer.promise();

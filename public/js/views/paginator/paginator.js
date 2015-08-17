@@ -1,6 +1,6 @@
 define([
     'app',
-    'tpl!views/templates/question/paginator.tpl'
+    'tpl!views/templates/paginator/paginator.tpl'
 ], function (App, PaginatorTpl) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.Paginator = Marionette.CompositeView.extend({

@@ -26,12 +26,12 @@ define([
                                'github';
         // Loading css
         loadCSS('js/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/' +
-        App.codeSnippetTheme + '.css');
+            App.codeSnippetTheme + '.css');
     });
 
     var loadCSS = function(href) {
-        var cssLink = $("<link rel='stylesheet' type='text/css' href='"+href+"'>");
-        $("head").append(cssLink);
+        var cssLink = $('<link rel="stylesheet" type="text/css" href="' + href + '">');
+        $('head').append(cssLink);
     };
 
     App.on('start', function () {
@@ -70,7 +70,6 @@ define([
             App.queryFlag.pop();
             App.trigger('spinner:check');
             success(resp);
-
         };
         return sync(method, model, options);
     };

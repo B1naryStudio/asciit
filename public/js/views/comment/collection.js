@@ -38,10 +38,16 @@ define(['app',
                 }
             },
 
-
             onDataInvalid: function (errors) {
                 for (var field in errors) {
-                    Backbone.Validation.callbacks.invalid(this, field, errors[field]);
+                    if (!errors.hasOwnProperty(field)) {
+                        continue;
+                    }
+                    Backbone.Validation.callbacks.invalid(
+                        this,
+                        field,
+                        errors[field]
+                    );
                 }
             },
             // Refresh model and form for the futher using without view rendering
@@ -57,8 +63,7 @@ define(['app',
 
             initialize: function () {
                 Backbone.Validation.bind(this);
-            },
-
+            }
         });
     });
 
