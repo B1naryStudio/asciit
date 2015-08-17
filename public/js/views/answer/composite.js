@@ -144,6 +144,8 @@ define([
             onShow: function () {
                 EditorSettings.height = '350px';
                 this.editor = $('#description').ckeditor(EditorSettings).editor;
+                //for focus from parent
+                this.trigger('editor:created', this.editor);
            },
             initialize: function () {
                 this.childViewOptions = {

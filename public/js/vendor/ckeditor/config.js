@@ -40,7 +40,6 @@
             actionscript: 'ActionScript',
             apache: 'Apache',
             bash: 'Bash',
-            brainfuck: 'Brainfuck',
             css: 'CSS',
             csharp: 'C#',
             cpp: 'C++',
