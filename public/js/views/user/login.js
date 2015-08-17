@@ -1,4 +1,9 @@
-define(['app', 'views/form', 'tpl!views/templates/user/login.tpl', 'syphon'], function (App, FormView, Tpl) {
+define([
+    'app',
+    'views/form',
+    'tpl!views/templates/user/login.tpl',
+    'syphon'
+], function (App, FormView, Tpl) {
     App.module('User.Views', function (View, App, Backbone, Marionette, $, _) {
         View.UserLoginForm = FormView.extend({
             tagName: 'div',

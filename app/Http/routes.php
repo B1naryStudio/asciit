@@ -58,6 +58,9 @@ Route::group(['prefix' => 'api/v1'], function() {
         'API\Question\CommentController',
         ['only' => ['store']]
     );
+
+    Route::get('/questions-my', 'API\QuestionController@my');
+    Route::get('/answers-my', 'API\Question\AnswerController@my');
 });
 
 Route::group(['prefix' => 'api/v1/widget'], function() {

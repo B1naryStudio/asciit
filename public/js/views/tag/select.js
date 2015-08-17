@@ -1,4 +1,8 @@
-define(['app', 'tpl!views/templates/tag/select-row.tpl', 'select2'], function (App, SelectRowTpl) {
+define([
+    'app',
+    'tpl!views/templates/tag/select-row.tpl',
+    'select2'
+], function (App, SelectRowTpl) {
     App.module('Tag.Views', function (View, App, Backbone, Marionette, $, _) {
         View.TagSelectRow = Marionette.ItemView.extend({
             tagName: 'option',

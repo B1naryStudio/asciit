@@ -1,11 +1,12 @@
 define([
     'app',
     'tpl!views/templates/question/collection.tpl',
+    'tpl!views/templates/question/collection-empty.tpl',
     'tpl!views/templates/question/row.tpl',
     'views/tag/view',
     'models/tag',
     'syphon'
-], function (App, QuestionsTpl, QuestionTpl, TagView) {
+], function (App, QuestionsTpl, QuestionsEmptyTpl, QuestionTpl, TagView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionCollectionRow = Marionette.LayoutView.extend({
             tagName: 'div',
@@ -16,8 +17,13 @@ define([
             },
             onShow: function () {
                 var self = this;
-                $.when(App.request('tag:reset', this.model.attributes.tags)).done(function (tags) {
-                    self.getRegion('tag').show(new TagView({ collection: tags, searchTag: self.options.searchTag() }));
+                $.when(App.request('tag:reset', this.model.attributes.tags))
+                    .done(function (tags) {
+                        self.getRegion('tag')
+                            .show(new TagView({
+                                collection: tags,
+                                searchTag: self.options.searchTag()
+                            }));
                 });
 
                 // Highligting code-snippets
@@ -49,12 +55,16 @@ define([
             },
 
             onNotFound: function () {
-                Backbone.Validation.callbacks.invalid(this, 'search_query', 'Nothing here...');
+                Backbone.Validation.callbacks.invalid(
+                    this,
+                    'search_query',
+                    'Nothing here...'
+                );
             },
             onShow: function () {
                 var query = this.collection.searchQuery;
                 if (query) {
-                    $('#search_query').val(query).focus();
+                    $('#search-query').val(query).focus();
                 }
             },
             initialize: function (options) {

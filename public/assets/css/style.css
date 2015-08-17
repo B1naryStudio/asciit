@@ -18,28 +18,24 @@
     margin: 10px 0;
 }
 
-.questions_list .votes {
-    margin-top: 10px;
-}
-
-.questions_list .question-info {
+.questions-list .question-info {
     color: dimgray;
     font-size: 0.9em;
     margin-top: 5px
 }
 
-.questions_list .asked_time,
-.questions_list .folder {
+.questions-list .asked_time,
+.questions-list .folder {
     color: dimgray;
     font-size: 0.9em;
 }
 
-.questions_list .question {
+.questions-list .question {
     color: black;
     font-size: 16px;
 }
 
-.questions_list .more {
+.questions-list .more {
     display: inline-block;
     float: right;
     margin-top: 8px;
@@ -85,6 +81,10 @@
 
 .voted {
     color: #000080;
+}
+
+.votes .fa {
+    font-size: 0.8em;
 }
 
 /*
@@ -209,6 +209,26 @@ time,
 
 /*
  |------------------------------------------------------------------------------
+ | User avatar
+ |------------------------------------------------------------------------------
+ */
+.img-thumbnail.big {
+    width: 100px;
+    height: 100px;
+}
+
+.img-thumbnail.medium {
+    width: 70px;
+    height: 70px;
+}
+
+.avatar.small {
+    width: 50px;
+    height: 50px;
+}
+
+/*
+ |------------------------------------------------------------------------------
  | Add question popup
  |------------------------------------------------------------------------------
  */
@@ -280,19 +300,19 @@ time,
     margin: 20px 0 30px 0;
 }
 
-    #question-list .tags li,
-    .tags_list.tags li {
-        float: left;
-    }
+#question-list .tags li,
+.tags_list.tags li {
+    float: left;
+}
 
-    #question-view .tags ul {
-        min-width: 150px;
-        list-style: none;
-    }
+#question-view .tags ul {
+    min-width: 150px;
+    list-style: none;
+}
 
-    #question-view .tags li {
-        display: inline-block;
-    }
+#question-view .tags li {
+    display: inline-block;
+}
 
 #question-list .tags {
     padding: 0;
@@ -303,26 +323,26 @@ time,
     padding: 0;
 }
 
-    .tags li {
-        list-style: none;
-        font-size: 0.8em;
-        background-color: #EEEEEE;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        cursor: default;
-        margin-right: 5px;
-        margin-top: 5px;
-        padding: 0 5px;
-    }
+.tags li {
+    list-style: none;
+    font-size: 0.8em;
+    background-color: #EEEEEE;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: default;
+    margin-right: 5px;
+    margin-top: 5px;
+    padding: 0 5px;
+}
 
 
-        .tags li a {
-            display: block;
-            width: 100%;
-            padding: 3px 8px;
-            text-decoration: none;
-            color: #444;
-        }
+.tags li a {
+    display: block;
+    width: 100%;
+    padding: 3px 8px;
+    text-decoration: none;
+    color: #444;
+}
 
 .tags_list .list {
     float: left;
@@ -417,15 +437,13 @@ pre code.hljs {
 
 .question-header {
     padding-left: 0;
+    padding-right: 15px;
 }
 
 .question-preview {
     font-size: 18px;
     padding-right: 0;
-}
-
-.question-preview .fa-thumbs-o-up {
-    font-size: 28px;
+    float: right;
 }
 
 /* SPINNER START*/
@@ -461,3 +479,119 @@ pre code.hljs {
 }
 
 /* SPINNER END*/
+
+/*
+ |------------------------------------------------------------------------------
+ | My questions
+ |------------------------------------------------------------------------------
+ */
+.my-questions .img-thumbnail {
+    width: 59px;
+    height: 59px;
+}
+
+.my-questions .votes {
+    float: right;
+    margin: 0 15px 0 15px;
+}
+
+.my-questions .title-wrapper {
+    margin-right: 15px;
+}
+
+.my-questions .question-preview {
+    font-size: 18px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | My Answers list
+ |------------------------------------------------------------------------------
+ */
+.answer-row {
+    margin: 10px 0;
+}
+
+.answer-header {
+    padding-left: 0;
+}
+
+.answer-preview {
+    font-size: 22px;
+    padding-right: 0;
+}
+
+.answers-list .votes {
+    margin-top: 10px;
+}
+
+.answers-list .question-info {
+    color: dimgray;
+    font-size: 0.9em;
+    margin-top: 5px
+}
+
+.answers-list .asked_time,
+.answers-list .folder {
+    color: dimgray;
+    font-size: 0.9em;
+}
+
+.answers-list .question {
+    color: black;
+    font-size: 16px;
+}
+
+.answers-list .more {
+    display: inline-block;
+    float: right;
+    margin-top: 8px;
+    margin-right: 15px;
+}
+
+.my-answers .votes {
+    float: right;
+    margin: 0 15px 0 15px;
+    font-size: 20px;
+}
+
+.my-answers .title-wrapper {
+    margin-right: 15px;
+}
+
+.my-answers .answer-preview {
+    font-size: 18px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Icons
+ |------------------------------------------------------------------------------
+ */
+div .fa-6 {
+    font-size: 20em;
+}
+
+div .fa-5 {
+    font-size: 12em;
+}
+
+div .fa-4 {
+    font-size: 7em;
+}
+
+div .fa-3 {
+    font-size: 4em;
+}
+
+div .fa-2 {
+    font-size: 2em;
+}
+
+div .fa-1 {
+    font-size: 1em;
+}
+
+div .fa-05 {
+    font-size: 0.5em;
+}

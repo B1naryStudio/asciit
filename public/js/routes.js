@@ -9,14 +9,19 @@ define(['app'], function (App) {
                 'login': 'login',
                 'logout': 'logout',
                 'tags': 'tags',
-                'tags/:tag': 'tagSearch'
+                'tags/:tag': 'tagSearch',
+                'activity': 'activity',
+                'question/:question_id/answer/:answer_id': 'question'
             },
             execute: function (callback, args, name) {
-                if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
+                if (
+                    name !== 'login' && App.Routes.isOpen &&
+                    callback || name === 'login' && callback
+                ) {
                     callback.apply(this, args);
                     $('#spinner').addClass('bar');
                 }
-            },
+            }
         });
 
         var API = {
@@ -36,9 +41,9 @@ define(['app'], function (App) {
                     controller.questions(searchQuery, '');
                 });
             },
-            question: function (id) {
+            question: function (id, answer_id) {
                 require(['controllers/question'], function (controller) {
-                    controller.question(id);
+                    controller.question(id, answer_id);
                 });
             },
             questionsAdd: function () {
@@ -64,6 +69,11 @@ define(['app'], function (App) {
             tagSearch: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
                     controller.questions('', searchQuery);
+                });
+            },
+            activity: function () {
+                require(['controllers/activity'], function (controller) {
+                    controller.activity();
                 });
             }
         };

@@ -17,11 +17,15 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                     }
                 });
                 User.Controller.listenTo(view, 'form:submit', function (data) {
-                    $.when(App.request('user:login', data.email, data.password)).done(function (model) {
-                        App.User.Current = model;
-                        App.trigger('popup:close');
-                        App.trigger('init:openRoutes', '/');
-                        App.Main.Menu.triggerMethod('user:authorized', App.User.Current);
+                    $.when(App.request('user:login', data.email, data.password))
+                        .done(function (model) {
+                            App.User.Current = model;
+                            App.trigger('popup:close');
+                            App.trigger('init:openRoutes', '/');
+                            App.Main.Menu.triggerMethod(
+                                'user:authorized',
+                                App.User.Current
+                            );
                     }).fail(function (errors) {
                         view.triggerMethod('data:invalid', errors);
                     });
@@ -33,7 +37,10 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                         wait: true,
                         success: function(model, response) {
                             delete App.User.Current;
-                            Backbone.history.navigate('/login', { trigger: true });
+                            Backbone.history.navigate(
+                                '/login',
+                                { trigger: true }
+                            );
                             App.Main.Menu.triggerMethod('user:leave');
                         },
                         error: function(model, xhr) {
@@ -51,8 +58,14 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                         wait: true,
                         success: function (model, response, options) {
                             App.User.Current = model;
-                            App.Main.Menu.triggerMethod('user:authorized', App.User.Current);
-                            App.trigger('init:openRoutes', Backbone.history.fragment);
+                            App.Main.Menu.triggerMethod(
+                                'user:authorized',
+                                App.User.Current
+                            );
+                            App.trigger(
+                                'init:openRoutes',
+                                Backbone.history.fragment
+                            );
                         }
                     });
                 });

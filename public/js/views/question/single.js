@@ -1,14 +1,14 @@
 define([
     'app',
     'tpl!views/templates/question/question-layout.tpl',
-    'views/answer/composite',
+    'views/answer/collection',
     'views/tag/view',
     'models/vote',
-    'views/vote/composite',
+    'views/vote/single',
     'stickit',
     'highlight',
     'ckeditor',
-    'ckeditor.adapter',
+    'ckeditor.adapter'
 ], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, Vote, VotesView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionLayout = Marionette.LayoutView.extend({
@@ -32,21 +32,28 @@ define([
 
             showCommentForm: function(e) {
                 e.stopPropagation();
-                var el = $(e.target).parents('.question_view').siblings('#comments-region').find('section .comment-form');
+                var el = $(e.target)
+                    .parents('.question_view')
+                    .siblings('#comments-region')
+                    .find('section .comment-form');
                 el.toggle();
                 $(e.target).toggleClass('form-open');
                 el.find('textarea').focus();
             },
 
             toAnswerForm: function () {
-                $('html, body').scrollTop($("#new-answer-form").offset().top);
+                $('html, body').scrollTop($('#new-answer-form').offset().top);
                 this.newAnswerEditor.focus();
             },
 
             onShow: function () {
                 var self = this;
-                $.when(App.request('tag:reset', this.model.get('tags'))).done(function (tags) {
-                    self.getRegion('tag').show(new TagView({ collection: tags }));
+                $.when(App.request('tag:reset', this.model.get('tags')))
+                    .done(function (tags) {
+                        self.getRegion('tag')
+                            .show(new TagView({
+                                collection: tags
+                            }));
                 });
 
                 var vote = this.model.get('vote');
