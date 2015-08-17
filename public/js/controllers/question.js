@@ -63,36 +63,40 @@ define([
                     App.request('question:model', id),
                     App.request('answer:collection', id)
                 ).done(function (question, answers) {
-                    // New question layout
-                    var questionView = new SingleView({model: question});
-                    App.Main.Layout.getRegion('content').show(questionView);
+                        // New question layout
+                        var questionView = new SingleView({model: question});
+                        App.Main.Layout.getRegion('content').show(questionView);
 
-                    // New answer model for saving a new answer
-                    var model = new  Answer.Model({
-                        question_id: id,
-                        count: answers.length
-                    });
+                        // New answer model for saving a new answer
+                        var model = new  Answer.Model({
+                            question_id: id,
+                            count: answers.length
+                        });
 
-                    // New answers view
-                    var answersView = new AnswersCompositeView({model: model, collection: answers});
-                    questionView.answersRegion.show(answersView);
+                        // New answers view
+                        var answersView = new AnswersCompositeView({model: model, collection: answers});
+                        Question.Controller.listenTo(answersView, 'editor:created', function (editor) {
+                            questionView.newAnswerEditor = editor;
+                        });
+                        questionView.answersRegion.show(answersView);
 
-                    Question.Controller.listenTo(answersView, 'form:submit', function (model) {
-                        $.when(App.request('answer:add', model))
-                            .done(function (savedModel) {
-                                answers.push(savedModel);
+                        Question.Controller.listenTo(answersView, 'form:submit', function (model) {
+                            $.when(App.request('answer:add', model))
+                                .done(function (savedModel) {
+                                    answers.push(savedModel);
 
-                                // Add model and form clearing
-                                var freshModel = new Answer.Model({
-                                    question_id: id,
-                                    count: answers.length
+                                    // Add model and form clearing
+                                    var freshModel = new Answer.Model({
+                                        question_id: id,
+                                        count: answers.length
+                                    });
+
+                                    answersView.triggerMethod('model:refresh', freshModel);
+                                }).fail(function (errors) {
+                                    answersView.triggerMethod('model:invalid', errors);
                                 });
+                        });
 
-                                answersView.triggerMethod('model:refresh', freshModel);
-                            }).fail(function (errors) {
-                                answersView.triggerMethod('model:invalid', errors);
-                            });
-                    });
 
                         // New comments to question view
                         var commentModel = new Comment.Model({

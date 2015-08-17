@@ -18,7 +18,7 @@ define([
             },
             initialize: function (options) {
                 this.attachLocalDates();
-                this.on('sync', this.attachLocalDates);
+                this.on('change', this.attachLocalDates);
             }
         });
 
@@ -58,7 +58,6 @@ define([
                 sortedBy: 'desc'
             },
             initialize: function(options) {
-                debugger;
                 this.searchQuery = options.searchQuery;
                 this.searchTag = options.searchTag;
                 this.sort();
@@ -80,9 +79,10 @@ define([
             questionGet: function (id) {
                 var question = new Question.Model({ id: id });
                 var defer = $.Deferred();
+
                 question.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
+                    success: function (model) {
+                        defer.resolve(model);
                     },
                     error: function (data) {
                         defer.reject(data.validationError);

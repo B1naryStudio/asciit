@@ -16,17 +16,48 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'api/v1'], function() {
-    Route::resource('/questions', 'API\QuestionController');
-    Route::resource('/questions/{id}/answers', 'API\Question\AnswerController');
-    Route::resource('/folders', 'API\FolderController', ['only' => ['index']]);
+    Route::resource(
+        '/questions',
+        'API\QuestionController',
+        ['only' => ['index', 'store', 'show']]
+    );
+
+    Route::resource(
+        '/questions/{id}/answers',
+        'API\Question\AnswerController',
+        ['only' => ['index', 'store']]
+    );
+
+    Route::resource(
+        '/folders',
+        'API\FolderController',
+        ['only' => ['index']]
+    );
+
     Route::post('/user/login', 'API\UserController@login');
-    Route::get('/user/login', 'API\UserController@session');
     Route::delete('/user/login/{id}', 'API\UserController@logout');
-    Route::resource('/tags', 'API\TagController', ['only' => ['index']]);
+    Route::get('/user/login', 'API\UserController@session');
+
+    Route::resource(
+        '/tags',
+        'API\TagController',
+        ['only' => ['index']]
+    );
+
     Route::post('/images', 'API\ImageController@store');
     Route::get('/images/{filename}', 'API\ImageController@show');
-    Route::resource('/votes', 'API\VoteController', ['only' => ['store', 'destroy']]);
-    Route::resource('/questions/{id}/comments', 'API\Question\CommentController', ['only' => ['store']]);
+
+    Route::resource(
+        '/votes',
+        'API\VoteController',
+        ['only' => ['store', 'destroy']]
+    );
+
+    Route::resource(
+        '/questions/{id}/comments',
+        'API\Question\CommentController',
+        ['only' => ['store']]
+    );
 });
 
 Route::group(['prefix' => 'api/v1/widget'], function() {

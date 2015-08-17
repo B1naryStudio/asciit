@@ -6,7 +6,9 @@ define([
     'models/vote',
     'views/vote/composite',
     'stickit',
-    'highlight'
+    'highlight',
+    'ckeditor',
+    'ckeditor.adapter',
 ], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, Vote, VotesView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionLayout = Marionette.LayoutView.extend({
@@ -19,17 +21,26 @@ define([
                 tag: '.tags',
                 votes: '.votes'
             },
-
+            ui: {
+                commentButton: '.add-comment',
+                answerButton: '.add-answer'
+            },
             events: {
-                'click .show-form' : 'showForm'
+                'click @ui.commentButton': 'showCommentForm',
+                'click @ui.answerButton': 'toAnswerForm'
             },
 
-            showForm: function(e) {
+            showCommentForm: function(e) {
                 e.stopPropagation();
                 var el = $(e.target).parents('.question_view').siblings('#comments-region').find('section .comment-form');
                 el.toggle();
                 $(e.target).toggleClass('form-open');
                 el.find('textarea').focus();
+            },
+
+            toAnswerForm: function () {
+                $('html, body').scrollTop($("#new-answer-form").offset().top);
+                this.newAnswerEditor.focus();
             },
 
             onShow: function () {
