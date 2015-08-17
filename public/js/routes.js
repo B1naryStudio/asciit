@@ -10,7 +10,8 @@ define(['app'], function (App) {
                 'logout': 'logout',
                 'tags': 'tags',
                 'tags/:tag': 'tagSearch',
-                'activity': 'activity'
+                'activity': 'activity',
+                'question/:question_id/answer/:answer_id': 'question'
             },
             execute: function (callback, args, name) {
                 if (
@@ -40,9 +41,9 @@ define(['app'], function (App) {
                     controller.questions(searchQuery, '');
                 });
             },
-            question: function (id) {
+            question: function (id, answer_id) {
                 require(['controllers/question'], function (controller) {
-                    controller.question(id);
+                    controller.question(id, answer_id);
                 });
             },
             questionsAdd: function () {

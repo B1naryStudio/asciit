@@ -81,6 +81,9 @@ define([
                             commentsView.triggerMethod('data:invalid', errors);
                         });
                 });
+            },
+            initialize: function (options) {
+                this.$el.attr('id', 'answer-' + this.model.get('id'));
             }
         });
 
@@ -146,8 +149,12 @@ define([
                 this.editor = $('#description').ckeditor(EditorSettings).editor;
                 //for focus from parent
                 this.trigger('editor:created', this.editor);
-           },
-            initialize: function () {
+
+                if (this.options.answer_id) {
+                    $('html, body').scrollTop(this.$el.find('#answer-' + this.options.answer_id).focus().offset().top);
+                }
+            },
+            initialize: function (options) {
                 this.childViewOptions = {
                     id: this.id
                 };

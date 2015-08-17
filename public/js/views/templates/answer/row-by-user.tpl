@@ -24,7 +24,7 @@
                 </div>
                 <div>
                     <span></span>
-                    <a class="more" href="#answers/<%- id %>">Read more...</a>
+                    <a class="more" href="#question/<%- question.id %>/answer/<%- id %>">Read more...</a>
                 </div>
             </div>
         </div>

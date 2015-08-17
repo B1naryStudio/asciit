@@ -23,11 +23,11 @@ define([
     SingleView,
     AddView,
     SelectFolderView,
-    AnswersCompositeView,
+    AnswersView,
     SelectTagView,
     TagsView,
     Answer,
-    CommentsCompositeView,
+    CommentsView,
     Comment
 ) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
@@ -88,62 +88,64 @@ define([
                 });
             },
 
-            question: function (id) {
+            question: function (id, answer_id) {
                 $.when(
                     App.request('question:model', id),
                     App.request('answer:collection', id)
                 ).done(function (question, answers) {
-                        // New question layout
-                        var questionView = new SingleView({model: question});
-                        App.Main.Layout.getRegion('content').show(questionView);
+                    // New question layout
+                    var questionView = new SingleView({ model: question });
+                    App.Main.Layout.getRegion('content').show(questionView);
 
-                        // New answer model for saving a new answer
-                        var model = new  Answer.Model({
-                            question_id: id,
-                            count: answers.length
-                        });
+                    // New answer model for saving a new answer
+                    var model = new  Answer.Model({
+                        question_id: id,
+                        count: answers.length
+                    });
 
-                        // New answers view
-                        var answersView = new AnswersCompositeView({
-                            model: model,
-                            collection: answers
-                        });
-                        Question.Controller.listenTo(
-                            answersView,
-                            'editor:created',
-                            function (editor) {
-                                questionView.newAnswerEditor = editor;
-                            }
-                        );
-                        questionView.answersRegion.show(answersView);
+                    // New answers view
+                    var answersView = new AnswersView({
+                        model: model,
+                        collection: answers,
+                        answer_id: answer_id
+                    });
+                    Question.Controller.listenTo(
+                        answersView,
+                        'editor:created',
+                        function (editor) {
+                            questionView.newAnswerEditor = editor;
+                        }
+                    );
+                    questionView.answersRegion.show(answersView);
 
-                        Question.Controller.listenTo(
-                            answersView,
-                            'form:submit',
-                            function (model) {
-                                $.when(App.request('answer:add', model))
-                                    .done(function (savedModel) {
-                                        answers.push(savedModel);
+                    Question.Controller.listenTo(
+                        answersView,
+                        'form:submit',
+                        function (model) {
+                            $.when(App.request('answer:add', model))
+                                .done(function (savedModel) {
+                                    answers.push(savedModel);
 
-                                        // Add model and form clearing
-                                        var freshModel = new Answer.Model({
-                                            question_id: id,
-                                            count: answers.length
-                                        });
-
-                                        answersView.triggerMethod(
-                                            'model:refresh',
-                                            freshModel
-                                        );
-                                    }).fail(function (errors) {
-                                        answersView.triggerMethod(
-                                            'model:invalid',
-                                            errors
-                                        );
+                                    // Add model and form clearing
+                                    var freshModel = new Answer.Model({
+                                        question_id: id,
+                                        count: answers.length
                                     });
-                            }
-                        );
-                        // New comments to question view
+
+                                    answersView.triggerMethod(
+                                        'model:refresh',
+                                        freshModel
+                                    );
+                                }).fail(function (errors) {
+                                    answersView.triggerMethod(
+                                        'model:invalid',
+                                        errors
+                                    );
+                                });
+                        }
+                    );
+
+                    // New comments to question view
                     var commentModel = new Comment.Model({
                         q_and_a_id: id
                     });
@@ -151,7 +153,7 @@ define([
                     var collectionComments = new Comment.Collection(
                         question.attributes.comment
                     );
-                    var commentsView = new CommentsCompositeView({
+                    var commentsView = new CommentsView({
                         model: commentModel,
                         collection: collectionComments,
                         id: id

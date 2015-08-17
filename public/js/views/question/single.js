@@ -42,7 +42,7 @@ define([
             },
 
             toAnswerForm: function () {
-                $('html, body').scrollTop($("#new-answer-form").offset().top);
+                $('html, body').scrollTop($('#new-answer-form').offset().top);
                 this.newAnswerEditor.focus();
             },
 

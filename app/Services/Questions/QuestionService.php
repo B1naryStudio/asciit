@@ -166,7 +166,7 @@ class QuestionService implements QuestionServiceInterface
         $model->vote_dislikes = $dislikes;
         $model->vote_value = $rating;
 
-        if ($users_vote){
+        if ($users_vote) {
             $model->vote = $users_vote;
         }
     }
