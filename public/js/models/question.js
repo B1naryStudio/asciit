@@ -67,7 +67,10 @@ define([
 
         var API = {
             questionCollection: function (searchQuery, searchTag) {
-                var questions = new Question.Collection({ searchQuery: searchQuery, searchTag: searchTag });
+                var questions = new Question.Collection({
+                    searchQuery: searchQuery,
+                    searchTag: searchTag
+                });
                 var defer = $.Deferred();
 
                 questions.fetch({

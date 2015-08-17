@@ -12,11 +12,14 @@ define(['app'], function (App) {
                 'tags/:tag': 'tagSearch'
             },
             execute: function (callback, args, name) {
-                if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
+                if (
+                    name !== 'login' && App.Routes.isOpen &&
+                    callback || name === 'login' && callback
+                ) {
                     callback.apply(this, args);
                     $('#spinner').addClass('bar');
                 }
-            },
+            }
         });
 
         var API = {

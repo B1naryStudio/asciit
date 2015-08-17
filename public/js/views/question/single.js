@@ -26,7 +26,10 @@ define([
 
             showForm: function(e) {
                 e.stopPropagation();
-                var el = $(e.target).parents('.question_view').siblings('#comments-region').find('section .comment-form');
+                var el = $(e.target)
+                    .parents('.question_view')
+                    .siblings('#comments-region')
+                    .find('section .comment-form');
                 el.toggle();
                 $(e.target).toggleClass('form-open');
                 el.find('textarea').focus();
@@ -34,8 +37,12 @@ define([
 
             onShow: function () {
                 var self = this;
-                $.when(App.request('tag:reset', this.model.get('tags'))).done(function (tags) {
-                    self.getRegion('tag').show(new TagView({ collection: tags }));
+                $.when(App.request('tag:reset', this.model.get('tags')))
+                    .done(function (tags) {
+                        self.getRegion('tag')
+                            .show(new TagView({
+                                collection: tags
+                            }));
                 });
 
                 var vote = this.model.get('vote');

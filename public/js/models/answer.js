@@ -38,7 +38,7 @@ define([
 
         var API = {
             getAnswers: function (question_id) {
-                var answers = new Answer.Collection({question_id: question_id});
+                var answers = new Answer.Collection({ question_id: question_id });
                 var defer = $.Deferred();
 
                 answers.fetch({
@@ -62,8 +62,11 @@ define([
                             var errors = JSON.parse(xhr.responseText);
                             defer.reject(errors);
                         }
-                    })) {
-                    defer.reject({'description': 'Server error, saving is impossible!'});
+                    }))
+                {
+                    defer.reject({
+                        description: 'Server error, saving is impossible!'
+                    });
                 }
 
                 return defer.promise();

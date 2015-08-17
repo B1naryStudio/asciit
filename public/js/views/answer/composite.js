@@ -11,7 +11,8 @@ define([
     'ckeditor',
     'ckeditor.adapter',
     'highlight'
-], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, Votes, EditorSettings, Comment, CommentsCompositeView) {
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, Votes,
+             EditorSettings, Comment, CommentsCompositeView) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend({
             template: SingleAnswerTpl,
@@ -97,7 +98,10 @@ define([
 
             showForm: function(e) {
                 e.stopPropagation();
-                var el = $(e.target).parents('.row').siblings('.answers-comments-region').find('section .comment-form');
+                var el = $(e.target)
+                    .parents('.row')
+                    .siblings('.answers-comments-region')
+                    .find('section .comment-form');
                 el.toggle();
                 $(e.target).toggleClass('form-open');
                 el.find('textarea').focus();
@@ -115,7 +119,15 @@ define([
             },
             onModelInvalid: function (errors) {
                 for (var field in errors) {
-                    Backbone.Validation.callbacks.invalid(this, field, errors[field]);
+                    if (!errors.hasOwnProperty(field)) {
+                        continue;
+                    }
+
+                    Backbone.Validation.callbacks.invalid(
+                        this,
+                        field,
+                        errors[field]
+                    );
                 }
             },
             // Refresh model and form for the futher using without view rendering

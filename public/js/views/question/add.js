@@ -6,7 +6,7 @@ define([
     'select2',
     'syphon',
     'ckeditor',
-    'ckeditor.adapter',
+    'ckeditor.adapter'
 ], function (App, AddTpl, EditorSettings) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.AddForm = Marionette.LayoutView.extend({
