@@ -7,9 +7,9 @@
         <div class="col-md-10">
             <div class="row">
                 <div class="votes question-preview">
-                    <i class="fa fa-amazon"></i>
+                    <i class="fa fa-amazon fa-1"></i>
                     <%- answers_count %>&nbsp;
-                    <i class="fa fa-thumbs-up"></i>
+                    <i class="fa fa-thumbs-up fa-1"></i>
                     <%- vote_value %>
                 </div>
                 <div class="asked_time">Asked <%- created_relative %></div>

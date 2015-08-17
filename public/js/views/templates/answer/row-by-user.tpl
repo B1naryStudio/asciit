@@ -7,7 +7,7 @@
         <div class="col-md-10">
             <div class="row">
                 <div class="votes answer-preview">
-                    <i class="fa fa-thumbs-up"></i>
+                    <i class="fa fa-thumbs-up fa-1"></i>
                     <%- vote_value %>
                 </div>
                 <div class="asked_time">Answered <%- created_relative %></div>

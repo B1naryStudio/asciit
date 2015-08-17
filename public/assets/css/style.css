@@ -18,10 +18,6 @@
     margin: 10px 0;
 }
 
-.questions-list .votes {
-    margin-top: 10px;
-}
-
 .questions-list .question-info {
     color: dimgray;
     font-size: 0.9em;
@@ -85,6 +81,10 @@
 
 .voted {
     color: #000080;
+}
+
+.votes .fa {
+    font-size: 0.8em;
 }
 
 /*
@@ -441,10 +441,9 @@ pre code.hljs {
 }
 
 .question-preview {
-    font-size: 22px;
+    font-size: 24px;
     text-align: right;
     float: right;
-    margin-right: 15px;
 }
 
 /* SPINNER START*/
@@ -493,19 +492,15 @@ pre code.hljs {
 
 .my-questions .votes {
     float: right;
-    margin: 5px 15px 0 15px;
+    margin: 0 15px 0 15px;
 }
 
 .my-questions .title-wrapper {
     margin-right: 15px;
 }
 
-.my-questions .votes .fa {
-    font-size: 0.7em;
-}
-
 .my-questions .question-preview {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 /*
@@ -556,7 +551,7 @@ pre code.hljs {
 
 .my-answers .votes {
     float: right;
-    margin: 5px 15px 0 15px;
+    margin: 0 15px 0 15px;
     font-size: 20px;
 }
 
@@ -564,12 +559,8 @@ pre code.hljs {
     margin-right: 15px;
 }
 
-.my-answers .votes .fa {
-    font-size: 0.8em;
-}
-
 .my-answers .answer-preview {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 /*
