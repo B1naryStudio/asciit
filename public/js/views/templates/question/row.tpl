@@ -9,17 +9,23 @@
         </div>
         <div class="col-md-10">
             <div class="row">
-                <div class="col-md-10 question-header">
+                <div class="question-header">
                     <div class="asked_time">Asked <%- created_relative %></div>
-                    <div><a class="question" href="#questions/<%- id %>"><b><%- title %></b></a></div>
+                    <div>
+                        <div class="question-preview">
+                            <i class="fa fa-amazon fa-1"></i>
+                            <%- answers_count %>&nbsp;
+                            <i class="fa fa-thumbs-up fa-1"></i>
+                            <%- vote_value %>
+                        </div>
+                        <a class="question" href="#questions/<%- id %>">
+                            <b><%- title %></b>
+                        </a>
+                    </div>
                     <div class="folder">
                         <span class="icon glyphicon glyphicon-folder-close" aria-hidden="true"></span>
                         <%- folder.title %>
                     </div>
-                </div>
-                <div class="col-md-2 question-preview">
-                    <i class="fa fa-thumbs-up fa-6"></i>
-                    <%- vote_value %>
                 </div>
             </div>
             <div class="row">

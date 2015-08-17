@@ -437,15 +437,14 @@ pre code.hljs {
 
 .question-header {
     padding-left: 0;
+    padding-right: 15px;
 }
 
 .question-preview {
     font-size: 22px;
-    padding-right: 0;
-}
-
-.question-preview .fa-thumbs-o-up {
-    font-size: 28px;
+    text-align: right;
+    float: right;
+    margin-right: 15px;
 }
 
 /* SPINNER START*/
@@ -495,11 +494,18 @@ pre code.hljs {
 .my-questions .votes {
     float: right;
     margin: 5px 15px 0 15px;
-    font-size: 20px;
 }
 
 .my-questions .title-wrapper {
-    padding-right: 15px;
+    margin-right: 15px;
+}
+
+.my-questions .votes .fa {
+    font-size: 0.7em;
+}
+
+.my-questions .question-preview {
+    font-size: 20px;
 }
 
 /*
@@ -518,10 +524,6 @@ pre code.hljs {
 .answer-preview {
     font-size: 22px;
     padding-right: 0;
-}
-
-.answer-preview .fa-thumbs-o-up {
-    font-size: 28px;
 }
 
 .answers-list .votes {
@@ -559,5 +561,46 @@ pre code.hljs {
 }
 
 .my-answers .title-wrapper {
-    padding-right: 15px;
+    margin-right: 15px;
+}
+
+.my-answers .votes .fa {
+    font-size: 0.8em;
+}
+
+.my-answers .answer-preview {
+    font-size: 20px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Icons
+ |------------------------------------------------------------------------------
+ */
+div .fa-6 {
+    font-size: 20em;
+}
+
+div .fa-5 {
+    font-size: 12em;
+}
+
+div .fa-4 {
+    font-size: 7em;
+}
+
+div .fa-3 {
+    font-size: 4em;
+}
+
+div .fa-2 {
+    font-size: 2em;
+}
+
+div .fa-1 {
+    font-size: 1em;
+}
+
+div .fa-05 {
+    font-size: 0.5em;
 }

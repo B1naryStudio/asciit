@@ -152,6 +152,8 @@ define([
 
                 if (this.options.answer_id) {
                     $('html, body').scrollTop(this.$el.find('#answer-' + this.options.answer_id).focus().offset().top);
+                } else {
+                    $('html, body').scrollTop(0);
                 }
             },
             initialize: function (options) {
