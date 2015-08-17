@@ -4,10 +4,10 @@ define([
     'tpl!views/templates/answer/single-answer.tpl',
     'models/answer',
     'models/vote',
-    'views/vote/composite',
+    'views/vote/single',
     'ckeditor.custom.settings',
     'models/comment',
-    'views/comment/composite',
+    'views/comment/collection',
     'ckeditor',
     'ckeditor.adapter',
     'highlight'

@@ -18,28 +18,28 @@
     margin: 10px 0;
 }
 
-.questions_list .votes {
+.questions-list .votes {
     margin-top: 10px;
 }
 
-.questions_list .question-info {
+.questions-list .question-info {
     color: dimgray;
     font-size: 0.9em;
     margin-top: 5px
 }
 
-.questions_list .asked_time,
-.questions_list .folder {
+.questions-list .asked_time,
+.questions-list .folder {
     color: dimgray;
     font-size: 0.9em;
 }
 
-.questions_list .question {
+.questions-list .question {
     color: black;
     font-size: 16px;
 }
 
-.questions_list .more {
+.questions-list .more {
     display: inline-block;
     float: right;
     margin-top: 8px;
@@ -481,3 +481,83 @@ pre code.hljs {
 }
 
 /* SPINNER END*/
+
+/*
+ |------------------------------------------------------------------------------
+ | My questions
+ |------------------------------------------------------------------------------
+ */
+.my-questions .img-thumbnail {
+    width: 59px;
+    height: 59px;
+}
+
+.my-questions .votes {
+    float: right;
+    margin: 5px 15px 0 15px;
+    font-size: 20px;
+}
+
+.my-questions .title-wrapper {
+    padding-right: 15px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | My Answers list
+ |------------------------------------------------------------------------------
+ */
+.answer-row {
+    margin: 10px 0;
+}
+
+.answer-header {
+    padding-left: 0;
+}
+
+.answer-preview {
+    font-size: 22px;
+    padding-right: 0;
+}
+
+.answer-preview .fa-thumbs-o-up {
+    font-size: 28px;
+}
+
+.answers-list .votes {
+    margin-top: 10px;
+}
+
+.answers-list .question-info {
+    color: dimgray;
+    font-size: 0.9em;
+    margin-top: 5px
+}
+
+.answers-list .asked_time,
+.answers-list .folder {
+    color: dimgray;
+    font-size: 0.9em;
+}
+
+.answers-list .question {
+    color: black;
+    font-size: 16px;
+}
+
+.answers-list .more {
+    display: inline-block;
+    float: right;
+    margin-top: 8px;
+    margin-right: 15px;
+}
+
+.my-answers .votes {
+    float: right;
+    margin: 5px 15px 0 15px;
+    font-size: 20px;
+}
+
+.my-answers .title-wrapper {
+    padding-right: 15px;
+}

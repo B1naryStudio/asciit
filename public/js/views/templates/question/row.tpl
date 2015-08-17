@@ -1,7 +1,7 @@
 <div class="list-group-item">
     <div class="row">
         <div class="col-md-2 text-center">
-            <img src="<%- user.avatar %>" width="100" height="100" alt="100x100" class="img-thumbnail">
+            <img src="<%- user.avatar %>" alt="100x100" class="img-thumbnail big">
             <div><b><%= user.first_name + ' ' + user.last_name %></b></div>
             <!--<div class="question-info">Answers: <span class="answers-counter"><%- answers_count %></span></div>-->
             <!--<div class="votes question-info">Votes: 3</div>-->
@@ -29,7 +29,7 @@
                 <div>
                     <span></span>
                     <div class="tags"></div>
-                    <a class="more" href="/questions/<%- id %>">Read more...</a>
+                    <a class="more" href="#questions/<%- id %>">Read more...</a>
                 </div>
             </div>
         </div>

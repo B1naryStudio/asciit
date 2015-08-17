@@ -1,10 +1,10 @@
 define([
     'app',
     'tpl!views/templates/question/question-layout.tpl',
-    'views/answer/composite',
+    'views/answer/collection',
     'views/tag/view',
     'models/vote',
-    'views/vote/composite',
+    'views/vote/single',
     'stickit',
     'highlight',
     'ckeditor',

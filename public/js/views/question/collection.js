@@ -63,7 +63,7 @@ define([
             onShow: function () {
                 var query = this.collection.searchQuery;
                 if (query) {
-                    $('#search_query').val(query).focus();
+                    $('#search-query').val(query).focus();
                 }
             },
             initialize: function (options) {

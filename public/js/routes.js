@@ -9,7 +9,8 @@ define(['app'], function (App) {
                 'login': 'login',
                 'logout': 'logout',
                 'tags': 'tags',
-                'tags/:tag': 'tagSearch'
+                'tags/:tag': 'tagSearch',
+                'activity': 'activity'
             },
             execute: function (callback, args, name) {
                 if (
@@ -67,6 +68,11 @@ define(['app'], function (App) {
             tagSearch: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
                     controller.questions('', searchQuery);
+                });
+            },
+            activity: function () {
+                require(['controllers/activity'], function (controller) {
+                    controller.activity();
                 });
             }
         };

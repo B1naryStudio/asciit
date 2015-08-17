@@ -1,6 +1,8 @@
 <?php
 namespace App\Services\Questions;;
 
+use App\Repositories\Criteria\CurrentUserCriteria;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Criteria\RelationLikeCriteria;
@@ -43,12 +45,16 @@ class QuestionService implements QuestionServiceInterface
     public function createQuestion($data)
     {
         try {
-            $folder = $this->folderRepository->firstOrCreate(['title' => $data['folder']]);
+            $folder = $this->folderRepository->firstOrCreate([
+                'title' => $data['folder']
+            ]);
             $data['folder_id'] = $folder->id;
             $question = $this->questionRepository->create($data);
 
             if (!empty($data['tag'])) {
-                $this->tagRepository->pushCriteria(new InCriteria('title', $data['tag']));
+                $this->tagRepository->pushCriteria(
+                    new InCriteria('title', $data['tag'])
+                );
                 $tags = $this->tagRepository->all();
                 $tmp = [];
                 foreach ($tags as $tag) {
@@ -64,7 +70,10 @@ class QuestionService implements QuestionServiceInterface
                     }
                 }
                 if (!empty($not_exist)) {
-                    $tags = array_merge($tags, $this->tagRepository->createSeveral($not_exist));
+                    $tags = array_merge(
+                        $tags,
+                        $this->tagRepository->createSeveral($not_exist)
+                    );
                 }
                 $this->questionRepository->relationsAdd($question, 'tags', $tags);
             }
@@ -86,7 +95,10 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder', 'tags', 'comments.user']);
+                ->findWithRelations(
+                    $id,
+                    ['user', 'folder', 'tags', 'comments.user']
+                );
             $tmp = $this->voteRepository->findWhere([
                 'q_and_a_id' => $id,
                 'user_id' => Auth::user()->id
@@ -109,7 +121,9 @@ class QuestionService implements QuestionServiceInterface
     public function getQuestions($pageSize = null, $data = array())
     {
         if (!empty($data['tag'])) {
-            $this->questionRepository->pushCriteria(new RelationLikeCriteria('tags', 'title', $data['tag']));
+            $this->questionRepository->pushCriteria(
+                new RelationLikeCriteria('tags', 'title', $data['tag'])
+            );
         }
 
         $questions = $this->questionRepository
@@ -235,20 +249,6 @@ class QuestionService implements QuestionServiceInterface
         return $tags->items();
     }
 
-    public function getTagsPopular($pageSize = null)
-    {
-        try {
-            $tags = $this->tagRepository->loadRelationPopular('questions', $pageSize);
-        } catch (RepositoryException $e) {
-            throw new QuestionServiceException(
-                $e->getMessage(),
-                null,
-                $e
-            );
-        }
-        return $tags;
-    }
-
     public function createComment($data, $question_id)
     {
         // temporary fix without auth
@@ -270,6 +270,52 @@ class QuestionService implements QuestionServiceInterface
         return $comment;
     }
 
+    public function getTagsPopular($pageSize = null)
+    {
+        try {
+            $tags = $this->tagRepository
+                ->loadRelationPopular('questions', $pageSize);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $tags;
+    }
+
+    /**
+     * @param null|int $pageSize
+     * @return LengthAwarePaginator
+     */
+    public function getQuestionsByUser($pageSize = null)
+    {
+        $this->questionRepository->pushCriteria(
+            new CurrentUserCriteria(Auth::user()->id)
+        );
+        $questions = $this->questionRepository
+            ->with(['user', 'folder', 'tags'])
+            ->paginate($pageSize);
+        return $questions;
+    }
+
+    /**
+     * @param null|int $pageSize
+     * @return LengthAwarePaginator
+     */
+    public function getAnswersByUser($pageSize = null)
+    {
+        $this->answerRepository->pushCriteria(
+            new CurrentUserCriteria(Auth::user()->id)
+        );
+        $questions = $this->answerRepository->withRelationCount()
+            ->with(['user', 'question'])
+            ->paginate($pageSize);
+        return $questions;
+    }
+
+    // Widgets
     public function getQuestionsPopular($pageSize = null, $data = array())
     {
         $where = [
@@ -282,7 +328,8 @@ class QuestionService implements QuestionServiceInterface
             $where[] = ['main.created_at', '<=', $data['date_end']];
         }
         try {
-            $questions = $this->questionRepository->loadRelationPopular('answers', $pageSize, $where);
+            $questions = $this->questionRepository
+                ->loadRelationPopular('answers', $pageSize, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -305,7 +352,8 @@ class QuestionService implements QuestionServiceInterface
             $where[] = ['main.created_at', '<=', $data['date_end']];
         }
         try {
-            $questions = $this->questionRepository->loadRelationPopular('votes', $pageSize, $where);
+            $questions = $this->questionRepository
+                ->loadRelationPopular('votes', $pageSize, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -328,7 +376,8 @@ class QuestionService implements QuestionServiceInterface
             $where[] = ['main.created_at', '<=', $data['date_end']];
         }
         try {
-            $questions = $this->questionRepository->loadRelationPopular('comments', $pageSize, $where);
+            $questions = $this->questionRepository
+                ->loadRelationPopular('comments', $pageSize, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),

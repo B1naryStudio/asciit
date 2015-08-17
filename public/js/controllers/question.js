@@ -2,22 +2,34 @@ define([
     'app',
     'views/question/collection',
     'views/question/collection_layout',
-    'views/question/paginator',
+    'views/paginator/paginator',
     'views/question/single',
     'views/question/add',
     'views/folder/select',
-    'views/answer/composite',
+    'views/answer/collection',
     'views/tag/select',
     'views/tag/collection',
     'models/answer',
-    'views/comment/composite',
+    'views/comment/collection',
     'models/comment',
     'models/question',
     'models/folder',
     'models/tag'
-], function (App, CollectionView, CollectionLayout, PaginatorView, SingleView,
-             AddView, SelectFolderView, AnswersCompositeView, SelectTagView,
-             TagsView, Answer, CommentsCompositeView, Comment) {
+], function (
+    App,
+    CollectionView,
+    CollectionLayout,
+    PaginatorView,
+    SingleView,
+    AddView,
+    SelectFolderView,
+    AnswersCompositeView,
+    SelectTagView,
+    TagsView,
+    Answer,
+    CommentsCompositeView,
+    Comment
+) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery, searchTag) {
@@ -28,51 +40,51 @@ define([
                         page_size: 10
                     })
                 ).done(function (questions, tags) {
-                        var questionsView = new CollectionView({
-                            collection: questions.sort(),
-                            searchQuery: searchQuery,
-                            searchTag: searchTag
-                        });
-                        var paginatorView = new PaginatorView({
-                            collection: questions
-                        });
-                        var tagsView = new TagsView({
-                            collection: tags
-                        });
-                        var collectionLayout = new CollectionLayout();
-                        App.Main.Layout.getRegion('content').show(collectionLayout);
-                        collectionLayout.getRegion('collectionRegion').show(questionsView);
-                        collectionLayout.getRegion('paginatorRegion').show(paginatorView);
-                        collectionLayout.getRegion('tagsRegion').show(tagsView);
+                    var questionsView = new CollectionView({
+                        collection: questions.sort(),
+                        searchQuery: searchQuery,
+                        searchTag: searchTag
+                    });
+                    var paginatorView = new PaginatorView({
+                        collection: questions
+                    });
+                    var tagsView = new TagsView({
+                        collection: tags
+                    });
+                    var collectionLayout = new CollectionLayout();
+                    App.Main.Layout.getRegion('content').show(collectionLayout);
+                    collectionLayout.getRegion('collectionRegion').show(questionsView);
+                    collectionLayout.getRegion('paginatorRegion').show(paginatorView);
+                    collectionLayout.getRegion('tagsRegion').show(tagsView);
 
-                        if (!questions.length) {
-                            questionsView.triggerMethod('not:found');
-                        }
+                    if (!questions.length) {
+                        questionsView.triggerMethod('not:found');
+                    }
 
-                        // Updating for search
-                        Question.Controller.listenTo(
-                            questionsView,
-                            'form:submit',
-                            function (searchQuery) {
-                                if (/tag\:(.+)/.test(searchQuery)) {
-                                    var query = searchQuery.replace(
-                                        /tag\:(.+)/,
-                                        '$1'
-                                    );
-                                    questionsView.options.searchQuery = '';
-                                    Backbone.history.navigate(
-                                        '/tags/' + query,
-                                        { trigger: true }
-                                    );
-                                } else {
-                                    questionsView.options.searchTag = '';
-                                    Backbone.history.navigate(
-                                        '/questions?' + searchQuery,
-                                        { trigger: true }
-                                    );
-                                }
+                    // Updating for search
+                    Question.Controller.listenTo(
+                        questionsView,
+                        'form:submit',
+                        function (searchQuery) {
+                            if (/tag\:(.+)/.test(searchQuery)) {
+                                var query = searchQuery.replace(
+                                    /tag\:(.+)/,
+                                    '$1'
+                                );
+                                questionsView.options.searchQuery = '';
+                                Backbone.history.navigate(
+                                    '/tags/' + query,
+                                    { trigger: true }
+                                );
+                            } else {
+                                questionsView.options.searchTag = '';
+                                Backbone.history.navigate(
+                                    '/questions?' + searchQuery,
+                                    { trigger: true }
+                                );
                             }
-                        );
+                        }
+                    );
                 });
             },
 
