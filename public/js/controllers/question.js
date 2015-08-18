@@ -45,17 +45,30 @@ define([
                         searchQuery: searchQuery,
                         searchTag: searchTag
                     });
-                    var paginatorView = new PaginatorView({
-                        collection: questions
-                    });
                     var tagsView = new TagsView({
                         collection: tags
                     });
                     var collectionLayout = new CollectionLayout();
-                    App.Main.Layout.getRegion('content').show(collectionLayout);
-                    collectionLayout.getRegion('collectionRegion').show(questionsView);
-                    collectionLayout.getRegion('paginatorRegion').show(paginatorView);
-                    collectionLayout.getRegion('tagsRegion').show(tagsView);
+                    App.Main.Layout
+                        .getRegion('content')
+                        .show(collectionLayout);
+
+                    collectionLayout
+                        .getRegion('collectionRegion')
+                        .show(questionsView);
+
+                    collectionLayout
+                        .getRegion('tagsRegion')
+                        .show(tagsView);
+
+                    App.trigger('paginator:get', {
+                        collection: questions,
+                        success: function (paginatorView) {
+                            collectionLayout
+                                .getRegion('paginatorRegion')
+                                .show(paginatorView);
+                        }
+                    });
 
                     if (!questions.length) {
                         questionsView.triggerMethod('not:found');

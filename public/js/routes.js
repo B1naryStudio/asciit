@@ -75,6 +75,11 @@ define(['app'], function (App) {
                 require(['controllers/activity'], function (controller) {
                     controller.activity();
                 });
+            },
+            paginator: function (options) {
+                require(['controllers/paginator'], function (controller) {
+                    controller.paginator(options);
+                });
             }
         };
 
@@ -92,10 +97,9 @@ define(['app'], function (App) {
         });
 
         this.listenTo(App, 'spinner:check', function(){
-            //debugger;
-           if(App.queryFlag.length == 0) {
+            if (App.queryFlag.length === 0) {
                 $('#spinner').removeClass('bar');
-           }
+            }
         });
 
         this.listenTo(App, 'popup:show', function (data) {
@@ -114,6 +118,10 @@ define(['app'], function (App) {
             if (!Backbone.history.navigate('/', { trigger: true })) {
                 API.questions();
             }
+        });
+
+        this.listenTo(App, 'paginator:get', function (options) {
+            API.paginator(options);
         });
 
         $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {
