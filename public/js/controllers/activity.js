@@ -20,24 +20,31 @@ define([
                     var questionsView = new QuestionView({
                         collection: questions.sort()
                     });
-                    var paginatorView = new PaginatorView({
-                        collection: questions
-                    });
+
                     collectionLayout
                         .getRegion('questionsRegion')
                         .show(questionsView);
-                    collectionLayout
-                        .getRegion('questionsPaginatorRegion')
-                        .show(paginatorView);
+                    App.trigger('paginator:get', {
+                        collection: questions,
+                        success: function (paginatorView) {
+                            collectionLayout
+                                .getRegion('questionsPaginatorRegion')
+                                .show(paginatorView);
+                        }
+                    });
 
                     var answersView = new AnswersView({
                         collection: answers.sort()
                     });
-                    paginatorView = new PaginatorView({
-                        collection: answers
-                    });
                     collectionLayout.getRegion('answersRegion').show(answersView);
-                    collectionLayout.getRegion('answersPaginatorRegion').show(paginatorView);
+                    App.trigger('paginator:get', {
+                        collection: answers,
+                        success: function (paginatorView) {
+                            collectionLayout
+                                .getRegion('answersPaginatorRegion')
+                                .show(paginatorView);
+                        }
+                    });
                 });
             }
         });
