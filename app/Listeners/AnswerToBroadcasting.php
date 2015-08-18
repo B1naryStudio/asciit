@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\AnswerWasAdded;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\WebSocket\Contracts\HttpToWampDelivery;
+use App\WebSocket\Contracts\AbstractWebSocketFactory;
 
 class AnswerToBroadcasting
 {
@@ -15,9 +15,9 @@ class AnswerToBroadcasting
      *
      * @return void
      */
-    public function __construct(HttpToWampDelivery $delivery)
+    public function __construct(AbstractWebSocketFactory $factory)
     {
-        $this->delivery = $delivery;
+        $this->delivery = $factory->getDeliveryService();
     }
 
     /**
@@ -33,6 +33,6 @@ class AnswerToBroadcasting
             '/questions' . $event->answer->question_id . '/answers'
         );
 
-        $this->delivery->send(json_encode($message));
+        $this->delivery->send($message);
     }
 }

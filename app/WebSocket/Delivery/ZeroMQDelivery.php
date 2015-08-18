@@ -1,6 +1,6 @@
 <?php
 
-namespace App\WebSocket;
+namespace App\WebSocket\Delivery;
 
 use ZMQ;
 use ZMQContext;

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d5afca806c38cc1e4fab953f6da8a01d",
+    "hash": "833a00afdb858e780d67849a1918110a",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -353,6 +353,56 @@
                 "event-emitter"
             ],
             "time": "2012-11-02 14:49:47"
+        },
+        {
+            "name": "gos/websocket-client",
+            "version": "v0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GeniusesOfSymfony/WebSocketPhpClient.git",
+                "reference": "13bb38cb01acee648fea1a6ca4ad3dc6148da7fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GeniusesOfSymfony/WebSocketPhpClient/zipball/13bb38cb01acee648fea1a6ca4ad3dc6148da7fe",
+                "reference": "13bb38cb01acee648fea1a6ca4ad3dc6148da7fe",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gos\\Component\\WebSocketClient\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Johann Saunier",
+                    "email": "johann_27@hotmail.fr"
+                },
+                {
+                    "name": "Martin Bažík",
+                    "email": "martin@bazo.sk"
+                }
+            ],
+            "description": "WAMP client in PHP",
+            "keywords": [
+                "Ratchet",
+                "WAMP",
+                "websocket"
+            ],
+            "time": "2015-08-04 11:43:11"
         },
         {
             "name": "guzzle/common",

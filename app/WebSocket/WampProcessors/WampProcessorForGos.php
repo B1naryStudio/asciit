@@ -1,35 +1,16 @@
 <?php
 
-namespace App\WebSocket;
+namespace App\WebSocket\WampProcessors;
 
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
 
-class WampProcessor implements WampServerInterface {
+class WampProcessorForGos implements WampServerInterface
+{
     /**
      * A lookup of all the topics clients have subscribed to
      */
     protected $subscribedTopics = array();
-
-    /**
-     * @param string JSON'ified string we'll receive from ZeroMQ
-     */
-    public function onNewItem($data) {
-        $decodedData = json_decode($data, true);
-
-        echo "Got a message on topic:\n" . $decodedData['topic'] . "\n";
-        echo var_dump($decodedData);
-
-        // If the lookup topic object isn't set there is no one to publish to
-        if (!array_key_exists($decodedData['topic'], $this->subscribedTopics)) {
-            return;
-        }
-
-        $topic = $this->subscribedTopics[$decodedData['topic']];
-
-        // re-send the data to all the clients subscribed to that category
-        $topic->broadcast($decodedData['data']);
-    }
 
     public function onSubscribe(ConnectionInterface $conn, $topic)
     {
@@ -57,8 +38,21 @@ class WampProcessor implements WampServerInterface {
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible)
     {
+        echo "Got a message on topic:\n" . $topic . "\n";
+        echo var_dump($event);
+
+        // If the lookup topic object isn't set there is no one to publish to
+        if (!array_key_exists($topic, $this->subscribedTopics)) {
+            return;
+        }
+
+        $topic = $this->subscribedTopics[$topic];
+
+        // re-send the data to all the clients subscribed to that category
+        $topic->broadcast($event);
+
         // In this application if clients send data it's because the user hacked around in console
-        $conn->close();
+        //$conn->close();
     }
 
     public function onError(ConnectionInterface $conn, \Exception $e)

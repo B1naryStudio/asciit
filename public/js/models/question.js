@@ -58,7 +58,6 @@ define([
                 sortedBy: 'desc'
             },
             initialize: function(options) {
-                debugger;
                 this.searchQuery = options.searchQuery;
                 this.searchTag = options.searchTag;
                 this.sort();

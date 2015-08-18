@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\QuestionWasAdded;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\WebSocket\Contracts\HttpToWampDelivery;
+use App\WebSocket\Contracts\AbstractWebSocketFactory;
 
 class QuestionToBroadcasting
 {
@@ -15,9 +15,9 @@ class QuestionToBroadcasting
      *
      * @return void
      */
-    public function __construct(HttpToWampDelivery $delivery)
+    public function __construct(AbstractWebSocketFactory $factory)
     {
-        $this->delivery = $delivery;
+        $this->delivery = $factory->getDeliveryService();
     }
 
     /**
@@ -31,6 +31,6 @@ class QuestionToBroadcasting
         $message['data'] = $event->question;
         $message['topic'] = url('/questions');
 
-        $this->delivery->send(json_encode($message));
+        $this->delivery->send($message);
     }
 }

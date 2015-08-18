@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class HttpToWampDeliveryProvider extends ServiceProvider
+class WebSocketsServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -23,9 +23,9 @@ class HttpToWampDeliveryProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-            'App\WebSocket\Contracts\HttpToWampDelivery',
-            'App\WebSocket\ZeroMQDelivery'
+        $this->app->singleton(
+            'App\WebSocket\Contracts\AbstractWebSocketFactory',
+            'App\WebSocket\Factories\GosWebSocketFactory'
         );
     }
 }
