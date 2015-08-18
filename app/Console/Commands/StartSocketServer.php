@@ -3,12 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
-use App\WebSocket\WAMPServer\WampServerForGos;
-
-use React\ZMQ\Context;
-use ZMQ;
-
 use App\WebSocket\Contracts\AbstractWebSocketFactory;
 
 class StartSocketServer extends Command

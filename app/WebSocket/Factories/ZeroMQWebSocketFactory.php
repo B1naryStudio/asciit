@@ -3,25 +3,25 @@
  * Created by PhpStorm.
  * User: antarus66
  * Date: 8/18/15
- * Time: 11:23 AM
+ * Time: 12:49 PM
  */
 
 namespace App\WebSocket\Factories;
 
 use App\WebSocket\Contracts\AbstractWebSocketFactory;
-use App\WebSocket\Delivery\GosWebSocketDelivery;
-use App\WebSocket\WampProcessors\WampProcessorForGos;
-use App\WebSocket\WampServers\WampServerForGos;
+use App\WebSocket\Delivery\ZeroMQDelivery;
+use App\WebSocket\WampServers\WampServerForZMQ;
+use App\WebSocket\WampProcessors\WampProcessorForZMQ;
 
-class GosWebSocketFactory implements AbstractWebSocketFactory
+class ZeroMQWebSocketFactory implements AbstractWebSocketFactory
 {
     private $delivery;
     private $processor;
     private $server;
 
     public function __construct(
-        GosWebSocketDelivery $delivery,
-        WampProcessorForGos $processor
+        ZeroMQDelivery $delivery,
+        WampProcessorForZMQ $processor
     ) {
         $this->delivery = $delivery;
         $this->processor = $processor;
@@ -30,7 +30,7 @@ class GosWebSocketFactory implements AbstractWebSocketFactory
     public function getWampServer()
     {
         if (!$this->server) {
-            $this->server = new WampServerForGos($this->processor);
+            $this->server = new WampServerForZMQ($this->processor);
         }
 
         return $this->server;
