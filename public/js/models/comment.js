@@ -27,19 +27,14 @@ define([
         Comment.Collection = Backbone.Collection.extend(
             _.extend({}, ModelMixins.LiveCollection, {
                 model: Comment.Model,
-                url: function () {
-                    return App.prefix + '/api/v1/questions/'
-                        + this.question_id
-                        + '/comments';
-                },
 
-                initialize: function (options) {
+                initialize: function (models, options) {
                     this.liveURI = 'entries/'
-                        + this.question_id
+                        + options.q_and_a_id
                         + '/comments';
 
                     this.url = App.prefix + '/api/v1/questions/'
-                        + this.question_id
+                        + options.q_and_a_id
                         + '/comments';
 
                     this.startLiveUpdating();

@@ -1,9 +1,8 @@
 define([
     'app',
     'paginator',
-    'models/related-timestamps-model',
     'models/model-mixins',
-], function(App, PageableCollection, RelatedTimestampsModel, ModelMixins) {
+], function(App, PageableCollection, ModelMixins) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend(
             _.extend({}, ModelMixins.RelativeTimestampsModel, {

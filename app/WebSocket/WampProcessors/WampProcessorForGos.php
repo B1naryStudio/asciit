@@ -15,7 +15,7 @@ class WampProcessorForGos implements WampServerInterface
     public function onSubscribe(ConnectionInterface $conn, $topic)
     {
         //$this->subscribedTopics[$topic->getId()] = $topic;
-        echo "Connection {$conn->resourceId} subscribed on {$topic}";
+        echo "Connection {$conn->resourceId} subscribed on {$topic}\n";
     }
 
     public function onUnSubscribe(ConnectionInterface $conn, $topic)

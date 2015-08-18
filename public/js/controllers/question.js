@@ -99,7 +99,10 @@ define([
                             q_and_a_id: id
                         });
 
-                        var collectionComments = new Comment.Collection(question.attributes.comment);
+                        var collectionComments = new Comment.Collection(
+                            question.attributes.comments,
+                            {q_and_a_id: id}
+                        );
                         var commentsView = new CommentsCompositeView({model: commentModel, collection: collectionComments, id: id});
                         questionView.commentsRegion.show(commentsView);
 

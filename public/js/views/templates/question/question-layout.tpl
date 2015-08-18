@@ -27,9 +27,7 @@
         <p><%= description %></p>
         <!-- Comments -->
         <div class="comments">
-            <header class="section-header">
-                <button class="btn btn-default btn-xs show-form">Add comment</button>
-            </header>
+            <button class="btn btn-default btn-xs show-form">Add comment</button>
         </div>
     </div>
 </div>

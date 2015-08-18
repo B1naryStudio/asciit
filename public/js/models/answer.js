@@ -1,8 +1,7 @@
 define([
     'app',
-    'models/related-timestamps-model',
     'models/model-mixins',
-], function(App, RelatedTimestampsModel, ModelMixins) {
+], function(App, ModelMixins) {
     App.module('Answer', function(Answer, App, Backbone, Marionette, $, _) {
         Answer.Model = Backbone.Model.extend(
             _.extend({}, ModelMixins.RelativeTimestampsModel, {

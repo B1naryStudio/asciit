@@ -55,9 +55,12 @@ define([
 
                 // Comments
                 var commentModel = new Comment.Model({
-                    q_and_a_id: this.model.attributes.id
+                    q_and_a_id: this.model.get('id')
                 });
-                var commentCollection = new Comment.Collection(this.model.get('comment'));
+                var commentCollection = new Comment.Collection(
+                    this.model.get('comments'),
+                    {q_and_a_id: this.model.get('id')}
+                );
                 var commentsView = new CommentsCompositeView({
                     model: commentModel,
                     collection: commentCollection,
