@@ -48,7 +48,7 @@
  |------------------------------------------------------------------------------
  */
 .votes {
-    color: #333333;
+    color: #444444;
 }
 
 .question_view .votes {
@@ -441,8 +441,8 @@ pre code.hljs {
 }
 
 .question-preview {
-    font-size: 24px;
-    text-align: right;
+    font-size: 18px;
+    padding-right: 0;
     float: right;
 }
 
@@ -594,4 +594,13 @@ div .fa-1 {
 
 div .fa-05 {
     font-size: 0.5em;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Paginator
+ |------------------------------------------------------------------------------
+ */
+.paginator {
+    text-align: center;
 }
