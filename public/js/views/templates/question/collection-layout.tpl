@@ -2,4 +2,4 @@
     <div class="row" id="collection-region"></div>
     <div class="row" id="paginator-region"></div>
 </div>
-<div class="col-md-3 col-lg-2 col-sm-3" id="tags-region"></div>
+<div class="col-md-3 col-lg-2 col-sm-3 hidden-xs" id="tags-region"></div>

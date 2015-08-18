@@ -244,8 +244,10 @@ time,
     left: 10%;
     right: 10%;
     top: 10%;
-    bottom: auto;
+    bottom: 0;
+    padding: 0 !important;
     position: absolute;
+    overflow: hidden;
 }
 
 #popup-layout-view.question-add .select2-container {
@@ -291,6 +293,11 @@ time,
 .login-form .controls {
     width: 60px;
     margin: 20px auto 0;
+}
+
+.modal-body {
+    overflow: auto;
+    max-height: 440px;
 }
 
 /*
@@ -399,35 +406,6 @@ pre code.hljs {
  | Media
  |------------------------------------------------------------------------------
  */
-/*@media (min-width: 768px) {
-    .container {
-        width: 528px;
-    }
-}
-
-@media (min-width: 900px) {
-    .container {
-        width: 660px;
-    }
-}
-
-@media (min-width: 992px) {
-    .container {
-        width: 752px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .container {
-        width: 960px;
-    }
-}
-
-@media (min-width: 1600px) {
-    .container {
-        width: 1100px;
-    }
-}*/
 
 .login.nav.navbar-nav {
     margin: 0;
@@ -438,13 +416,74 @@ pre code.hljs {
     float: left;
 }
 
+@media (max-height: 799px) {
+    .modal-body {
+        overflow: auto;
+        max-height: 600px;
+    }
+
+    #popup-layout-view.question-add {
+        height: 655px;
+    }
+}
+
+@media (min-height: 800px) and (max-height: 899px) {
+    .modal-body {
+        overflow: auto;
+        max-height: 660px;
+    }
+
+    #popup-layout-view.question-add {
+        height: 720px;
+    }
+}
+
+@media (min-height: 900px) {
+    .modal-body {
+        overflow: auto;
+        max-height: 730px;
+    }
+
+    #popup-layout-view {
+        height: 780px;
+    }
+}
+
+@media (max-width: 350px) {
+    .pagination>li>a,
+    .pagination>li>span {
+        padding: 4px 5px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 450px) {
+    .pagination>li>a,
+    .pagination>li>span {
+        padding: 4px 6px;
+        font-size: 13px;
+    }
+
+    #popup-layout-view.question-add {
+        left: 5%;
+        right: 5%;
+        top: 5%;
+        bottom: 0;
+        position: absolute;
+    }
+}
+
+@media (min-width: 550px) {
+    .pagination>li>a,
+    .pagination>li>span {
+        padding: 4px 12px;
+        font-size: 14px;
+    }
+}
+
 @media (max-width: 767px) {
     .container {
         width: 96%;
-    }
-
-    #tags-region {
-        display: none;
     }
 
     .question-header {
@@ -459,9 +498,18 @@ pre code.hljs {
     .tags-wrapper {
         float: left;
         padding: 0 15px;
+        width: 100%;
+    }
+
+    .nav>li.user-avatar {
+        display: none;
+    }
+
+    .navbar-nav>li>a.dropdown-toggle {
+        padding-top: 15px;
+        padding-bottom: 15px;
     }
 }
-
 @media (min-width: 768px) {
     .container {
         width: 96%;
