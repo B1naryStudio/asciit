@@ -1,7 +1,4 @@
-define([
-    'app',
-    'paginator'
-], function(App, PageableCollection) {
+define(['app'], function(App) {
     App.module('Paginator', function(Paginator, App, Backbone, Marionette, $, _) {
         Paginator.Model = Backbone.Model.extend({
             defaults: {
@@ -11,7 +8,7 @@ define([
             }
         });
 
-        Paginator.Collection = PageableCollection.extend({
+        Paginator.Collection = Backbone.Collection.extend({
             model: Paginator.Model,
             sortKey: 'updated_at',
             order: 'desc',
