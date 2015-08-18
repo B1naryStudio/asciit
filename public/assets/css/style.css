@@ -42,6 +42,14 @@
     margin-right: 15px;
 }
 
+/*#questions-list-region {
+    width: 80%;
+}
+
+#tags-region {
+    width: 20%;
+}*/
+
 /*
  |------------------------------------------------------------------------------
  | Votes block
@@ -360,9 +368,15 @@ time,
     border: none;
 }
 
-    .tags .search a {
-        color: #fff;
-    }
+.tags .search a {
+    color: #fff;
+}
+
+#tags-region .tags li a {
+    max-width: 115px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 
 /*
  |------------------------------------------------------------------------------
@@ -385,7 +399,7 @@ pre code.hljs {
  | Media
  |------------------------------------------------------------------------------
  */
-@media (min-width: 768px) {
+/*@media (min-width: 768px) {
     .container {
         width: 528px;
     }
@@ -413,7 +427,75 @@ pre code.hljs {
     .container {
         width: 1100px;
     }
+}*/
+
+.login.nav.navbar-nav {
+    margin: 0;
+    margin-right: 15px;
 }
+
+.login.nav.navbar-nav li {
+    float: left;
+}
+
+@media (max-width: 767px) {
+    .container {
+        width: 96%;
+    }
+
+    #tags-region {
+        display: none;
+    }
+
+    .question-header {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .list-group-item .limited {
+        padding-left: 15px;
+    }
+
+    .tags-wrapper {
+        float: left;
+        padding: 0 15px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        width: 96%;
+    }
+
+    .question-header {
+        padding-left: 0;
+        padding-right: 15px;
+    }
+}
+
+@media (min-width: 1000px) {
+    .container {
+        width: 940px;
+    }
+}
+
+@media (min-width: 1150px) {
+    .container {
+        width: 1000px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 1170px;
+    }
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Comments
+ |------------------------------------------------------------------------------
+ */
 
 .comments-region, .comment-form {
     width: 83%;
@@ -433,11 +515,6 @@ pre code.hljs {
 .single-comment {
     border: none;
     border-top: 1px solid #ddd;
-}
-
-.question-header {
-    padding-left: 0;
-    padding-right: 15px;
 }
 
 .question-preview {
