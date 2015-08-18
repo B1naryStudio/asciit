@@ -29,7 +29,7 @@ define([
 
             events: {
                 'click @ui.editButton': 'onEdit',
-                'click @ui.saveButton': 'onSave'
+                'click @ui.saveButton': 'onSave',
             },
 
             onEdit: function (event) {
@@ -96,7 +96,19 @@ define([
 
             events: {
                 'submit form': 'onSubmit',
-                'click .show-form' : 'showForm'
+                'click .show-form' : 'showForm',
+                'mouseup .description': 'selectText'
+            },
+
+            selectText: function() {
+                var text = App.helper.getSelected();
+                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                    var data = this.editor.getData();
+                    text = '<blockquote>'+text+'</blockquote><p></p>';
+                    data+=text;
+                    this.editor.setData(data);
+                    $('html, body').scrollTop($('#new-answer-form').offset().top);
+                }
             },
 
             showForm: function(e) {

@@ -27,7 +27,19 @@ define([
             },
             events: {
                 'click @ui.commentButton': 'showCommentForm',
-                'click @ui.answerButton': 'toAnswerForm'
+                'click @ui.answerButton': 'toAnswerForm',
+                'mouseup p': 'selectText'
+            },
+
+            selectText: function() {
+                var text = App.helper.getSelected();
+                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                    var data = this.newAnswerEditor.getData();
+                    text = '<blockquote>'+text+'</blockquote><p></p>';
+                    data+=text;
+                    this.newAnswerEditor.setData(data);
+                    $('html, body').scrollTop($('#new-answer-form').offset().top);
+                }
             },
 
             showCommentForm: function(e) {
