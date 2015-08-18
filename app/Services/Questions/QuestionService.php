@@ -80,7 +80,9 @@ class QuestionService implements QuestionServiceInterface
             );
         }
 
-        Event::fire(new QuestionWasAdded($question));
+        Event::fire(new QuestionWasAdded(
+            $this->getQuestion($question->id)
+        ));
 
         return $question;
     }

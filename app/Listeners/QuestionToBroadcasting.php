@@ -29,7 +29,7 @@ class QuestionToBroadcasting
     public function handle(QuestionWasAdded $event)
     {
         $message['data'] = $event->question;
-        $message['topic'] = url('/questions');
+        $message['topic'] = 'questions';
 
         $this->delivery->send($message);
     }

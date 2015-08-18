@@ -29,9 +29,9 @@ class CommentToBroadcasting
     public function handle(CommentWasAdded $event)
     {
         $message['data'] = $event->comment;
-        $message['topic'] = url(
-            '/entries/' . $event->comment->q_and_a_id . '/comments'
-        );
+        $message['topic'] = 'entries/'
+                          . $event->comment->q_and_a_id
+                          . '/comments';
 
         $this->delivery->send($message);
     }

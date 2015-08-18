@@ -1,40 +1,46 @@
 define([
     'app',
     'models/related-timestamps-model',
-], function(App, RelatedTimestampsModel) {
+    'models/model-mixins',
+], function(App, RelatedTimestampsModel, ModelMixins) {
     App.module('Answer', function(Answer, App, Backbone, Marionette, $, _) {
-        Answer.Model = RelatedTimestampsModel.extend({
-            defaults: {
-                'description': ''
-            },
-            validation: {
-                description: {
-                    required: true
-                }
-            },
-            initialize: function (options) {
-                this.urlRoot = App.prefix + '/api/v1/questions/'
-                + options.question_id
-                + '/answers';
-
-                this.attachLocalDates();
-                this.on('sync', this.attachLocalDates);
-            }
-        });
-
-        Answer.Collection = Backbone.Collection.extend({
-            model: Answer.Model,
-            url: function () {
-                return App.prefix + '/api/v1/questions/'
-                    + this.question_id
-                    + '/answers';
-            },
-            initialize: function (options) {
-                this.url = App.prefix + '/api/v1/questions/'
+        Answer.Model = Backbone.Model.extend(
+            _.extend({}, ModelMixins.RelativeTimestampsModel, {
+                defaults: {
+                    'description': ''
+                },
+                validation: {
+                    description: {
+                        required: true
+                    }
+                },
+                initialize: function (options) {
+                    this.urlRoot = App.prefix + '/api/v1/questions/'
                     + options.question_id
                     + '/answers';
-            }
-        });
+
+                    this.attachLocalDates();
+                    this.on('sync', this.attachLocalDates);
+                }
+            })
+        );
+
+        Answer.Collection = Backbone.Collection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
+                model: Answer.Model,
+                url: function () {
+                    return App.prefix + '/api/v1/questions/'
+                        + this.question_id
+                        + '/answers';
+                },
+                initialize: function (options) {
+                    this.liveURI = 'questions/' + options.question_id + '/answers';
+                    this.url = App.prefix + '/api/v1/' + this.liveURI;
+
+                    this.startLiveUpdating();
+                }
+            })
+        );
 
         var API = {
             getAnswers: function (question_id) {

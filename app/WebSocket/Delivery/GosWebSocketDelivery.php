@@ -4,6 +4,7 @@ namespace App\WebSocket\Delivery;
 
 use App\WebSocket\Contracts\HttpToWampDelivery;
 use Gos\Component\WebSocketClient\Wamp\Client;
+use Gos\Component\WebSocketClient\Exception\BadResponseException;
 
 class GosWebSocketDelivery implements HttpToWampDelivery
 {
@@ -16,7 +17,12 @@ class GosWebSocketDelivery implements HttpToWampDelivery
 
     public function send($data)
     {
-        $this->client->connect();
+        try {
+            $this->client->connect();
+        } catch (BadResponseException $e) {
+            return;
+        }
+
         $this->client->publish($data['topic'], $data['data']);
     }
 }

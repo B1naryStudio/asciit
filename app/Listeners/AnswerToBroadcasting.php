@@ -29,9 +29,9 @@ class AnswerToBroadcasting
     public function handle(AnswerWasAdded $event)
     {
         $message['data'] = $event->answer;
-        $message['topic'] = url(
-            '/questions' . $event->answer->question_id . '/answers'
-        );
+        $message['topic'] = 'questions/'
+                          . $event->answer->question_id
+                          . '/answers';
 
         $this->delivery->send($message);
     }
