@@ -18,6 +18,35 @@ define([
             }
             return false;
         },
+
+        moveFocus: function(editor, data) {
+
+            var checkData = editor.getData();
+            var el = $(editor.getSelection().document.$).find('body');
+            if(checkData!='') {
+                el.append('<p></p>');
+                el.find('p:last').append(data);
+            } else {
+                el.find('p:last').html(data);
+            }
+            var s = editor.getSelection(); // getting selection
+            var selected_ranges = s.getRanges(); // getting ranges
+
+            var node = selected_ranges[0].startContainer; // selecting the starting node
+            var parents = node.getParents(true);
+            node = parents[parents.length - 2].getFirst();
+            while (true) {
+                var x = node.getNext();
+                if (x == null) {
+                    break;
+                }
+                node = x;
+            }
+            s.selectElement(node);
+            selected_ranges = s.getRanges();
+            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+            s.selectRanges(selected_ranges);
+        }
     };
 
     App.prefix = window.location.pathname.replace(/(\/.*)(\/)/, '$1');

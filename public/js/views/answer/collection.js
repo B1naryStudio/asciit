@@ -30,6 +30,20 @@ define([
             events: {
                 'click @ui.editButton': 'onEdit',
                 'click @ui.saveButton': 'onSave',
+                'mouseup .description': 'selectText'
+            },
+
+            selectText: function() {
+                var editor = App.helper.editor;
+                var text = App.helper.getSelected();
+                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                    text = '<blockquote><strong>'+this.model.attributes.created_relative+
+                        ' by '+this.model.attributes.user.first_name+
+                        ' '+this.model.attributes.user.last_name+'</strong><br/>'+text+'</blockquote>';
+                    editor.focus();
+                    App.helper.moveFocus(editor, text);
+                    $('html, body').scrollTop($('#new-answer-form').offset().top);
+                }
             },
 
             onEdit: function (event) {
@@ -100,18 +114,6 @@ define([
             events: {
                 'submit form': 'onSubmit',
                 'click .show-form' : 'showForm',
-                'mouseup .description': 'selectText'
-            },
-
-            selectText: function() {
-                var text = App.helper.getSelected();
-                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
-                    var data = this.editor.getData();
-                    text = '<blockquote>'+text+'</blockquote><p></p>';
-                    data+=text;
-                    this.editor.setData(data);
-                    $('html, body').scrollTop($('#new-answer-form').offset().top);
-                }
             },
 
             showForm: function(e) {
@@ -173,10 +175,11 @@ define([
                 } else {
                     $('html, body').scrollTop(0);
                 }
+                App.helper.editor = this.editor;
             },
             initialize: function (options) {
                 this.childViewOptions = {
-                    id: this.id
+                    id: this.id,
                 };
                 Backbone.Validation.bind(this);
                 this.listenTo(this.collection, 'update', this.refreshCounter);

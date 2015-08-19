@@ -35,39 +35,13 @@ define([
                 var text = App.helper.getSelected();
                 if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
                     var data = this.newAnswerEditor.getData();
-                    text = '<blockquote>'+text+'</blockquote><p></p>';
-                    data+=text;
-                    //this.newAnswerEditor.setData(data);
+                    text = '<blockquote><strong>'+this.model.attributes.created_relative+
+                        ' by '+this.model.attributes.user.first_name+
+                        ' '+this.model.attributes.user.last_name+'</strong><br/>'+text+' </blockquote>';
+                    this.newAnswerEditor.focus();
+                    App.helper.moveFocus(this.newAnswerEditor, text);
+                    $('html, body').scrollTop($('#new-answer-form').offset().top);
 
-                    var s = this.newAnswerEditor.getSelection(); // getting selection
-                    var selected_ranges = s.getRanges(); // getting ranges
-debugger;
-                    var el = $(this.newAnswerEditor.getSelection().document.$).find('p:last');
-                    el.append(data);
-
-
-                    var node = selected_ranges[0].startContainer; // selecting the starting node
-                    var parents = node.getParents(true);
-
-                    node = parents[parents.length - 2].getFirst();
-
-                    while (true) {
-                        var x = node.getNext();
-                        if (x == null) {
-                            break;
-                        }
-                        node = x;
-                    }
-
-                    s.selectElement(node);
-                    selected_ranges = s.getRanges();
-                    selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
-                    s.selectRanges(selected_ranges);  // pu
-                    console.log(el);
-                    //$('html, body').scrollTop($('#new-answer-form').offset().top);
-                    //
-                    //$(document.elementFromPoint(700, 900)).click();
-                    //console.log($(document.elementFromPoint(700, 900)));
                 }
             },
 
