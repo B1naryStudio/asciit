@@ -74,39 +74,45 @@ define([
             })
         );
 
-        Question.CollectionByUser = PageableCollection.extend({
-            model: Question.Model,
-            url: App.prefix + '/api/v1/questions-my',
-            sortKey: 'updated_at',
-            order: 'desc',
+        Question.CollectionByUser = PageableCollection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
+                model: Question.Model,
+                url: App.prefix + '/api/v1/questions-my',
+                liveURI: 'user/'
+                         + App.User.Current.get('id')
+                         + '/questions',
+                sortKey: 'updated_at',
+                order: 'desc',
 
-            comparator: function (model1, model2) {
-                var compareField = this.sortKey;
+                comparator: function (model1, model2) {
+                    var compareField = this.sortKey;
 
-                if (model1.get(compareField) > model2.get(compareField)) {
-                    return -1; // before
-                } else if (model2.get(compareField) > model1.get(compareField)) {
-                    return 1; // after
-                } else {
-                    return 0; // equal
-                }
-            },
-            state: {
-                firstPage: 1,
-                pageSize: 5
-            },
-            queryParams: {
-                currentPage: 'page',
-                pageSize: 'page_size',
-                orderBy: function () {
-                    return this.sortKey;
+                    if (model1.get(compareField) > model2.get(compareField)) {
+                        return -1; // before
+                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                        return 1; // after
+                    } else {
+                        return 0; // equal
+                    }
                 },
-                sortedBy: 'desc'
-            },
-            initialize: function(options) {
-                this.sort();
-            }
-        });
+                state: {
+                    firstPage: 1,
+                    pageSize: 5
+                },
+                queryParams: {
+                    currentPage: 'page',
+                    pageSize: 'page_size',
+                    orderBy: function () {
+                        return this.sortKey;
+                    },
+                    sortedBy: 'desc'
+                },
+                initialize: function(options) {
+                    this.sort();
+                    this.startLiveUpdating();
+                }
+            })
+        );
 
         var API = {
             questionCollection: function (searchQuery, searchTag) {
