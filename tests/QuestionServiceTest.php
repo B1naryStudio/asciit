@@ -197,6 +197,9 @@ class QuestionServiceTest extends TestCase
             ->with($newQuestionData)
             ->andReturn($this->question);
 
+        $this->questionRepo->shouldReceive('findWithRelations')
+            ->andReturn($this->question);
+
         $this->assertEquals(
             $this->questionService->createQuestion($newQuestionData),
             $this->question
@@ -216,6 +219,9 @@ class QuestionServiceTest extends TestCase
             ->andReturn($this->folder);
 
         $this->questionRepo->shouldReceive('create')
+            ->andReturn($this->question);
+
+        $this->questionRepo->shouldReceive('findWithRelations')
             ->andReturn($this->question);
 
         $this->questionService->createQuestion($newQuestionData);
