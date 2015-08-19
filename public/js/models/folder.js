@@ -4,7 +4,12 @@ define(['app'], function(App) {
             urlRoot: App.prefix + '/api/v1/folders',
             defaults: {
                 'title': ''
-            }
+            },
+            validation: {
+                title: {
+                    required: true
+                }
+            },
         });
 
         Folder.Collection = Backbone.Collection.extend({
@@ -22,10 +27,35 @@ define(['app'], function(App) {
                     }
                 });
                 return defer.promise();
+            },
+
+            addFolder: function (model) {
+                var defer = $.Deferred();
+
+                if (!model.save([], {
+                        wait: true,
+                        success: function () {
+                            defer.resolve(model);
+                        },
+                        error: function (model, xhr, options) {
+                            var errors = JSON.parse(xhr.responseText);
+                            defer.reject(errors);
+                        }
+                    })) {
+                    defer.reject({
+                        description: 'Server error, saving is impossible.'
+                    });
+                }
+
+                return defer.promise();
             }
         };
         App.reqres.setHandler('folder:collection', function () {
             return API.folderCollection();
+        });
+
+        App.reqres.setHandler('folder:add', function (data) {
+            return API.addFolder(data);
         });
     });
 });

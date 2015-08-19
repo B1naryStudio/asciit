@@ -20,7 +20,6 @@ define(['app',
             },
 
             submit: function(event) {
-                console.log(this.model);
                 event.preventDefault();
                 event.stopPropagation();
                 if (this.model.isValid(true)) {

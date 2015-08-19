@@ -400,5 +400,32 @@ class QuestionService implements QuestionServiceInterface
         }
         return $questions;
     }
+
+    public function removeFolder($id)
+    {
+        try {
+            $this->folderRepository->delete($id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+    }
+
+    public function createFolder($data)
+    {
+        try {
+            $folder = $this->folderRepository->create($data);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $folder;
+    }
 }
 

@@ -20,6 +20,7 @@
             <li><a id="nav-question" href="/questions">Questions</a></li>
             <li><a id="nav-question-add" href="#">Add question</a></li>
             <li><a id="nav-question" href="/activity">My questions/My answers</a></li>
+            <li><a id="nav-question" href="/folders">Folders</a></li>
         </ul>
     </div>
 </nav>
