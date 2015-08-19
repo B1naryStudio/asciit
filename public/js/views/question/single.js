@@ -38,7 +38,13 @@ define([
                     text = '<blockquote>'+text+'</blockquote><p></p>';
                     data+=text;
                     this.newAnswerEditor.setData(data);
+                    var el = $(this.newAnswerEditor.getSelection().document.$).find('p:last');
+                    debugger;
+                    console.log(el);
                     $('html, body').scrollTop($('#new-answer-form').offset().top);
+
+                    $(document.elementFromPoint(700, 2850)).click();
+                    console.log($(document.elementFromPoint(700, 2850)));
                 }
             },
 
