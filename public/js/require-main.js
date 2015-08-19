@@ -45,6 +45,7 @@ requirejs.config({
 
 require(['app'], function (App) {
     App.start({
-        codeSnippetTheme: 'github'
+        codeSnippetTheme: 'github',
+        websocketPort: 9092
     });
 });

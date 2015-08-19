@@ -13,8 +13,7 @@ class StartSocketServer extends Command
      *
      * @var string
      */
-    protected $signature = 'sockets:serve
-        {--port=9090 : Port where to launch the server.}';
+    protected $signature = 'sockets:serve';
 
     /**
      * The console command description.
@@ -41,7 +40,7 @@ class StartSocketServer extends Command
      */
     public function handle()
     {
-        $port = intval($this->option('port'));
+        $port = env('WEBSOCKET_PORT', 9090);
         $this->info("Starting chat web socket server on port " . $port);
 
         $this->server->run($port);

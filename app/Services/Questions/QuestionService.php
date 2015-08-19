@@ -214,11 +214,10 @@ class QuestionService implements QuestionServiceInterface
     {
         $data['user_id'] = Auth::user()->id;
 
-        $new = $this->answerRepository->create($data);
-
         try {
+            $new = $this->answerRepository->create($data);
             $answer = $this->answerRepository->withRelationCount()
-                ->findWithRelations($new->id, ['user']);
+                ->findWithRelations($new->id, ['user', 'question']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such answer',

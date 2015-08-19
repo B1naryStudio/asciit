@@ -23,7 +23,7 @@ class WampProcessorForGos implements WampServerInterface
 
     public function onOpen(ConnectionInterface $conn)
     {
-        echo "New connection on {$conn->remoteAddress}! ({$conn->resourceId})\n";
+        echo "New connection on {$conn->remoteAddress} ({$conn->resourceId})\n";
     }
 
     public function onClose(ConnectionInterface $conn)
@@ -41,7 +41,7 @@ class WampProcessorForGos implements WampServerInterface
     {
         // If some coolhatsker try to publish a message from the browser console
         if($conn->remoteAddress !== '127.0.0.1') {
-            echo "Illegal publisher from {$conn->remoteAddress}! ({$conn->resourceId})\n";
+            echo "Illegal publisher from {$conn->remoteAddress} ({$conn->resourceId})\n";
             $conn->close(); // Kick it!
             return;
         }
