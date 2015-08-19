@@ -29,6 +29,11 @@ define([
                 $('pre code').each(function(i, block) {
                     hljs.highlightBlock(block);
                 });
+            },
+            initialize: function () {
+                this.listenTo(this.model, 'change', function() {
+                    this.render();
+                });
             }
         });
     });

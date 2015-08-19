@@ -26,7 +26,7 @@
         <ul class="nav navbar-nav">
             <li><a id="nav-question" href="/#questions">Questions</a></li>
             <li><a id="nav-question-add" href="#">Add question</a></li>
-            <li><a href="/#activity">My questions/My answers</a></li>
+            <li><a href="#activity">My questions/My answers</a></li>
         </ul>
     </div>
 
