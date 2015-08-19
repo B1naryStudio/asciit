@@ -11,5 +11,6 @@
 </head>
 <body>
 </body>
+<script src="js/vendor/autobahn/autobahn.js"></script>
 <script data-main="js/require-main" src="js/vendor/require/require.js"></script>
 </html>

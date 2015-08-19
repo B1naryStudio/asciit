@@ -164,7 +164,8 @@ define([
                     });
 
                     var collectionComments = new Comment.Collection(
-                        question.attributes.comments
+                        question.attributes.comments,
+                        {q_and_a_id: id}
                     );
                     var commentsView = new CommentsView({
                         model: commentModel,

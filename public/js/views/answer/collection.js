@@ -56,9 +56,12 @@ define([
 
                 // Comments
                 var commentModel = new Comment.Model({
-                    q_and_a_id: this.model.attributes.id
+                    q_and_a_id: this.model.get('id')
                 });
-                var commentCollection = new Comment.Collection(this.model.get('comments'));
+                var commentCollection = new Comment.Collection(
+                    this.model.get('comments'),
+                    {q_and_a_id: this.model.get('id')}
+                );
                 var commentsView = new CommentsCompositeView({
                     model: commentModel,
                     collection: commentCollection,
@@ -136,12 +139,12 @@ define([
             // Refresh model and form for the futher using without view rendering
             onModelRefresh: function (freshModel) {
                 this.model = freshModel;
-                this.refreshCounter();
 
                 // Erase the editor value.
                 this.editor.setData('');
             },
             refreshCounter: function () {
+                this.model.set('count', this.collection.length)
                 this.$el.find('.counter.answers').html(this.model.get('count'));
             },
             onShow: function () {
@@ -151,7 +154,10 @@ define([
                 this.trigger('editor:created', this.editor);
 
                 if (this.options.answer_id) {
-                    $('html, body').scrollTop(this.$el.find('#answer-' + this.options.answer_id).focus().offset().top);
+                    $('html, body').scrollTop(this.$el.find(
+                            '#answer-' + this.options.answer_id
+                        ).focus().offset().top
+                    );
                 } else {
                     $('html, body').scrollTop(0);
                 }
@@ -161,6 +167,7 @@ define([
                     id: this.id
                 };
                 Backbone.Validation.bind(this);
+                this.listenTo(this.collection, 'update', this.refreshCounter);
             },
             remove: function() {
                 // Remove the validation binding

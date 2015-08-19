@@ -16,6 +16,10 @@ use App\Repositories\Contracts\VoteRepository;
 use App\Repositories\Criteria\InCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
 use App\Repositories\Contracts\CommentRepository;
+use Illuminate\Support\Facades\Event;
+use App\Events\QuestionWasAdded;
+use App\Events\AnswerWasAdded;
+use App\Events\CommentWasAdded;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -84,6 +88,11 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new QuestionWasAdded(
+            $this->getQuestion($question->id)
+        ));
+
         return $question;
     }
     
@@ -218,6 +227,8 @@ class QuestionService implements QuestionServiceInterface
             );
         }
 
+        Event::fire(new AnswerWasAdded($answer));
+
         return $answer;
     }
 
@@ -266,6 +277,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new CommentWasAdded($comment));
 
         return $comment;
     }

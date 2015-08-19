@@ -1,41 +1,46 @@
 define([
     'app',
     'paginator',
-    'models/related-timestamps-model'
-], function(App, PageableCollection, RelatedTimestampsModel) {
+    'models/model-mixins',
+], function(App, PageableCollection, ModelMixins) {
     App.module('Answer', function(Answer, App, Backbone, Marionette, $, _) {
-        Answer.Model = RelatedTimestampsModel.extend({
-            defaults: {
-                'description': ''
-            },
-            validation: {
-                description: {
-                    required: true
-                }
-            },
-            initialize: function (options) {
-                this.urlRoot = App.prefix + '/api/v1/questions/'
-                + options.question_id
-                + '/answers';
-
-                this.attachLocalDates();
-                this.on('change', this.attachLocalDates);
-            }
-        });
-
-        Answer.Collection = Backbone.Collection.extend({
-            model: Answer.Model,
-            url: function () {
-                return App.prefix + '/api/v1/questions/'
-                    + this.question_id
-                    + '/answers';
-            },
-            initialize: function (options) {
-                this.url = App.prefix + '/api/v1/questions/'
+        Answer.Model = Backbone.Model.extend(
+            _.extend({}, ModelMixins.RelativeTimestampsModel, {
+                defaults: {
+                    'description': ''
+                },
+                validation: {
+                    description: {
+                        required: true
+                    }
+                },
+                initialize: function (options) {
+                    this.urlRoot = App.prefix + '/api/v1/questions/'
                     + options.question_id
                     + '/answers';
-            }
-        });
+
+                    this.attachLocalDates();
+                    this.on('change', this.attachLocalDates);
+                }
+            })
+        );
+
+        Answer.Collection = Backbone.Collection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
+                model: Answer.Model,
+                url: function () {
+                    return App.prefix + '/api/v1/questions/'
+                        + this.question_id
+                        + '/answers';
+                },
+                initialize: function (options) {
+                    this.liveURI = 'questions/' + options.question_id + '/answers';
+                    this.url = App.prefix + '/api/v1/' + this.liveURI;
+
+                    this.startLiveUpdating();
+                }
+            })
+        );
 
         Answer.CollectionByUser = PageableCollection.extend({
             model: Answer.Model,
@@ -73,7 +78,7 @@ define([
 
         var API = {
             getAnswers: function (question_id) {
-                var answers = new Answer.Collection({ question_id: question_id });
+                var answers = new Answer.Collection({question_id: question_id});
                 var defer = $.Deferred();
 
                 answers.fetch({
@@ -106,6 +111,7 @@ define([
 
                 return defer.promise();
             },
+            
             answerCollectionByUser: function () {
                 var questions = new Answer.CollectionByUser();
                 var defer = $.Deferred();
