@@ -28,11 +28,18 @@ class AnswerToBroadcasting
      */
     public function handle(AnswerWasAdded $event)
     {
-        $message['data'] = $event->answer;
-        $message['topic'] = 'questions/'
-                          . $event->answer->question_id
-                          . '/answers';
+        // to the topic 'question/{id}/answers'
+        $this->delivery->send([
+            'data'  => $event->answer,
+            'topic' =>'questions/' . $event->answer->question_id . '/answers'
+        ]);
 
-        $this->delivery->send($message);
+        $questionAuthorId = $event->answer->question->user_id;
+
+        // to the topic 'user/{id}/questions-answers'
+        $this->delivery->send([
+            'data'  => $event->answer,
+            'topic' =>'user/' . $questionAuthorId . '/questions-answers'
+        ]);
     }
 }
