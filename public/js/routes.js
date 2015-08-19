@@ -9,14 +9,19 @@ define(['app'], function (App) {
                 'login': 'login',
                 'logout': 'logout',
                 'tags': 'tags',
-                'tags/:tag': 'tagSearch'
+                'tags/:tag': 'tagSearch',
+                'activity': 'activity',
+                'question/:question_id/answer/:answer_id': 'question'
             },
             execute: function (callback, args, name) {
-                if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
+                if (
+                    name !== 'login' && App.Routes.isOpen &&
+                    callback || name === 'login' && callback
+                ) {
                     callback.apply(this, args);
                     $('#spinner').addClass('bar');
                 }
-            },
+            }
         });
 
         var API = {
@@ -36,9 +41,9 @@ define(['app'], function (App) {
                     controller.questions(searchQuery, '');
                 });
             },
-            question: function (id) {
+            question: function (id, answer_id) {
                 require(['controllers/question'], function (controller) {
-                    controller.question(id);
+                    controller.question(id, answer_id);
                 });
             },
             questionsAdd: function () {
@@ -65,6 +70,16 @@ define(['app'], function (App) {
                 require(['controllers/question'], function (controller) {
                     controller.questions('', searchQuery);
                 });
+            },
+            activity: function () {
+                require(['controllers/activity'], function (controller) {
+                    controller.activity();
+                });
+            },
+            paginator: function (options) {
+                require(['controllers/paginator'], function (controller) {
+                    controller.paginator(options);
+                });
             }
         };
 
@@ -82,10 +97,9 @@ define(['app'], function (App) {
         });
 
         this.listenTo(App, 'spinner:check', function(){
-            //debugger;
-           if(App.queryFlag.length == 0) {
+            if (App.queryFlag.length === 0) {
                 $('#spinner').removeClass('bar');
-           }
+            }
         });
 
         this.listenTo(App, 'popup:show', function (data) {
@@ -104,6 +118,10 @@ define(['app'], function (App) {
             if (!Backbone.history.navigate('/', { trigger: true })) {
                 API.questions();
             }
+        });
+
+        this.listenTo(App, 'paginator:get', function (options) {
+            API.paginator(options);
         });
 
         $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {

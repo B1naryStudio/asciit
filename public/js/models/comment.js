@@ -19,7 +19,7 @@ define([
                         + '/comments';
 
                     this.attachLocalDates();
-                    this.on('sync', this.attachLocalDates);
+                    this.on('change', this.attachLocalDates);
                 }
             })
         );
@@ -56,7 +56,9 @@ define([
                             defer.reject(errors);
                         }
                     })) {
-                    defer.reject({'description': 'Server error, saving is impossible.'});
+                    defer.reject({
+                        description: 'Server error, saving is impossible.'
+                    });
                 }
 
                 return defer.promise();

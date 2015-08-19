@@ -1,4 +1,8 @@
-define(['app', 'views/tag/collection', 'models/tag'], function (App, CollectionView) {
+define([
+    'app',
+    'views/tag/collection',
+    'models/tag'
+], function (App, CollectionView) {
     App.module('Tag', function (Tag, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             tags: function () {

@@ -1,4 +1,10 @@
-define(['app', 'tpl!views/templates/menu.tpl', 'tpl!views/templates/menu-unauthorized.tpl', 'models/user', 'syphon'], function (App, MenuTpl, MenuUnauthTpl) {
+define([
+    'app',
+    'tpl!views/templates/menu.tpl',
+    'tpl!views/templates/menu-unauthorized.tpl',
+    'models/user',
+    'syphon'
+], function (App, MenuTpl, MenuUnauthTpl) {
     App.module('Main', function (Main, App, Backbone, Marionette, $, _) {
         var MenuView = Marionette.ItemView.extend({
             tagName: 'div',

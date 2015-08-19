@@ -19,7 +19,7 @@ define([
                 },
                 initialize: function (options) {
                     this.attachLocalDates();
-                    this.on('sync', this.attachLocalDates);
+                    this.on('change', this.attachLocalDates);
                 }
             })
         );
@@ -74,9 +74,46 @@ define([
             })
         );
 
+        Question.CollectionByUser = PageableCollection.extend({
+            model: Question.Model,
+            url: App.prefix + '/api/v1/questions-my',
+            sortKey: 'updated_at',
+            order: 'desc',
+
+            comparator: function (model1, model2) {
+                var compareField = this.sortKey;
+
+                if (model1.get(compareField) > model2.get(compareField)) {
+                    return -1; // before
+                } else if (model2.get(compareField) > model1.get(compareField)) {
+                    return 1; // after
+                } else {
+                    return 0; // equal
+                }
+            },
+            state: {
+                firstPage: 1,
+                pageSize: 5
+            },
+            queryParams: {
+                currentPage: 'page',
+                pageSize: 'page_size',
+                orderBy: function () {
+                    return this.sortKey;
+                },
+                sortedBy: 'desc'
+            },
+            initialize: function(options) {
+                this.sort();
+            }
+        });
+
         var API = {
             questionCollection: function (searchQuery, searchTag) {
-                var questions = new Question.Collection({ searchQuery: searchQuery, searchTag: searchTag });
+                var questions = new Question.Collection({
+                    searchQuery: searchQuery,
+                    searchTag: searchTag
+                });
                 var defer = $.Deferred();
 
                 questions.fetch({
@@ -89,9 +126,10 @@ define([
             questionGet: function (id) {
                 var question = new Question.Model({ id: id });
                 var defer = $.Deferred();
+
                 question.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
+                    success: function (model) {
+                        defer.resolve(model);
                     },
                     error: function (data) {
                         defer.reject(data.validationError);
@@ -119,11 +157,26 @@ define([
                     defer.reject(question.validationError);
                 }
                 return defer.promise();
+            },
+            questionCollectionByUser: function () {
+                var questions = new Question.CollectionByUser();
+                var defer = $.Deferred();
+
+                questions.fetch({
+                    success: function (data) {
+                        defer.resolve(data);
+                    }
+                });
+                return defer.promise();
             }
         };
-        App.reqres.setHandler('question:collection', function (searchQuery, searchTag) {
-            return API.questionCollection(searchQuery, searchTag);
-        });
+
+        App.reqres.setHandler(
+            'question:collection',
+            function (searchQuery, searchTag) {
+                return API.questionCollection(searchQuery, searchTag);
+            }
+        );
 
         App.reqres.setHandler('question:model', function (id) {
             return API.questionGet(id);
@@ -131,6 +184,10 @@ define([
 
         App.reqres.setHandler('question:add', function (data) {
             return API.questionAdd(data);
+        });
+
+        App.reqres.setHandler('question:my', function () {
+            return API.questionCollectionByUser();
         });
     });
 });
