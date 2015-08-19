@@ -27,7 +27,22 @@ define([
             },
             events: {
                 'click @ui.commentButton': 'showCommentForm',
-                'click @ui.answerButton': 'toAnswerForm'
+                'click @ui.answerButton': 'toAnswerForm',
+                'mouseup p': 'selectText'
+            },
+
+            selectText: function() {
+                var text = App.helper.getSelected();
+                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                    var data = this.newAnswerEditor.getData();
+                    text = '<blockquote><strong>'+this.model.attributes.created_relative+
+                        ' by '+this.model.attributes.user.first_name+
+                        ' '+this.model.attributes.user.last_name+'</strong><br/>'+text+' </blockquote>';
+                    this.newAnswerEditor.focus();
+                    App.helper.moveFocus(this.newAnswerEditor, text);
+                    $('html, body').scrollTop($('#new-answer-form').offset().top);
+
+                }
             },
 
             showCommentForm: function(e) {
