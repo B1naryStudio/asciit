@@ -16,6 +16,10 @@ use App\Repositories\Contracts\VoteRepository;
 use App\Repositories\Criteria\InCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
 use App\Repositories\Contracts\CommentRepository;
+use Illuminate\Support\Facades\Event;
+use App\Events\QuestionWasAdded;
+use App\Events\AnswerWasAdded;
+use App\Events\CommentWasAdded;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -84,6 +88,11 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new QuestionWasAdded(
+            $this->getQuestion($question->id)
+        ));
+
         return $question;
     }
     
@@ -205,11 +214,10 @@ class QuestionService implements QuestionServiceInterface
     {
         $data['user_id'] = Auth::user()->id;
 
-        $new = $this->answerRepository->create($data);
-
         try {
+            $new = $this->answerRepository->create($data);
             $answer = $this->answerRepository->withRelationCount()
-                ->findWithRelations($new->id, ['user']);
+                ->findWithRelations($new->id, ['user', 'question']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such answer',
@@ -217,6 +225,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new AnswerWasAdded($answer));
 
         return $answer;
     }
@@ -266,6 +276,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new CommentWasAdded($comment));
 
         return $comment;
     }
