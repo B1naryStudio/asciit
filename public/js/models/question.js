@@ -5,23 +5,39 @@ define([
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend(
-            _.extend({}, ModelMixins.RelativeTimestampsModel, {
-                urlRoot: App.prefix + '/api/v1/questions',
-                validation: {
-                    title: {
-                        required: true,
-                        msg: 'Please enter a title'
+            _.extend(
+                {},
+                ModelMixins.RelativeTimestampsModel,
+                ModelMixins.LiveModel,
+                {
+                    urlRoot: App.prefix + '/api/v1/questions',
+                    validation: {
+                        title: {
+                            required: true,
+                            msg: 'Please enter a title'
+                        },
+                        description: {
+                            required: true,
+                            msg: 'Please enter a description'
+                        }
                     },
-                    description: {
-                        required: true,
-                        msg: 'Please enter a description'
+                    answerAdded: function () {
+                        this.set(
+                            'answers_count',
+                            this.get('answers_count') + 1
+                        );
+                    },
+                    initialize: function (options) {
+                        this.attachLocalDates();
+                        this.on('change', this.attachLocalDates);
+
+                        if (this.id) {
+                            this.liveURI = 'questions/' + this.id;
+                            this.startLiveUpdating();
+                        }
                     }
-                },
-                initialize: function (options) {
-                    this.attachLocalDates();
-                    this.on('change', this.attachLocalDates);
                 }
-            })
+            )
         );
 
         Question.Collection = PageableCollection.extend(

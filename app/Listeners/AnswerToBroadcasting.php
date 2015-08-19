@@ -41,5 +41,14 @@ class AnswerToBroadcasting
             'data'  => $event->answer,
             'topic' =>'user/' . $questionAuthorId . '/questions-answers'
         ]);
+
+        // to the topic 'questions/{id}' - for model updating
+        $this->delivery->send([
+            'data'  => [
+                'calls' => ['answerAdded']
+            ],
+
+            'topic' =>'questions/' . $event->answer->question_id
+        ]);
     }
 }
