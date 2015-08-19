@@ -4,6 +4,7 @@ namespace App\WebSocket\WampProcessors;
 
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
+use Ratchet\Wamp\WampConnection;
 
 class WampProcessorForGos implements WampServerInterface
 {
@@ -14,7 +15,6 @@ class WampProcessorForGos implements WampServerInterface
 
     public function onSubscribe(ConnectionInterface $conn, $topic)
     {
-        //$this->subscribedTopics[$topic->getId()] = $topic;
         echo "Connection {$conn->resourceId} subscribed on {$topic}\n";
     }
 
@@ -23,7 +23,7 @@ class WampProcessorForGos implements WampServerInterface
 
     public function onOpen(ConnectionInterface $conn)
     {
-        echo "New connection! ({$conn->resourceId})\n";
+        echo "New connection on {$conn->remoteAddress}! ({$conn->resourceId})\n";
     }
 
     public function onClose(ConnectionInterface $conn)
@@ -39,8 +39,15 @@ class WampProcessorForGos implements WampServerInterface
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible)
     {
-        echo "Got a message on topic:\n" . $topic . "\n";
-        echo var_dump($event);
+        // If some coolhatsker try to publish a message from the browser console
+        if($conn->remoteAddress !== '127.0.0.1') {
+            echo "Illegal publisher from {$conn->remoteAddress}! ({$conn->resourceId})\n";
+            $conn->close(); // Kick it!
+            return;
+        }
+
+        echo "Message to the topic '{$topic}' ({$conn->resourceId})\n"  ;
+        //echo var_dump($event);
 
         // re-send the data to all the clients subscribed to that category
         $topic->broadcast($event);
