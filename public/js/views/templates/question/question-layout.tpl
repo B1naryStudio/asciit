@@ -29,7 +29,7 @@
         <p><%= description %></p>
         <!-- Comments -->
         <div class="comments">
-            <button class="btn btn-default btn-xs show-form">Add comment</button>
+            <button class="btn btn-default btn-xs add-comment">Add comment</button>
             <button class="btn btn-default btn-xs add-answer">Add answer</button>
         </div>
     </div>
