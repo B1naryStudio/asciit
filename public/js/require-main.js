@@ -18,7 +18,9 @@ requirejs.config({
         'ckeditor.custom.settings': 'vendor/ckeditor/custom-instance-settings',
         'ckeditor.adapter': 'vendor/ckeditor/adapters/jquery',
         'highlight': 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack',
-        'moment': 'vendor/moment/moment-with-locales.min'
+        'moment': 'vendor/moment/moment-with-locales.min',
+        'wampy': 'vendor/wampy/wampy-all.min'
+
     },
     shim: {
         underscore: {

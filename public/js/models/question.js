@@ -1,68 +1,78 @@
 define([
     'app',
     'paginator',
-    'models/related-timestamps-model'
-], function(App, PageableCollection, RelatedTimestampsModel) {
+    'models/model-mixins',
+], function(App, PageableCollection, ModelMixins) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
-        Question.Model = RelatedTimestampsModel.extend({
-            urlRoot: App.prefix + '/api/v1/questions',
-            validation: {
-                title: {
-                    required: true,
-                    msg: 'Please enter a title'
+        Question.Model = Backbone.Model.extend(
+            _.extend({}, ModelMixins.RelativeTimestampsModel, {
+                urlRoot: App.prefix + '/api/v1/questions',
+                validation: {
+                    title: {
+                        required: true,
+                        msg: 'Please enter a title'
+                    },
+                    description: {
+                        required: true,
+                        msg: 'Please enter a description'
+                    }
                 },
-                description: {
-                    required: true,
-                    msg: 'Please enter a description'
+                initialize: function (options) {
+                    this.attachLocalDates();
+                    this.on('change', this.attachLocalDates);
                 }
-            },
-            initialize: function (options) {
-                this.attachLocalDates();
-                this.on('change', this.attachLocalDates);
-            }
-        });
+            })
+        );
 
-        Question.Collection = PageableCollection.extend({
-            model: Question.Model,
-            url: App.prefix + '/api/v1/questions',
-            sortKey: 'updated_at',
-            order: 'desc',
+        Question.Collection = PageableCollection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
+                model: Question.Model,
+                url: App.prefix + '/api/v1/questions',
+                liveURI: 'questions',
+                sortKey: 'updated_at',
+                order: 'desc',
 
-            comparator: function (model1, model2) {
-                var compareField = this.sortKey;
+                comparator: function (model1, model2) {
+                    var compareField = this.sortKey;
 
-                if (model1.get(compareField) > model2.get(compareField)) {
-                    return -1; // before
-                } else if (model2.get(compareField) > model1.get(compareField)) {
-                    return 1; // after
-                } else {
-                    return 0; // equal
+                    if (model1.get(compareField) > model2.get(compareField)) {
+                        return -1; // before
+                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                        return 1; // after
+                    } else {
+                        return 0; // equal
+                    }
+                },
+
+                state: {
+                    firstPage: 1,
+                    pageSize: 5
+                },
+
+                queryParams: {
+                    currentPage: 'page',
+                    pageSize: 'page_size',
+                    search: function () {
+                        return this.searchQuery;
+                    },
+                    orderBy: function () {
+                        return this.sortKey;
+                    },
+                    tag: function () {
+                        return this.searchTag;
+                    },
+                    sortedBy: 'desc'
+                },
+
+                initialize: function(options) {
+                    this.searchQuery = options.searchQuery;
+                    this.searchTag = options.searchTag;
+                    this.sort();
+
+                    this.startLiveUpdating();
                 }
-            },
-            state: {
-                firstPage: 1,
-                pageSize: 5
-            },
-            queryParams: {
-                currentPage: 'page',
-                pageSize: 'page_size',
-                search: function () {
-                    return this.searchQuery;
-                },
-                orderBy: function () {
-                    return this.sortKey;
-                },
-                tag: function () {
-                    return this.searchTag;
-                },
-                sortedBy: 'desc'
-            },
-            initialize: function(options) {
-                this.searchQuery = options.searchQuery;
-                this.searchTag = options.searchTag;
-                this.sort();
-            }
-        });
+            })
+        );
 
         Question.CollectionByUser = PageableCollection.extend({
             model: Question.Model,
