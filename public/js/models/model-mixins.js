@@ -6,7 +6,10 @@ define(['app', 'moment'], function(App, moment) {
 
                 ab.connect(
                     // The WebSocket URI of the WAMP server
-                    'ws://' + window.location.hostname + App.prefix + ':9090/',
+                    'ws://' + window.location.hostname
+                            + ':'
+                            + App.websocketPort
+                            + App.prefix,
 
                     // The onconnect handler
                     function (session) {
