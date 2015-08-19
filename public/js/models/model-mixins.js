@@ -1,20 +1,27 @@
 define(['app', 'moment'], function(App, moment) {
     App.module('ModelMixins', function(ModelMixins, App, Backbone, Marionette, $, _) {
-        ModelMixins.LiveCollection = {
+        ModelMixins.LiveUpdating = {
             startLiveUpdating: function () {
                 var self = this;
 
                 ab.connect(
                     // The WebSocket URI of the WAMP server
-                    'ws://' + window.location.hostname + App.prefix + ':9090/',
+                    'ws://' + window.location.hostname
+                            + ':'
+                            + App.websocketPort
+                            + App.prefix,
 
                     // The onconnect handler
                     function (session) {
-                        // Subscribe on the topic
+                        // connection session attribute for collection/model
+                        self.wsSession = session;
+                        // Subscribing on the topic
                         session.subscribe(
                             self.liveURI,
-                            function (topic, model) {
-                                self.add(model);
+                            function () {
+                                // Context binding. Otherwise 'onliveUpdate'
+                                // will see a window as a this
+                                self.onLiveUpdate.apply(self, arguments);
                             }
                         );
                     },
@@ -31,7 +38,33 @@ define(['app', 'moment'], function(App, moment) {
                     }
                 );
             }
+        },
+
+        ModelMixins.LiveCollection = {
+            onLiveUpdate: function(topic, model) {
+                this.add(model);
+            }
         };
+        _.extend(ModelMixins.LiveCollection, ModelMixins.LiveUpdating);
+
+        ModelMixins.LiveModel = {
+            onLiveUpdate: function(topic, message) {
+                // If there is remote call parameters
+                if (message.calls) {
+                    for (var i in message.calls) {
+                        // Taking a function name from object
+                        var funcName = message.calls[i];
+
+                        // Try to get a func from the current model/collection
+                        var fn = this[funcName];
+                        if (fn) {
+                            fn.call(this);
+                        }
+                    }
+                }
+            }
+        };
+        _.extend(ModelMixins.LiveModel, ModelMixins.LiveUpdating);
 
         ModelMixins.RelativeTimestampsModel = {
             attachLocalDates: function () {

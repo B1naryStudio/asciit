@@ -28,9 +28,15 @@ class QuestionToBroadcasting
      */
     public function handle(QuestionWasAdded $event)
     {
-        $message['data'] = $event->question;
-        $message['topic'] = 'questions';
+        // to 'questions' topic
+        $this->delivery->send([
+            'data'  => $event->question,
+            'topic' =>'questions'
+        ]);
 
-        $this->delivery->send($message);
+        $this->delivery->send([
+            'data'  => $event->question,
+            'topic' =>'user/' . $event->question->user_id . '/questions'
+        ]);
     }
 }
