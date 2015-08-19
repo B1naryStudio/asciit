@@ -1,5 +1,5 @@
 <div class="row question_view">
-    <div class="col-md-2 text-center">
+    <div class="col-md-2 col-sm-2 col-lg-2 text-center">
         <!-- User's avatar and name -->
         <div class="row">
             <figure class="user-info text-center">
@@ -9,11 +9,11 @@
         </div>
         <div class="tags row"></div>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-10 col-sm-10 col-lg-10">
         <!-- Question header -->
         <div class="row">
             <!-- Time, title, folder -->
-            <div class="col-md-10">
+            <div class="col-md-10 col-sm-10 col-lg-10 col-xs-9">
                 <time>Asked <%- created_relative %></time>
                 <h2><%- title %></h2>
                 <div class="folder">
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <!-- Voting block -->
-            <div class="col-md-2">
+            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-3 votes-wrapper">
                 <div class="votes"></div>
             </div>
         </div>
