@@ -13,7 +13,7 @@
         <!-- Question header -->
         <div class="row">
             <!-- Time, title, folder -->
-            <div class="col-md-10 col-sm-10 col-lg-10 col-xs-9">
+            <div class="col-md-10 col-sm-9 col-lg-10 col-xs-9">
                 <time>Asked <%- created_relative %></time>
                 <h2><%- title %></h2>
                 <div class="folder">
@@ -21,7 +21,7 @@
                 </div>
             </div>
             <!-- Voting block -->
-            <div class="col-md-2 col-sm-2 col-lg-2 col-xs-3 votes-wrapper">
+            <div class="col-md-2 col-sm-3 col-lg-2 col-xs-3 votes-wrapper">
                 <div class="votes"></div>
             </div>
         </div>

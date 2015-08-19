@@ -1,13 +1,10 @@
 <div class="list-group-item">
     <div class="row">
-        <div class="col-md-2 col-sm-3 col-xs-12 text-center">
+        <div class="col-md-2 col-lg-2 col-sm-3 col-xs-3 text-center wrapper-avatar">
             <img src="<%- user.avatar %>" alt="100x100" class="img-thumbnail big">
             <div><b><%= user.first_name + ' ' + user.last_name %></b></div>
-            <!--<div class="question-info">Answers: <span class="answers-counter"><%- answers_count %></span></div>-->
-            <!--<div class="votes question-info">Votes: 3</div>-->
-            <!--<div class="question-info">Comments: 2</div>-->
         </div>
-        <div class="col-md-10 col-sm-9 col-xs-12">
+        <div class="col-md-10 col-lg-10 col-sm-9 col-xs-9">
             <div class="row">
                 <div class="question-header">
                     <div class="votes question-preview">
@@ -33,7 +30,7 @@
                     <div class="limited"><%= description %></div>
                 </div>
                 <div class="tags-wrapper">
-                    <div class="tags"></div>
+                    <div class="tags hidden-xs"></div>
                     <a class="more" href="#questions/<%- id %>">Read more...</a>
                 </div>
             </div>
