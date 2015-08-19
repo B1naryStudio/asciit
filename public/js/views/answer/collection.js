@@ -58,7 +58,7 @@ define([
                 var commentModel = new Comment.Model({
                     q_and_a_id: this.model.attributes.id
                 });
-                var commentCollection = new Comment.Collection(this.model.get('comment'));
+                var commentCollection = new Comment.Collection(this.model.get('comments'));
                 var commentsView = new CommentsCompositeView({
                     model: commentModel,
                     collection: commentCollection,
