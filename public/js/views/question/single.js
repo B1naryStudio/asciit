@@ -55,6 +55,10 @@ define([
                     q_and_a_id: this.model.id
                 });
                 this.getRegion('votes').show(votesView);
+
+                this.listenTo(this.model, 'change:vote_value', function() {
+                    this.showVotes();
+                });
             },
 
             onShow: function () {
@@ -73,11 +77,6 @@ define([
                 });
 
                 this.showVotes();
-            },
-            initialize: function () {
-                this.listenTo(this.model, 'change:vote_value', function() {
-                    this.showVotes();
-                });
             }
         });
     });

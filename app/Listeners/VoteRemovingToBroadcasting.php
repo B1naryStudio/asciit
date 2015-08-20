@@ -22,12 +22,12 @@ class VoteRemovingToBroadcasting extends DeliveryHandler
             'topic' =>'entry/' . $event->vote->q_and_a_id . '/votes'
         ]);
 
-        // to the topic 'questions/{id}' - for model updating
+        // to the topic 'entries/{id}' - for model updating
         $this->delivery->send([
             'data'  => [
                 'calls' => ['voteDelete' => $event->vote]
             ],
-            'topic' =>'questions/' . $event->vote->q_and_a_id
+            'topic' =>'entries/' . $event->vote->q_and_a_id
         ]);
     }
 }

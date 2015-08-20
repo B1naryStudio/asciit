@@ -11,7 +11,7 @@ define([
     'ckeditor',
     'ckeditor.adapter',
     'highlight'
-], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, Votes,
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, VotesView,
              EditorSettings, Comment, CommentsCompositeView) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend({
@@ -39,20 +39,29 @@ define([
                 EditorSettings.startupFocus = true;
                 this.editor = field.ckeditor(EditorSettings).editor;
             },
-            onShow: function () {
-                // Highligting code-snippets
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
 
+            showVotes: function () {
                 var vote = this.model.get('vote');
-                var votesView = new Votes({
+                var votesView = new VotesView({
                     vote: vote,
                     likes: this.model.get('vote_likes'),
                     dislikes: this.model.get('vote_dislikes'),
                     q_and_a_id: this.model.id
                 });
                 this.getRegion('votes').show(votesView);
+
+                this.listenTo(this.model, 'change:vote_value', function() {
+                    this.showVotes();
+                });
+            },
+
+            onShow: function () {
+                // Highligting code-snippets
+                $('pre code').each(function(i, block) {
+                    hljs.highlightBlock(block);
+                });
+
+                this.showVotes();
 
                 // Comments
                 var commentModel = new Comment.Model({

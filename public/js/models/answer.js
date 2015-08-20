@@ -5,24 +5,35 @@ define([
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Answer', function(Answer, App, Backbone, Marionette, $, _) {
         Answer.Model = Backbone.Model.extend(
-            _.extend({}, ModelMixins.RelativeTimestampsModel, {
-                defaults: {
-                    'description': ''
-                },
-                validation: {
-                    description: {
-                        required: true
-                    }
-                },
-                initialize: function (options) {
-                    this.urlRoot = App.prefix + '/api/v1/questions/'
-                    + options.question_id
-                    + '/answers';
+            _.extend(
+                {},
+                ModelMixins.RelativeTimestampsModel,
+                ModelMixins.LiveModel,
+                ModelMixins.Votable,
+                {
+                    defaults: {
+                        'description': ''
+                    },
+                    validation: {
+                        description: {
+                            required: true
+                        }
+                    },
+                    initialize: function (options) {
+                        this.urlRoot = App.prefix + '/api/v1/questions/'
+                        + options.question_id
+                        + '/answers';
 
-                    this.attachLocalDates();
-                    this.on('change', this.attachLocalDates);
+                        this.attachLocalDates();
+                        this.on('change', this.attachLocalDates);
+
+                        if (this.id) {
+                            this.liveURI = 'entries/' + this.id;
+                            this.startLiveUpdating();
+                        }
+                    }
                 }
-            })
+            )
         );
 
         Answer.Collection = Backbone.Collection.extend(

@@ -80,6 +80,52 @@ define(['app', 'moment'], function(App, moment) {
                 this.set('created_relative', moment(createdRelative).fromNow());
             }
         };
+
+        ModelMixins.Votable = {
+            voteAdd: function (vote) {
+                if (vote.sign) {
+                    this.set(
+                        'vote_likes',
+                        this.get('vote_likes') + 1
+                    );
+                } else {
+                    this.set(
+                        'vote_dislikes',
+                        this.get('vote_dislikes') + 1
+                    );
+                }
+
+                if (vote.user_id == App.User.Current.get('id')) {
+                    this.set('vote', vote);                        }
+
+                this.calcVoteValue();
+            },
+            voteDelete: function (vote) {
+                if (vote.sign) {
+                    this.set(
+                        'vote_likes',
+                        this.get('vote_likes') - 1
+                    );
+                } else {
+                    this.set(
+                        'vote_dislikes',
+                        this.get('vote_dislikes') - 1
+                    );
+                }
+
+                if (vote.user_id == App.User.Current.get('id')) {
+                    this.set('vote', null);
+                }
+
+                this.calcVoteValue();
+            },
+            calcVoteValue: function () {
+                this.set(
+                    'vote_value',
+                    this.get('vote_likes') - this.get('vote_dislikes')
+                );
+            }
+        };
     });
 
     return App.ModelMixins;
