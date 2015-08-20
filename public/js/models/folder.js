@@ -106,6 +106,25 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                     }
                 });
                 return defer.promise();
+            },
+
+            deleteFolder: function (model) {
+                var defer = $.Deferred();
+                if (!model.destroy({
+                        wait: true,
+                        success: function () {
+                            defer.resolve(model);
+                        },
+                        error: function (model, xhr, options) {
+                            var errors = JSON.parse(xhr.responseText);
+                            defer.reject(errors);
+                        }
+                    })) {
+                    defer.reject({
+                        description: 'Server error, saving is impossible.'
+                    });
+                }
+                return defer.promise();
             }
         };
         App.reqres.setHandler('folder:collection', function () {
@@ -118,6 +137,10 @@ define(['app', 'paginator'], function(App, PageableCollection) {
 
         App.reqres.setHandler('folders:get', function () {
             return API.getFolders();
+        });
+
+        App.reqres.setHandler('folder:delete', function (data) {
+            return API.deleteFolder(data);
         });
     });
 });

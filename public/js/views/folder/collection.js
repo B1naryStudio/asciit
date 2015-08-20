@@ -17,12 +17,7 @@ define([
             },
 
             deleteFolder: function() {
-                this.model.destroy({
-                    success: function(model, responce) {
-                    },
-                    error: function(model, xhr) {
-                    }
-                })
+                this.trigger('folder:destroy', this.model);
             },
 
             editFolder: function() {

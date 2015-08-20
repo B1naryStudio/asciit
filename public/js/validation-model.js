@@ -20,6 +20,7 @@ define(['backbone', 'validation'], function () {
             }
         },
         invalid: function (view, attr, error, selector) {
+            console.log(view);
             var $el = view.$('[name=' + attr + ']'),
                 $group = $el.closest('.form-group');
             $group.addClass('has-error');
