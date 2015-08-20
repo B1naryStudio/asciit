@@ -18,6 +18,12 @@ define([
             }
             return false;
         },
+
+        controllButtons: function(el, option) {
+            $(el).find('[name="name"]').attr('disabled', option);
+            $(el).find('.control-buttons').toggle();
+            $(el).find('.edit-buttons').toggle();
+        }
     };
 
     App.prefix = window.location.pathname.replace(/(\/.*)(\/)/, '$1');

@@ -16,7 +16,7 @@ define([
 
                        var folder = new Folder.Model();
                        var folderView = new CollectionView({
-                           collection: folders,
+                           collection: folders.sort(),
                            model: folder
                        });
                        layout.getRegion('foldersRegion').show(folderView);
@@ -48,7 +48,7 @@ define([
                            function (model) {
                                $.when(App.request('folder:add', model.model))
                                    .done(function (savedModel) {
-
+                                        App.helper.controllButtons(model.el, true);
                                    }).fail(function (errors) {
                                        folderView.triggerMethod(
                                            'data:invalid',

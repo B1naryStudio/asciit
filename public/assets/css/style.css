@@ -604,3 +604,81 @@ div .fa-05 {
 .paginator {
     text-align: center;
 }
+
+/*
+ * Folders
+ */
+
+.new-folder-form {
+    height: 135px;
+    width: 55%;
+    margin: auto;
+    margin-bottom: 30px;
+}
+
+.new-folder-form .form-group{
+    width: 85%;
+    float: left;
+}
+
+.new-folder-form #title{
+    width: 85%;
+}
+
+.new-folder-form label{
+    float: left;
+    margin-right: 10px;
+    margin-top: 7px;
+}
+
+.new-folder-form span{
+    margin-left: 55px;
+}
+
+.folder-row {
+    width: 45%;
+    /*margin-right: 15px;*/
+    margin-left: 30px;
+    float: left;
+    /*margin-top: 20px;*/
+}
+
+.glyphicon {
+    cursor: pointer;
+}
+
+.folders-form input{
+    cursor: default!important;
+}
+
+.folders-form .title-wrapper {
+    display: table;
+    width: 85%;
+    float: left;
+    margin-right: 10px;
+}
+
+.control-buttons {
+    display: none;
+    margin-top: 7px;
+}
+
+.edit-buttons {
+    margin-top: 7px;
+}
+
+.folders-form-list {
+    width: 85%;
+    float: left;
+    margin-right: 10px;
+}
+
+.folders-region .folder-row {
+    height: 85px;
+}
+
+.folder-row .list-group-item {
+    height: 72px;
+}
+
+

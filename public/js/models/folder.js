@@ -14,7 +14,20 @@ define(['app'], function(App) {
 
         Folder.Collection = Backbone.Collection.extend({
             model: Folder.Model,
-            url: App.prefix + '/api/v1/folders'
+            url: App.prefix + '/api/v1/folders',
+            sortKey: 'id',
+
+            comparator: function (model1, model2) {
+                var compareField = this.sortKey;
+
+                if (model1.get(compareField) > model2.get(compareField)) {
+                    return -1; // before
+                } else if (model2.get(compareField) > model1.get(compareField)) {
+                    return 1; // after
+                } else {
+                    return 0; // equal
+                }
+            },
         });
 
         var API = {

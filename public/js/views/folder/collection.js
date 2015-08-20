@@ -12,37 +12,40 @@ define([
             events: {
                 'click .delete-folder': 'deleteFolder',
                 'click .edit-folder': 'editFolder',
-                'click .update-folder': 'updateFolder'
+                'click .update-folder': 'updateFolder',
+                'click .cancel-update': 'cancelUpdate',
             },
 
             deleteFolder: function() {
                 this.model.destroy({
                     success: function(model, responce) {
-                        console.log(model)
                     },
                     error: function(model, xhr) {
-                        console.log(xhr)
                     }
                 })
             },
 
             editFolder: function() {
-                $(this.el).find('[name="name"]').attr('disabled', false);
+                this.model.attributes.oldValue = $(this.el).find('[name="name"]').val();
+                App.helper.controllButtons(this.el, false);
             },
 
-            updateFolder: function() {
+            cancelUpdate: function() {
+                this.model.isValid(true);
+                $(this.el).find('[name="name"]').val(this.model.attributes.oldValue);
+                App.helper.controllButtons(this.el, true);
+            },
+
+            updateFolder: function(e) {
                 this.model.attributes.title = $(this.el).find('[name="name"]').val();
                 if(this.model.isValid(true)) {
-                    console.log(true);
                     this.trigger('folder:update', this.model);
-                } else {
-                    console.log(false);
                 }
             },
 
             bindings: {
                 '[name=name]': {
-                    observe: 'name',
+                    observe: 'title',
                     setOptions: {
                         validate: true
                     }
@@ -51,6 +54,11 @@ define([
 
             initialize: function () {
                 Backbone.Validation.bind(this);
+            },
+
+            onRender: function() {
+                this.stickit(this.model);
+                return this;
             },
 
         });
