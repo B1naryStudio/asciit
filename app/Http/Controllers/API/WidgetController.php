@@ -150,7 +150,7 @@ class WidgetController extends Controller
         }
 
         foreach ($data as &$item) {
-            $item->url = url($prefix) . '/' . '#questions/' . $item->id;
+            $item->url = url($prefix) . '/' . '#questions/' . $item->slug;
         }
         unset($item);
 
