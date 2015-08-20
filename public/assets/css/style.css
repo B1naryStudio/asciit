@@ -183,6 +183,12 @@ time,
     padding: 0;
 }
 
+.new-answer textarea {
+    width: 100%;
+    border: none;
+    padding: 0.5em;
+}
+
 .new-answer .form-group {
     margin: 0;
 }

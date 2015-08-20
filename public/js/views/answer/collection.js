@@ -29,7 +29,21 @@ define([
 
             events: {
                 'click @ui.editButton': 'onEdit',
-                'click @ui.saveButton': 'onSave'
+                'click @ui.saveButton': 'onSave',
+                'mouseup .description': 'selectText'
+            },
+
+            selectText: function() {
+                var editor = App.helper.editor;
+                var text = App.helper.getSelected();
+                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                    text = '<blockquote><strong>'+this.model.attributes.created_relative+
+                        ' by '+this.model.attributes.user.first_name+
+                        ' '+this.model.attributes.user.last_name+'</strong><br/>'+text+'</blockquote>';
+                    editor.focus();
+                    App.helper.moveFocus(editor, text);
+                    $('html, body').scrollTop($('#new-answer-form').offset().top);
+                }
             },
 
             onEdit: function (event) {
@@ -99,7 +113,7 @@ define([
 
             events: {
                 'submit form': 'onSubmit',
-                'click .show-form' : 'showForm'
+                'click .show-form' : 'showForm',
             },
 
             showForm: function(e) {
@@ -140,8 +154,10 @@ define([
             onModelRefresh: function (freshModel) {
                 this.model = freshModel;
 
-                // Erase the editor value.
-                this.editor.setData('');
+                if (this.editor) {
+                    // Erase the editor value.
+                    this.editor.setData('');
+                }
             },
             refreshCounter: function () {
                 this.model.set('count', this.collection.length)
@@ -149,22 +165,29 @@ define([
             },
             onShow: function () {
                 EditorSettings.height = '350px';
-                this.editor = $('#description').ckeditor(EditorSettings).editor;
-                //for focus from parent
-                this.trigger('editor:created', this.editor);
 
-                if (this.options.answer_id) {
-                    $('html, body').scrollTop(this.$el.find(
-                            '#answer-' + this.options.answer_id
-                        ).focus().offset().top
-                    );
-                } else {
-                    $('html, body').scrollTop(0);
+                try {
+                    this.editor = $('#description').ckeditor(EditorSettings).editor;
+                    //for focus from parent
+                    this.trigger('editor:created', this.editor);
+                } catch (e) {
+                    console.log('This environment officially is non-supported'
+                              + ' with CKEditor');
+                } finally {
+                    if (this.options.answer_id) {
+                        $('html, body').scrollTop(this.$el.find(
+                                '#answer-' + this.options.answer_id
+                            ).focus().offset().top
+                        );
+                    } else {
+                        $('html, body').scrollTop(0);
+                    }
                 }
+                App.helper.editor = this.editor;
             },
             initialize: function (options) {
                 this.childViewOptions = {
-                    id: this.id
+                    id: this.id,
                 };
                 Backbone.Validation.bind(this);
                 this.listenTo(this.collection, 'update', this.refreshCounter);
