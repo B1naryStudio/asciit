@@ -3,33 +3,47 @@ define([
     'tpl!views/templates/answer/answers.tpl',
     'tpl!views/templates/answer/single-answer.tpl',
     'models/answer',
-    'models/vote',
-    'views/vote/single',
+    'views/views-mixins',
     'ckeditor.custom.settings',
     'models/comment',
     'views/comment/collection',
     'ckeditor',
     'ckeditor.adapter',
     'highlight'
-], function (App, AnswersTpl, SingleAnswerTpl, Answer, Vote, Votes,
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, ViewsMixins,
              EditorSettings, Comment, CommentsCompositeView) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.SingleAnswerLayoutView = Marionette.LayoutView.extend({
-            template: SingleAnswerTpl,
+        View.SingleAnswerLayoutView = Marionette.LayoutView.extend(
+            _.extend({}, ViewsMixins.ContainsVotes, {
+                template: SingleAnswerTpl,
 
-            regions: {
-                votes: '.votes',
-                comments: '.answers-comments-region'
-            },
+                regions: {
+                    votes: '.votes',
+                    comments: '.answers-comments-region'
+                },
 
-            ui: {
-                editButton: '.edit-button',
-                saveButton: '.save-button'
-            },
+                ui: {
+                    editButton: '.edit-button',
+                    saveButton: '.save-button'
+                },
 
             events: {
                 'click @ui.editButton': 'onEdit',
                 'click @ui.saveButton': 'onSave',
+                'mouseup .description': 'selectText'
+            },
+
+            selectText: function() {
+                var editor = App.helper.editor;
+                var text = App.helper.getSelected();
+                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                    text = '<blockquote><span class="author">'+this.model.attributes.created_relative+
+                    ' by '+this.model.attributes.user.first_name+
+                    ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
+                    editor.focus();
+                    App.helper.moveFocus(editor, text);
+                    $('html, body').scrollTop($('#new-answer-form').offset().top);
+                }
             },
 
             onEdit: function (event) {
@@ -38,57 +52,53 @@ define([
 
                 EditorSettings.startupFocus = true;
                 this.editor = field.ckeditor(EditorSettings).editor;
-            },
-            onShow: function () {
-                // Highligting code-snippets
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
+                },
 
-                var vote = this.model.get('vote');
-                var votesView = new Votes({
-                    vote: vote,
-                    likes: this.model.get('vote_likes'),
-                    dislikes: this.model.get('vote_dislikes'),
-                    q_and_a_id: this.model.id
-                });
-                this.getRegion('votes').show(votesView);
+                onShow: function () {
+                    // Highligting code-snippets
+                    $('pre code').each(function (i, block) {
+                        hljs.highlightBlock(block);
+                    });
 
-                // Comments
-                var commentModel = new Comment.Model({
-                    q_and_a_id: this.model.get('id')
-                });
-                var commentCollection = new Comment.Collection(
-                    this.model.get('comments'),
-                    {q_and_a_id: this.model.get('id')}
-                );
-                var commentsView = new CommentsCompositeView({
-                    model: commentModel,
-                    collection: commentCollection,
-                    id: this.id
-                });
-                this.getRegion('comments').show(commentsView);
+                    this.showVotes();
 
-                this.listenTo(commentsView, 'form:submit', function (model) {
-                    $.when(App.request('comment:add', model))
-                        .done(function (savedModel) {
-                            commentCollection.push(savedModel);
-                            // Add model and form clearing
-                            var newModel = new Comment.Model({
-                                q_and_a_id: savedModel.attributes.q_and_a_id
+                    // Comments
+                    var commentModel = new Comment.Model({
+                        q_and_a_id: this.model.get('id')
+                    });
+                    var commentCollection = new Comment.Collection(
+                        this.model.get('comments'),
+                        {q_and_a_id: this.model.get('id')}
+                    );
+                    var commentsView = new CommentsCompositeView({
+                        model: commentModel,
+                        collection: commentCollection,
+                        id: this.id
+                    });
+                    this.getRegion('comments').show(commentsView);
+
+                    this.listenTo(commentsView, 'form:submit', function (model) {
+                        $.when(App.request('comment:add', model))
+                            .done(function (savedModel) {
+                                commentCollection.push(savedModel);
+                                // Add model and form clearing
+                                var newModel = new Comment.Model({
+                                    q_and_a_id: savedModel.attributes.q_and_a_id
+                                });
+
+                                commentsView.triggerMethod('model:refresh', newModel);
+                            }).fail(function (errors) {
+                                console.log(errors);
+                                commentsView.triggerMethod('data:invalid', errors);
                             });
+                    });
+                },
+                initialize: function (options) {
+                    this.$el.attr('id', 'answer-' + this.model.get('id'));
+                }
+            })
+        );
 
-                            commentsView.triggerMethod('model:refresh', newModel);
-                        }).fail(function (errors) {
-                            console.log(errors);
-                            commentsView.triggerMethod('data:invalid', errors);
-                        });
-                });
-            },
-            initialize: function (options) {
-                this.$el.attr('id', 'answer-' + this.model.get('id'));
-            }
-        });
 
         View.AnswersCompositeView = Marionette.CompositeView.extend({
             tagName: 'section',
@@ -99,19 +109,7 @@ define([
 
             events: {
                 'submit form': 'onSubmit',
-                'click .show-form' : 'showForm',
-                'mouseup .description': 'selectText'
-            },
-
-            selectText: function() {
-                var text = App.helper.getSelected();
-                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
-                    var data = this.editor.getData();
-                    text = '<blockquote>'+text+'</blockquote><p></p>';
-                    data+=text;
-                    this.editor.setData(data);
-                    $('html, body').scrollTop($('#new-answer-form').offset().top);
-                }
+                'click .show-form' : 'showForm'
             },
 
             showForm: function(e) {
@@ -152,8 +150,10 @@ define([
             onModelRefresh: function (freshModel) {
                 this.model = freshModel;
 
-                // Erase the editor value.
-                this.editor.setData('');
+                if (this.editor) {
+                    // Erase the editor value.
+                    this.editor.setData('');
+                }
             },
             refreshCounter: function () {
                 this.model.set('count', this.collection.length)
@@ -161,18 +161,25 @@ define([
             },
             onShow: function () {
                 EditorSettings.height = '350px';
-                this.editor = $('#description').ckeditor(EditorSettings).editor;
-                //for focus from parent
-                this.trigger('editor:created', this.editor);
 
-                if (this.options.answer_id) {
-                    $('html, body').scrollTop(this.$el.find(
-                            '#answer-' + this.options.answer_id
-                        ).focus().offset().top
-                    );
-                } else {
-                    $('html, body').scrollTop(0);
+                try {
+                    this.editor = $('#description').ckeditor(EditorSettings).editor;
+                    //for focus from parent
+                    this.trigger('editor:created', this.editor);
+                } catch (e) {
+                    console.log('This environment officially is non-supported'
+                              + ' with CKEditor');
+                } finally {
+                    if (this.options.answer_id) {
+                        $('html, body').scrollTop(this.$el.find(
+                                '#answer-' + this.options.answer_id
+                            ).focus().offset().top
+                        );
+                    } else {
+                        $('html, body').scrollTop(0);
+                    }
                 }
+                App.helper.editor = this.editor;
             },
             initialize: function (options) {
                 this.childViewOptions = {

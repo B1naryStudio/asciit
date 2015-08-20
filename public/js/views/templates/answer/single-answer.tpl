@@ -1,18 +1,22 @@
 <div class="list-group-item single-answer">
     <div class="row">
         <!-- User info -->
-        <div class="col-md-2">
+        <div class="col-md-2 col-lg-2 col-sm-2">
             <figure class="user-info text-center">
                 <img src="<%- user.avatar %>" alt="100x100" class="img-thumbnail big">
                 <h5><%= user.first_name + ' ' + user.last_name %></h5>
             </figure>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-10 col-lg-10 col-sm-10">
             <!-- Votes region -->
             <div class="votes"></div>
 
             <!-- Text -->
-            <time>Answered <%- created_relative %></time>
+            <span class="time asked_time">Answered
+                <time class="relative" data-local-time="<%- created_local %>">
+                     <%- created_relative %>
+                </time>
+            </span>
             <div class="description"><%= description %></div>
 
             <!-- Comments -->

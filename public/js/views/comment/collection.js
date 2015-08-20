@@ -5,7 +5,25 @@ define(['app',
 ], function (App, CommentsTpl, SingleCommentTpl) {
     App.module('Comment.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleCommentCompositeView = Marionette.CompositeView.extend({
-            template: SingleCommentTpl
+            template: SingleCommentTpl,
+
+            events: {
+                'mouseup p': 'selectText'
+            },
+
+            selectText: function(e) {
+                e.stopPropagation();
+                var editor = App.helper.editor;
+                var text = App.helper.getSelected();
+                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                    text = '<blockquote><strong>'+this.model.attributes.created_relative+
+                        ' by '+this.model.attributes.user.first_name+
+                        ' '+this.model.attributes.user.last_name+'</strong><br/>'+text+'</blockquote>';
+                    editor.focus();
+                    App.helper.moveFocus(editor, text);
+                    $('html, body').scrollTop($('#new-answer-form').offset().top);
+                }
+            },
         });
 
         View.CommentsCompositeView = Marionette.CompositeView.extend({
@@ -16,8 +34,10 @@ define(['app',
             childViewContainer: '.comments-region',
 
             events: {
-                'submit .comments-form': 'submit'
+                'submit .comments-form': 'submit',
+                'mouseup p': 'selectText'
             },
+
 
             submit: function(event) {
                 event.preventDefault();

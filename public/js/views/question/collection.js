@@ -2,42 +2,17 @@ define([
     'app',
     'tpl!views/templates/question/collection.tpl',
     'tpl!views/templates/question/collection-empty.tpl',
-    'tpl!views/templates/question/row.tpl',
+    'views/question/row',
     'views/tag/view',
     'models/tag',
     'syphon'
-], function (App, QuestionsTpl, QuestionsEmptyTpl, QuestionTpl, TagView) {
+], function (App, QuestionsTpl, QuestionsEmptyTpl, QuestionView, TagView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.QuestionCollectionRow = Marionette.LayoutView.extend({
-            tagName: 'div',
-            className: 'question-row',
-            template: QuestionTpl,
-            regions: {
-                tag: '.tags'
-            },
-            onShow: function () {
-                var self = this;
-                $.when(App.request('tag:reset', this.model.attributes.tags))
-                    .done(function (tags) {
-                        self.getRegion('tag')
-                            .show(new TagView({
-                                collection: tags,
-                                searchTag: self.options.searchTag()
-                            }));
-                });
-
-                // Highligting code-snippets
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
-            }
-        });
-
         View.Questions = Marionette.CompositeView.extend({
             tagName: 'div',
             id: 'question-list',
             template: QuestionsTpl,
-            childView: View.QuestionCollectionRow,
+            childView: QuestionView,
             childViewContainer: '.list',
 
             events: {

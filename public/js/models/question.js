@@ -5,23 +5,40 @@ define([
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend(
-            _.extend({}, ModelMixins.RelativeTimestampsModel, {
-                urlRoot: App.prefix + '/api/v1/questions',
-                validation: {
-                    title: {
-                        required: true,
-                        msg: 'Please enter a title'
+            _.extend(
+                {},
+                ModelMixins.RelativeTimestampsModel,
+                ModelMixins.LiveModel,
+                ModelMixins.Votable,
+                {
+                    urlRoot: App.prefix + '/api/v1/questions',
+                    validation: {
+                        title: {
+                            required: true,
+                            msg: 'Please enter a title'
+                        },
+                        description: {
+                            required: true,
+                            msg: 'Please enter a description'
+                        }
                     },
-                    description: {
-                        required: true,
-                        msg: 'Please enter a description'
+                    answerAdd: function () {
+                        this.set(
+                            'answers_count',
+                            this.get('answers_count') + 1
+                        );
+                    },
+                    initialize: function (options) {
+                        this.attachLocalDates();
+                        this.on('change', this.attachLocalDates);
+
+                        if (this.id) {
+                            this.liveURI = 'entries/' + this.id;
+                            this.startLiveUpdating();
+                        }
                     }
-                },
-                initialize: function (options) {
-                    this.attachLocalDates();
-                    this.on('change', this.attachLocalDates);
                 }
-            })
+            )
         );
 
         Question.Collection = PageableCollection.extend(
@@ -74,39 +91,45 @@ define([
             })
         );
 
-        Question.CollectionByUser = PageableCollection.extend({
-            model: Question.Model,
-            url: App.prefix + '/api/v1/questions-my',
-            sortKey: 'updated_at',
-            order: 'desc',
+        Question.CollectionByUser = PageableCollection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
+                model: Question.Model,
+                url: App.prefix + '/api/v1/questions-my',
+                liveURI: 'user/'
+                         + App.User.Current.get('id')
+                         + '/questions',
+                sortKey: 'updated_at',
+                order: 'desc',
 
-            comparator: function (model1, model2) {
-                var compareField = this.sortKey;
+                comparator: function (model1, model2) {
+                    var compareField = this.sortKey;
 
-                if (model1.get(compareField) > model2.get(compareField)) {
-                    return -1; // before
-                } else if (model2.get(compareField) > model1.get(compareField)) {
-                    return 1; // after
-                } else {
-                    return 0; // equal
-                }
-            },
-            state: {
-                firstPage: 1,
-                pageSize: 5
-            },
-            queryParams: {
-                currentPage: 'page',
-                pageSize: 'page_size',
-                orderBy: function () {
-                    return this.sortKey;
+                    if (model1.get(compareField) > model2.get(compareField)) {
+                        return -1; // before
+                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                        return 1; // after
+                    } else {
+                        return 0; // equal
+                    }
                 },
-                sortedBy: 'desc'
-            },
-            initialize: function(options) {
-                this.sort();
-            }
-        });
+                state: {
+                    firstPage: 1,
+                    pageSize: 5
+                },
+                queryParams: {
+                    currentPage: 'page',
+                    pageSize: 'page_size',
+                    orderBy: function () {
+                        return this.sortKey;
+                    },
+                    sortedBy: 'desc'
+                },
+                initialize: function(options) {
+                    this.sort();
+                    this.startLiveUpdating();
+                }
+            })
+        );
 
         var API = {
             questionCollection: function (searchQuery, searchTag) {

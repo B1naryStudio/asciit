@@ -27,7 +27,7 @@
                 <label for="description" class="control-label col-sm-1">Description</label>
             </div>
             <div>
-                <textarea name="description" class="description form-control" placeholder="description"></textarea>
+                <textarea name="description" rows="6" class="description form-control" placeholder="description"></textarea>
                 <div class="error description"></div>
             </div>
         </div>

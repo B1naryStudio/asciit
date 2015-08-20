@@ -80,7 +80,7 @@ define([
                     counter.html(
                         self.options.likes - self.options.dislikes
                     );
-                }, 700);
+                }, 1000);
             },
             render: function () {
                 // Calculate rating
@@ -95,16 +95,16 @@ define([
             },
             onShow: function () {
                 if (this.model.has('id')) {
-                    if (this.model.get('sign') == 0) {
+                    if (this.model.get('sign') === 0) {
                         this.$el.find(this.ui.likeButton)
-                            .toggleClass('like cancel');
+                            .toggleClass('like cancel like-vote');
                         this.$el.find(this.ui.dislikeButton)
-                            .toggleClass('dislike voted cancel');
+                            .toggleClass('dislike voted cancel dislike-vote');
                     } else {
                         this.$el.find(this.ui.likeButton)
-                            .toggleClass('like voted cancel');
+                            .toggleClass('like voted cancel like-vote');
                         this.$el.find(this.ui.dislikeButton)
-                            .toggleClass('dislike cancel');
+                            .toggleClass('dislike cancel dislike-vote');
                     }
                 }
             },
