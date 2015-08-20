@@ -75,17 +75,25 @@
     font-size: 20px;
 }
 
-.votes span {
-    margin: 0 5px;
-    position: relative;
-}
 
-.votes span.divided {
-    font-size: 0.8em;
-    position: relative;
-    margin: 0 3px;
-    top: -2px;
-}
+    .votes a {
+        padding-bottom: 0.3em;
+    }
+
+    .votes .counter {
+        display: inline-block;
+        cursor: default;
+        position: relative;
+        bottom: -0.07em;
+        margin: 0 5px;
+    }
+
+    .votes .counter.divided {
+        font-size: 0.8em;
+        position: relative;
+        margin: 0 3px;
+        bottom: 0;
+    }
 
 .votes i {
     text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
