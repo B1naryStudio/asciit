@@ -154,8 +154,10 @@ define([
             onModelRefresh: function (freshModel) {
                 this.model = freshModel;
 
-                // Erase the editor value.
-                this.editor.setData('');
+                if (this.editor) {
+                    // Erase the editor value.
+                    this.editor.setData('');
+                }
             },
             refreshCounter: function () {
                 this.model.set('count', this.collection.length)
@@ -163,17 +165,23 @@ define([
             },
             onShow: function () {
                 EditorSettings.height = '350px';
-                this.editor = $('#description').ckeditor(EditorSettings).editor;
-                //for focus from parent
-                this.trigger('editor:created', this.editor);
 
-                if (this.options.answer_id) {
-                    $('html, body').scrollTop(this.$el.find(
-                            '#answer-' + this.options.answer_id
-                        ).focus().offset().top
-                    );
-                } else {
-                    $('html, body').scrollTop(0);
+                try {
+                    this.editor = $('#description').ckeditor(EditorSettings).editor;
+                    //for focus from parent
+                    this.trigger('editor:created', this.editor);
+                } catch (e) {
+                    console.log('This environment officially is non-supported'
+                              + ' with CKEditor');
+                } finally {
+                    if (this.options.answer_id) {
+                        $('html, body').scrollTop(this.$el.find(
+                                '#answer-' + this.options.answer_id
+                            ).focus().offset().top
+                        );
+                    } else {
+                        $('html, body').scrollTop(0);
+                    }
                 }
                 App.helper.editor = this.editor;
             },
