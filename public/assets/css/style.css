@@ -492,27 +492,15 @@ blockquote .author {
     float: right;
 }
 
-/* SPINNER START*/
-
-.bar {
-    position: absolute;
-    left: 35%;
-    z-index: 100;
-    top: 50%;
-    width: 30%;
-    height: 20px;
-    border: 1px solid #2980b9;
-    border-radius: 3px;
-    background-image:
-    repeating-linear-gradient(
-            -45deg,
-            #2980b9,
-            #2980b9 11px,
-            #eee 10px,
-            #eee 20px /* determines size */
-    );
-    background-size: 28px 28px;
-    animation: move .5s linear infinite;
+/*
+ |------------------------------------------------------------------------------
+ | Spinner
+ |------------------------------------------------------------------------------
+ */
+#spinner {
+    height: 0;
+    position: relative;
+    top: -20px;
 }
 
 @keyframes move {
@@ -523,8 +511,6 @@ blockquote .author {
         background-position: 28px 0;
     }
 }
-
-/* SPINNER END*/
 
 /*
  |------------------------------------------------------------------------------
