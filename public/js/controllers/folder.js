@@ -8,14 +8,6 @@ define([
 ) {
     App.module('Folder', function (Folder, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
-           getAll: function() {
-               $.when(
-                   App.request('folder:collection')
-               ).done(function (folders, tags) {
-                   var layout = new Layout();
-                   App.Main.Layout.getRegion('content').show(layout);
-               });
-           },
 
             getFolders: function() {
                 $.when(
