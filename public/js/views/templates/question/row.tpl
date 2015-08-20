@@ -13,7 +13,11 @@
                         <i class="fa fa-thumbs-up fa-1"></i>
                         <%- vote_value %>
                     </div>
-                    <div class="asked_time">Asked <%- created_relative %></div>
+                    <span class="time asked_time">Asked
+                        <time class="relative" data-local-time="<%- created_local %>">
+                             <%- created_relative %>
+                        </time>
+                    </span>
                     <div>
                         <a class="question" href="#questions/<%- id %>">
                             <b><%- title %></b>

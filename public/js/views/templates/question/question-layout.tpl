@@ -14,7 +14,11 @@
         <div class="row">
             <!-- Time, title, folder -->
             <div class="col-md-10 col-sm-9 col-lg-10 col-xs-9">
-                <time>Asked <%- created_relative %></time>
+                <span class="time asked_time">Asked
+                    <time class="relative" data-local-time="<%- created_local %>">
+                         <%- created_relative %>
+                    </time>
+                </span>
                 <h2><%- title %></h2>
                 <div class="folder">
                     <span class="icon glyphicon glyphicon-folder-open"></span> <%- folder.title %>
