@@ -144,7 +144,7 @@ class WidgetController extends Controller
         }
 
         foreach ($data as &$item) {
-            $item->url = url(env('SERVER_PREFIX', '') . '/' . '#questions/' . $item->id );
+            $item->url = url(env('SERVER_PREFIX', '') . '/' . '#questions/' . $item->slug );
         }
         unset($item);
 

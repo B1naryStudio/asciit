@@ -5,16 +5,24 @@ namespace App\Repositories\Entities;
 use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
+use Cviebrock\EloquentSluggable\SluggableTrait;
+use Cviebrock\EloquentSluggable\SluggableInterface;
 
-class Question extends Model implements Transformable
+class Question extends Model implements Transformable, SluggableInterface
 {
     use TransformableTrait;
+    use SluggableTrait;
 
     protected $table = 'q_and_a';
 
     protected $fillable = ['title', 'description', 'user_id', 'folder_id'];
 
     protected $hidden = ['question_id'];
+
+    protected $sluggable = [
+        'build_from' => 'title',
+        'save_to'    => 'slug',
+    ];
 
     public function user()
     {
