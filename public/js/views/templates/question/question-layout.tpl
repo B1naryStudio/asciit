@@ -22,7 +22,7 @@
             </div>
             <!-- Voting block -->
             <div class="col-md-2 col-sm-3 col-lg-2 col-xs-3 votes-wrapper">
-                <div class="votes"></div>
+                <div class="votes question-votes"></div>
             </div>
         </div>
         <!-- Text -->

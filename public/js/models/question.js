@@ -9,6 +9,7 @@ define([
                 {},
                 ModelMixins.RelativeTimestampsModel,
                 ModelMixins.LiveModel,
+                ModelMixins.Votable,
                 {
                     urlRoot: App.prefix + '/api/v1/questions',
                     validation: {
@@ -21,7 +22,7 @@ define([
                             msg: 'Please enter a description'
                         }
                     },
-                    answerAdded: function () {
+                    answerAdd: function () {
                         this.set(
                             'answers_count',
                             this.get('answers_count') + 1
@@ -32,7 +33,7 @@ define([
                         this.on('change', this.attachLocalDates);
 
                         if (this.id) {
-                            this.liveURI = 'questions/' + this.id;
+                            this.liveURI = 'entries/' + this.id;
                             this.startLiveUpdating();
                         }
                     }

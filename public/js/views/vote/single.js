@@ -80,7 +80,7 @@ define([
                     counter.html(
                         self.options.likes - self.options.dislikes
                     );
-                }, 700);
+                }, 1000);
             },
             render: function () {
                 // Calculate rating

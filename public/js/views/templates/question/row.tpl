@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="question-header">
                     <div class="votes question-preview">
-                        <i class="fa fa-amazon fa-1"></i>
+                        <i class="fa fa-check fa-1"></i>
                         <%- answers_count %>&nbsp;
                         <i class="fa fa-thumbs-up fa-1"></i>
                         <%- vote_value %>
