@@ -7,19 +7,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\WebSocket\Contracts\AbstractWebSocketFactory;
 
-class CommentToBroadcasting
+class CommentToBroadcasting extends DeliveryHandler
 {
-    private $delivery;
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct(AbstractWebSocketFactory $factory)
-    {
-        $this->delivery = $factory->getDeliveryService();
-    }
-
     /**
      * Handle the event.
      *
@@ -28,11 +17,12 @@ class CommentToBroadcasting
      */
     public function handle(CommentWasAdded $event)
     {
-        $message['data'] = $event->comment;
-        $message['topic'] = 'entries/'
-                          . $event->comment->q_and_a_id
-                          . '/comments';
-
-        $this->delivery->send($message);
+        // to the topic 'entries/{id}/comments'
+        $this->delivery->send([
+            'data'  => ['post' => $event->comment],
+            'topic' => 'entries/'
+                    . $event->comment->q_and_a_id
+                    . '/comments'
+        ]);
     }
 }

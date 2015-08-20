@@ -139,18 +139,12 @@ class WidgetController extends Controller
 
     private function addLinks(Request $request, $data)
     {
-        if (preg_match('/\/asciit\/.+/', $request->server('REQUEST_URI'))) {
-            $prefix = '/asciit/';
-        } else {
-            $prefix = '/';
-        }
-
         if ($data instanceof Collection) {
             $data = $data->items();
         }
 
         foreach ($data as &$item) {
-            $item->url = url($prefix) . '/' . '#questions/' . $item->slug;
+            $item->url = url(env('SERVER_PREFIX', '') . '/' . '#questions/' . $item->slug );
         }
         unset($item);
 

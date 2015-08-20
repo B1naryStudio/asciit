@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Event;
 use App\Events\QuestionWasAdded;
 use App\Events\AnswerWasAdded;
 use App\Events\CommentWasAdded;
+use App\Events\VoteWasAdded;
+use App\Events\VoteWasRemoved;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -220,16 +222,20 @@ class QuestionService implements QuestionServiceInterface
 
         // If this like is unique
         if (!$same) {
-            return $this->voteRepository->create($data);
+            $vote = $this->voteRepository->create($data);
         } else {
             throw new QuestionServiceException('User can\'t vote twice!');
         }
+
+        Event::fire(new VoteWasAdded($vote));
+
+        return $vote;
     }
 
     public function removeVote($vote_id)
     {
         try {
-            return $this->voteRepository->delete($vote_id);
+            $vote = $this->voteRepository->delete($vote_id);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' Can\'t unlike it.',
@@ -237,6 +243,10 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new VoteWasRemoved($vote));
+
+        return $vote;
     }
     
     public function createAnswer($data, $question_id)
@@ -290,7 +300,6 @@ class QuestionService implements QuestionServiceInterface
 
     public function createComment($data, $question_id)
     {
-        // temporary fix without auth
         $data['user_id'] = Auth::user()->id;
 
         $new = $this->commentRepository->create($data);

@@ -77,17 +77,25 @@
     font-size: 20px;
 }
 
-.votes span {
-    margin: 0 5px;
-    position: relative;
-}
 
-.votes span.divided {
-    font-size: 0.8em;
-    position: relative;
-    margin: 0 3px;
-    top: -2px;
-}
+    .votes a {
+        padding-bottom: 0.3em;
+    }
+
+    .votes .counter {
+        display: inline-block;
+        cursor: default;
+        position: relative;
+        bottom: -0.07em;
+        margin: 0 5px;
+    }
+
+    .votes .counter.divided {
+        font-size: 0.8em;
+        position: relative;
+        margin: 0 3px;
+        bottom: 0;
+    }
 
 .votes i {
     text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
@@ -106,7 +114,7 @@
  | Single question header
  |------------------------------------------------------------------------------
  */
-time {
+.time {
     display: block;
     margin-bottom: 5px;
 }
@@ -117,7 +125,7 @@ time {
     word-break: break-all;
 }
 
-time,
+.time,
 .question_view .folder,
 .user-info h5 {
     color: dimgray;
@@ -426,6 +434,34 @@ pre code.hljs {
 
 body {
     min-width: 320px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Blockquotes
+ |------------------------------------------------------------------------------
+ */
+blockquote
+{
+    color: #444444;
+    font-size: 1em;
+    font-style: italic;
+    font-family: Georgia, Times, "Times New Roman", serif;
+    padding: 2px 0;
+
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 0;
+    padding-left: 20px;
+    padding-right: 8px;
+    border-left-width: 5px;
+}
+
+blockquote .author {
+    font-style: normal;
+    font-weight: bold;
+    margin-bottom: 0.7em;
+    display: inline-block;
 }
 
 /*

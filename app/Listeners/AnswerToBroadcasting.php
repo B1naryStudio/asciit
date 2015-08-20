@@ -7,19 +7,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\WebSocket\Contracts\AbstractWebSocketFactory;
 
-class AnswerToBroadcasting
+class AnswerToBroadcasting extends DeliveryHandler
 {
-    private $delivery;
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct(AbstractWebSocketFactory $factory)
-    {
-        $this->delivery = $factory->getDeliveryService();
-    }
-
     /**
      * Handle the event.
      *
@@ -30,7 +19,7 @@ class AnswerToBroadcasting
     {
         // to the topic 'question/{id}/answers'
         $this->delivery->send([
-            'data'  => $event->answer,
+            'data'  => ['post' => $event->answer],
             'topic' =>'questions/' . $event->answer->question_id . '/answers'
         ]);
 
@@ -38,16 +27,16 @@ class AnswerToBroadcasting
 
         // to the topic 'user/{id}/questions-answers'
         $this->delivery->send([
-            'data'  => $event->answer,
+            'data'  => ['post' => $event->answer],
             'topic' =>'user/' . $questionAuthorId . '/questions-answers'
         ]);
 
         // to the topic 'questions/{id}' - for model updating
         $this->delivery->send([
             'data'  => [
-                'calls' => ['answerAdded']
+                // remote func name must be an array key
+                'calls' => ['answerAdd' => null]
             ],
-
             'topic' =>'questions/' . $event->answer->question_id
         ]);
     }
