@@ -41,8 +41,8 @@ define(['app', 'moment'], function(App, moment) {
         },
 
         ModelMixins.LiveCollection = {
-            onLiveUpdate: function(topic, model) {
-                this.add(model);
+            onLiveUpdate: function(topic, message) {
+                this.add(message.post);
             }
         };
         _.extend(ModelMixins.LiveCollection, ModelMixins.LiveUpdating);
@@ -51,14 +51,19 @@ define(['app', 'moment'], function(App, moment) {
             onLiveUpdate: function(topic, message) {
                 // If there is remote call parameters
                 if (message.calls) {
-                    for (var i in message.calls) {
+                    for (var funcName in message.calls) {
                         // Taking a function name from object
-                        var funcName = message.calls[i];
-
                         // Try to get a func from the current model/collection
                         var fn = this[funcName];
                         if (fn) {
-                            fn.call(this);
+                            // arg or massive of args
+                            var args = message.calls[funcName];
+
+                            if (typeof args !== 'array') {
+                                args = [args];
+                            }
+
+                            fn.apply(this, args);
                         }
                     }
                 }

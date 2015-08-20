@@ -22,6 +22,12 @@ class EventServiceProvider extends ServiceProvider
             'App\Events\CommentWasAdded' => [
             'App\Listeners\CommentToBroadcasting',
         ],
+        'App\Events\VoteWasAdded' => [
+            'App\Listeners\VoteToBroadcasting',
+        ],
+        'App\Events\VoteWasRemoved' => [
+            'App\Listeners\VoteRemovingToBroadcasting',
+        ],
     ];
 
     /**
