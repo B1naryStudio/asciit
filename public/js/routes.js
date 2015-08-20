@@ -84,7 +84,7 @@ define(['app'], function (App) {
             },
             folders: function() {
                 require(['controllers/folder'], function (controller) {
-                    controller.getAll();
+                    controller.getFolders();
                 })
             }
         };

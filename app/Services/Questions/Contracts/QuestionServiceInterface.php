@@ -53,4 +53,6 @@ interface QuestionServiceInterface
     public function createFolder($data);
 
     public function updateFolder($data, $id);
+
+    public function getFoldersForCrud($pageSize = null);
 }

@@ -449,5 +449,20 @@ class QuestionService implements QuestionServiceInterface
         }
         return $folder;
     }
+
+    public function getFoldersForCrud($pageSize = null)
+    {
+        try {
+            $folder = $this->folderRepository
+                ->paginate($pageSize);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $folder;
+    }
 }
 

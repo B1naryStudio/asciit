@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\FolderValidatedRequest;
+use Illuminate\Http\Request;
 
 class FolderController extends Controller
 {
@@ -73,5 +74,25 @@ class FolderController extends Controller
         }
 
         return Response::json($folder->toArray(), 201);
+    }
+
+    public function foldersForCrud(Request $request)
+    {
+        try {
+            $folders = $this->questionService
+                ->getFoldersForCrud($request->get('page_size'));
+        } catch (QuestionServiceException $e) {
+            return Response::json(['error' => $e->getMessage()], 404);
+        }
+
+        return Response::json(
+            [
+                [
+                    'total_entries' => $folders->total(),
+                    'currentPage' => $folders->currentPage()
+                ],
+                $folders->items()
+            ], 200, [], JSON_NUMERIC_CHECK
+        );
     }
 }

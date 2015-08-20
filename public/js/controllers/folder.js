@@ -2,8 +2,9 @@ define([
     'app',
     'views/folder/layout',
     'views/folder/collection',
-    'models/folder'
-], function (App, Layout, CollectionView, Folder
+    'models/folder',
+    'views/paginator/paginator',
+], function (App, Layout, CollectionView, Folder, paginatorView
 ) {
     App.module('Folder', function (Folder, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
@@ -13,53 +14,72 @@ define([
                ).done(function (folders, tags) {
                    var layout = new Layout();
                    App.Main.Layout.getRegion('content').show(layout);
-
-                       var folder = new Folder.Model();
-                       var folderView = new CollectionView({
-                           collection: folders.sort(),
-                           model: folder
-                       });
-                       layout.getRegion('foldersRegion').show(folderView);
-
-                       Folder.Controller.listenTo(
-                           folderView,
-                           'form:submit',
-                           function (model) {
-                               $.when(App.request('folder:add', model))
-                                   .done(function (savedModel) {
-                                       folders.unshift(savedModel);
-                                       var newModel = new Folder.Model();
-                                       folderView.triggerMethod(
-                                           'model:refresh',
-                                           newModel
-                                       );
-                                   }).fail(function (errors) {
-                                       folderView.triggerMethod(
-                                           'data:invalid',
-                                           errors
-                                       );
-                                   });
-                           }
-                       );
-
-                       Folder.Controller.listenTo(
-                           folderView,
-                           'childview:folder:update',
-                           function (model) {
-                               $.when(App.request('folder:add', model.model))
-                                   .done(function (savedModel) {
-                                        App.helper.controllButtons(model.el, true);
-                                   }).fail(function (errors) {
-                                       folderView.triggerMethod(
-                                           'data:invalid',
-                                           errors
-                                       );
-                                   });
-                           }
-                       );
-
                });
-           }
+           },
+
+            getFolders: function() {
+                $.when(
+                    App.request('folders:get')
+                ).done(function (folders) {
+                        console.log(folders);
+                        var layout = new Layout();
+                        App.Main.Layout.getRegion('content').show(layout);
+
+                        var folder = new Folder.Model();
+                        var folderView = new CollectionView({
+                            collection: folders.sort(),
+                            model: folder
+                        });
+                        layout.getRegion('foldersRegion').show(folderView);
+
+                        App.trigger('paginator:get', {
+                            collection: folders,
+                            success: function (paginatorView) {
+                                layout
+                                    .getRegion('paginationRegion')
+                                    .show(paginatorView);
+                            }
+                        });
+
+                        Folder.Controller.listenTo(
+                            folderView,
+                            'form:submit',
+                            function (model) {
+                                $.when(App.request('folder:add', model))
+                                    .done(function (savedModel) {
+                                        folders.unshift(savedModel);
+                                        var newModel = new Folder.Model();
+                                        folderView.triggerMethod(
+                                            'model:refresh',
+                                            newModel
+                                        );
+                                    }).fail(function (errors) {
+                                        folderView.triggerMethod(
+                                            'data:invalid',
+                                            errors
+                                        );
+                                    });
+                            }
+                        );
+
+                        Folder.Controller.listenTo(
+                            folderView,
+                            'childview:folder:update',
+                            function (model) {
+                                $.when(App.request('folder:add', model.model))
+                                    .done(function (savedModel) {
+                                        App.helper.controllButtons(model.el, true);
+                                    }).fail(function (errors) {
+                                        folderView.triggerMethod(
+                                            'data:invalid',
+                                            errors
+                                        );
+                                    });
+                            }
+                        );
+
+                    });
+            },
         });
         Folder.Controller = new Controller();
 

@@ -34,6 +34,8 @@ Route::group(['prefix' => 'api/v1'], function() {
         ['only' => ['index', 'destroy', 'store', 'update']]
     );
 
+    Route::get('/crud-folders', 'API\FolderController@foldersForCrud');
+
     Route::post('/user/login', 'API\UserController@login');
     Route::delete('/user/login/{id}', 'API\UserController@logout');
     Route::get('/user/login', 'API\UserController@session');

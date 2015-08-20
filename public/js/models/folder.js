@@ -1,4 +1,4 @@
-define(['app'], function(App) {
+define(['app', 'paginator'], function(App, PageableCollection) {
     App.module('Folder', function(Folder, App, Backbone, Marionette, $, _) {
         Folder.Model = Backbone.Model.extend({
             urlRoot: App.prefix + '/api/v1/folders',
@@ -30,6 +30,40 @@ define(['app'], function(App) {
             },
         });
 
+        Folder.Folders = PageableCollection.extend({
+                model: Folder.Model,
+                url: App.prefix + '/api/v1/crud-folders',
+                sortKey: 'id',
+                order: 'desc',
+
+                comparator: function (model1, model2) {
+                    var compareField = this.sortKey;
+
+                    if (model1.get(compareField) > model2.get(compareField)) {
+                        return -1; // before
+                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                        return 1; // after
+                    } else {
+                        return 0; // equal
+                    }
+                },
+                state: {
+                    firstPage: 1,
+                    pageSize: 10
+                },
+                queryParams: {
+                    currentPage: 'page',
+                    pageSize: 'page_size',
+                    orderBy: function () {
+                        return this.sortKey;
+                    },
+                    sortedBy: 'desc'
+                },
+                initialize: function(options) {
+                    this.sort();
+                }
+            });
+
         var API = {
             folderCollection: function () {
                 var folders = new Folder.Collection();
@@ -59,7 +93,18 @@ define(['app'], function(App) {
                         description: 'Server error, saving is impossible.'
                     });
                 }
+                return defer.promise();
+            },
 
+            getFolders: function () {
+                var questions = new Folder.Folders();
+                var defer = $.Deferred();
+
+                questions.fetch({
+                    success: function (data) {
+                        defer.resolve(data);
+                    }
+                });
                 return defer.promise();
             }
         };
@@ -69,6 +114,10 @@ define(['app'], function(App) {
 
         App.reqres.setHandler('folder:add', function (data) {
             return API.addFolder(data);
+        });
+
+        App.reqres.setHandler('folders:get', function () {
+            return API.getFolders();
         });
     });
 });
