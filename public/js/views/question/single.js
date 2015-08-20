@@ -46,6 +46,17 @@ define([
                 this.newAnswerEditor.focus();
             },
 
+            showVotes: function () {
+                var vote = this.model.get('vote');
+                var votesView = new VotesView({
+                    vote: vote,
+                    likes: this.model.get('vote_likes'),
+                    dislikes: this.model.get('vote_dislikes'),
+                    q_and_a_id: this.model.id
+                });
+                this.getRegion('votes').show(votesView);
+            },
+
             onShow: function () {
                 var self = this;
                 $.when(App.request('tag:reset', this.model.get('tags')))
@@ -56,18 +67,16 @@ define([
                             }));
                 });
 
-                var vote = this.model.get('vote');
-                var votesView = new VotesView({
-                    vote: vote,
-                    likes: this.model.get('vote_likes'),
-                    dislikes: this.model.get('vote_dislikes'),
-                    q_and_a_id: this.model.id
-                });
-                this.getRegion('votes').show(votesView);
-
                 // Highligting code-snippets
                 $('pre code').each(function(i, block) {
                     hljs.highlightBlock(block);
+                });
+
+                this.showVotes();
+            },
+            initialize: function () {
+                this.listenTo(this.model, 'change:vote_value', function() {
+                    this.showVotes();
                 });
             }
         });

@@ -40,6 +40,9 @@ define([
                             );
                         }
 
+                        if (vote.user_id == App.User.Current.get('id')) {
+                            this.set('vote', vote);                        }
+
                         this.calcVoteValue();
                     },
                     voteDelete: function (vote) {
@@ -53,6 +56,10 @@ define([
                                 'vote_dislikes',
                                 this.get('vote_dislikes') - 1
                             );
+                        }
+
+                        if (vote.user_id == App.User.Current.get('id')) {
+                            this.set('vote', null);
                         }
 
                         this.calcVoteValue();
