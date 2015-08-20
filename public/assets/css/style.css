@@ -112,7 +112,7 @@
  | Single question header
  |------------------------------------------------------------------------------
  */
-time {
+.time {
     display: block;
     margin-bottom: 5px;
 }
@@ -122,7 +122,7 @@ time {
     margin: 5px 0;
 }
 
-time,
+.time,
 .question_view .folder,
 .user-info h5 {
     color: dimgray;

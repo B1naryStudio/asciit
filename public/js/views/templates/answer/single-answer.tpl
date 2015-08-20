@@ -12,7 +12,11 @@
             <div class="votes"></div>
 
             <!-- Text -->
-            <time>Answered <%- created_relative %></time>
+            <span class="time asked_time">Answered
+                <time class="relative" data-local-time="<%- created_local %>">
+                     <%- created_relative %>
+                </time>
+            </span>
             <div class="description"><%= description %></div>
 
             <!-- Comments -->

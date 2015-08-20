@@ -10,7 +10,11 @@
         <div class="col-md-10 col-lg-10 col-sm-10">
 
             <!-- Text -->
-            <time>Commented <%- created_relative %></time>
+            <span class="time asked_time">Commented
+                <time class="relative" data-local-time="<%- created_local %>">
+                     <%- created_relative %>
+                </time>
+            </span>
             <p><%- text %></p>
         </div>
     </div>
