@@ -78,13 +78,17 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id_or_slug
      * @return Response
      */
-    public function show($id)
+    public function show($id_or_slug)
     {
         try {
-            $question = $this->questionService->getQuestion($id);
+            if (is_numeric($id_or_slug)) {
+                $question = $this->questionService->getQuestionById($id_or_slug);
+            } else {
+                $question = $this->questionService->getQuestionBySlug($id_or_slug);
+            }
         } catch (QuestionServiceException $e) {
             return Response::json(['error' => $e->getMessage()], 404);
         }
