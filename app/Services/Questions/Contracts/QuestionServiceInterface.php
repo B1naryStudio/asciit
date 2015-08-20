@@ -13,7 +13,13 @@ interface QuestionServiceInterface
      * @param $id
      * @return Model
      */
-    public function getQuestion($id);
+    public function getQuestionById($id);
+
+    /**
+     * @param $id
+     * @return Model
+     */
+    public function getQuestionBySlug($id);
 
     /**
      * @return Collection

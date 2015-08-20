@@ -35,10 +35,14 @@
             <li><a href="#activity">My questions/My answers</a></li>
             <li><a id="nav-question" href="/folders">Folders</a></li>
             <li>
-                <span class="logout-xs"><%= email %>&nbsp;&nbsp;
-                    <a class="hidden-lg hidden-md hidden-sm"
-                       href="#logout">Logout</a>
+                <span class="hidden-lg hidden-md hidden-sm logout-xs">
+                    <%= email %>
                 </span>
+            </li>
+            <li>
+                <a class="hidden-lg hidden-md hidden-sm" href="#logout">
+                    Logout
+                </a>
             </li>
         </ul>
     </div>
