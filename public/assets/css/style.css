@@ -9,6 +9,10 @@
     margin-right: 15px;
 }
 
+.logout-xs {
+    display: none;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Questions list
@@ -820,6 +824,22 @@ div .fa-05 {
         padding-top: 7px;
         margin-bottom: 0;
         text-align: right;
+    }
+
+    .logout-xs {
+        color: #9d9d9d;
+        padding: 10px 15px;
+        display: block;
+    }
+
+    .logout-xs a {
+        display: initial;
+        color: #9d9d9d;
+        text-decoration: none;
+    }
+
+    .logout-xs a:hover {
+        color: #ffffff;
     }
 }
 
