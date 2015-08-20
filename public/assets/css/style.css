@@ -63,6 +63,7 @@
  */
 .votes {
     color: #444444;
+    cursor: default;
 }
 
 .question_view .votes {
@@ -78,13 +79,14 @@
 }
 
 
-    .votes a {
+    .votes .control {
         padding-bottom: 0.3em;
+        color: #337ab7;
+        cursor: pointer;
     }
 
     .votes .counter {
         display: inline-block;
-        cursor: default;
         position: relative;
         bottom: -0.07em;
         margin: 0 5px;
@@ -101,7 +103,7 @@
     text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
 }
 
-.voted {
+.votes .voted {
     color: #000080;
 }
 
@@ -749,7 +751,7 @@ div .fa-05 {
         position: relative;
     }
 
-    .votes span {
+    .votes .counter {
         margin: 0;
         width: 100%;
         display: block;
@@ -760,7 +762,7 @@ div .fa-05 {
         top: 35px;
     }
 
-    .votes a {
+    .votes .control {
         position: absolute;
     }
 
