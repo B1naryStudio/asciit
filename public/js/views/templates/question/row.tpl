@@ -15,7 +15,7 @@
                     </div>
                     <div class="asked_time">Asked <%- created_relative %></div>
                     <div>
-                        <a class="question" href="#questions/<%- id %>">
+                        <a class="question" href="#questions/<%- slug %>">
                             <b><%- title %></b>
                         </a>
                     </div>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="tags-wrapper">
                     <div class="tags hidden-xs"></div>
-                    <a class="more" href="#questions/<%- id %>">Read more...</a>
+                    <a class="more" href="#questions/<%- slug %>">Read more...</a>
                 </div>
             </div>
         </div>

@@ -90,7 +90,7 @@ class QuestionService implements QuestionServiceInterface
         }
 
         Event::fire(new QuestionWasAdded(
-            $this->getQuestion($question->id)
+            $this->getQuestionById($question->id)
         ));
 
         return $question;
@@ -100,7 +100,7 @@ class QuestionService implements QuestionServiceInterface
      * @param $id
      * @return \App\Repositories\Entities\Question
      */
-    public function getQuestion($id)
+    public function getQuestionById($id)
     {
         try {
             $question = $this->questionRepository
@@ -113,6 +113,35 @@ class QuestionService implements QuestionServiceInterface
                 'user_id' => Auth::user()->id
             ]);
             $question->vote = $tmp->first();;
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage() . ' No such question',
+                null,
+                $e
+            );
+        }
+
+        return $question;
+    }
+
+    /**
+     * @param $id
+     * @return \App\Repositories\Entities\Question
+     */
+    public function getQuestionBySlug($slug)
+    {
+        try {
+            $question = $this->questionRepository
+                ->findByFieldWithRelations(
+                    'slug',
+                    $slug,
+                    ['user', 'folder', 'tags', 'comments.user']
+                )->first();
+            $tmp = $this->voteRepository->findWhere([
+                'q_and_a_id' => $question->id,
+                'user_id' => Auth::user()->id
+            ]);
+            $question->vote = $tmp->first();
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such question',

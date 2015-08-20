@@ -113,7 +113,7 @@ define([
 
             events: {
                 'submit form': 'onSubmit',
-                'click .show-form' : 'showForm',
+                'click .show-form' : 'showForm'
             },
 
             showForm: function(e) {
@@ -160,7 +160,7 @@ define([
                 }
             },
             refreshCounter: function () {
-                this.model.set('count', this.collection.length)
+                this.model.set('count', this.collection.length);
                 this.$el.find('.counter.answers').html(this.model.get('count'));
             },
             onShow: function () {
@@ -175,10 +175,14 @@ define([
                               + ' with CKEditor');
                 } finally {
                     if (this.options.answer_id) {
-                        $('html, body').scrollTop(this.$el.find(
-                                '#answer-' + this.options.answer_id
-                            ).focus().offset().top
+                        var element = this.$el.find(
+                            '#answer-' + this.options.answer_id
                         );
+                        if (element.length) {
+                            $('html, body').scrollTop(
+                                element.focus().offset().top
+                            );
+                        }
                     } else {
                         $('html, body').scrollTop(0);
                     }
@@ -187,7 +191,7 @@ define([
             },
             initialize: function (options) {
                 this.childViewOptions = {
-                    id: this.id,
+                    id: this.id
                 };
                 Backbone.Validation.bind(this);
                 this.listenTo(this.collection, 'update', this.refreshCounter);

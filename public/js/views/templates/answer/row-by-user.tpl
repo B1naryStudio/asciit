@@ -13,7 +13,7 @@
                 <div class="asked_time">Answered <%- created_relative %></div>
                 <div class="title-wrapper">
                     For question:
-                    <a class="question" href="#questions/<%- question.id %>">
+                    <a class="question" href="#questions/<%- question.slug %>">
                         <b><%- question.title %></b>
                     </a>
                 </div>
@@ -23,7 +23,7 @@
                     <div class="limited"><%= description %></div>
                 </div>
                 <div>
-                    <a class="more" href="#question/<%- question.id %>/answer/<%- id %>">Read more...</a>
+                    <a class="more" href="#question/<%- question.slug %>/answer/<%- id %>">Read more...</a>
                 </div>
             </div>
         </div>

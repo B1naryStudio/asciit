@@ -102,103 +102,108 @@ define([
             },
 
             question: function (id, answer_id) {
-                $.when(
-                    App.request('question:model', id),
-                    App.request('answer:collection', id)
-                ).done(function (question, answers) {
-                    // New question layout
-                    var questionView = new SingleView({ model: question });
-                    App.Main.Layout.getRegion('content').show(questionView);
+                $.when(App.request('question:model', id))
+                    .done(function (question) {
+                    $.when(App.request('answer:collection', question.get('id')))
+                        .done(function (answers) {
+                            // New question layout
+                            var questionView = new SingleView({
+                                model: question
+                            });
+                            App.Main.Layout
+                                .getRegion('content')
+                                .show(questionView);
 
-                    // New answer model for saving a new answer
-                    var model = new  Answer.Model({
-                        question_id: id,
-                        count: answers.length
-                    });
+                            // New answer model for saving a new answer
+                            var model = new Answer.Model({
+                                question_id: question.get('id'),
+                                count: answers.length
+                            });
 
-                    // New answers view
-                    var answersView = new AnswersView({
-                        model: model,
-                        collection: answers,
-                        answer_id: answer_id
-                    });
-                    Question.Controller.listenTo(
-                        answersView,
-                        'editor:created',
-                        function (editor) {
-                            questionView.newAnswerEditor = editor;
-                        }
-                    );
-                    questionView.answersRegion.show(answersView);
+                            // New answers view
+                            var answersView = new AnswersView({
+                                model: model,
+                                collection: answers,
+                                answer_id: answer_id
+                            });
+                            Question.Controller.listenTo(
+                                answersView,
+                                'editor:created',
+                                function (editor) {
+                                    questionView.newAnswerEditor = editor;
+                                }
+                            );
+                            questionView.answersRegion.show(answersView);
 
-                    Question.Controller.listenTo(
-                        answersView,
-                        'form:submit',
-                        function (model) {
-                            $.when(App.request('answer:add', model))
-                                .done(function (savedModel) {
-                                    answers.push(savedModel);
+                            Question.Controller.listenTo(
+                                answersView,
+                                'form:submit',
+                                function (model) {
+                                    $.when(App.request('answer:add', model))
+                                        .done(function (savedModel) {
+                                            answers.push(savedModel);
 
-                                    // Add model and form clearing
-                                    var freshModel = new Answer.Model({
-                                        question_id: id,
-                                        count: answers.length
-                                    });
+                                            // Add model and form clearing
+                                            var freshModel = new Answer.Model({
+                                                question_id: question.get('id'),
+                                                count: answers.length
+                                            });
 
-                                    answersView.triggerMethod(
-                                        'model:refresh',
-                                        freshModel
-                                    );
-                                }).fail(function (errors) {
-                                    answersView.triggerMethod(
-                                        'model:invalid',
-                                        errors
-                                    );
-                                });
-                        }
-                    );
+                                            answersView.triggerMethod(
+                                                'model:refresh',
+                                                freshModel
+                                            );
+                                        }).fail(function (errors) {
+                                            answersView.triggerMethod(
+                                                'model:invalid',
+                                                errors
+                                            );
+                                        });
+                                }
+                            );
 
-                    // New comments to question view
-                    var commentModel = new Comment.Model({
-                        q_and_a_id: id
-                    });
+                            // New comments to question view
+                            var commentModel = new Comment.Model({
+                                q_and_a_id: question.get('id')
+                            });
 
-                    var collectionComments = new Comment.Collection(
-                        question.attributes.comments,
-                        {q_and_a_id: id}
-                    );
-                    var commentsView = new CommentsView({
-                        model: commentModel,
-                        collection: collectionComments,
-                        id: id
-                    });
-                    questionView.commentsRegion.show(commentsView);
+                            var collectionComments = new Comment.Collection(
+                                question.attributes.comments,
+                                { q_and_a_id: question.get('id') }
+                            );
+                            var commentsView = new CommentsView({
+                                model: commentModel,
+                                collection: collectionComments,
+                                id: question.get('id')
+                            });
+                            questionView.commentsRegion.show(commentsView);
 
-                    Question.Controller.listenTo(
-                        commentsView,
-                        'form:submit',
-                        function (model) {
-                            $.when(App.request('comment:add', model))
-                                .done(function (savedModel) {
-                                    collectionComments.push(savedModel);
-                                    // Add model and form clearing
-                                    var newModel = new Comment.Model({
-                                        q_and_a_id: id
-                                    });
+                            Question.Controller.listenTo(
+                                commentsView,
+                                'form:submit',
+                                function (model) {
+                                    $.when(App.request('comment:add', model))
+                                        .done(function (savedModel) {
+                                            collectionComments.push(savedModel);
+                                            // Add model and form clearing
+                                            var newModel = new Comment.Model({
+                                                q_and_a_id: question.get('id')
+                                            });
 
-                                    commentsView.triggerMethod(
-                                        'model:refresh',
-                                        newModel
-                                    );
-                                }).fail(function (errors) {
-                                    //console.log(errors);
-                                    commentsView.triggerMethod(
-                                        'data:invalid',
-                                        errors
-                                    );
-                                });
-                        }
-                    );
+                                            commentsView.triggerMethod(
+                                                'model:refresh',
+                                                newModel
+                                            );
+                                        }).fail(function (errors) {
+                                            //console.log(errors);
+                                            commentsView.triggerMethod(
+                                                'data:invalid',
+                                                errors
+                                            );
+                                        });
+                                }
+                            );
+                        });
                 });
             },
 

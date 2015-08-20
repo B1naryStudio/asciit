@@ -15,15 +15,20 @@ define(['app',
                 e.stopPropagation();
                 var editor = App.helper.editor;
                 var text = App.helper.getSelected();
-                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
-                    text = '<blockquote><strong>'+this.model.attributes.created_relative+
-                        ' by '+this.model.attributes.user.first_name+
-                        ' '+this.model.attributes.user.last_name+'</strong><br/>'+text+'</blockquote>';
+                if (
+                    text &&
+                    ( text = new String(text).replace(/^\s+|\s+$/g,''))
+                ) {
+                    text = '<blockquote><strong>' +
+                        this.model.get('created_relative') +
+                        ' by ' + this.model.get('user').first_name +
+                        ' ' + this.model.get('user').last_name +
+                        '</strong><br/>' + text + '</blockquote>';
                     editor.focus();
                     App.helper.moveFocus(editor, text);
                     $('html, body').scrollTop($('#new-answer-form').offset().top);
                 }
-            },
+            }
         });
 
         View.CommentsCompositeView = Marionette.CompositeView.extend({

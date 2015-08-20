@@ -155,6 +155,7 @@ return [
         Creativeorange\Gravatar\GravatarServiceProvider::class,
         Intervention\Image\ImageServiceProviderLaravel5::class,
         App\Providers\GosWebSocketClientProvider::class,
+        Cviebrock\EloquentSluggable\SluggableServiceProvider::class
     ],
 
     /*
