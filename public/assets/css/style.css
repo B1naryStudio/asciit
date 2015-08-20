@@ -427,6 +427,34 @@ body {
 
 /*
  |------------------------------------------------------------------------------
+ | Blockquotes
+ |------------------------------------------------------------------------------
+ */
+blockquote
+{
+    color: #444444;
+    font-size: 1em;
+    font-style: italic;
+    font-family: Georgia, Times, "Times New Roman", serif;
+    padding: 2px 0;
+
+    border-style: solid;
+    border-color: #ccc;
+    border-width: 0;
+    padding-left: 20px;
+    padding-right: 8px;
+    border-left-width: 5px;
+}
+
+blockquote .author {
+    font-style: normal;
+    font-weight: bold;
+    margin-bottom: 0.7em;
+    display: inline-block;
+}
+
+/*
+ |------------------------------------------------------------------------------
  | Comments
  |------------------------------------------------------------------------------
  */
