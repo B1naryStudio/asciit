@@ -51,4 +51,6 @@ interface QuestionServiceInterface
     public function removeFolder($id);
 
     public function createFolder($data);
+
+    public function updateFolder($data, $id);
 }

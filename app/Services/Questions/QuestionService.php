@@ -427,5 +427,19 @@ class QuestionService implements QuestionServiceInterface
         }
         return $folder;
     }
+
+    public function updateFolder($data, $id)
+    {
+        try {
+            $folder = $this->folderRepository->update($data, $id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $folder;
+    }
 }
 

@@ -31,7 +31,7 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::resource(
         '/folders',
         'API\FolderController',
-        ['only' => ['index', 'destroy', 'store']]
+        ['only' => ['index', 'destroy', 'store', 'update']]
     );
 
     Route::post('/user/login', 'API\UserController@login');

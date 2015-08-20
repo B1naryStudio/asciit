@@ -42,6 +42,22 @@ define([
                            }
                        );
 
+                       Folder.Controller.listenTo(
+                           folderView,
+                           'childview:folder:update',
+                           function (model) {
+                               $.when(App.request('folder:add', model.model))
+                                   .done(function (savedModel) {
+
+                                   }).fail(function (errors) {
+                                       folderView.triggerMethod(
+                                           'data:invalid',
+                                           errors
+                                       );
+                                   });
+                           }
+                       );
+
                });
            }
         });

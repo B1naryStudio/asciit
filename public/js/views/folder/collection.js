@@ -10,7 +10,9 @@ define([
             template: FolderView,
 
             events: {
-                'click .delete-folder': 'deleteFolder'
+                'click .delete-folder': 'deleteFolder',
+                'click .edit-folder': 'editFolder',
+                'click .update-folder': 'updateFolder'
             },
 
             deleteFolder: function() {
@@ -22,8 +24,34 @@ define([
                         console.log(xhr)
                     }
                 })
+            },
 
-            }
+            editFolder: function() {
+                $(this.el).find('[name="name"]').attr('disabled', false);
+            },
+
+            updateFolder: function() {
+                this.model.attributes.title = $(this.el).find('[name="name"]').val();
+                if(this.model.isValid(true)) {
+                    console.log(true);
+                    this.trigger('folder:update', this.model);
+                } else {
+                    console.log(false);
+                }
+            },
+
+            bindings: {
+                '[name=name]': {
+                    observe: 'name',
+                    setOptions: {
+                        validate: true
+                    }
+                }
+            },
+
+            initialize: function () {
+                Backbone.Validation.bind(this);
+            },
 
         });
 
@@ -36,7 +64,7 @@ define([
             childView: View.SingleFolder,
 
             events: {
-                'submit .folders-form': 'saveFolder'
+                'submit .folders-form': 'saveFolder',
             },
 
             saveFolder: function(event) {

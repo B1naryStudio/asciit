@@ -59,4 +59,19 @@ class FolderController extends Controller
 
         return Response::json($folder->toArray(), 201);
     }
+
+    public function update(FolderValidatedRequest $request, $id)
+    {
+        try {
+            $folder = $this->questionService->updateFolder($request->all(), $id);
+        } catch (QuestionServiceException $e) {
+            return Response::json([
+                'error' => [
+                    'message' => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        return Response::json($folder->toArray(), 201);
+    }
 }
