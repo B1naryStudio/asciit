@@ -33,7 +33,8 @@ define([
                 'mouseup .description': 'selectText'
             },
 
-            selectText: function() {
+            selectText: function(e) {
+                e.stopPropagation();
                 var editor = App.helper.editor;
                 var text = App.helper.getSelected();
                 if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
@@ -41,6 +42,7 @@ define([
                     ' by '+this.model.attributes.user.first_name+
                     ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
                     editor.focus();
+
                     App.helper.moveFocus(editor, text);
                     $('html, body').scrollTop($('#new-answer-form').offset().top);
                 }
