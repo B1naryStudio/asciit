@@ -300,6 +300,10 @@
     text-align: center;
 }
 
+#nav-question-add {
+    cursor: pointer;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Login popup
@@ -726,6 +730,11 @@ div .fa-05 {
 
 .folders-form .wrapper-fields {
     margin-right: 85px;
+}
+
+#folders-region {
+    float: left;
+    width: 100%;
 }
 
 /*
