@@ -1004,8 +1004,8 @@ div .fa-05 {
 
     .comments-region,
     .comment-form {
-        width: 83%;
-        margin-left: 17%;
+        width: 80%;
+        margin-left: 20%;
     }
 
     .questions-answers {
@@ -1062,5 +1062,10 @@ div .fa-05 {
 
     .col-sm-2 {
         width: 12%;
+    }
+
+    .comments-region, .comment-form {
+        width: 88%;
+        margin-left: 12%;
     }
 }
