@@ -16,10 +16,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\QuestionWasAdded' => [
             'App\Listeners\QuestionToBroadcasting',
         ],
-            'App\Events\AnswerWasAdded' => [
+        'App\Events\AnswerWasAdded' => [
             'App\Listeners\AnswerToBroadcasting',
         ],
-            'App\Events\CommentWasAdded' => [
+        'App\Events\CommentWasAdded' => [
             'App\Listeners\CommentToBroadcasting',
         ],
         'App\Events\VoteWasAdded' => [
@@ -27,6 +27,15 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\VoteWasRemoved' => [
             'App\Listeners\VoteRemovingToBroadcasting',
+        ],
+        'App\Events\FolderWasAdded' => [
+            'App\Listeners\FolderToBroadcasting',
+        ],
+        'App\Events\FolderWasUpdated' => [
+            'App\Listeners\FolderUpdatingToBroadcasting',
+        ],
+        'App\Events\FolderWasRemoved' => [
+            'App\Listeners\FolderRemovingToBroadcasting',
         ],
     ];
 

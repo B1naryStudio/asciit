@@ -38,9 +38,6 @@ define([
                         function (model) {
                             $.when(App.request('folder:add', model))
                                 .done(function (savedModel) {
-                                    folders.unshift(new Folder.Model({
-                                        title: savedModel.attributes.title
-                                    }));
                                     folders.state.totalRecords++;
                                     if (folders.length > folders.state.pageSize) {
                                         folders.pop();

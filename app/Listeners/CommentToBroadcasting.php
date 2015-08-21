@@ -5,7 +5,6 @@ namespace App\Listeners;
 use App\Events\CommentWasAdded;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use App\WebSocket\Contracts\AbstractWebSocketFactory;
 
 class CommentToBroadcasting extends DeliveryHandler
 {

@@ -40,6 +40,10 @@ define([
                         page_size: 10
                     })
                 ).done(function (questions, tags) {
+                    if (searchQuery) {
+                        questions.searchQuery = searchQuery; // For live upd
+                    }
+
                     var questionsView = new CollectionView({
                         collection: questions.sort(),
                         searchQuery: searchQuery,
