@@ -1,4 +1,4 @@
-<nav class="menu navbar navbar-inverse">
+<nav class="menu navbar navbar-inverse" role="navigation">
     <!-- Floating login panel, on the right side -->
     <ul class="login nav navbar-nav navbar-right hidden-xs">
         <li class="user-avatar">
@@ -35,9 +35,9 @@
             <li><a href="#activity">My questions/My answers</a></li>
             <li><a id="nav-question" href="/folders">Folders</a></li>
             <li>
-                <span class="hidden-lg hidden-md hidden-sm logout-xs">
-                    <%= email %>
-                </span>
+            <span class="hidden-lg hidden-md hidden-sm logout-xs">
+                <%= email %>
+            </span>
             </li>
             <li>
                 <a class="hidden-lg hidden-md hidden-sm" href="#logout">
@@ -46,5 +46,4 @@
             </li>
         </ul>
     </div>
-
 </nav>

@@ -1,7 +1,7 @@
 define([
     'app',
     'tpl!views/templates/folder/folder.tpl',
-    'tpl!views/templates/folder/collection.tpl',
+    'tpl!views/templates/folder/collection.tpl'
 ], function (App, FolderView, CollectionView) {
     App.module('Folder.Views', function (View, App, Backbone, Marionette, $, _ ) {
         View.SingleFolder = Marionette.ItemView.extend({
@@ -13,25 +13,25 @@ define([
                 'click .delete-folder': 'deleteFolder',
                 'click .edit-folder': 'editFolder',
                 'click .update-folder': 'updateFolder',
-                'click .cancel-update': 'cancelUpdate',
+                'click .cancel-update': 'cancelUpdate'
             },
 
-            deleteFolder: function() {
+            deleteFolder: function () {
                 this.trigger('folder:destroy', this.model);
             },
 
-            editFolder: function() {
+            editFolder: function () {
                 this.model.attributes.oldValue = $(this.el).find('[name="name"]').val();
                 App.helper.controllButtons(this.el, false);
             },
 
-            cancelUpdate: function() {
+            cancelUpdate: function () {
                 this.model.isValid(true);
                 $(this.el).find('[name="name"]').val(this.model.attributes.oldValue);
                 App.helper.controllButtons(this.el, true);
             },
 
-            updateFolder: function(e) {
+            updateFolder: function (e) {
                 this.model.attributes.title = $(this.el).find('[name="name"]').val();
                 if(this.model.isValid(true)) {
                     this.trigger('folder:update', this.model);
@@ -54,7 +54,7 @@ define([
             onRender: function() {
                 this.stickit(this.model);
                 return this;
-            },
+            }
 
         });
 
@@ -67,7 +67,7 @@ define([
             childView: View.SingleFolder,
 
             events: {
-                'submit .folders-form': 'saveFolder',
+                'submit .folders-form': 'saveFolder'
             },
 
             saveFolder: function(event) {
@@ -98,9 +98,9 @@ define([
             onModelRefresh: function (newModel) {
                 this.model = newModel;
                 this.stickit();
-            },
+            }
 
         });
-    })
+    });
     return App.Folder.Views.Folders;
-})
+});
