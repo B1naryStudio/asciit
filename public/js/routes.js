@@ -44,6 +44,7 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
             },
             logout: function () {
                 require(['controllers/user'], function (controller) {
+                    App.trigger('spinner:check');
                     controller.logout();
                 });
             },
