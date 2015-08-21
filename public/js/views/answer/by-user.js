@@ -1,10 +1,10 @@
 define([
     'app',
     'tpl!views/templates/answer/row-by-user.tpl',
-    'views/tag/view',
+    'views/empty',
     'views/views-mixins',
     'models/tag'
-], function (App, AnswerTpl, ViewsMixins, TagView) {
+], function (App, AnswerTpl, EmptyView, ViewsMixins) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.AnswerCollectionByUserRow = Marionette.LayoutView.extend(
             _.extend({}, ViewsMixins.ContainsVotes, {
@@ -33,7 +33,8 @@ define([
             id: 'answer-list',
             className: 'answers-list my-answers',
             childViewContainer: '.list',
-            childView: View.AnswerCollectionByUserRow
+            childView: View.AnswerCollectionByUserRow,
+            emptyView: EmptyView
         });
     });
     return App.Answer.Views.Answers;
