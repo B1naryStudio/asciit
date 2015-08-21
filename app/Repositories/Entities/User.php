@@ -40,6 +40,11 @@ class User extends Model implements Transformable, AuthenticatableContract
         return $this->hasMany('App\Repositories\Entities\Question');
     }
 
+    public function folder()
+    {
+        return $this->hasMany('App\Repositories\Entities\Folder');
+    }
+
     public function getAvatarAttribute($avatar)
     {
         if (empty($avatar)) {

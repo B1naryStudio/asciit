@@ -53,4 +53,12 @@ interface QuestionServiceInterface
     public function getQuestionsTopCommented($pageSize = null, $data = array());
 
     public function getQuestionsByUser($pageSize = null);
+
+    public function removeFolder($id);
+
+    public function createFolder($data);
+
+    public function updateFolder($data, $id);
+
+    public function getFoldersForCrud($pageSize = null);
 }

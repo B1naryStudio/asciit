@@ -46,6 +46,12 @@ define([
             selected_ranges = s.getRanges();
             selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
             s.selectRanges(selected_ranges);
+        },
+
+        controllButtons: function(el, option) {
+            $(el).find('[name="name"]').attr('disabled', option);
+            $(el).find('.control-buttons').toggle();
+            $(el).find('.edit-buttons').toggle();
         }
     };
 

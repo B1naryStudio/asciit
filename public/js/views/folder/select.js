@@ -19,7 +19,7 @@ define([
             onShow: function () {
                 this.$el.attr('name', 'folder').select2({
                     placeholder: 'Select a folder',
-                    tags: true
+                    //tags: true
                 });
             }
         });

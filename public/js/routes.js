@@ -11,7 +11,8 @@ define(['app'], function (App) {
                 'tags': 'tags',
                 'tags/:tag': 'tagSearch',
                 'activity': 'activity',
-                'question/:question_id/answer/:answer_id': 'question'
+                'question/:question_id/answer/:answer_id': 'question',
+                'folders': 'folders'
             },
             execute: function (callback, args, name) {
                 if (
@@ -80,6 +81,11 @@ define(['app'], function (App) {
                 require(['controllers/paginator'], function (controller) {
                     controller.paginator(options);
                 });
+            },
+            folders: function() {
+                require(['controllers/folder'], function (controller) {
+                    controller.getFolders();
+                })
             }
         };
 
