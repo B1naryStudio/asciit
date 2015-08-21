@@ -15,59 +15,64 @@ define([
                     var layout = new Layout();
                     App.Main.Layout.getRegion('content').show(layout);
 
-                    var folder = new Folder.Model();
-                    var folderView = new CollectionView({
-                        collection: folders.sort(),
-                        model: folder
-                    });
-                    layout.getRegion('foldersRegion').show(folderView);
+                        var folder = new Folder.Model();
+                        var folderView = new FolderCompositeView({
+                            collection: folders.sort(),
+                            model: folder
+                        });
+                        layout.getRegion('foldersRegion').show(folderView);
 
-                    App.trigger('paginator:get', {
-                        collection: folders,
-                        success: function (paginatorView) {
-                            layout
-                                .getRegion('paginationRegion')
-                                .show(paginatorView);
-                        }
-                    });
+                        App.trigger('paginator:get', {
+                            collection: folders,
+                            success: function (paginatorView) {
+                                App.helper.paginator = paginatorView;
+                                layout
+                                    .getRegion('paginationRegion')
+                                    .show(paginatorView);
+                            }
+                        });
 
-                    Folder.Controller.listenTo(
-                        folderView,
-                        'form:submit',
-                        function (model) {
-                            $.when(App.request('folder:add', model))
-                                .done(function (savedModel) {
-                                    folders.unshift(new Folder.Model({
-                                        title: savedModel.attributes.title
-                                    }));
-                                    if (folders.length > folders.state.pageSize) {
-                                        folders.state.totalPages += 1;
-                                        folders.state.lastPage += 1;
-                                        folders.state.totalRecords += 1;
-                                        App.trigger('paginator:get', {
-                                            collection: folders,
-                                            success: function (paginatorView) {
-                                                layout
-                                                    .getRegion('paginationRegion')
-                                                    .show(paginatorView);
+                        Folder.Controller.listenTo(
+                            folderView,
+                            'form:submit',
+                            function (model) {
+                                $.when(App.request('folder:add', model))
+                                    .done(function (savedModel) {
+                                        folders.unshift(new Folder.Model({
+                                            title: savedModel.attributes.title
+                                        }));
+                                        folders.state.totalRecords+=1;
+                                        if(folders.length > folders.state.pageSize) {
+                                            folders.pop();
+                                            if(Math.ceil(folders.state.totalRecords/folders.state.pageSize)>folders.state.totalPages) {
+                                                folders.state.totalPages+=1;
+                                                folders.state.lastPage+=1;
                                             }
-                                        });
-                                    }
+                                            App.trigger('paginator:get', {
+                                                collection: folders,
+                                                success: function (paginatorView) {
+                                                    App.helper.paginator = paginatorView;
+                                                    layout
+                                                        .getRegion('paginationRegion')
+                                                        .show(paginatorView);
+                                                }
+                                            });
+                                        }
 
-                                    folders.pop();
-                                    var newModel = new Folder.Model();
-                                    folderView.triggerMethod(
-                                        'model:refresh',
-                                        newModel
-                                    );
-                                }).fail(function (errors) {
-                                    folderView.triggerMethod(
-                                        'data:invalid',
-                                        errors
-                                    );
-                                });
-                        }
-                    );
+
+                                        var newModel = new Folder.Model();
+                                        folderView.triggerMethod(
+                                            'model:refresh',
+                                            newModel
+                                        );
+                                    }).fail(function (errors) {
+                                        folderView.triggerMethod(
+                                            'data:invalid',
+                                            errors
+                                        );
+                                    });
+                            }
+                        );
 
                     Folder.Controller.listenTo(
                         folderView,
@@ -85,28 +90,35 @@ define([
                         }
                     );
 
-                    Folder.Controller.listenTo(
-                        folderView,
-                        'childview:folder:destroy',
-                        function (model) {
-                            $.when(App.request('folder:delete', model.model))
-                                .done(function () {
-                                    if (folders.length == 0) {
-                                        folders.state.totalPages -= 1;
-                                        folders.state.lastPage -= 1;
-                                        folders.state.totalRecords -= 1;
-                                        $('.paginator')
-                                            .find('.page:last')
-                                            .prev().find('a').trigger('click')
-                                    }
-                                }).fail(function (errors) {
-                                    folderView.triggerMethod(
-                                        'data:invalid',
-                                        errors
-                                    );
-                                });
-                        }
-                    );
+
+                        Folder.Controller.listenTo(
+                            folderView,
+                            'childview:submit:deleteFolder',
+                            function (model) {
+                                $.when(App.request('folder:delete', model.model))
+                                    .done(function () {
+                                        folders.state.totalRecords-=1;
+                                        if(Math.ceil(folders.state.totalRecords/folders.state.pageSize)<folders.state.totalPages) {
+                                            folders.state.totalPages-=1;
+                                            folders.state.lastPage-=1;
+                                            if(folders.state.lastPage < folders.state.currentPage) {
+                                                App.helper.paginator.trigger('form:page', folders.state.lastPage);
+                                            } else {
+                                                App.helper.paginator.trigger('form:page', folders.state.currentPage);
+                                            }
+                                        } else if(folders.state.totalPages > 1 && folders.state.currentPage!=folders.state.lastPage) {
+                                            App.helper.paginator.trigger('form:page', folders.state.currentPage);
+                                        }
+
+
+                                    }).fail(function (errors) {
+                                        folderView.triggerMethod(
+                                            'data:invalid',
+                                            errors
+                                        );
+                                    });
+                            }
+                        );
 
                 });
             }

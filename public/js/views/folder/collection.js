@@ -16,8 +16,8 @@ define([
                 'click .cancel-update': 'cancelUpdate'
             },
 
-            deleteFolder: function () {
-                this.trigger('folder:destroy', this.model);
+            deleteFolder: function() {
+                this.trigger('submit:deleteFolder', this.model);
             },
 
             editFolder: function () {
