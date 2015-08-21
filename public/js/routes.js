@@ -1,4 +1,4 @@
-define(['app'], function (App) {
+define(['app', 'progressbar'], function (App, ProgressBar) {
     App.module('Routes', function (Routes, App, Backbone, Marionette, $, _) {
         // routes
         Routes.Router = Marionette.AppRouter.extend({
@@ -20,7 +20,17 @@ define(['app'], function (App) {
                     callback || name === 'login' && callback
                 ) {
                     callback.apply(this, args);
-                    $('#spinner').addClass('bar');
+                    Routes.spinner = new ProgressBar.Line('#spinner', {
+                        color: '#FCB03C',
+                        svgStyle: {
+                            height: '3px'
+                        }
+                    });
+
+                    Routes.spinner.animate(1.0, {
+                        duration: 2000,
+                        easing: 'easeOut'
+                    });
                 }
             }
         });
@@ -104,7 +114,15 @@ define(['app'], function (App) {
 
         this.listenTo(App, 'spinner:check', function(){
             if (App.queryFlag.length === 0) {
-                $('#spinner').removeClass('bar');
+                //Removes a spinner if it exist
+                if (Routes.spinner) {
+                    Routes.spinner.animate(1.0, {
+                        duration: 400
+                    }, function () {            // Callback on animation finish
+                        Routes.spinner.destroy();
+                        Routes.spinner = null;
+                    });
+                }
             }
         });
 

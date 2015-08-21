@@ -76,7 +76,7 @@ define([
         App.websocketPort = options.websocketPort ?
                             options.websocketPort :
                             9090;
-        // Loading css
+        // Loading css for codesnippets highlighting
         loadCSS('js/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/' +
             App.codeSnippetTheme + '.css');
     });
