@@ -10,7 +10,7 @@ define([
             regions: {
                 foldersRegion: '#folders-region',
                 createRegion: '#create-region',
-                paginationRegion: '#pagination-region',
+                paginationRegion: '#pagination-region'
             }
         });
     });

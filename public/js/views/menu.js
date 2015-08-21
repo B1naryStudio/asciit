@@ -9,7 +9,6 @@ define([
         var MenuView = Marionette.ItemView.extend({
             tagName: 'div',
             id: 'menu-view',
-            //template: Tpl,
             ui: {
                 login: '#nav-login',
                 questions: '#nav-questions',
@@ -26,7 +25,7 @@ define([
             },
             // If there is user, we can render a new template
             getTemplate: function() {
-                if (this.model.get('id')){
+                if (this.model.get('id')) {
                     return MenuTpl;
                 } else {
                     return MenuUnauthTpl;
