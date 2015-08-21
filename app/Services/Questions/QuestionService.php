@@ -1,6 +1,10 @@
 <?php
 namespace App\Services\Questions;;
-use App\Repositories\Criteria\relationCountCriteria;
+
+use App\Repositories\Criteria\CurrentUserCriteria;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Criteria\RelationLikeCriteria;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use App\Repositories\Contracts\QuestionRepository;
@@ -9,11 +13,18 @@ use App\Repositories\Contracts\FolderRepository;
 use App\Repositories\Exceptions\RepositoryException;
 use App\Repositories\Contracts\TagRepository;
 use App\Repositories\Contracts\VoteRepository;
-use Illuminate\Database\Eloquent\Collection;
 use App\Repositories\Criteria\InCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
-use Illuminate\Support\Facades\Auth;
 use App\Repositories\Contracts\CommentRepository;
+use Illuminate\Support\Facades\Event;
+use App\Events\QuestionWasAdded;
+use App\Events\AnswerWasAdded;
+use App\Events\CommentWasAdded;
+use App\Events\VoteWasAdded;
+use App\Events\VoteWasRemoved;
+use App\Events\FolderWasAdded;
+use App\Events\FolderWasUpdated;
+use App\Events\FolderWasRemoved;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -43,12 +54,16 @@ class QuestionService implements QuestionServiceInterface
     public function createQuestion($data)
     {
         try {
-            $folder = $this->folderRepository->firstOrCreate(['title' => $data['folder']]);
+            $folder = $this->folderRepository->firstOrCreate([
+                'title' => $data['folder']
+            ]);
             $data['folder_id'] = $folder->id;
             $question = $this->questionRepository->create($data);
 
             if (!empty($data['tag'])) {
-                $this->tagRepository->pushCriteria(new InCriteria('title', $data['tag']));
+                $this->tagRepository->pushCriteria(
+                    new InCriteria('title', $data['tag'])
+                );
                 $tags = $this->tagRepository->all();
                 $tmp = [];
                 foreach ($tags as $tag) {
@@ -64,7 +79,10 @@ class QuestionService implements QuestionServiceInterface
                     }
                 }
                 if (!empty($not_exist)) {
-                    $tags = array_merge($tags, $this->tagRepository->createSeveral($not_exist));
+                    $tags = array_merge(
+                        $tags,
+                        $this->tagRepository->createSeveral($not_exist)
+                    );
                 }
                 $this->questionRepository->relationsAdd($question, 'tags', $tags);
             }
@@ -75,6 +93,11 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new QuestionWasAdded(
+            $this->getQuestionById($question->id)
+        ));
+
         return $question;
     }
     
@@ -82,11 +105,14 @@ class QuestionService implements QuestionServiceInterface
      * @param $id
      * @return \App\Repositories\Entities\Question
      */
-    public function getQuestion($id)
+    public function getQuestionById($id)
     {
         try {
             $question = $this->questionRepository
-                ->findWithRelations($id, ['user', 'folder', 'tags', 'comment.user']);
+                ->findWithRelations(
+                    $id,
+                    ['user', 'folder', 'tags', 'comments.user']
+                );
             $tmp = $this->voteRepository->findWhere([
                 'q_and_a_id' => $id,
                 'user_id' => Auth::user()->id
@@ -104,12 +130,43 @@ class QuestionService implements QuestionServiceInterface
     }
 
     /**
+     * @param $id
+     * @return \App\Repositories\Entities\Question
+     */
+    public function getQuestionBySlug($slug)
+    {
+        try {
+            $question = $this->questionRepository
+                ->findByFieldWithRelations(
+                    'slug',
+                    $slug,
+                    ['user', 'folder', 'tags', 'comments.user']
+                )->first();
+            $tmp = $this->voteRepository->findWhere([
+                'q_and_a_id' => $question->id,
+                'user_id' => Auth::user()->id
+            ]);
+            $question->vote = $tmp->first();
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage() . ' No such question',
+                null,
+                $e
+            );
+        }
+
+        return $question;
+    }
+
+    /**
      * @return Collection
      */
     public function getQuestions($pageSize = null, $data = array())
     {
         if (!empty($data['tag'])) {
-            $this->questionRepository->pushCriteria(new RelationLikeCriteria('tags', 'title', $data['tag']));
+            $this->questionRepository->pushCriteria(
+                new RelationLikeCriteria('tags', 'title', $data['tag'])
+            );
         }
 
         $questions = $this->questionRepository
@@ -128,7 +185,7 @@ class QuestionService implements QuestionServiceInterface
             ->findByFieldWithRelations(
                 'question_id',
                 $question_id,
-                ['user', 'comment.user', 'votes']
+                ['user', 'comments.user', 'votes']
             );
 
         foreach ($answers as $answer) {
@@ -152,14 +209,10 @@ class QuestionService implements QuestionServiceInterface
         $model->vote_dislikes = $dislikes;
         $model->vote_value = $rating;
 
-        if ($users_vote){
+        if ($users_vote) {
             $model->vote = $users_vote;
         }
     }
-    
-    public function getEntryComments($question_id){}
-    
-    public function addComment($data, $entry, $comment_id=null){}
 
     public function addVote($data)
     {
@@ -172,16 +225,20 @@ class QuestionService implements QuestionServiceInterface
 
         // If this like is unique
         if (!$same) {
-            return $this->voteRepository->create($data);
+            $vote = $this->voteRepository->create($data);
         } else {
             throw new QuestionServiceException('User can\'t vote twice!');
         }
+
+        Event::fire(new VoteWasAdded($vote));
+
+        return $vote;
     }
 
     public function removeVote($vote_id)
     {
         try {
-            return $this->voteRepository->delete($vote_id);
+            $vote = $this->voteRepository->delete($vote_id);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' Can\'t unlike it.',
@@ -189,17 +246,20 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new VoteWasRemoved($vote));
+
+        return $vote;
     }
     
     public function createAnswer($data, $question_id)
     {
         $data['user_id'] = Auth::user()->id;
 
-        $new = $this->answerRepository->create($data);
-
         try {
+            $new = $this->answerRepository->create($data);
             $answer = $this->answerRepository->withRelationCount()
-                ->findWithRelations($new->id, ['user']);
+                ->findWithRelations($new->id, ['user', 'question']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such answer',
@@ -207,6 +267,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new AnswerWasAdded($answer));
 
         return $answer;
     }
@@ -239,23 +301,8 @@ class QuestionService implements QuestionServiceInterface
         return $tags->items();
     }
 
-    public function getTagsPopular($pageSize = null)
-    {
-        try {
-            $tags = $this->tagRepository->loadRelationPopular('questions', $pageSize);
-        } catch (RepositoryException $e) {
-            throw new QuestionServiceException(
-                $e->getMessage(),
-                null,
-                $e
-            );
-        }
-        return $tags;
-    }
-
     public function createComment($data, $question_id)
     {
-        // temporary fix without auth
         $data['user_id'] = Auth::user()->id;
 
         $new = $this->commentRepository->create($data);
@@ -271,15 +318,71 @@ class QuestionService implements QuestionServiceInterface
             );
         }
 
+        Event::fire(new CommentWasAdded($comment));
+
         return $comment;
     }
 
-    public function getQuestionsPopular($pageSize = null)
+    public function getTagsPopular($pageSize = null)
     {
         try {
-            $questions = $this->questionRepository->loadRelationPopular('answers', $pageSize, [
-                ['q_and_a.question_id is not null']
-            ]);
+            $tags = $this->tagRepository
+                ->loadRelationPopular('questions', $pageSize);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $tags;
+    }
+
+    /**
+     * @param null|int $pageSize
+     * @return LengthAwarePaginator
+     */
+    public function getQuestionsByUser($pageSize = null)
+    {
+        $this->questionRepository->pushCriteria(
+            new CurrentUserCriteria(Auth::user()->id)
+        );
+        $questions = $this->questionRepository
+            ->with(['user', 'folder', 'tags'])
+            ->paginate($pageSize);
+        return $questions;
+    }
+
+    /**
+     * @param null|int $pageSize
+     * @return LengthAwarePaginator
+     */
+    public function getAnswersByUser($pageSize = null)
+    {
+        $this->answerRepository->pushCriteria(
+            new CurrentUserCriteria(Auth::user()->id)
+        );
+        $questions = $this->answerRepository->withRelationCount()
+            ->with(['user', 'question'])
+            ->paginate($pageSize);
+        return $questions;
+    }
+
+    // Widgets
+    public function getQuestionsPopular($pageSize = null, $data = array())
+    {
+        $where = [
+            'q_and_a.question_id is not null'
+        ];
+        if (!empty($data['date_start'])) {
+            $where[] = ['main.created_at', '>=', $data['date_start']];
+        }
+        if (!empty($data['date_end'])) {
+            $where[] = ['main.created_at', '<=', $data['date_end']];
+        }
+        try {
+            $questions = $this->questionRepository
+                ->loadRelationPopular('answers', $pageSize, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -290,12 +393,20 @@ class QuestionService implements QuestionServiceInterface
         return $questions;
     }
 
-    public function getQuestionsUpvoted($pageSize = null)
+    public function getQuestionsUpvoted($pageSize = null, $data = array())
     {
+        $where = [
+            'main.question_id is null'
+        ];
+        if (!empty($data['date_start'])) {
+            $where[] = ['main.created_at', '>=', $data['date_start']];
+        }
+        if (!empty($data['date_end'])) {
+            $where[] = ['main.created_at', '<=', $data['date_end']];
+        }
         try {
-            $questions = $this->questionRepository->loadRelationPopular('votes', $pageSize, [
-                ['main.question_id is null']
-            ]);
+            $questions = $this->questionRepository
+                ->loadRelationPopular('votes', $pageSize, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -304,6 +415,92 @@ class QuestionService implements QuestionServiceInterface
             );
         }
         return $questions;
+    }
+
+    public function getQuestionsTopCommented($pageSize = null, $data = array())
+    {
+        $where = [
+            'main.question_id is null'
+        ];
+        if (!empty($data['date_start'])) {
+            $where[] = ['main.created_at', '>=', $data['date_start']];
+        }
+        if (!empty($data['date_end'])) {
+            $where[] = ['main.created_at', '<=', $data['date_end']];
+        }
+        try {
+            $questions = $this->questionRepository
+                ->loadRelationPopular('comments', $pageSize, $where);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $questions;
+    }
+
+    public function removeFolder($id)
+    {
+        try {
+            $folder = $this->folderRepository->delete($id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new FolderWasRemoved($folder));
+        return $folder;
+    }
+
+    public function createFolder($data)
+    {
+        try {
+            $folder = $this->folderRepository->create($data);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new FolderWasAdded($folder));
+        return $folder;
+    }
+
+    public function updateFolder($data, $id)
+    {
+        try {
+            $folder = $this->folderRepository->update($data, $id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        Event::fire(new FolderWasUpdated($folder));
+        return $folder;
+    }
+
+    public function getFoldersForCrud($pageSize = null)
+    {
+        try {
+            $folder = $this->folderRepository
+                ->paginate($pageSize);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $folder;
     }
 }
 

@@ -7,6 +7,54 @@ define([
 
     App.queryFlag = [];
 
+    App.helper = {
+        getSelected: function() {
+            if(window.getSelection) { return window.getSelection(); }
+            else if(document.getSelection) { return document.getSelection(); }
+            else {
+                var selection = document.selection && document.selection.createRange();
+                if(selection.text) { return selection.text; }
+                return false;
+            }
+            return false;
+        },
+
+        moveFocus: function(editor, data) {
+
+            var checkData = editor.getData();
+            var el = $(editor.getSelection().document.$).find('body');
+            if(checkData!='') {
+                el.append('<p></p>');
+                el.find('p:last').append(data);
+            } else {
+                el.find('p:last').html(data);
+            }
+            var s = editor.getSelection(); // getting selection
+            var selected_ranges = s.getRanges(); // getting ranges
+
+            var node = selected_ranges[0].startContainer; // selecting the starting node
+            var parents = node.getParents(true);
+            node = parents[parents.length - 2].getFirst();
+            while (true) {
+                var x = node.getNext();
+                if (x == null) {
+                    break;
+                }
+                node = x;
+            }
+            s.selectElement(node);
+            selected_ranges = s.getRanges();
+            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+            s.selectRanges(selected_ranges);
+        },
+
+        controllButtons: function(el, option) {
+            $(el).find('[name="name"]').attr('disabled', option);
+            $(el).find('.control-buttons').toggle();
+            $(el).find('.edit-buttons').toggle();
+        }
+    };
+
     App.prefix = window.location.pathname.replace(/(\/.*)(\/)/, '$1');
     if (App.prefix === '/') {
         App.prefix = '';
@@ -24,14 +72,18 @@ define([
         App.codeSnippetTheme = options.codeSnippetTheme ?
                                options.codeSnippetTheme :
                                'github';
-        // Loading css
+
+        App.websocketPort = options.websocketPort ?
+                            options.websocketPort :
+                            9090;
+        // Loading css for codesnippets highlighting
         loadCSS('js/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/' +
-        App.codeSnippetTheme + '.css');
+            App.codeSnippetTheme + '.css');
     });
 
     var loadCSS = function(href) {
-        var cssLink = $("<link rel='stylesheet' type='text/css' href='"+href+"'>");
-        $("head").append(cssLink);
+        var cssLink = $('<link rel="stylesheet" type="text/css" href="' + href + '">');
+        $('head').append(cssLink);
     };
 
     App.on('start', function () {
@@ -70,7 +122,6 @@ define([
             App.queryFlag.pop();
             App.trigger('spinner:check');
             success(resp);
-
         };
         return sync(method, model, options);
     };

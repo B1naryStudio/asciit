@@ -169,10 +169,12 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         $query = $this->getRelationRecordCount($relation);
         if (!empty($where)) {
             foreach ($where as $condition) {
-                if (count($condition) === 2 ) {
+                if (is_array($condition) && count($condition) === 2 ) {
                     $query->whereRaw($condition[0], $condition[1]);
+                } elseif (is_array($condition) && count($condition) === 3 ) {
+                    $query->where($condition[0], $condition[1], $condition[2]);
                 } else {
-                    $query->whereRaw($condition[0]);
+                    $query->whereRaw($condition);
                 }
             }
         }

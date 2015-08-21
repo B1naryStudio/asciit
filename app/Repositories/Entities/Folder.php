@@ -18,4 +18,9 @@ class Folder extends Model implements Transformable
     {
         return $this->hasMany('App\Repositories\Entities\Question');
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Repositories\Entities\User');
+    }
 }

@@ -128,7 +128,7 @@ class QuestionServiceTest extends TestCase
 
         $this->assertSame(
             $this->question,
-            $this->questionService->getQuestion($this->question->id)
+            $this->questionService->getQuestionById($this->question->id)
         );
     }
 
@@ -138,13 +138,13 @@ class QuestionServiceTest extends TestCase
     public function testGetQuestionReturnsWithRelations()
     {
         $this->questionRepo->shouldReceive('findWithRelations')
-            ->with($this->question->id, ['user', 'folder', 'tags', 'comment.user'])
+            ->with($this->question->id, ['user', 'folder', 'tags', 'comments.user'])
             ->once()
             ->andReturn($this->question);
 
         $this->assertSame(
             $this->question,
-            $this->questionService->getQuestion($this->question->id)
+            $this->questionService->getQuestionById($this->question->id)
         );
     }
 
@@ -158,7 +158,7 @@ class QuestionServiceTest extends TestCase
             ->once()
             ->andThrow(RepositoryException::class, 'Entity is not found!');
 
-        $this->questionService->getQuestion(1);
+        $this->questionService->getQuestionById(1);
     }
 
     public function testGetAnswersOfQuestion()
@@ -168,7 +168,7 @@ class QuestionServiceTest extends TestCase
             ->with(
                 'question_id',
                 $this->question->id,
-                ['user', 'comment.user', 'votes']
+                ['user', 'comments.user', 'votes']
             )
             ->andReturn([$this->question]);
 
@@ -197,6 +197,9 @@ class QuestionServiceTest extends TestCase
             ->with($newQuestionData)
             ->andReturn($this->question);
 
+        $this->questionRepo->shouldReceive('findWithRelations')
+            ->andReturn($this->question);
+
         $this->assertEquals(
             $this->questionService->createQuestion($newQuestionData),
             $this->question
@@ -216,6 +219,9 @@ class QuestionServiceTest extends TestCase
             ->andReturn($this->folder);
 
         $this->questionRepo->shouldReceive('create')
+            ->andReturn($this->question);
+
+        $this->questionRepo->shouldReceive('findWithRelations')
             ->andReturn($this->question);
 
         $this->questionService->createQuestion($newQuestionData);

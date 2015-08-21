@@ -1,73 +1,142 @@
 define([
     'app',
     'paginator',
-    'models/related-timestamps-model',
-], function(App, PageableCollection, RelatedTimestampsModel) {
+    'models/model-mixins',
+], function(App, PageableCollection, ModelMixins) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
-        Question.Model = RelatedTimestampsModel.extend({
-            urlRoot: App.prefix + '/api/v1/questions',
-            validation: {
-                title: {
-                    required: true,
-                    msg: 'Please enter a title'
-                },
-                description: {
-                    required: true,
-                    msg: 'Please enter a description'
+        Question.Model = Backbone.Model.extend(
+            _.extend(
+                {},
+                ModelMixins.RelativeTimestampsModel,
+                ModelMixins.LiveModel,
+                ModelMixins.Votable,
+                {
+                    urlRoot: App.prefix + '/api/v1/questions',
+                    validation: {
+                        title: {
+                            required: true,
+                            msg: 'Please enter a title'
+                        },
+                        description: {
+                            required: true,
+                            msg: 'Please enter a description'
+                        }
+                    },
+                    answerAdd: function () {
+                        this.set(
+                            'answers_count',
+                            this.get('answers_count') + 1
+                        );
+                    },
+                    initialize: function (options) {
+                        this.attachLocalDates();
+                        this.on('change', this.attachLocalDates);
+
+                        if (this.id) {
+                            this.liveURI = 'entries/' + this.id;
+                            this.startLiveUpdating();
+                        }
+                    }
                 }
-            },
-            initialize: function (options) {
-                this.attachLocalDates();
-                this.on('sync', this.attachLocalDates);
-            }
-        });
+            )
+        );
 
-        Question.Collection = PageableCollection.extend({
-            model: Question.Model,
-            url: App.prefix + '/api/v1/questions',
-            sortKey: 'updated_at',
-            order: 'desc',
+        Question.Collection = PageableCollection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
+                model: Question.Model,
+                url: App.prefix + '/api/v1/questions',
+                liveURI: 'questions',
+                sortKey: 'updated_at',
+                order: 'desc',
 
-            comparator: function (model1, model2) {
-                var compareField = this.sortKey;
+                comparator: function (model1, model2) {
+                    var compareField = this.sortKey;
 
-                if (model1.get(compareField) > model2.get(compareField)) {
-                    return -1; // before
-                } else if (model2.get(compareField) > model1.get(compareField)) {
-                    return 1; // after
-                } else {
-                    return 0; // equal
+                    if (model1.get(compareField) > model2.get(compareField)) {
+                        return -1; // before
+                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                        return 1; // after
+                    } else {
+                        return 0; // equal
+                    }
+                },
+
+                state: {
+                    firstPage: 1,
+                    pageSize: 5
+                },
+
+                queryParams: {
+                    currentPage: 'page',
+                    pageSize: 'page_size',
+                    search: function () {
+                        return this.searchQuery;
+                    },
+                    orderBy: function () {
+                        return this.sortKey;
+                    },
+                    tag: function () {
+                        return this.searchTag;
+                    },
+                    sortedBy: 'desc'
+                },
+
+                initialize: function(options) {
+                    this.searchQuery = options.searchQuery;
+                    this.searchTag = options.searchTag;
+                    this.sort();
+
+                    this.startLiveUpdating();
                 }
-            },
-            state: {
-                firstPage: 1,
-                pageSize: 5
-            },
-            queryParams: {
-                currentPage: 'page',
-                pageSize: 'page_size',
-                search: function () {
-                    return this.searchQuery;
+            })
+        );
+
+        Question.CollectionByUser = PageableCollection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
+                model: Question.Model,
+                url: App.prefix + '/api/v1/questions-my',
+                liveURI: 'user/'
+                         + App.User.Current.get('id')
+                         + '/questions',
+                sortKey: 'updated_at',
+                order: 'desc',
+
+                comparator: function (model1, model2) {
+                    var compareField = this.sortKey;
+
+                    if (model1.get(compareField) > model2.get(compareField)) {
+                        return -1; // before
+                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                        return 1; // after
+                    } else {
+                        return 0; // equal
+                    }
                 },
-                orderBy: function () {
-                    return this.sortKey;
+                state: {
+                    firstPage: 1,
+                    pageSize: 5
                 },
-                tag: function () {
-                    return this.searchTag;
+                queryParams: {
+                    currentPage: 'page',
+                    pageSize: 'page_size',
+                    orderBy: function () {
+                        return this.sortKey;
+                    },
+                    sortedBy: 'desc'
                 },
-                sortedBy: 'desc'
-            },
-            initialize: function(options) {
-                debugger;
-                this.searchQuery = options.searchQuery;
-                this.searchTag = options.searchTag;
-                this.sort();
-            }
-        });
+                initialize: function(options) {
+                    this.sort();
+                    this.startLiveUpdating();
+                }
+            })
+        );
 
         var API = {
             questionCollection: function (searchQuery, searchTag) {
-                var questions = new Question.Collection({ searchQuery: searchQuery, searchTag: searchTag });
+                var questions = new Question.Collection({
+                    searchQuery: searchQuery,
+                    searchTag: searchTag
+                });
                 var defer = $.Deferred();
 
                 questions.fetch({
@@ -80,9 +149,10 @@ define([
             questionGet: function (id) {
                 var question = new Question.Model({ id: id });
                 var defer = $.Deferred();
+
                 question.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
+                    success: function (model) {
+                        defer.resolve(model);
                     },
                     error: function (data) {
                         defer.reject(data.validationError);
@@ -110,11 +180,26 @@ define([
                     defer.reject(question.validationError);
                 }
                 return defer.promise();
+            },
+            questionCollectionByUser: function () {
+                var questions = new Question.CollectionByUser();
+                var defer = $.Deferred();
+
+                questions.fetch({
+                    success: function (data) {
+                        defer.resolve(data);
+                    }
+                });
+                return defer.promise();
             }
         };
-        App.reqres.setHandler('question:collection', function (searchQuery, searchTag) {
-            return API.questionCollection(searchQuery, searchTag);
-        });
+
+        App.reqres.setHandler(
+            'question:collection',
+            function (searchQuery, searchTag) {
+                return API.questionCollection(searchQuery, searchTag);
+            }
+        );
 
         App.reqres.setHandler('question:model', function (id) {
             return API.questionGet(id);
@@ -122,6 +207,10 @@ define([
 
         App.reqres.setHandler('question:add', function (data) {
             return API.questionAdd(data);
+        });
+
+        App.reqres.setHandler('question:my', function () {
+            return API.questionCollectionByUser();
         });
     });
 });

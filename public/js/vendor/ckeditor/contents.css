@@ -26,13 +26,21 @@ body
 
 blockquote
 {
-	font-style: italic;
+    color: #444444;
+    font-style: italic;
 	font-family: Georgia, Times, "Times New Roman", serif;
 	padding: 2px 0;
 	border-style: solid;
 	border-color: #ccc;
 	border-width: 0;
 }
+
+    blockquote .author {
+        font-style: normal;
+        font-weight: bold;
+        margin-bottom: 0.7em;
+        display: inline-block;
+    }
 
 .cke_contents_ltr blockquote
 {

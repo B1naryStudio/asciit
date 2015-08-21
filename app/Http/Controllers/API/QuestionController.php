@@ -54,16 +54,6 @@ class QuestionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  Request  $request
@@ -88,17 +78,41 @@ class QuestionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $id_or_slug
      * @return Response
      */
-    public function show($id)
+    public function show($id_or_slug)
     {
         try {
-            $question = $this->questionService->getQuestion($id);
+            if (is_numeric($id_or_slug)) {
+                $question = $this->questionService->getQuestionById($id_or_slug);
+            } else {
+                $question = $this->questionService->getQuestionBySlug($id_or_slug);
+            }
         } catch (QuestionServiceException $e) {
             return Response::json(['error' => $e->getMessage()], 404);
         }
 
         return Response::json($question->toArray(), 200, [], JSON_NUMERIC_CHECK);
+    }
+
+    public function my(Request $request)
+    {
+        try {
+            $questions = $this->questionService
+                ->getQuestionsByUser($request->get('page_size'));
+        } catch (QuestionServiceException $e) {
+            return Response::json(['error' => $e->getMessage()], 404);
+        }
+
+        return Response::json(
+            [
+                [
+                    'total_entries' => $questions->total(),
+                    'currentPage' => $questions->currentPage()
+                ],
+                $questions->items()
+            ], 200, [], JSON_NUMERIC_CHECK
+        );
     }
 }

@@ -1,52 +1,16 @@
 define([
     'app',
     'tpl!views/templates/question/collection.tpl',
-    'tpl!views/templates/question/row.tpl',
-    'views/tag/view',
+    'views/question/row',
     'models/tag',
     'syphon'
-], function (App, QuestionsTpl, QuestionTpl, TagView) {
+], function (App, QuestionsTpl, QuestionView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.QuestionCollectionRow = Marionette.LayoutView.extend({
-            tagName: 'div',
-            className: 'question-row',
-            template: QuestionTpl,
-            regions: {
-                tag: '.tags'
-            },
-            onShow: function () {
-                var self = this;
-                $.when(App.request('tag:reset', this.model.attributes.tags)).done(function (tags) {
-                    self.getRegion('tag').show(new TagView({ collection: tags, searchTag: self.options.searchTag() }));
-                });
-
-                // Highligting code-snippets
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
-            }
-        });
-
-        View.QuestionCollectionRow = Marionette.LayoutView.extend({
-            tagName: 'div',
-            className: 'question-row',
-            template: QuestionTpl,
-            regions: {
-                tag: '.tags'
-            },
-            onShow: function () {
-                var self = this;
-                $.when(App.request('tag:reset', this.model.attributes.tags)).done(function (tags) {
-                    self.getRegion('tag').show(new TagView({ collection: tags, searchTag: self.options.searchTag() }));
-                });
-            }
-        });
-
         View.Questions = Marionette.CompositeView.extend({
             tagName: 'div',
             id: 'question-list',
             template: QuestionsTpl,
-            childView: View.QuestionCollectionRow,
+            childView: QuestionView,
             childViewContainer: '.list',
 
             events: {
@@ -64,12 +28,16 @@ define([
             },
 
             onNotFound: function () {
-                Backbone.Validation.callbacks.invalid(this, 'search_query', 'Nothing here...');
+                Backbone.Validation.callbacks.invalid(
+                    this,
+                    'search_query',
+                    'Nothing here...'
+                );
             },
             onShow: function () {
                 var query = this.collection.searchQuery;
                 if (query) {
-                    $('#search_query').val(query).focus();
+                    $('#search-query').val(query).focus();
                 }
             },
             initialize: function (options) {

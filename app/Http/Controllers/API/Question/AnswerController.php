@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AnswerValidatedRequest;
+use App\Services\Questions\Exceptions\QuestionServiceException;
 
 class AnswerController extends Controller
 {
@@ -32,16 +33,6 @@ class AnswerController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  Request  $request
@@ -62,48 +53,23 @@ class AnswerController extends Controller
         return Response::json($answer->toArray(), 201, [], JSON_NUMERIC_CHECK);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
+    public function my(Request $request)
     {
-        //
-    }
+        try {
+            $answers = $this->questionService
+                ->getAnswersByUser($request->get('page_size'));
+        } catch (QuestionServiceException $e) {
+            return Response::json(['error' => $e->getMessage()], 404);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
+        return Response::json(
+            [
+                [
+                    'total_entries' => $answers->total(),
+                    'currentPage' => $answers->currentPage()
+                ],
+                $answers->items()
+            ], 200, [], JSON_NUMERIC_CHECK
+        );
     }
 }

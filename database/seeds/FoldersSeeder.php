@@ -22,9 +22,9 @@ class FoldersSeeder extends Seeder
     public function run()
     {
         $faker = Factory::create();
-        
-        for ($i = 0; $i < 5; $i++) {
-            $this->folderRepository->create(['title' => $faker->unique()->word]);
+        $folders = array('PHP', 'JS', '.NET', 'Ideas');
+        foreach ($folders as $folder) {
+            $this->folderRepository->create(['title' => $folder]);
         }
     }
 }

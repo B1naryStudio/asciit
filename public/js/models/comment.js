@@ -1,40 +1,46 @@
 define([
     'app',
-    'models/related-timestamps-model'
-], function(App, RelatedTimestampsModel) {
+    'models/model-mixins',
+], function(App, ModelMixins) {
     App.module('Comment', function(Comment, App, Backbone, Marionette, $, _) {
-        Comment.Model = RelatedTimestampsModel.extend({
-            defaults: {
-                'text': ''
-            },
-            validation: {
-                text: {
-                    required: true
+        Comment.Model = Backbone.Model.extend(
+            _.extend({}, ModelMixins.RelativeTimestampsModel, {
+                defaults: {
+                    'text': ''
+                },
+                validation: {
+                    text: {
+                        required: true
+                    }
+                },
+                initialize: function (options) {
+                    this.urlRoot = App.prefix + '/api/v1/questions/'
+                        + options.q_and_a_id
+                        + '/comments';
+
+                    this.attachLocalDates();
+                    this.on('change', this.attachLocalDates);
                 }
-            },
-            initialize: function (options) {
-                this.urlRoot = App.prefix + '/api/v1/questions/'
-                    + options.question_id
-                    + '/comments';
+            })
+        );
 
-                this.attachLocalDates();
-                this.on('sync', this.attachLocalDates);
-            }
-        });
+        Comment.Collection = Backbone.Collection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
+                model: Comment.Model,
 
-        Comment.Collection = Backbone.Collection.extend({
-            model: Comment.Model,
-            url: function () {
-                return App.prefix + '/api/v1/questions/'
-                    + this.question_id
-                    + '/comments';
-            },
-            initialize: function (options) {
-                this.url = App.prefix + '/api/v1/questions/'
-                    + this.question_id
-                    + '/comments';
-            }
-        });
+                initialize: function (models, options) {
+                    this.liveURI = 'entries/'
+                        + options.q_and_a_id
+                        + '/comments';
+
+                    this.url = App.prefix + '/api/v1/questions/'
+                        + options.q_and_a_id
+                        + '/comments';
+
+                    this.startLiveUpdating();
+                }
+            })
+        );
 
         var API = {
             addComment: function (model) {
@@ -50,7 +56,9 @@ define([
                             defer.reject(errors);
                         }
                     })) {
-                    defer.reject({'description': 'Server error, saving is impossible.'});
+                    defer.reject({
+                        description: 'Server error, saving is impossible.'
+                    });
                 }
 
                 return defer.promise();

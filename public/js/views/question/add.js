@@ -6,7 +6,7 @@ define([
     'select2',
     'syphon',
     'ckeditor',
-    'ckeditor.adapter',
+    'ckeditor.adapter'
 ], function (App, AddTpl, EditorSettings) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.AddForm = Marionette.LayoutView.extend({
@@ -23,8 +23,13 @@ define([
 
                 EditorSettings.height = '400px';
                 EditorSettings.uiColor = '#f5f5f5';
-                this.editor = this.$el.find('[name=description]')
-                    .ckeditor(EditorSettings).editor;
+                try {
+                    this.editor = this.$el.find('[name=description]')
+                        .ckeditor(EditorSettings).editor;
+                } catch (e) {
+                    console.log('This environment officially is non-supported'
+                    + ' with CKEditor');
+                }
             },
             onDataInvalid: function (errors) {
                 $('.error').html('');

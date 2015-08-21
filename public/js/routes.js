@@ -1,4 +1,4 @@
-define(['app'], function (App) {
+define(['app', 'progressbar'], function (App, ProgressBar) {
     App.module('Routes', function (Routes, App, Backbone, Marionette, $, _) {
         // routes
         Routes.Router = Marionette.AppRouter.extend({
@@ -9,14 +9,36 @@ define(['app'], function (App) {
                 'login': 'login',
                 'logout': 'logout',
                 'tags': 'tags',
-                'tags/:tag': 'tagSearch'
+                'tags/:tag': 'tagSearch',
+                'activity': 'activity',
+                'question/:question_id/answer/:answer_id': 'question',
+                'folders': 'folders'
             },
             execute: function (callback, args, name) {
-                if (name !== 'login' && App.Routes.isOpen && callback || name === 'login' && callback) {
+                if (
+                    name !== 'login' && App.Routes.isOpen &&
+                    callback || name === 'login' && callback
+                ) {
                     callback.apply(this, args);
-                    $('#spinner').addClass('bar');
+                    if (Routes.spinner) {
+                        Routes.spinner.destroy();
+                    }
+                    Routes.spinner = new ProgressBar.Line('#spinner', {
+                        color: '#FCB03C',
+                        svgStyle: {
+                            height: '3px'
+                        }
+                    });
+
+                    Routes.spinner.animate(1.0, {
+                        duration: 2000,
+                        easing: 'easeOut'
+                    }, function () {            // Callback on animation finish
+                        Routes.spinner.destroy();
+                        Routes.spinner = null;
+                    });
                 }
-            },
+            }
         });
 
         var API = {
@@ -28,6 +50,7 @@ define(['app'], function (App) {
             },
             logout: function () {
                 require(['controllers/user'], function (controller) {
+                    App.trigger('spinner:check');
                     controller.logout();
                 });
             },
@@ -36,9 +59,9 @@ define(['app'], function (App) {
                     controller.questions(searchQuery, '');
                 });
             },
-            question: function (id) {
+            question: function (id, answer_id) {
                 require(['controllers/question'], function (controller) {
-                    controller.question(id);
+                    controller.question(id, answer_id);
                 });
             },
             questionsAdd: function () {
@@ -65,6 +88,21 @@ define(['app'], function (App) {
                 require(['controllers/question'], function (controller) {
                     controller.questions('', searchQuery);
                 });
+            },
+            activity: function () {
+                require(['controllers/activity'], function (controller) {
+                    controller.activity();
+                });
+            },
+            paginator: function (options) {
+                require(['controllers/paginator'], function (controller) {
+                    controller.paginator(options);
+                });
+            },
+            folders: function() {
+                require(['controllers/folder'], function (controller) {
+                    controller.getFolders();
+                })
             }
         };
 
@@ -82,10 +120,17 @@ define(['app'], function (App) {
         });
 
         this.listenTo(App, 'spinner:check', function(){
-            //debugger;
-           if(App.queryFlag.length == 0) {
-                $('#spinner').removeClass('bar');
-           }
+            if (App.queryFlag.length === 0) {
+                //Removes a spinner if it exist
+                if (Routes.spinner) {
+                    Routes.spinner.animate(1.0, {
+                        duration: 400
+                    }, function () {            // Callback on animation finish
+                        Routes.spinner.destroy();
+                        Routes.spinner = null;
+                    });
+                }
+            }
         });
 
         this.listenTo(App, 'popup:show', function (data) {
@@ -104,6 +149,10 @@ define(['app'], function (App) {
             if (!Backbone.history.navigate('/', { trigger: true })) {
                 API.questions();
             }
+        });
+
+        this.listenTo(App, 'paginator:get', function (options) {
+            API.paginator(options);
         });
 
         $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {

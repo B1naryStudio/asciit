@@ -42,5 +42,15 @@ class QuestionsSeeder extends Seeder
                 'folder_id' => $folders->random()->id,
             ]);
         }
+
+        $admin = $this->userRepository->findWhere(['email' => 'admin@admin.com'])->first();
+        for ($i = 0; $i < 7; $i++) {
+            $this->questionRepository->create([
+                'title' => $faker->sentence,
+                'description' => $faker->realText(1500),
+                'user_id' => $admin->id,
+                'folder_id' => $folders->random()->id,
+            ]);
+        }
     }
 }

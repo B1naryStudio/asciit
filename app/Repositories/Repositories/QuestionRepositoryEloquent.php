@@ -40,6 +40,15 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
                 'sum(if(sign>0, 1, 0))' => 'vote_likes',
                 'sum(if(sign>0, 0, 1))' => 'vote_dislikes'
             ]
+        ],
+        'comments' => [
+            'table' => 'comment',
+            'foreignKey' =>  'q_and_a_id',
+            'otherKey' => 'q_and_a_id',
+            'count' => 'comment_count',
+            'fields' => [
+                'count(*)' => 'comment_count'
+            ]
         ]
     ];
 

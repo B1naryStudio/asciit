@@ -13,7 +13,13 @@ interface QuestionServiceInterface
      * @param $id
      * @return Model
      */
-    public function getQuestion($id);
+    public function getQuestionById($id);
+
+    /**
+     * @param $id
+     * @return Model
+     */
+    public function getQuestionBySlug($id);
 
     /**
      * @return Collection
@@ -25,10 +31,6 @@ interface QuestionServiceInterface
      * @return Collection
      */
     public function getAnswersOfQuestion($question_id);
-
-    public function getEntryComments($question_id);
-
-    public function addComment($data, $entry, $comment_id = null);
 
     public function addVote($entry_id);
 
@@ -44,7 +46,19 @@ interface QuestionServiceInterface
 
     public function createComment($data, $question_id);
 
-    public function getQuestionsPopular($pageSize = null);
+    public function getQuestionsPopular($pageSize = null, $data = array());
 
-    public function getQuestionsUpvoted($pageSize = null);
+    public function getQuestionsUpvoted($pageSize = null, $data = array());
+
+    public function getQuestionsTopCommented($pageSize = null, $data = array());
+
+    public function getQuestionsByUser($pageSize = null);
+
+    public function removeFolder($id);
+
+    public function createFolder($data);
+
+    public function updateFolder($data, $id);
+
+    public function getFoldersForCrud($pageSize = null);
 }

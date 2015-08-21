@@ -146,6 +146,7 @@ return [
         App\Providers\RepositoryServiceProvider::class,
         App\Providers\QuestionServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
+        App\Providers\WebSocketsServiceProvider::class,
 
         /*
          * Third-party providers...
@@ -153,6 +154,8 @@ return [
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         Creativeorange\Gravatar\GravatarServiceProvider::class,
         Intervention\Image\ImageServiceProviderLaravel5::class,
+        App\Providers\GosWebSocketClientProvider::class,
+        Cviebrock\EloquentSluggable\SluggableServiceProvider::class
     ],
 
     /*

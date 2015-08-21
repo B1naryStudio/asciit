@@ -80,7 +80,7 @@ define([
                     counter.html(
                         self.options.likes - self.options.dislikes
                     );
-                }, 700);
+                }, 1000);
             },
             render: function () {
                 // Calculate rating
@@ -95,12 +95,16 @@ define([
             },
             onShow: function () {
                 if (this.model.has('id')) {
-                    if (this.model.get('sign') == 0) {
-                        this.$el.find(this.ui.likeButton).toggleClass('like cancel');
-                        this.$el.find(this.ui.dislikeButton).toggleClass('dislike voted cancel');
+                    if (this.model.get('sign') === 0) {
+                        this.$el.find(this.ui.likeButton)
+                            .toggleClass('like cancel like-vote');
+                        this.$el.find(this.ui.dislikeButton)
+                            .toggleClass('dislike voted cancel dislike-vote');
                     } else {
-                        this.$el.find(this.ui.likeButton).toggleClass('like voted cancel');
-                        this.$el.find(this.ui.dislikeButton).toggleClass('dislike cancel');
+                        this.$el.find(this.ui.likeButton)
+                            .toggleClass('like voted cancel like-vote');
+                        this.$el.find(this.ui.dislikeButton)
+                            .toggleClass('dislike cancel dislike-vote');
                     }
                 }
             },
@@ -112,7 +116,8 @@ define([
                 this.updateModel();
             },
             updateModel: function () {
-                var data = this.options.data ? this.options.data : { q_and_a_id: this.options.q_and_a_id };
+                var data = this.options.data ?
+                    this.options.data : { q_and_a_id: this.options.q_and_a_id };
                 this.model = new Vote.Model(data);
             }
         });

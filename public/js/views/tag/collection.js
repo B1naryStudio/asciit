@@ -1,4 +1,6 @@
-define(['app', 'tpl!views/templates/tag/collection.tpl',
+define([
+    'app',
+    'tpl!views/templates/tag/collection.tpl',
     'tpl!views/templates/tag/view-row.tpl'
 ], function (App, TagsTpl, TagTpl) {
     App.module('Tag.Views', function (View, App, Backbone, Marionette, $, _) {

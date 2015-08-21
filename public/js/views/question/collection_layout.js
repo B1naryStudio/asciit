@@ -1,10 +1,8 @@
 define([
     'app',
-    'tpl!views/templates/question/collection-layout.tpl',
-    'views/question/collection',
-    'views/question/paginator'
-], function (App, CollectionLayoutTpl, CollectionView, PaginatorView) {
-    App.module('Collection.Views', function (View, App, Backbone, Marionette, $, _) {
+    'tpl!views/templates/question/collection-layout.tpl'
+], function (App, CollectionLayoutTpl) {
+    App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.CollectionLayout = Marionette.LayoutView.extend({
             tagname: 'div',
             className: 'row',
@@ -16,5 +14,5 @@ define([
             }
         });
     });
-    return App.Collection.Views.CollectionLayout;
+    return App.Question.Views.CollectionLayout;
 });
