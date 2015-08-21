@@ -22,6 +22,9 @@ use App\Events\AnswerWasAdded;
 use App\Events\CommentWasAdded;
 use App\Events\VoteWasAdded;
 use App\Events\VoteWasRemoved;
+use App\Events\FolderWasAdded;
+use App\Events\FolderWasUpdated;
+use App\Events\FolderWasRemoved;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -441,7 +444,7 @@ class QuestionService implements QuestionServiceInterface
     public function removeFolder($id)
     {
         try {
-            $this->folderRepository->delete($id);
+            $folder = $this->folderRepository->delete($id);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -449,6 +452,9 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new FolderWasRemoved($folder));
+        return $folder;
     }
 
     public function createFolder($data)
@@ -462,6 +468,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new FolderWasAdded($folder));
         return $folder;
     }
 
@@ -476,6 +484,7 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+        Event::fire(new FolderWasUpdated($folder));
         return $folder;
     }
 

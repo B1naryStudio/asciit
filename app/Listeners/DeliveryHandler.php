@@ -10,6 +10,9 @@ namespace App\Listeners;
 
 use App\WebSocket\Contracts\AbstractWebSocketFactory;
 
+/*
+ *  Http-server -> WAMP-server delivery
+ */
 abstract class DeliveryHandler {
     protected $delivery;
     /**
