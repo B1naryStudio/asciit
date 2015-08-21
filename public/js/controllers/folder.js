@@ -4,7 +4,7 @@ define([
     'views/folder/collection',
     'models/folder',
     'views/paginator/paginator',
-], function (App, Layout, CollectionView, Folder, paginatorView
+], function (App, Layout, FolderCompositeView, Folder, paginatorView
 ) {
     App.module('Folder', function (Folder, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
@@ -17,7 +17,7 @@ define([
                         App.Main.Layout.getRegion('content').show(layout);
 
                         var folder = new Folder.Model();
-                        var folderView = new CollectionView({
+                        var folderView = new FolderCompositeView({
                             collection: folders.sort(),
                             model: folder
                         });
@@ -26,6 +26,7 @@ define([
                         App.trigger('paginator:get', {
                             collection: folders,
                             success: function (paginatorView) {
+                                App.helper.paginator = paginatorView;
                                 layout
                                     .getRegion('paginationRegion')
                                     .show(paginatorView);
@@ -41,13 +42,17 @@ define([
                                         folders.unshift(new Folder.Model({
                                             title: savedModel.attributes.title
                                         }));
+                                        folders.state.totalRecords+=1;
                                         if(folders.length > folders.state.pageSize) {
-                                            folders.state.totalPages+=1;
-                                            folders.state.lastPage+=1;
-                                            folders.state.totalRecords+=1;
+                                            folders.pop();
+                                            if(Math.ceil(folders.state.totalRecords/folders.state.pageSize)>folders.state.totalPages) {
+                                                folders.state.totalPages+=1;
+                                                folders.state.lastPage+=1;
+                                            }
                                             App.trigger('paginator:get', {
                                                 collection: folders,
                                                 success: function (paginatorView) {
+                                                    App.helper.paginator = paginatorView;
                                                     layout
                                                         .getRegion('paginationRegion')
                                                         .show(paginatorView);
@@ -55,7 +60,7 @@ define([
                                             });
                                         }
 
-                                        folders.pop();
+
                                         var newModel = new Folder.Model();
                                         folderView.triggerMethod(
                                             'model:refresh',
@@ -86,18 +91,27 @@ define([
                             }
                         );
 
+
                         Folder.Controller.listenTo(
                             folderView,
-                            'childview:folder:destroy',
+                            'childview:submit:deleteFolder',
                             function (model) {
                                 $.when(App.request('folder:delete', model.model))
                                     .done(function () {
-                                        if(folders.length == 0) {
+                                        folders.state.totalRecords-=1;
+                                        if(Math.ceil(folders.state.totalRecords/folders.state.pageSize)<folders.state.totalPages) {
                                             folders.state.totalPages-=1;
                                             folders.state.lastPage-=1;
-                                            folders.state.totalRecords-=1;
-                                            $('.paginator').find('.page:last').prev().find('a').trigger("click")
+                                            if(folders.state.lastPage < folders.state.currentPage) {
+                                                App.helper.paginator.trigger('form:page', folders.state.lastPage);
+                                            } else {
+                                                App.helper.paginator.trigger('form:page', folders.state.currentPage);
+                                            }
+                                        } else if(folders.state.totalPages > 1 && folders.state.currentPage!=folders.state.lastPage) {
+                                            App.helper.paginator.trigger('form:page', folders.state.currentPage);
                                         }
+
+
                                     }).fail(function (errors) {
                                         folderView.triggerMethod(
                                             'data:invalid',
