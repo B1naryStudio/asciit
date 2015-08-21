@@ -128,7 +128,7 @@ class QuestionServiceTest extends TestCase
 
         $this->assertSame(
             $this->question,
-            $this->questionService->getQuestion($this->question->id)
+            $this->questionService->getQuestionById($this->question->id)
         );
     }
 
@@ -144,7 +144,7 @@ class QuestionServiceTest extends TestCase
 
         $this->assertSame(
             $this->question,
-            $this->questionService->getQuestion($this->question->id)
+            $this->questionService->getQuestionById($this->question->id)
         );
     }
 
@@ -158,7 +158,7 @@ class QuestionServiceTest extends TestCase
             ->once()
             ->andThrow(RepositoryException::class, 'Entity is not found!');
 
-        $this->questionService->getQuestion(1);
+        $this->questionService->getQuestionById(1);
     }
 
     public function testGetAnswersOfQuestion()
