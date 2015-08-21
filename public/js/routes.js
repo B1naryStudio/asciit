@@ -30,6 +30,9 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     Routes.spinner.animate(1.0, {
                         duration: 2000,
                         easing: 'easeOut'
+                    }, function () {            // Callback on animation finish
+                        Routes.spinner.destroy();
+                        Routes.spinner = null;
                     });
                 }
             }
