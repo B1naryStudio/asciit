@@ -19,7 +19,7 @@ class FolderUpdatingToBroadcasting extends DeliveryHandler
         // to 'folders' topic
         $this->delivery->send([
             'data'  => ['patch' => $event->folder],
-            'topic' =>'folders'
+            'topic' =>'folders/' . $event->folder->id
         ]);
     }
 }

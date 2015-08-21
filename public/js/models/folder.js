@@ -1,16 +1,28 @@
-define(['app', 'paginator'], function(App, PageableCollection) {
+define([
+    'app',
+    'paginator',
+    'models/model-mixins'
+], function(App, PageableCollection, ModelMixins) {
     App.module('Folder', function(Folder, App, Backbone, Marionette, $, _) {
-        Folder.Model = Backbone.Model.extend({
-            urlRoot: App.prefix + '/api/v1/folders',
-            defaults: {
-                'title': ''
-            },
-            validation: {
-                title: {
-                    required: true
+        Folder.Model = Backbone.Model.extend(
+            _.extend({}, ModelMixins.LiveModel, {
+                urlRoot: App.prefix + '/api/v1/folders',
+                defaults: {
+                    'title': ''
+                },
+                validation: {
+                    title: {
+                        required: true
+                    }
+                },
+                initialize: function (options) {
+                    if (this.id) {
+                        this.liveURI = 'folders/' + this.id;
+                        this.startLiveUpdating();
+                    }
                 }
-            },
-        });
+            })
+        );
 
         Folder.Collection = Backbone.Collection.extend({
             model: Folder.Model,
@@ -27,12 +39,14 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                 } else {
                     return 0; // equal
                 }
-            },
+            }
         });
 
-        Folder.Folders = PageableCollection.extend({
+        Folder.Folders = PageableCollection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
                 model: Folder.Model,
                 url: App.prefix + '/api/v1/crud-folders',
+                liveURI: 'folders',
                 sortKey: 'id',
                 order: 'desc',
 
@@ -61,8 +75,10 @@ define(['app', 'paginator'], function(App, PageableCollection) {
                 },
                 initialize: function(options) {
                     this.sort();
+                    this.startLiveUpdating();
                 }
-            });
+            })
+        );
 
         var API = {
             folderCollection: function () {

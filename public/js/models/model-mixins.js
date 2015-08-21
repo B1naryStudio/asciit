@@ -11,7 +11,7 @@ define(['app', 'moment'], function(App, moment) {
                             + App.websocketPort
                             + App.prefix,
 
-                    // The onconnect handler
+                    // The onConnect handler
                     function (session) {
                         // connection session attribute for collection/model
                         self.wsSession = session;
@@ -19,7 +19,7 @@ define(['app', 'moment'], function(App, moment) {
                         session.subscribe(
                             self.liveURI,
                             function () {
-                                // Context binding. Otherwise 'onliveUpdate'
+                                // Context binding. Otherwise 'onLiveUpdate'
                                 // will see a window as a this
                                 self.onLiveUpdate.apply(self, arguments);
                             }
@@ -43,21 +43,31 @@ define(['app', 'moment'], function(App, moment) {
         ModelMixins.LiveCollection = {
             onLiveUpdate: function(topic, message) {
                 this.add(message.post);
+                this.remove(message.delete);
             }
         };
         _.extend(ModelMixins.LiveCollection, ModelMixins.LiveUpdating);
 
         ModelMixins.LiveModel = {
             onLiveUpdate: function(topic, message) {
+                this.update(message.patch);
+                this.calls(message.calls);
+            },
+            update: function (patch) {
+                if (patch) {
+                    this.set.call(this, patch);
+                }
+            },
+            calls: function (calls) {
                 // If there is remote call parameters
-                if (message.calls) {
-                    for (var funcName in message.calls) {
+                if (calls) {
+                    for (var funcName in calls) {
                         // Taking a function name from object
                         // Try to get a func from the current model/collection
                         var fn = this[funcName];
                         if (fn) {
                             // arg or massive of args
-                            var args = message.calls[funcName];
+                            var args = calls[funcName];
 
                             if (typeof args !== 'array') {
                                 args = [args];

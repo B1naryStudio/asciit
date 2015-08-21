@@ -33,7 +33,7 @@
             <li><a id="nav-question" href="#questions">Questions</a></li>
             <li><a id="nav-question-add">Add question</a></li>
             <li><a href="#activity">My questions/My answers</a></li>
-            <li><a id="nav-question" href="/folders">Folders</a></li>
+            <li><a id="nav-question" href="#folders">Folders</a></li>
             <li>
                 <span class="hidden-lg hidden-md hidden-sm logout-xs">
                     <%= email %>
