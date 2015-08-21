@@ -20,6 +20,9 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     callback || name === 'login' && callback
                 ) {
                     callback.apply(this, args);
+                    if (Routes.spinner) {
+                        Routes.spinner.destroy();
+                    }
                     Routes.spinner = new ProgressBar.Line('#spinner', {
                         color: '#FCB03C',
                         svgStyle: {
