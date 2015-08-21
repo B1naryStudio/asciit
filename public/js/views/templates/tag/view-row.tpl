@@ -1,1 +1,1 @@
-<a href="/tags/<%- title %>"><%- title %></a>
+<a href="#tags/<%- title %>"><%- title %></a>
