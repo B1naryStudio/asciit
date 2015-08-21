@@ -42,7 +42,9 @@ define(['app', 'moment'], function(App, moment) {
 
         ModelMixins.LiveCollection = {
             onLiveUpdate: function(topic, message) {
-                this.add(message.post);
+                if ((!this.state) || (this.state.currentPage === 1)) {
+                    this.add(message.post);
+                }
                 this.remove(message.delete);
             }
         };
