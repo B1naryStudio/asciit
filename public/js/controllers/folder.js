@@ -4,7 +4,7 @@ define([
     'views/folder/collection',
     'models/folder',
     'views/paginator/paginator'
-], function (App, Layout, CollectionView, Folder, paginatorView) {
+], function (App, Layout, FolderCompositeView, Folder, paginatorView) {
     App.module('Folder', function (Folder, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
 
