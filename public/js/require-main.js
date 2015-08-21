@@ -8,7 +8,7 @@ requirejs.config({
         underscore: 'vendor/backbone/underscore',
         bootstrap: 'vendor/bootstrap/bootstrap.min',
         validation: 'vendor/backbone/backbone.validation',
-        stickit: 'vendor/backbone/backbone.stickit.min',
+        stickit: 'vendor/backbone/backbone.stickit',
         text: 'vendor/require/text',
         tpl: 'vendor/backbone/underscore-tpl',
         syphon: 'vendor/backbone/backbone.syphon',

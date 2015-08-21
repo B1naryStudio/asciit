@@ -19,4 +19,3 @@
         </form>
     </div>
 </div>
-<div class="folders-region"></div>

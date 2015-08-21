@@ -114,6 +114,7 @@ define([
                             var questionView = new SingleView({
                                 model: question
                             });
+
                             App.Main.Layout
                                 .getRegion('content')
                                 .show(questionView);

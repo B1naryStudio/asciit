@@ -1,7 +1,8 @@
 define([
     'app',
     'paginator',
-    'models/model-mixins'
+    'models/model-mixins',
+    'stickit'
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Folder', function(Folder, App, Backbone, Marionette, $, _) {
         Folder.Model = Backbone.Model.extend(
@@ -112,6 +113,10 @@ define([
                 return defer.promise();
             },
 
+            updateFolder: function (model) {
+                return this.addFolder(model);
+            },
+
             getFolders: function () {
                 var questions = new Folder.Folders();
                 var defer = $.Deferred();
@@ -155,8 +160,12 @@ define([
             return API.getFolders();
         });
 
-        App.reqres.setHandler('folder:delete', function (data) {
-            return API.deleteFolder(data);
+        App.reqres.setHandler('folder:update', function (model) {
+            return API.updateFolder(model);
+        });
+
+        App.reqres.setHandler('folder:delete', function (model) {
+            return API.deleteFolder(model);
         });
     });
 });
