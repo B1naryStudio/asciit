@@ -2,9 +2,9 @@ define([
     'app',
     'views/folder/layout',
     'views/folder/collection',
+    'views/folder/add',
     'models/folder',
-    'views/paginator/paginator'
-], function (App, Layout, FolderCompositeView, Folder, paginatorView) {
+], function (App, Layout, FolderCollectionView, NewFolderView, Folder) {
     App.module('Folder', function (Folder, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
 
@@ -15,12 +15,14 @@ define([
                     var layout = new Layout();
                     App.Main.Layout.getRegion('content').show(layout);
 
-                    var folder = new Folder.Model();
-                    var folderView = new FolderCompositeView({
-                        collection: folders.sort(),
-                        model: folder
+                    var foldersView = new FolderCollectionView({
+                        collection: folders.sort()
                     });
-                    layout.getRegion('foldersRegion').show(folderView);
+                    layout.getRegion('foldersRegion').show(foldersView);
+
+                    var folder = new Folder.Model();
+                    var folderForm = new NewFolderView({model: folder});
+                    layout.getRegion('newFolderRegion').show(folderForm);
 
                     App.trigger('paginator:get', {
                         collection: folders,
@@ -33,14 +35,16 @@ define([
                     });
 
                     Folder.Controller.listenTo(
-                        folderView,
+                        folderForm,
                         'form:submit',
                         function (model) {
                             $.when(App.request('folder:add', model))
                                 .done(function (savedModel) {
                                     folders.state.totalRecords++;
+
                                     if (folders.length > folders.state.pageSize) {
                                         folders.pop();
+
                                         if (Math.ceil(
                                                 folders.state.totalRecords /
                                                 folders.state.pageSize
@@ -49,6 +53,7 @@ define([
                                             folders.state.totalPages++;
                                             folders.state.lastPage++;
                                         }
+
                                         App.trigger('paginator:get', {
                                             collection: folders,
                                             success: function (paginatorView) {
@@ -59,14 +64,16 @@ define([
                                             }
                                         });
                                     }
-
                                     var newModel = new Folder.Model();
-                                    folderView.triggerMethod(
+                                    folderForm.triggerMethod(
                                         'model:refresh',
                                         newModel
                                     );
+
+                                    folders.add(savedModel);
+
                                 }).fail(function (errors) {
-                                    folderView.triggerMethod(
+                                    foldersView.triggerMethod(
                                         'data:invalid',
                                         errors
                                     );
@@ -75,14 +82,14 @@ define([
                     );
 
                     Folder.Controller.listenTo(
-                        folderView,
-                        'childview:folder:update',
+                        foldersView,
+                        'childview:submit:update',
                         function (model) {
-                            $.when(App.request('folder:add', model.model))
+                            $.when(App.request('folder:update', model.model))
                                 .done(function (savedModel) {
                                     App.helper.controllButtons(model.el, true);
                                 }).fail(function (errors) {
-                                    folderView.triggerMethod(
+                                    foldersView.triggerMethod(
                                         'data:invalid',
                                         errors
                                     );
@@ -90,10 +97,9 @@ define([
                         }
                     );
 
-
                     Folder.Controller.listenTo(
-                        folderView,
-                        'childview:submit:deleteFolder',
+                        foldersView,
+                        'childview:submit:delete',
                         function (model) {
                             $.when(App.request('folder:delete', model.model))
                                 .done(function () {
@@ -131,7 +137,7 @@ define([
 
 
                                 }).fail(function (errors) {
-                                    folderView.triggerMethod(
+                                    foldersView.triggerMethod(
                                         'data:invalid',
                                         errors
                                     );

@@ -27,33 +27,33 @@ define([
                     saveButton: '.save-button'
                 },
 
-            events: {
-                'click @ui.editButton': 'onEdit',
-                'click @ui.saveButton': 'onSave',
-                'mouseup .description': 'selectText'
-            },
+                events: {
+                    'click @ui.editButton': 'onEdit',
+                    'click @ui.saveButton': 'onSave',
+                    'mouseup .description': 'selectText'
+                },
 
-            selectText: function(e) {
-                e.stopPropagation();
-                var editor = App.helper.editor;
-                var text = App.helper.getSelected();
-                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
-                    text = '<blockquote><span class="author">'+this.model.attributes.created_relative+
-                    ' by '+this.model.attributes.user.first_name+
-                    ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
-                    editor.focus();
+                selectText: function(e) {
+                    e.stopPropagation();
+                    var editor = App.helper.editor;
+                    var text = App.helper.getSelected();
+                    if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                        text = '<blockquote><span class="author">'+this.model.attributes.created_relative+
+                        ' by '+this.model.attributes.user.first_name+
+                        ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
+                        editor.focus();
 
-                    App.helper.moveFocus(editor, text);
-                    $('html, body').scrollTop($('#new-answer-form').offset().top);
-                }
-            },
+                        App.helper.moveFocus(editor, text);
+                        $('html, body').scrollTop($('#new-answer-form').offset().top);
+                    }
+                },
 
-            onEdit: function (event) {
-                var field = this.$el.find('.description');
-                field.attr('contenteditable', true);
+                onEdit: function (event) {
+                    var field = this.$el.find('.description');
+                    field.attr('contenteditable', true);
 
-                EditorSettings.startupFocus = true;
-                this.editor = field.ckeditor(EditorSettings).editor;
+                    EditorSettings.startupFocus = true;
+                    this.editor = field.ckeditor(EditorSettings).editor;
                 },
 
                 onShow: function () {
@@ -95,8 +95,14 @@ define([
                             });
                     });
                 },
+
                 initialize: function (options) {
                     this.$el.attr('id', 'answer-' + this.model.get('id'));
+
+                    var self = this;
+                    this.listenTo(this.model, 'change:vote_value', function() {
+                        self.showVotes();
+                    });
                 }
             })
         );
@@ -156,6 +162,8 @@ define([
                     // Erase the editor value.
                     this.editor.setData('');
                 }
+
+                Backbone.Validation.bind(this);
             },
             refreshCounter: function () {
                 this.model.set('count', this.collection.length);

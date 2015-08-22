@@ -76,8 +76,10 @@ define(['app',
             },
             // Refresh model and form for the futher using without view rendering
             onModelRefresh: function (newModel) {
+                this.unstickit();
                 this.model = newModel;
                 this.stickit();
+                Backbone.Validation.bind(this);
             },
 
             onRender: function() {

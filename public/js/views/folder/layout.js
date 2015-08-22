@@ -8,8 +8,8 @@ define([
             className: 'row',
             template: LayoutTpl,
             regions: {
+                newFolderRegion: '#new-folder-region',
                 foldersRegion: '#folders-region',
-                createRegion: '#create-region',
                 paginationRegion: '#pagination-region'
             }
         });

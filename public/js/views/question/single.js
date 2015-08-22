@@ -76,6 +76,13 @@ define([
                     });
 
                     this.showVotes();
+                },
+
+                initialize: function (options) {
+                    var self = this;
+                    this.listenTo(this.model, 'change:vote_value', function() {
+                        self.showVotes();
+                    });
                 }
             })
         );

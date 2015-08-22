@@ -49,7 +49,7 @@ define([
         },
 
         controllButtons: function(el, option) {
-            $(el).find('[name="name"]').attr('disabled', option);
+            $(el).find('[name="title"]').attr('disabled', option);
             $(el).find('.control-buttons').toggle();
             $(el).find('.edit-buttons').toggle();
         }

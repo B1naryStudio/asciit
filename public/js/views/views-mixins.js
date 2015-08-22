@@ -15,10 +15,6 @@ define(['app'], function(App) {
 
                     self.getRegion('votes').show(votesView);
                 });
-
-                this.listenTo(this.model, 'change:vote_value', function() {
-                    this.showVotes();
-                });
             }
         }
     });

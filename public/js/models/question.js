@@ -33,9 +33,14 @@ define([
                         this.on('change', this.attachLocalDates);
 
                         if (this.id) {
-                            this.liveURI = 'entries/' + this.id;
+                            this.liveURI = 'entries/' + this.get('id');
                             this.startLiveUpdating();
                         }
+
+                        this.on('sync', function () {
+                            this.liveURI = 'entries/' + this.get('id');
+                            this.startLiveUpdating();
+                        });
                     }
                 }
             )
