@@ -39,7 +39,6 @@ define([
 
             onModelRefresh: function (newModel) {
                 this.unstickit();
-                debugger;
                 this.model = newModel;
                 this.stickit();
                 Backbone.Validation.bind(this);
