@@ -102,7 +102,7 @@ define(['app', 'moment'], function(App, moment) {
 
         ModelMixins.Votable = {
             voteAdd: function (vote) {
-                if (vote.sign) {
+                if (+vote.sign) {
                     this.set(
                         'vote_likes',
                         this.get('vote_likes') + 1
@@ -120,7 +120,7 @@ define(['app', 'moment'], function(App, moment) {
                 this.calcVoteValue();
             },
             voteDelete: function (vote) {
-                if (vote.sign) {
+                if (+vote.sign) {
                     this.set(
                         'vote_likes',
                         this.get('vote_likes') - 1

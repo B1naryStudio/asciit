@@ -28,19 +28,27 @@ define([
                             this.get('answers_count') + 1
                         );
                     },
+                    setupLiveUpdate: function () {
+                        this.liveURI = 'entries/' + this.get('id');
+
+                        if (this.wsSession) {
+                            this.wsSession.close();
+                        }
+
+                        this.startLiveUpdating();
+                    },
                     initialize: function (options) {
                         this.attachLocalDates();
                         this.on('change', this.attachLocalDates);
 
-                        if (this.id) {
-                            this.liveURI = 'entries/' + this.get('id');
-                            this.startLiveUpdating();
+                        // We need a numeric id for the subscription topic name.
+                        // On init may be slug only, but named as 'id', so if we
+                        // have a 'slug' attribute, 'id' contains numeric id.
+                        if (this.has('slug')) {
+                            this.setupLiveUpdate();
+                        } else {
+                            this.on('sync', this.setupLiveUpdate);
                         }
-
-                        this.on('sync', function () {
-                            this.liveURI = 'entries/' + this.get('id');
-                            this.startLiveUpdating();
-                        });
                     }
                 }
             )
