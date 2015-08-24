@@ -14,7 +14,7 @@
                         <%- vote_value %>
                     </div>
                     <span class="time asked_time"><%= _t("questions.asked") %>
-                        <time class="relative" data-local-time="<%- created_local %>">
+                        <time class="relative" data-abs-time="<%- created_at %>">
                              <%- created_relative %>
                         </time>
                     </span>

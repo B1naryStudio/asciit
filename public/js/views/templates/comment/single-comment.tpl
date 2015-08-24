@@ -11,7 +11,7 @@
 
             <!-- Text -->
             <span class="time commented_time"><%- _t("comment.commented") %>
-                <time class="relative" data-local-time="<%- created_local %>">
+                <time class="relative" data-abs-time="<%- created_at %>">
                      <%- created_relative %>
                 </time>
             </span>
