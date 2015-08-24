@@ -91,12 +91,16 @@ define([
                     tag: function () {
                         return this.options.searchTag;
                     },
+                    folder: function () {
+                        return this.options.searchFolder;
+                    },
                     sortedBy: 'desc'
                 },
 
                 initialize: function (options) {
                     this.options = options;
                     this.sort();
+
                     this.startLiveUpdating();
                 }
             })
@@ -143,10 +147,11 @@ define([
         );
 
         var API = {
-            questionCollection: function (searchQuery, searchTag, page) {
+            questionCollection: function (searchQuery, searchTag, searchFolder, page) {
                 var questions = new Question.Collection({
                     searchQuery: searchQuery,
-                    searchTag: searchTag
+                    searchTag: searchTag,
+                    searchFolder: searchFolder
                 }, {
                     state: {
                         currentPage: page
@@ -211,8 +216,13 @@ define([
 
         App.reqres.setHandler(
             'question:collection',
-            function (searchQuery, searchTag, page) {
-                return API.questionCollection(searchQuery, searchTag, parseInt(page));
+            function (searchQuery, searchTag, searchFolder, page) {
+                return API.questionCollection(
+                    searchQuery, 
+                    searchTag, 
+                    searchFolder, 
+                    page
+                );
             }
         );
 
