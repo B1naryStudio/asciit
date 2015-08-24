@@ -39,6 +39,9 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                         Routes.spinner = null;
                     });
                 }
+            },
+            onRoute: function() {
+                $('#top-link').hide();
             }
         });
 
