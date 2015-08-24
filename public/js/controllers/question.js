@@ -32,16 +32,16 @@ define([
 ) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
-            questions: function (searchQuery, searchTag) {
+            questions: function (searchQuery, searchTag, page) {
                 $.when(
-                    App.request('question:collection', searchQuery, searchTag),
+                    App.request('question:collection', searchQuery, searchTag, page),
                     App.request('tag:collection', {
                         type: 'popular',
                         page_size: 10
                     })
                 ).done(function (questions, tags) {
                     if (searchQuery) {
-                        questions.searchQuery = searchQuery; // For live upd
+                        questions.searchQuery = searchQuery; // For live update
                     }
 
                     var questionsView = new CollectionView({
