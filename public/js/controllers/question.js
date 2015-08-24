@@ -32,9 +32,9 @@ define([
 ) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
-            questions: function (searchQuery, searchTag) {
+            questions: function (searchQuery, searchTag, searchFolder) {
                 $.when(
-                    App.request('question:collection', searchQuery, searchTag),
+                    App.request('question:collection', searchQuery, searchTag, searchFolder),
                     App.request('tag:collection', {
                         type: 'popular',
                         page_size: 10
@@ -91,6 +91,16 @@ define([
                                 questionsView.options.searchQuery = '';
                                 Backbone.history.navigate(
                                     '/tags/' + query,
+                                    { trigger: true }
+                                );
+                            } else if (/folder\:(.+)/.test(searchQuery)) {
+                                var query = searchQuery.replace(
+                                    /folder\:(.+)/,
+                                    '$1'
+                                );
+                                questionsView.options.searchQuery = '';
+                                Backbone.history.navigate(
+                                    '/folders/' + query,
                                     { trigger: true }
                                 );
                             } else {

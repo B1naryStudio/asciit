@@ -167,6 +167,10 @@ class QuestionService implements QuestionServiceInterface
             $this->questionRepository->pushCriteria(
                 new RelationLikeCriteria('tags', 'title', $data['tag'])
             );
+        } elseif (!empty($data['folder'])) {
+            $this->questionRepository->pushCriteria(
+                new RelationLikeCriteria('folder', 'title', $data['folder'])
+            );
         }
 
         $questions = $this->questionRepository

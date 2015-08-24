@@ -91,12 +91,16 @@ define([
                     tag: function () {
                         return this.searchTag;
                     },
+                    folder: function () {
+                        return this.searchFolder;
+                    },
                     sortedBy: 'desc'
                 },
 
                 initialize: function(options) {
                     this.searchQuery = options.searchQuery;
                     this.searchTag = options.searchTag;
+                    this.searchFolder = options.searchFolder;
                     this.sort();
 
                     this.startLiveUpdating();
@@ -145,10 +149,11 @@ define([
         );
 
         var API = {
-            questionCollection: function (searchQuery, searchTag) {
+            questionCollection: function (searchQuery, searchTag, searchFolder) {
                 var questions = new Question.Collection({
                     searchQuery: searchQuery,
-                    searchTag: searchTag
+                    searchTag: searchTag,
+                    searchFolder: searchFolder
                 });
                 var defer = $.Deferred();
 
@@ -209,8 +214,8 @@ define([
 
         App.reqres.setHandler(
             'question:collection',
-            function (searchQuery, searchTag) {
-                return API.questionCollection(searchQuery, searchTag);
+            function (searchQuery, searchTag, searchFolder) {
+                return API.questionCollection(searchQuery, searchTag, searchFolder);
             }
         );
 

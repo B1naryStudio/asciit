@@ -1069,3 +1069,62 @@ div .fa-05 {
         margin-left: 12%;
     }
 }
+
+@media (max-width: 1200px) {
+    #top-link{
+        display:none!important;
+    }
+}
+
+#top-link{
+    cursor:pointer;
+    display:none;
+    position:fixed;
+    left:20px;
+    top:20px;
+    padding:0;
+    z-index:1;
+    padding-top:35px;
+}
+#top-link:hover{
+    /*background:#ddd;*/
+}
+
+#top-link a {
+    display: block;
+    width: 100px;
+    text-align: center;
+    background: #333;
+    color: white;
+    padding: 5px 0;
+    margin:5px;
+    text-decoration:none !important;
+}
+
+#top-link:hover a{
+    background:#000;
+}
+
+#topicon{
+    width:0;
+    height:0;
+    display:inline-block;
+    border-bottom:7px solid #fff;
+    border-left:7px solid transparent;
+    border-right:7px solid transparent;
+    margin-right:5px;
+}
+
+#backicon{
+    width:0;
+    height:0;
+    display:inline-block;
+    border-top:7px solid #fff;
+    border-left:7px solid transparent;
+    border-right:7px solid transparent;
+    margin-right:5px;
+}
+
+#text{
+    display:none;
+}
