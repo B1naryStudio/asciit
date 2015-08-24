@@ -12,7 +12,8 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                 'tags/:tag': 'tagSearch',
                 'activity': 'activity',
                 'question/:question_id/answer/:answer_id': 'question',
-                'folders': 'folders'
+                'folders': 'folders',
+                'folders/:folder': 'folderSearch'
             },
             execute: function (callback, args, name) {
                 if (
@@ -38,6 +39,9 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                         Routes.spinner = null;
                     });
                 }
+            },
+            onRoute: function() {
+                $('#top-link').hide();
             }
         });
 
@@ -56,7 +60,7 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
             },
             questions: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
-                    controller.questions(searchQuery, '');
+                    controller.questions(searchQuery, '', '');
                 });
             },
             question: function (id, answer_id) {
@@ -86,7 +90,7 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
             },
             tagSearch: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
-                    controller.questions('', searchQuery);
+                    controller.questions('', searchQuery, '');
                 });
             },
             activity: function () {
@@ -99,10 +103,15 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.paginator(options);
                 });
             },
-            folders: function() {
+            folders: function () {
                 require(['controllers/folder'], function (controller) {
                     controller.getFolders();
                 })
+            },
+            folderSearch: function (searchQuery) {
+                require(['controllers/question'], function (controller) {
+                    controller.questions('', '', searchQuery);
+                });
             }
         };
 

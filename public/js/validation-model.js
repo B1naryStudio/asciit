@@ -11,7 +11,6 @@ define(['backbone', 'validation'], function () {
             $group.find('.help-block').html('').addClass('hidden');
         },
         invalid: function (view, attr, error, selector) {
-            console.log(view);
             var $el = view.$('[name=' + attr + ']'),
                 $group = $el.closest('.form-group');
             $group.addClass('has-error');
