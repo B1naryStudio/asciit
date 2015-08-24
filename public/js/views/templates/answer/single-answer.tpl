@@ -12,7 +12,8 @@
             <div class="votes"></div>
 
             <!-- Text -->
-            <span class="time asked_time">Answered
+            <span class="time asked_time"><%= _t("answers.answered") %>
+
                 <time class="relative" data-local-time="<%- created_local %>">
                      <%- created_relative %>
                 </time>
@@ -21,7 +22,7 @@
 
             <!-- Comments -->
             <div class="comments">
-                <button class="btn btn-default btn-xs show-form">Add comment</button>
+                <button class="btn btn-default btn-xs show-form"><%= _t("comment.add") %></button>
             </div>
         </div>
     </div>

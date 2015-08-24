@@ -1,5 +1,12 @@
 requirejs.config({
     baseUrl: 'js',
+    config: {
+        //Set the config for the i18n
+        //module ID
+        i18n: {
+            locale: 'ua-ua'
+        }
+    },
     paths: {
         backbone: 'vendor/backbone/backbone',
         'backbone.syphon': 'vendor/backbone/backbone.syphon',
@@ -20,8 +27,8 @@ requirejs.config({
         'highlight': 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack',
         'moment': 'vendor/moment/moment-with-locales.min',
         'wampy': 'vendor/wampy/wampy-all.min',
-        'progressbar': 'vendor/progressbar/progressbar.min'
-
+        'progressbar': 'vendor/progressbar/progressbar.min',
+        i18next: 'vendor/i18next-1.10.1/i18next-1.10.1.min'
     },
     shim: {
         underscore: {
@@ -44,9 +51,21 @@ requirejs.config({
     }
 });
 
-require(['app'], function (App) {
-    App.start({
-        codeSnippetTheme: 'github',
-        websocketPort: 9092
-    });
+require(['app', 'i18next'], function (App) {
+    // App in i18next context for inserting _t() helper inside the all templates
+    var i18nOptions = {
+        useCookie: true,
+        detectFromHeaders: true,
+        //lng: window.navigator.userLanguage || window.navigator.language || 'ua',
+        fallbackLang: 'en',
+        resGetPath: 'js/locales/__lng__.json'
+    };
+
+    i18n.init(i18nOptions, function (t) {
+            App.start({
+                codeSnippetTheme: 'github',
+                websocketPort: 9092
+            });
+        }
+    );
 });

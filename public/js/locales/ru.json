@@ -1,0 +1,13 @@
+{
+    "app": {
+        "name": "AskIt",
+        "currentLanguage": "RU"
+    },
+    "menu": {
+        "questions": "Вопросы",
+        "add": "Задать вопрос",
+        "my": "Мои вопросы/ответы",
+        "folders": "Папки",
+        "tags": "Tags"
+    }
+}

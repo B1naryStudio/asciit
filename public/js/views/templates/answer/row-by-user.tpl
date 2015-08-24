@@ -10,13 +10,13 @@
                     <i class="fa fa-thumbs-up fa-1"></i>
                     <%- vote_value %>
                 </div>
-                <span class="time asked_time">Answered
+                <span class="time asked_time"><%= _t("answers.answered") %>
                     <time class="relative" data-local-time="<%- created_local %>">
                          <%- created_relative %>
                     </time>
                 </span>
                 <div class="title-wrapper">
-                    For question:
+                    <%= _t("answers.for") %>:
                     <a class="question" href="#questions/<%- question.slug %>">
                         <b><%- question.title %></b>
                     </a>
@@ -27,7 +27,7 @@
                     <div class="limited"><%= description %></div>
                 </div>
                 <div>
-                    <a class="more" href="#question/<%- question.slug %>/answer/<%- id %>">Read more...</a>
+                    <a class="more" href="#question/<%- question.slug %>/answer/<%- id %>"><%= _t("ui.readMore") %>...</a>
                 </div>
             </div>
         </div>

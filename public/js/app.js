@@ -79,7 +79,26 @@ define([
         // Loading css for codesnippets highlighting
         loadCSS('js/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/' +
             App.codeSnippetTheme + '.css');
+
+        overwriteRenderer();
     });
+
+
+    function overwriteRenderer() {
+        // Simply use a closure to close over the current render function
+        var render = Marionette.Renderer.render;
+
+        // Then override it
+        Marionette.Renderer.render = function (template, data){
+
+            // Extend data to inject our translate helper
+            data = _.extend(data, {_t: i18n.t});
+
+            // And finally return the result of calling the original render function
+            // With our injected helper
+            return render(template, data);
+        };
+    }
 
     var loadCSS = function(href) {
         var cssLink = $('<link rel="stylesheet" type="text/css" href="' + href + '">');

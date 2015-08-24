@@ -1,6 +1,6 @@
 <nav class="menu navbar navbar-inverse" role="navigation">
     <!-- Floating login panel, on the right side -->
-    <ul class="login nav navbar-nav navbar-right hidden-xs">
+    <ul class="user-panel nav navbar-nav navbar-right hidden-xs">
         <li class="user-avatar">
             <img src="<%- avatar %>" class="avatar img-rounded small"/>
         </li>
@@ -9,7 +9,17 @@
                 <%= email %><b class="caret"></b>
             </a>
             <ul class="dropdown-menu">
-                <li><a href="#logout">Logout</a></li>
+                <li><a href="#logout"><%= _t("ui.logout") %></a></li>
+            </ul>
+        </li>
+        <li class="dropdown lang">
+            <a href="#" class="dropdown-toggle current-lang ua" data-toggle="dropdown">
+                <%= _t("app.currentLanguage") %>
+            </a>
+            <ul class="dropdown-menu">
+                <li><span data-lang="en">EN</span></li>
+                <li><span data-lang="ua">UA</span></li>
+                <li><span data-lang="ru">RU</span></li>
             </ul>
         </li>
     </ul>
@@ -30,18 +40,18 @@
 
     <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-            <li><a id="nav-question" href="#questions">Questions</a></li>
-            <li><a id="nav-question-add">Add question</a></li>
-            <li><a href="#activity">My questions/My answers</a></li>
-            <li><a id="nav-question" href="#folders">Folders</a></li>
+            <li><a id="nav-question" href="#questions"><%= _t("questions.all") %></a></li>
+            <li><a id="nav-question-add"><%= _t("questions.add") %></a></li>
+            <li><a href="#activity"><%= _t("menu.my") %></a></li>
+            <li><a id="nav-question" href="#folders"><%= _t("folders.folders") %></a></li>
             <li>
-            <span class="hidden-lg hidden-md hidden-sm logout-xs">
+            <span class="hidden-lg hidden-md hidden-sm logout-xs    ">
                 <%= email %>
             </span>
             </li>
             <li>
                 <a class="hidden-lg hidden-md hidden-sm" href="#logout">
-                    Logout
+                    <%= _t("ui.logout") %>
                 </a>
             </li>
         </ul>

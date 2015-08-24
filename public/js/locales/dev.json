@@ -1,0 +1,12 @@
+{
+  "app": {
+    "name": "i18next"
+  },
+  "menu": {
+    "questions": "Questions",
+    "add": "Ask",
+    "my": "My questions/answers",
+    "folders": "Folders",
+    "tags": "Tags"
+  }
+}

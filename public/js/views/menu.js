@@ -13,7 +13,9 @@ define([
                 login: '#nav-login',
                 questions: '#nav-questions',
                 question_add: '#nav-question-add',
-                email_button: '.email'
+                email_button: '.email',
+                lang_button: '.lang',
+                lang_sel: '.lang [data-lang]'
             },
             events: {
                 'click @ui.login' : 'login',
@@ -21,7 +23,10 @@ define([
                 'click @ui.question_add' : 'questionAdd',
                 'mouseover @ui.email_button' : 'unfoldMenu',
                 'mouseout @ui.email_button' : 'foldMenu',
-                'click @ui.tags' : 'tags'
+                'mouseover @ui.lang_button' : 'unfoldMenu',
+                'mouseout @ui.lang_button' : 'foldMenu',
+                'click @ui.tags': 'tags',
+                'click @ui.lang_sel': 'swithLanguage'
             },
             // If there is user, we can render a new template
             getTemplate: function() {
@@ -43,11 +48,22 @@ define([
                 App.trigger('question:add');
                 return false;
             },
-            unfoldMenu: function () {
-                this.ui.email_button.closest('li').addClass('open');
+            unfoldMenu: function (e) {
+                var currentEl = $(e.currentTarget);
+                currentEl.closest('li').addClass('open');
             },
-            foldMenu: function () {
-                this.ui.email_button.closest('li').removeClass('open');
+            foldMenu: function (e) {
+                var currentEl = $(e.currentTarget);
+                currentEl.closest('li').removeClass('open');
+            },
+            swithLanguage: function (e) {
+                var currentEl = $(e.currentTarget);
+                var lang = currentEl.data('lang');
+
+                if (lang == i18n.lng) return;
+
+                i18n.setLng(lang);
+                location.reload();
             },
             onUserAuthorized: function (user) {
                 this.model = user;

@@ -1,0 +1,32 @@
+{
+    "app": {
+        "name": "AskIt",
+        "currentLanguage": "EN"
+    },
+    "menu": {
+        "questions": "Questions",
+        "add": "Ask",
+        "my": "My questions/answers",
+        "folders": "Folders",
+        "tags": "Tags",
+        "login": "Login",
+        "logout": "Logout"
+    },
+    "questions": {
+        "asked": "Asked",
+        "more": "Read more",
+        "empty": "There is no questions. You can be the first!"
+    },
+    "answers": {
+        "add": "Add answer",
+        "answered": "Answered",
+        "your": "Your answer"
+    },
+    "comment": {
+        "add": "Add comment",
+        "commented": "Commented"
+    },
+    "search": {
+        "placeholder": "Search it..."
+    }
+}
