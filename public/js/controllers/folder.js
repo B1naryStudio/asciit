@@ -87,7 +87,7 @@ define([
                         function (model) {
                             $.when(App.request('folder:update', model.model))
                                 .done(function (savedModel) {
-                                    App.helper.controllButtons(model.el, true);
+                                    App.helper.controllButtons(model.$el, true);
                                 }).fail(function (errors) {
                                     foldersView.triggerMethod(
                                         'data:invalid',

@@ -1,8 +1,7 @@
 define([
     'app',
-    'tpl!views/templates/folder/row.tpl',
-    'tpl!views/templates/folder/add.tpl'
-], function (App, FolderRowTpl, NewFolderTpl) {
+    'tpl!views/templates/folder/row.tpl'
+], function (App, FolderRowTpl) {
     App.module('Folder.Views', function (Views, App, Backbone, Marionette, $, _ ) {
         Views.SingleFolder = Marionette.ItemView.extend({
             tagName: 'div',
@@ -21,20 +20,22 @@ define([
             },
 
             editFolder: function () {
-                this.model.set('oldValue', this.$el.find('[name="title"]').val());
-                App.helper.controllButtons(this.el, false);
+                var title = this.$el.find('[name="title"]');
+                this.model.set('oldValue', title.val());
+                App.helper.controllButtons(this.$el, false);
+                title.focus();
             },
 
             cancelUpdate: function () {
                 this.model.isValid(true);
                 this.$el.find('[name="title"]').val(this.model.get('oldValue'));
-                App.helper.controllButtons(this.el, true);
+                App.helper.controllButtons(this.$el, true);
             },
 
             updateFolder: function (e) {
                 e.preventDefault();
 
-                if(this.model.isValid(true)) {
+                if (this.model.isValid(true)) {
                     this.trigger('submit:update', this.model);
                 }
             },

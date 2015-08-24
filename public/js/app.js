@@ -48,10 +48,10 @@ define([
             s.selectRanges(selected_ranges);
         },
 
-        controllButtons: function(el, option) {
-            $(el).find('[name="title"]').attr('disabled', option);
-            $(el).find('.control-buttons').toggle();
-            $(el).find('.edit-buttons').toggle();
+        controllButtons: function (el, option) {
+            el.find('[name="title"]').attr('disabled', option);
+            el.find('.control-buttons').toggle();
+            el.find('.edit-buttons').toggle();
         }
     };
 
