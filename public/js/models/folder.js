@@ -82,14 +82,23 @@ define([
         );
 
         var API = {
-            folderCollection: function () {
+            folderCollection: function (page) {
                 var folders = new Folder.Collection();
+                return this.fetch(folders);
+            },
+
+            fetch: function (collection) {
                 var defer = $.Deferred();
-                folders.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    }
-                });
+                if (!collection.fetch({
+                        success: function (data) {
+                            defer.resolve(data);
+                        }
+                    })
+                ) {
+                    defer.reject({
+                        error: 'Server error, saving is impossible.'
+                    });
+                }
                 return defer.promise();
             },
 
@@ -98,14 +107,15 @@ define([
 
                 if (!model.save([], {
                         wait: true,
-                        success: function () {
-                            defer.resolve(model);
+                        success: function (newModel, attributes, options) {
+                            defer.resolve(newModel);
                         },
                         error: function (model, xhr, options) {
                             var errors = JSON.parse(xhr.responseText);
                             defer.reject(errors);
                         }
-                    })) {
+                    })
+                ) {
                     defer.reject({
                         description: 'Server error, saving is impossible.'
                     });
@@ -119,14 +129,7 @@ define([
 
             getFolders: function () {
                 var questions = new Folder.Folders();
-                var defer = $.Deferred();
-
-                questions.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    }
-                });
-                return defer.promise();
+                return this.fetch(questions);
             },
 
             deleteFolder: function (model) {
@@ -148,16 +151,21 @@ define([
                 return defer.promise();
             }
         };
+
+        App.reqres.setHandler('folders:fetch', function (collection) {
+            return API.fetch(collection);
+        });
+
         App.reqres.setHandler('folder:collection', function () {
             return API.folderCollection();
         });
 
-        App.reqres.setHandler('folder:add', function (data) {
-            return API.addFolder(data);
+        App.reqres.setHandler('folder:add', function (collection, model) {
+            return API.addFolder(collection, model);
         });
 
-        App.reqres.setHandler('folders:get', function () {
-            return API.getFolders();
+        App.reqres.setHandler('folders:get', function (page) {
+            return API.getFolders(page ? parseInt(page) : 1);
         });
 
         App.reqres.setHandler('folder:update', function (model) {
