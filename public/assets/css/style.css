@@ -728,6 +728,7 @@ div .fa-05 {
 
 .folders-form {
     position: relative;
+    height: 60px;
 }
 
 .folders-form .wrapper-control {
@@ -740,6 +741,11 @@ div .fa-05 {
 
 .folders-form .wrapper-fields {
     margin-right: 85px;
+    margin-bottom: 0;
+}
+
+.folders-form .help-block {
+    margin-bottom: 0;
 }
 
 #folders-region {

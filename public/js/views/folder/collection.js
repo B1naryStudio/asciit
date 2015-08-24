@@ -34,21 +34,9 @@ define([
 
             updateFolder: function (e) {
                 e.preventDefault();
-                if (this.model.isValid(true) &&
-                    !this.model.validationError
-                ) {
-                    this.trigger('submit:update', this.model);
-                }
 
-                if (this.model.validationError &&
-                    this.model.validationError.title
-                ) {
-                    this.$el
-                        .find('.form-group')
-                        .addClass('has-error')
-                        .find('.help-block')
-                        .html(this.model.validationError.title)
-                        .removeClass('hidden');
+                if (!this.model.validationError) {
+                    this.trigger('submit:update', this.model);
                 }
             },
 
