@@ -85,20 +85,20 @@ define([
                         function (searchQuery) {
                             var query;
                             if (/tag\:(.+)/.test(searchQuery)) {
-                                query = searchQuery.replace(
+                                query = $.trim(searchQuery.replace(
                                     /tag\:(.+)/,
                                     '$1'
-                                );
+                                ));
                                 questionsView.options.searchQuery = '';
                                 Backbone.history.navigate(
                                     '/tags/' + query,
                                     { trigger: true }
                                 );
                             } else if (/folder\:(.+)/.test(searchQuery)) {
-                                query = searchQuery.replace(
+                                query = $.trim(searchQuery.replace(
                                     /folder\:(.+)/,
                                     '$1'
-                                );
+                                ));
                                 questionsView.options.searchQuery = '';
                                 Backbone.history.navigate(
                                     '/folders/' + query,

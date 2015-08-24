@@ -66,7 +66,7 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                         tmp['search'] ? tmp['search'] : '',
                         '',
                         '',
-                        tmp['page'] ? tmp['page'] : 1
+                        tmp['page'] ? parseInt(tmp['page']) : 1
                     );
                 });
             },
@@ -97,7 +97,7 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
             },
             tagSearch: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
-                    controller.questions('', searchQuery, '');
+                    controller.questions('', $.trim(searchQuery), '');
                 });
             },
             activity: function () {
@@ -117,7 +117,7 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
             },
             folderSearch: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
-                    controller.questions('', '', searchQuery);
+                    controller.questions('', '', $.trim(searchQuery));
                 });
             },
             parseUrl: function (url) {
