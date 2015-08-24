@@ -13,7 +13,8 @@ define([
                 },
                 validation: {
                     title: {
-                        required: true
+                        required: true,
+                        msg: i18n.t('validation.required-field')
                     }
                 },
                 initialize: function (options) {

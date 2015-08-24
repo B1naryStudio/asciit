@@ -232,7 +232,7 @@ define([
                     });
                     App.trigger('popup:show', {
                         header: {
-                            title: 'Add new question'
+                            title: i18n.t('questions.add-title')
                         },
                         class: 'question-add',
                         contentView: view

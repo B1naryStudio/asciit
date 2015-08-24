@@ -10,11 +10,11 @@ define(['app'], function (App) {
                 email: {
                     required: true,
                     pattern: 'email',
-                    msg: 'You entered invalid email address'
+                    msg: i18n.t('validation.invalid-value')
                 },
                 password: {
                     required: true,
-                    msg: 'Please enter your password'
+                    msg: i18n.t('validation.required-field')
                 }
             },
             initialize: function () {

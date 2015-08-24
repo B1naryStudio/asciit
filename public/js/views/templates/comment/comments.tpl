@@ -10,7 +10,7 @@
                 <textarea class="form-control" name="text" id="text" rows="6"></textarea>
                 <span class="help-block hidden"></span>
             </div>
-            <input class="submit-btn btn btn-success" type="submit" value="Save">
+            <input class="submit-btn btn btn-success" type="submit" value="<%- _t("ui.save") %>">
         </form>
     </div>
 </div>

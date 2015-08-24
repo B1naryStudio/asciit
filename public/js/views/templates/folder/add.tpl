@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="form-group wrapper-control">
-                <input class="submit-btn btn btn-success" type="submit" value="Create">
+                <input class="submit-btn btn btn-success" type="submit" value="<%- _t("ui.create") %>">
             </div>
         </form>
     </div>
