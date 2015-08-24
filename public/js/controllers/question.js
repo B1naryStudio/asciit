@@ -125,6 +125,7 @@ define([
                                 model: question
                             });
 
+
                             App.Main.Layout
                                 .getRegion('content')
                                 .show(questionView);
@@ -193,10 +194,12 @@ define([
                             });
                             questionView.commentsRegion.show(commentsView);
 
+
                             Question.Controller.listenTo(
                                 commentsView,
                                 'form:submit',
                                 function (model) {
+                                    //debugger;
                                     $.when(App.request('comment:add', model))
                                         .done(function (savedModel) {
                                             collectionComments.push(savedModel);
@@ -210,7 +213,6 @@ define([
                                                 newModel
                                             );
                                         }).fail(function (errors) {
-                                            //console.log(errors);
                                             commentsView.triggerMethod(
                                                 'data:invalid',
                                                 errors

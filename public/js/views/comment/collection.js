@@ -80,6 +80,19 @@ define(['app',
                 this.model = newModel;
                 this.stickit();
                 Backbone.Validation.bind(this);
+                this.hideCommentForm(this.$el);
+            },
+
+            hideCommentForm: function (el) {
+                var button = el.parent()
+                    .siblings('.row')
+                    .find('.add-comment');
+                if(button.length==0) {
+                    button = el.parent()
+                        .siblings('.row')
+                        .find('.show-form');
+                }
+                button.trigger("click");
             },
 
             onRender: function() {

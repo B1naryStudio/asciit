@@ -12,14 +12,14 @@ jQuery.extend(jQuery.fn, {
 			if(jQuery(window).scrollTop() >= 1){
 				jQuery(this).show();
 			}
-			jQuery(this).css({'padding-right': h+'px'});
+			//jQuery(this).css({'padding-right': h+'px'});
 		}
 	}
 });
 
 jQuery(function($){
 	var topLink = $('#top-link');
-	topLink.css({'padding-bottom': $(window).height()});
+	//topLink.css({'padding-bottom': $(window).height()});
 	// если вам не нужно, чтобы кнопка подстраивалась под ширину экрана - удалите следующие четыре строчки в коде
 	topLink.toplinkwidth();
 	$(window).resize(function(){
