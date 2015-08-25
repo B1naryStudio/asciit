@@ -42,7 +42,7 @@
         <ul class="nav navbar-nav">
             <li><a id="nav-question" href="#questions"><%= _t("questions.all") %></a></li>
             <li><a id="nav-question-add"><%= _t("questions.add") %></a></li>
-            <li><a href="#activity"><%= _t("menu.my") %></a></li>
+            <li><a href="#activity"><%= _t("questions.my") %></a></li>
             <li><a id="nav-question" href="#folders"><%= _t("folders.folders") %></a></li>
             <li>
             <span class="hidden-lg hidden-md hidden-sm logout-xs    ">

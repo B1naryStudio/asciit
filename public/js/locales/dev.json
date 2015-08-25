@@ -1,12 +1,55 @@
 {
-  "app": {
-    "name": "i18next"
-  },
-  "menu": {
-    "questions": "Questions",
-    "add": "Ask",
-    "my": "My questions/answers",
-    "folders": "Folders",
-    "tags": "Tags"
-  }
+    "app": {
+        "currentLanguage": "EN"
+    },
+    "questions": {
+        "all": "Questions",
+        "asked": "Asked",
+        "add": "Ask",
+        "my": "My questions",
+        "add-title": "Add a new question",
+        "title": "Title",
+        "description": "Description",
+        "empty": "There is no questions. You can be the first!"
+    },
+    "folders" : {
+        "folders": "Folders",
+        "folder": "Folder",
+        "add": "Create a new folder",
+        "title": "Title"
+    },
+    "answers": {
+        "answers": "Answers",
+        "add": "Add answer",
+        "answered": "Answered",
+        "your": "Your answer",
+        "my": "My answers",
+        "for": "For question"
+    },
+    "comment": {
+        "add": "Add comment",
+        "commented": "Commented",
+        "your": "Your comment"
+    },
+    "tags": {
+        "tags": "Tags",
+        "popular": "Most popular tags"
+    },
+    "search": {
+        "placeholder": "Search it..."
+    },
+    "ui": {
+        "save": "Save",
+        "create": "Create",
+        "readMore": "Read more",
+        "login": "Login",
+        "logout": "Logout",
+        "login-title": "Please, login",
+        "password": "Password",
+        "empty": "Nothing here"
+    },
+    "validation": {
+        "required-field": "This field is required.",
+        "invalid-value": "Please, insert a valid value for this field."
+    }
 }
