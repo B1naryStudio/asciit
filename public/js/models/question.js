@@ -15,11 +15,11 @@ define([
                     validation: {
                         title: {
                             required: true,
-                            msg: 'Please enter a title'
+                            msg: i18n.t('validation.required-field')
                         },
                         description: {
                             required: true,
-                            msg: 'Please enter a description'
+                            msg: i18n.t('validation.required-field')
                         }
                     },
                     answerAdd: function () {

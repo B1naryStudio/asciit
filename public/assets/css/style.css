@@ -4,9 +4,36 @@
  |------------------------------------------------------------------------------
  */
 
-.menu .login {
+.menu .user-panel {
     float: right;
     margin-right: 15px;
+}
+
+.user-panel.nav.navbar-nav {
+    margin: 0;
+    margin-right: 15px;
+}
+
+.user-panel.nav.navbar-nav li {
+    float: left;
+}
+
+.lang .dropdown-menu {
+    min-width: 0;
+}
+
+.lang .dropdown-menu span {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    color: #333;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.lang .dropdown-menu span:hover {
+    background: #f3f3f3;
 }
 
 .logout-xs {
@@ -217,10 +244,6 @@
     margin: 15px auto 50px;
 }
 
-.new-answer-controls input {
-    width: 80px;
-}
-
 /*
  |------------------------------------------------------------------------------
  | Popups
@@ -426,15 +449,6 @@ pre {
 
 pre code.hljs {
     font-family: monospace, monospace;
-}
-
-.login.nav.navbar-nav {
-    margin: 0;
-    margin-right: 15px;
-}
-
-.login.nav.navbar-nav li {
-    float: left;
 }
 
 .modal-open {
@@ -732,7 +746,7 @@ div .fa-05 {
 }
 
 .folders-form .wrapper-control {
-    width: 70px;
+    width: 80px;
     float: right;
     position: absolute;
     top: 0;
@@ -740,7 +754,7 @@ div .fa-05 {
 }
 
 .folders-form .wrapper-fields {
-    margin-right: 85px;
+    margin-right: 95px;
     margin-bottom: 0;
 }
 

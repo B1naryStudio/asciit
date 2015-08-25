@@ -13,8 +13,8 @@
                         <i class="fa fa-thumbs-up fa-1"></i>
                         <%- vote_value %>
                     </div>
-                    <span class="time asked_time">Asked
-                        <time class="relative" data-local-time="<%- created_local %>">
+                    <span class="time asked_time"><%= _t("questions.asked") %>
+                        <time class="relative" data-abs-time="<%- created_at %>">
                              <%- created_relative %>
                         </time>
                     </span>
@@ -35,7 +35,9 @@
                 </div>
                 <div class="tags-wrapper">
                     <div class="tags hidden-xs"></div>
-                    <a class="more" href="#questions/<%- slug %>">Read more...</a>
+                    <a class="more" href="#questions/<%- slug %>">
+                        <%= _t("ui.readMore") %>...
+                    </a>
                 </div>
             </div>
         </div>
