@@ -91,10 +91,7 @@ define(['app', 'moment'], function(App, moment) {
 
             attachLocalDates: function () {
                 if (i18n.lng) {
-                    var langCode = i18n.lng();
-                    // ukrainian momentjs localization under the 'uk' code
-                    var locale = (langCode == "ua") ? "uk" : langCode;
-                    moment.locale(locale);
+                    moment.locale(i18n.lng());
                 }
 
                 var updatedLocal = moment.utc(this.get('updated_at'));

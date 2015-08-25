@@ -56,7 +56,6 @@ require(['app', 'i18next'], function (App) {
     var i18nOptions = {
         useCookie: true,
         detectFromHeaders: true,
-        //lng: window.navigator.userLanguage || window.navigator.language || 'ua',
         fallbackLang: 'en',
         resGetPath: 'js/locales/__lng__.json'
     };

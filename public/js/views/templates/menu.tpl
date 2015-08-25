@@ -18,7 +18,7 @@
             </a>
             <ul class="dropdown-menu">
                 <li><span data-lang="en">EN</span></li>
-                <li><span data-lang="ua">UA</span></li>
+                <li><span data-lang="uk">UA</span></li>
                 <li><span data-lang="ru">RU</span></li>
             </ul>
         </li>

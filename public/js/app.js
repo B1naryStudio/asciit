@@ -122,9 +122,17 @@ define([
         App.queryFlag.push(true);
         var error = function () {};
         var success = function () {};
+
+        if (i18n.lng) {
+            options.headers = {
+                'Accept-Language': i18n.lng()
+            };
+        }
+
         if (options.error) {
             error = options.error;
         }
+
         options.error = function (xhr, textStatus, errorThrown) {
             App.queryFlag.pop();
             App.trigger('spinner:check');
@@ -134,14 +142,17 @@ define([
                 error(xhr, textStatus, errorThrown);
             }
         };
+
         if (options.success) {
             success = options.success;
         }
+
         options.success = function (resp) {
             App.queryFlag.pop();
             App.trigger('spinner:check');
             success(resp);
         };
+
         return sync(method, model, options);
     };
 
