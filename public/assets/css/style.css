@@ -667,7 +667,7 @@ div .fa-05 {
  |------------------------------------------------------------------------------
  */
 .nav>li>a {
-    padding: 15px 13px;
+    padding: 15px 12px;
 }
 
 .new-folder-form {
@@ -691,6 +691,10 @@ div .fa-05 {
     margin-bottom: 20px;
 }
 
+.folder-row .list-group-item {
+    height: 75px;
+}
+
 .folder-row:nth-child(2n) {
     margin-left: 5%;
 }
@@ -705,19 +709,26 @@ div .fa-05 {
 
 .control-buttons {
     display: none;
-    margin-top: 7px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
 }
 
 .edit-buttons {
-    margin-top: 7px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
 }
 
 .folders-list .form-group {
     margin-bottom: 0;
+    margin-right: 55px;
+    margin-left: 10px;
 }
 
 .folders-form {
     position: relative;
+    height: 60px;
 }
 
 .folders-form .wrapper-control {
@@ -730,11 +741,23 @@ div .fa-05 {
 
 .folders-form .wrapper-fields {
     margin-right: 85px;
+    margin-bottom: 0;
+}
+
+.folders-form .help-block {
+    margin-bottom: 0;
 }
 
 #folders-region {
     float: left;
     width: 100%;
+}
+
+.update-folder {
+    border: none;
+    background-color: #ffffff;
+    width: 20px;
+    outline: none;
 }
 
 /*
