@@ -16,7 +16,8 @@
         "folders": "Folders",
         "folder": "Folder",
         "add": "Create a new folder",
-        "title": "Title"
+        "title": "Title",
+        "select": "Select a folder"
     },
     "answers": {
         "answers": "Answers",
@@ -33,7 +34,8 @@
     },
     "tags": {
         "tags": "Tags",
-        "popular": "Popular tags"
+        "popular": "Popular tags",
+        "select": "Select tags"
     },
     "search": {
         "placeholder": "Search it..."
