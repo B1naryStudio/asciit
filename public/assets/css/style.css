@@ -685,7 +685,7 @@ div .fa-05 {
  |------------------------------------------------------------------------------
  */
 .nav>li>a {
-    padding: 15px 13px;
+    padding: 15px 12px;
 }
 
 .new-folder-form {
@@ -709,6 +709,10 @@ div .fa-05 {
     margin-bottom: 20px;
 }
 
+.folder-row .list-group-item {
+    height: 75px;
+}
+
 .folder-row:nth-child(2n) {
     margin-left: 5%;
 }
@@ -723,19 +727,26 @@ div .fa-05 {
 
 .control-buttons {
     display: none;
-    margin-top: 7px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
 }
 
 .edit-buttons {
-    margin-top: 7px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
 }
 
 .folders-list .form-group {
     margin-bottom: 0;
+    margin-right: 55px;
+    margin-left: 10px;
 }
 
 .folders-form {
     position: relative;
+    height: 60px;
 }
 
 .folders-form .wrapper-control {
@@ -748,11 +759,23 @@ div .fa-05 {
 
 .folders-form .wrapper-fields {
     margin-right: 85px;
+    margin-bottom: 0;
+}
+
+.folders-form .help-block {
+    margin-bottom: 0;
 }
 
 #folders-region {
     float: left;
     width: 100%;
+}
+
+.update-folder {
+    border: none;
+    background-color: #ffffff;
+    width: 20px;
+    outline: none;
 }
 
 /*
@@ -1086,4 +1109,61 @@ div .fa-05 {
         width: 88%;
         margin-left: 12%;
     }
+}
+
+@media (max-width: 1200px) {
+    #top-link{
+        display:none!important;
+    }
+}
+
+#top-link{
+    cursor:pointer;
+    display:none;
+    position:fixed;
+    left:20px;
+    top:60px;
+    padding:0;
+    z-index:1;
+    /*padding-top:35px;*/
+}
+
+#top-link a {
+    display: block;
+    width: 100px;
+    text-align: center;
+    background: #333;
+    color: white;
+    padding: 5px 0;
+    margin:5px;
+    text-decoration:none !important;
+    border-radius: 5px;
+}
+
+#top-link:hover a{
+    background:#000;
+}
+
+#topicon{
+    width:0;
+    height:0;
+    display:inline-block;
+    border-bottom:7px solid #fff;
+    border-left:7px solid transparent;
+    border-right:7px solid transparent;
+    margin-right:5px;
+}
+
+#backicon{
+    width:0;
+    height:0;
+    display:inline-block;
+    border-top:7px solid #fff;
+    border-left:7px solid transparent;
+    border-right:7px solid transparent;
+    margin-right:5px;
+}
+
+#textButton{
+    display:none;
 }

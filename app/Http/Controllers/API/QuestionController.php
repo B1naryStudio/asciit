@@ -31,12 +31,16 @@ class QuestionController extends Controller
      */
     public function index(Request $request)
     {
+        $folder = $request->get('folder');
         $search = $request->get('search');
         $tag = $request->get('tag');
 
-        if (empty($search) && !empty($tag)) {
+        if (empty($search) && empty($folder) && !empty($tag)) {
             /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
             $questions = $this->questionService->getQuestions($request->get('page_size'), ['tag' => $tag]);
+        } if (empty($search) && empty($tag) && !empty($folder)) {
+        /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
+        $questions = $this->questionService->getQuestions($request->get('page_size'), ['folder' => $folder]);
         } else {
             /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
             $questions = $this->questionService->getQuestions($request->get('page_size'));

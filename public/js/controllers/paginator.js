@@ -23,12 +23,18 @@ define([
                         function (page) {
                             options.collection.getPage(page);
                             $.when(
-                                App.request('paginator:collection', options.collection.state)
+                                App.request(
+                                    'paginator:collection',
+                                    options.collection.state
+                                )
                             ).done(function (pages) {
                                 paginatorView.collection = pages;
                                 paginatorView.info = options.collection.state;
                                 paginatorView.render();
                             });
+                            if (options.pageChange) {
+                                options.pageChange(page);
+                            }
                         }
                     );
                 });

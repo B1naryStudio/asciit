@@ -1,7 +1,7 @@
 define([
     'app',
     'paginator',
-    'models/model-mixins',
+    'models/model-mixins'
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend(
@@ -83,20 +83,22 @@ define([
                     currentPage: 'page',
                     pageSize: 'page_size',
                     search: function () {
-                        return this.searchQuery;
+                        return this.options.searchQuery;
                     },
                     orderBy: function () {
                         return this.sortKey;
                     },
                     tag: function () {
-                        return this.searchTag;
+                        return this.options.searchTag;
+                    },
+                    folder: function () {
+                        return this.options.searchFolder;
                     },
                     sortedBy: 'desc'
                 },
 
-                initialize: function(options) {
-                    this.searchQuery = options.searchQuery;
-                    this.searchTag = options.searchTag;
+                initialize: function (options) {
+                    this.options = options;
                     this.sort();
 
                     this.startLiveUpdating();
@@ -137,7 +139,7 @@ define([
                     },
                     sortedBy: 'desc'
                 },
-                initialize: function(options) {
+                initialize: function (options) {
                     this.sort();
                     this.startLiveUpdating();
                 }
@@ -145,10 +147,15 @@ define([
         );
 
         var API = {
-            questionCollection: function (searchQuery, searchTag) {
+            questionCollection: function (searchQuery, searchTag, searchFolder, page) {
                 var questions = new Question.Collection({
                     searchQuery: searchQuery,
-                    searchTag: searchTag
+                    searchTag: searchTag,
+                    searchFolder: searchFolder
+                }, {
+                    state: {
+                        currentPage: page
+                    }
                 });
                 var defer = $.Deferred();
 
@@ -209,8 +216,13 @@ define([
 
         App.reqres.setHandler(
             'question:collection',
-            function (searchQuery, searchTag) {
-                return API.questionCollection(searchQuery, searchTag);
+            function (searchQuery, searchTag, searchFolder, page) {
+                return API.questionCollection(
+                    searchQuery, 
+                    searchTag, 
+                    searchFolder, 
+                    page
+                );
             }
         );
 
