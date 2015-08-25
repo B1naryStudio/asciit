@@ -34,7 +34,9 @@ define([
                 selectText: function() {
                     var text = App.helper.getSelected();
                     if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
-                        text = '<blockquote><span class="author">'+this.model.attributes.created_relative+
+                        text = '<blockquote><span class="author">'+
+                            '<time class="relative" data-abs-time="'+this.model.get('created_at')+'">'+
+                            this.model.get('created_relative')+'</time>'+
                         ' by '+this.model.attributes.user.first_name+
                         ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
                         this.newAnswerEditor.focus();

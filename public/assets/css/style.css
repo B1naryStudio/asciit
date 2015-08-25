@@ -774,6 +774,11 @@ div .fa-05 {
     outline: none;
 }
 
+.folder a {
+    color: dimgray;
+    text-decoration: none;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Media
