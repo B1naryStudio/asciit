@@ -20,7 +20,7 @@ define([
                 this.$el.attr('name', 'tag')
                     .attr('multiple', 'multiple')
                     .select2({
-                        placeholder: 'Select a tag',
+                        placeholder: i18n.t('tags.select'),
                         tags: true,
                         ajax: {
                             url: App.prefix + '/api/v1/tags',

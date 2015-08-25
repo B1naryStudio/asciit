@@ -22,7 +22,7 @@ define([
 
             onShow: function () {
                 this.$el.attr('name', 'folder').select2({
-                    placeholder: 'Select a folder',
+                    placeholder: i18n.t('folders.select'),
                     allowClear: true
                 });
             }

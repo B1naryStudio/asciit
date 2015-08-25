@@ -10,7 +10,7 @@
         <div class="col-md-10 col-lg-10 col-sm-10">
 
             <!-- Text -->
-            <span class="time commented_time"><%- _t("comment.commented") %>
+            <span class="time commented_time">
                 <time class="relative" data-abs-time="<%- created_at %>">
                      <%- created_relative %>
                 </time>
