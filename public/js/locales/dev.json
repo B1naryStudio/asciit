@@ -33,7 +33,7 @@
     },
     "tags": {
         "tags": "Tags",
-        "popular": "Most popular tags"
+        "popular": "Popular tags"
     },
     "search": {
         "placeholder": "Search it..."
@@ -46,10 +46,13 @@
         "logout": "Logout",
         "login-title": "Please, login",
         "password": "Password",
-        "empty": "Nothing here"
+        "empty": "Nothing here",
+        "up": "Up",
+        "down": "Down"
     },
     "validation": {
         "required-field": "This field is required.",
-        "invalid-value": "Please, insert a valid value for this field."
+        "invalid-value": "Please, insert a valid value for this field.",
+        "login-error": "Wrong login or password!"
     }
 }

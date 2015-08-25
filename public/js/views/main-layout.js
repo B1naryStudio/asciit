@@ -35,8 +35,7 @@ define([
                 this.getRegion('header').show(Menu);
 
                 this.startRelativeTimeUpdating();
-                require(['vendor/button_down/button_down'], function () {
-                });
+                require(['vendor/button_down/button_down']);
             }
         });
         Main.Layout = new Layout();

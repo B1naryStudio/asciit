@@ -46,7 +46,9 @@
         "logout": "Logout",
         "login-title": "Please, login",
         "password": "Password",
-        "empty": "Nothing here"
+        "empty": "Nothing here",
+        "up": "Up",
+        "down": "Down"
     },
     "validation": {
         "required-field": "This field is required.",
