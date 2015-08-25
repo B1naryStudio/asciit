@@ -14,7 +14,7 @@
         <div class="row">
             <!-- Time, title, folder -->
             <div class="col-md-10 col-sm-9 col-lg-10 col-xs-9">
-                <span class="time asked_time"><%- _t("questions.asked") %>
+                <span class="time asked_time">
                     <time class="relative" data-abs-time="<%- created_at %>">
                          <%- created_relative %>
                     </time>

@@ -4,7 +4,6 @@
     },
     "questions": {
         "all": "Questions",
-        "asked": "Asked",
         "add": "Ask",
         "my": "My questions",
         "add-title": "Add a new question",
@@ -22,14 +21,12 @@
     "answers": {
         "answers": "Answers",
         "add": "Add answer",
-        "answered": "Answered",
         "your": "Your answer",
         "my": "My answers",
         "for": "For question"
     },
     "comment": {
         "add": "Add comment",
-        "commented": "Commented",
         "your": "Your comment"
     },
     "tags": {
