@@ -100,6 +100,7 @@ define([
                         function (model) {
                             $.when(App.request('folder:delete', model.model))
                                 .done(function () {
+                                    App.trigger('popup:close');
                                     if (folders.state.totalPages !== 1) {
                                         var current_page_count =
                                             folders.state.totalPages;

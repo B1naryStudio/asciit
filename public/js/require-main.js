@@ -51,9 +51,7 @@ requirejs.config({
         select2: {
             deps: ["jquery"],
             exports: "$.fn.select2"
-        },
-        "select2.uk": ["select2"],
-        "select2.ru": ["select2"]
+        }
     }
 });
 

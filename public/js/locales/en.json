@@ -16,7 +16,9 @@
         "folder": "Folder",
         "add": "Create a new folder",
         "title": "Title",
-        "select": "Select a folder"
+        "select": "Select a folder",
+        "confirm-title": "Confirm deleting",
+        "confirm-body": "All questions in this folder will be removed. Do you really want to delete this folder?"
     },
     "answers": {
         "answers": "Answers",
@@ -47,7 +49,9 @@
         "password": "Password",
         "empty": "Nothing here",
         "up": "Up",
-        "down": "Down"
+        "down": "Down",
+        "yes": "Yes",
+        "no": "No"
     },
     "validation": {
         "required-field": "This field is required.",

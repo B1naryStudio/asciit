@@ -60,7 +60,7 @@ define([
                 var currentEl = $(e.currentTarget);
                 var lang = currentEl.data('lang');
 
-                if (lang == i18n.lng) return;
+                if (lang == i18n.lng()) return;
 
                 i18n.setLng(lang);
                 location.reload();

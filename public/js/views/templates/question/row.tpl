@@ -25,7 +25,7 @@
                     </div>
                     <div class="folder">
                         <span class="icon glyphicon glyphicon-folder-close" aria-hidden="true"></span>
-                        <%- folder.title %>
+                        <a href="#folders/<%- folder.title %>"><%- folder.title %></a>
                     </div>
                 </div>
             </div>
