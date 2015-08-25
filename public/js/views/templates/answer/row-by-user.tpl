@@ -10,7 +10,7 @@
                     <i class="fa fa-thumbs-up fa-1"></i>
                     <%- vote_value %>
                 </div>
-                <span class="time asked_time"><%= _t("answers.answered") %>
+                <span class="time asked_time">
                     <time class="relative" data-abs-time="<%- created_at %>">
                          <%- created_relative %>
                     </time>

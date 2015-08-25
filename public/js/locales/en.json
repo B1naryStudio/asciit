@@ -4,7 +4,6 @@
     },
     "questions": {
         "all": "Questions",
-        "asked": "Asked",
         "add": "Ask",
         "my": "My questions",
         "add-title": "Add a new question",
@@ -17,25 +16,25 @@
         "folder": "Folder",
         "add": "Create a new folder",
         "title": "Title",
+        "select": "Select a folder",
         "confirm-title": "Confirm deleting",
         "confirm-body": "All questions in this folder will be removed. Do you really want to delete this folder?"
     },
     "answers": {
         "answers": "Answers",
         "add": "Add answer",
-        "answered": "Answered",
         "your": "Your answer",
         "my": "My answers",
         "for": "For question"
     },
     "comment": {
         "add": "Add comment",
-        "commented": "Commented",
         "your": "Your comment"
     },
     "tags": {
         "tags": "Tags",
-        "popular": "Popular tags"
+        "popular": "Popular tags",
+        "select": "Select tags"
     },
     "search": {
         "placeholder": "Search it..."
