@@ -1,7 +1,8 @@
 define([
     'app',
-    'tpl!views/templates/folder/row.tpl'
-], function (App, FolderRowTpl) {
+    'tpl!views/templates/folder/row.tpl',
+    'views/folder/confirm'
+], function (App, FolderRowTpl, confirmView) {
     App.module('Folder.Views', function (Views, App, Backbone, Marionette, $, _ ) {
         Views.SingleFolder = Marionette.ItemView.extend({
             tagName: 'div',
@@ -16,7 +17,21 @@ define([
             },
 
             deleteFolder: function() {
-                this.trigger('submit:delete', this.model);
+                var popupConfirm = new confirmView();
+                App.trigger('popup:show', {
+                    header: {
+                        title: i18n.t('folders.confirm-title')
+                    },
+                    class: 'confirm-form',
+                    contentView: popupConfirm
+                });
+                this.listenTo(
+                    popupConfirm,
+                    'form:submit',
+                    function () {
+                        this.trigger('submit:delete', this.model);
+                    }
+                )
             },
 
             editFolder: function () {

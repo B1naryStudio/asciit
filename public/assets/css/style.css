@@ -1107,7 +1107,7 @@ div .fa-05 {
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 767px) {
     #top-link{
         display:none!important;
     }
@@ -1117,8 +1117,8 @@ div .fa-05 {
     cursor:pointer;
     display:none;
     position:fixed;
-    left:20px;
-    top:60px;
+    right:30px;
+    bottom:20px;
     padding:0;
     z-index:1;
     /*padding-top:35px;*/
@@ -1162,4 +1162,10 @@ div .fa-05 {
 
 #textButton{
     display:none;
+}
+
+.confirm-form {
+    width: 25%;
+    margin: auto;
+    height: 33%;
 }
