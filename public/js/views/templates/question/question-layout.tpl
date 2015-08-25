@@ -21,7 +21,8 @@
                 </span>
                 <h2><%- title %></h2>
                 <div class="folder">
-                    <span class="icon glyphicon glyphicon-folder-open"></span> <%- folder.title %>
+                    <span class="icon glyphicon glyphicon-folder-open"></span>
+                    <a href="#folders/<%- folder.title %>"><%- folder.title %></a>
                 </div>
             </div>
             <!-- Voting block -->
