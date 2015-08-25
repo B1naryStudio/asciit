@@ -50,6 +50,7 @@
     },
     "validation": {
         "required-field": "This field is required.",
-        "invalid-value": "Please, insert a valid value for this field."
+        "invalid-value": "Please, insert a valid value for this field.",
+        "login-error": "Wrong login or password!"
     }
 }

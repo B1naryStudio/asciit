@@ -1,8 +1,7 @@
 <div class="answers-list" >
     <header class="section-header">
-        <span class="counter answers">
-            <%= _t("answers.answers") %>: <%- count %>
-        </span>
+        <%= _t("answers.answers") %>:
+        <span class="counter answers"><%- count %></span>
     </header>
     <ul id="answers" class="list-group"></ul>
 
