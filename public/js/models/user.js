@@ -33,10 +33,11 @@ define(['app'], function (App) {
                 if (this.isAdmin()) {
                     this.set('admin', true);
                 }
+
+                this.set('admin', false);
             },
             initialize: function () {
                 this.urlRoot = App.prefix + '/api/v1/user/login';
-                this.on('sync', this.setAdminFlag)
             }
         });
 
@@ -44,13 +45,15 @@ define(['app'], function (App) {
             login: function (email, password) {
                 var user = new User.Model();
                 var defer = $.Deferred();
+
                 if (!user.save({
                     email: email,
                     password: password
                 }, {
                     wait: true,
-                    success: function (data) {
-                        defer.resolve(user);
+                    success: function (model) {
+                        model.setAdminFlag();
+                        defer.resolve(model);
                     },
                     error: function (data) {
                         defer.reject(data.validationError);
@@ -67,7 +70,8 @@ define(['app'], function (App) {
                 user.fetch({
                     wait: true,
                     success: function (model, response, options) {
-                        defer.resolve(user);
+                        model.setAdminFlag();
+                        defer.resolve(model);
                     },
                     error: function (model, response, options) {
                         defer.reject();

@@ -53,20 +53,20 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
             },
             session: function () {
                 require(['models/user'], function () {
-                        var user = new User.Model();
-                        user.fetch({
-                        wait: true,
-                        success: function (model, response, options) {
-                            App.User.Current = model;
-                            App.Main.Menu.triggerMethod(
-                                'user:authorized',
-                                App.User.Current
-                            );
-                            App.trigger(
-                                'init:openRoutes',
-                                Backbone.history.fragment
-                            );
-                        }
+                    var user = new User.Model();
+
+                    $.when(App.request('user:session')).done(function (user) {
+                        App.User.Current = user;
+
+                        App.Main.Menu.triggerMethod(
+                            'user:authorized',
+                            App.User.Current
+                        );
+                        App.trigger(
+                            'init:openRoutes',
+                            Backbone.history.fragment
+                        );
+
                     });
                 });
             }
