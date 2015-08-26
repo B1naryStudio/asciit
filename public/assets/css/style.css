@@ -1170,7 +1170,11 @@ div .fa-05 {
 }
 
 .confirm-form {
+    display: table;
     width: 25%;
     margin: auto;
-    height: 33%;
+}
+
+.confirm-form .controls {
+    float: right;
 }
