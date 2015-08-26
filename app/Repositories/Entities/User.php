@@ -47,6 +47,11 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
         return $this->hasMany('App\Repositories\Entities\Folder');
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany('App\Repositories\Entities\Role');
+    }
+
     public function getAvatarAttribute($avatar)
     {
         if (empty($avatar)) {
@@ -64,12 +69,12 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      */
     public function getAssignments()
     {
-        $role = $this->role;
+        $roles = $this->roles->pluck('title')->all();
 
-        if ($role) {
-            return [$role];
-        } else {
-            return ['USER'];
+        if ($roles == []) {
+            $roles = ['USER'];
         }
+
+        return $roles;
     }
 }
