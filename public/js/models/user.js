@@ -17,8 +17,26 @@ define(['app'], function (App) {
                     msg: i18n.t('validation.required-field')
                 }
             },
+            isAdmin: function () {
+                var roles = this.get('roles');
+
+                for (var r in roles) {
+                    var roleTitle = roles[r].title;
+                    if (roleTitle == 'ADMIN') {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
+            setAdminFlag: function () {
+                if (this.isAdmin()) {
+                    this.set('admin', true);
+                }
+            },
             initialize: function () {
                 this.urlRoot = App.prefix + '/api/v1/user/login';
+                this.on('sync', this.setAdminFlag)
             }
         });
 
