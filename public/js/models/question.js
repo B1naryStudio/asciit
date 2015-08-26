@@ -67,7 +67,9 @@ define([
 
                     if (model1.get(compareField) > model2.get(compareField)) {
                         return -1; // before
-                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                    } else if (
+                        model2.get(compareField) > model1.get(compareField)
+                    ) {
                         return 1; // after
                     } else {
                         return 0; // equal
@@ -121,7 +123,9 @@ define([
 
                     if (model1.get(compareField) > model2.get(compareField)) {
                         return -1; // before
-                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                    } else if (
+                        model2.get(compareField) > model1.get(compareField)
+                    ) {
                         return 1; // after
                     } else {
                         return 0; // equal
@@ -147,21 +151,26 @@ define([
         );
 
         var API = {
-            questionCollection: function (searchQuery, searchTag, searchFolder, page) {
-                var questions = new Question.Collection({
-                    searchQuery: searchQuery,
-                    searchTag: searchTag,
-                    searchFolder: searchFolder
-                }, {
-                    state: {
-                        currentPage: page
-                    }
-                });
+            questionCollection: function (data) {
+                var options = data.options ? data.options : {};
+                delete data.options;
                 var defer = $.Deferred();
+
+                var questions = new Question.Collection({
+                    searchQuery: data.searchQuery,
+                    searchTag: data.searchTag,
+                    searchFolder: data.searchFolder
+                }, options);
 
                 questions.fetch({
                     success: function (data) {
                         defer.resolve(data);
+                    },
+                    error: function (model, response) {
+                        defer.reject({
+                            status: response.status,
+                            error: model.validationError
+                        });
                     }
                 });
                 return defer.promise();
@@ -174,10 +183,14 @@ define([
                     success: function (model) {
                         defer.resolve(model);
                     },
-                    error: function (data) {
-                        defer.reject(data.validationError);
+                    error: function (model, response) {
+                        defer.reject({
+                            status: response.status,
+                            error: model.validationError
+                        });
                     }
                 });
+
                 return defer.promise();
             },
             questionAdd: function (data) {
@@ -214,17 +227,9 @@ define([
             }
         };
 
-        App.reqres.setHandler(
-            'question:collection',
-            function (searchQuery, searchTag, searchFolder, page) {
-                return API.questionCollection(
-                    searchQuery, 
-                    searchTag, 
-                    searchFolder, 
-                    page
-                );
-            }
-        );
+        App.reqres.setHandler('question:collection', function (data) {
+            return API.questionCollection(data);
+        });
 
         App.reqres.setHandler('question:model', function (id) {
             return API.questionGet(id);

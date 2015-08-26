@@ -53,8 +53,8 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
             },
             session: function () {
                 require(['models/user'], function () {
-                        var user = new User.Model();
-                        user.fetch({
+                    var user = new User.Model();
+                    user.fetch({
                         wait: true,
                         success: function (model, response, options) {
                             App.User.Current = model;

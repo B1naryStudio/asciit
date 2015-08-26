@@ -1,8 +1,9 @@
 define([
     'app',
     'tpl!views/templates/folder/row.tpl',
-    'views/folder/confirm'
-], function (App, FolderRowTpl, confirmView) {
+    'views/folder/confirm',
+    'views/empty'
+], function (App, FolderRowTpl, confirmView, EmptyView) {
     App.module('Folder.Views', function (Views, App, Backbone, Marionette, $, _ ) {
         Views.SingleFolder = Marionette.ItemView.extend({
             tagName: 'div',
@@ -80,7 +81,8 @@ define([
             id: 'folders-list',
             className: 'folders-list',
             childViewContainer: '.folders-region',
-            childView: Views.SingleFolder
+            childView: Views.SingleFolder,
+            emptyView: EmptyView
         });
     });
     return App.Folder.Views.Folders;
