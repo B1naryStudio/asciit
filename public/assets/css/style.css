@@ -739,6 +739,92 @@ div .fa-05 {
 
 /*
  |------------------------------------------------------------------------------
+ | Top/down button
+ |------------------------------------------------------------------------------
+ */
+#top-link {
+    cursor:pointer;
+    display:none;
+    position:fixed;
+    left:20px;
+    top:60px;
+    padding:0;
+    z-index:1;
+    /*padding-top:35px;*/
+}
+
+#top-link a {
+    display: block;
+    width: 100px;
+    text-align: center;
+    background: #333;
+    color: white;
+    padding: 5px 0;
+    margin:5px;
+    text-decoration:none !important;
+    border-radius: 5px;
+}
+
+#top-link:hover a {
+    background:#000;
+}
+
+#topicon {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-bottom: 7px solid #fff;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    margin-right: 5px;
+}
+
+#backicon {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-top: 7px solid #fff;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    margin-right: 5px;
+}
+
+#textButton {
+    display: none;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Tags
+ |------------------------------------------------------------------------------
+ */
+.tag-element {
+    float: left;
+    text-align: center;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.tag-element a {
+    display: block;
+    text-decoration: none;
+    color: #444;
+}
+
+.tag-element a:hover {
+    background-color: #009933;
+    color: #ffffff;
+    border-color: #ffffff;
+    border-radius: 5px;
+}
+
+.tags-collection {
+    float: left;
+}
+
+/*
+ |------------------------------------------------------------------------------
  | Media
  |------------------------------------------------------------------------------
  */
@@ -787,15 +873,13 @@ div .fa-05 {
     .new-folder-form .title-label {
         padding-top: 7px;
     }
-}
 
-@media (max-width: 600px) {
-    .new-folder-form .col-xs-9 {
-        width: 80%;
+    .tag-element {
+        width: 45%;
     }
 
-    .new-folder-form .col-xs-3 {
-        width: 20%;
+    .tag-element:nth-child(2n) {
+        margin-left: 10%;
     }
 }
 
@@ -926,11 +1010,33 @@ div .fa-05 {
     }
 }
 
+@media (min-width: 351px) and (max-width: 550px) {
+    .tag-element {
+        width: 30%;
+    }
+
+    .tag-element:nth-child(3n-1),
+    .tag-element:nth-child(3n) {
+        margin-left: 5%;
+    }
+}
+
 @media (max-width: 550px) {
     .pagination>li>a,
     .pagination>li>span {
         padding: 4px 12px;
         font-size: 14px;
+    }
+}
+
+@media (min-width: 551px) and (max-width: 767px) {
+    .tag-element {
+        width: 20%;
+    }
+
+    .tag-element:nth-child(2n),
+    .tag-element:nth-child(4n-1) {
+        margin-left: 5%;
     }
 }
 
@@ -1037,6 +1143,17 @@ div .fa-05 {
     .col-sm-2 {
         width: 20%;
     }
+
+    .tag-element {
+        width: 15%;
+    }
+
+    .tag-element:nth-child(5n-3),
+    .tag-element:nth-child(5n-2),
+    .tag-element:nth-child(5n-1),
+    .tag-element:nth-child(5n) {
+        margin-left: 6%;
+    }
 }
 
 @media (min-width: 1000px) {
@@ -1074,55 +1191,4 @@ div .fa-05 {
     #top-link{
         display:none!important;
     }
-}
-
-#top-link{
-    cursor:pointer;
-    display:none;
-    position:fixed;
-    left:20px;
-    top:60px;
-    padding:0;
-    z-index:1;
-    /*padding-top:35px;*/
-}
-
-#top-link a {
-    display: block;
-    width: 100px;
-    text-align: center;
-    background: #333;
-    color: white;
-    padding: 5px 0;
-    margin:5px;
-    text-decoration:none !important;
-    border-radius: 5px;
-}
-
-#top-link:hover a{
-    background:#000;
-}
-
-#topicon{
-    width:0;
-    height:0;
-    display:inline-block;
-    border-bottom:7px solid #fff;
-    border-left:7px solid transparent;
-    border-right:7px solid transparent;
-    margin-right:5px;
-}
-
-#backicon{
-    width:0;
-    height:0;
-    display:inline-block;
-    border-top:7px solid #fff;
-    border-left:7px solid transparent;
-    border-right:7px solid transparent;
-    margin-right:5px;
-}
-
-#textButton{
-    display:none;
 }

@@ -1,6 +1,6 @@
 define([
     'app',
-    'tpl!views/templates/tag/view-row.tpl',
+    'tpl!views/templates/tag/view_row.tpl',
     'syphon'
 ], function (App, Tpl) {
     App.module('Tag.Views', function (View, App, Backbone, Marionette, $, _) {

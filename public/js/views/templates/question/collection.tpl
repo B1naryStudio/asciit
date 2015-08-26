@@ -1,4 +1,4 @@
-<form action="#" class="">
+<form action="#">
     <div class="form-group">
         <div class="input-group address-control search">
             <input type="text" class="form-control" name="search_query" id="search-query" placeholder="Search it...">

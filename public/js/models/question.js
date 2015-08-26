@@ -1,7 +1,7 @@
 define([
     'app',
     'paginator',
-    'models/model-mixins',
+    'models/model-mixins'
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend(

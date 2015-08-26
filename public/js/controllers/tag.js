@@ -1,14 +1,64 @@
 define([
     'app',
     'views/tag/collection',
+    'views/tag/collection_layout',
     'models/tag'
-], function (App, CollectionView) {
+], function (App, CollectionView, CollectionLayout) {
     App.module('Tag', function (Tag, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
-            tags: function () {
-                $.when(App.request('tag:collection')).done(function (tags) {
-                    var view = new CollectionView({ collection: tags });
-                    App.Main.Layout.getRegion('content').show(view);
+            tags: function (searchQuery) {
+                $.when(App.request(
+                    'tag:collection',
+                    {
+                        type: 'list',
+                        search: searchQuery,
+                        options: {
+                            state: {
+                                pageSize: 30
+                            }
+                        }
+                    }
+                )).done(function (tags) {
+                    if (searchQuery) {
+                        tags.searchQuery = searchQuery; // For live upd
+                    }
+
+                    var view = new CollectionView({
+                        collection: tags.sort(),
+                        searchQuery: searchQuery
+                    });
+                    var collectionLayout = new CollectionLayout();
+                    App.Main.Layout
+                        .getRegion('content')
+                        .show(collectionLayout);
+                    collectionLayout
+                        .getRegion('collectionRegion')
+                        .show(view);
+
+                    App.trigger('paginator:get', {
+                        collection: tags,
+                        success: function (paginatorView) {
+                            collectionLayout
+                                .getRegion('paginatorRegion')
+                                .show(paginatorView);
+                        }
+                    });
+
+                    if (!tags.length) {
+                        view.triggerMethod('not:found');
+                    }
+
+                    // Updating for search
+                    Tag.Controller.listenTo(
+                        view,
+                        'form:submit',
+                        function (searchQuery) {
+                            Backbone.history.navigate(
+                                '/tags?' + searchQuery,
+                                { trigger: true }
+                            );
+                        }
+                    );
                 });
             }
         });

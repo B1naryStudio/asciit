@@ -85,6 +85,10 @@ class QuestionService implements QuestionServiceInterface
                     );
                 }
                 $this->questionRepository->relationsAdd($question, 'tags', $tags);
+
+                Event::fire(new QuestionWasAdded(
+                    $this->getQuestionById($question->id)
+                ));
             }
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
@@ -93,10 +97,6 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
-
-        Event::fire(new QuestionWasAdded(
-            $this->getQuestionById($question->id)
-        ));
 
         return $question;
     }
@@ -243,6 +243,7 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $vote = $this->voteRepository->delete($vote_id);
+            Event::fire(new VoteWasRemoved($vote));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' Can\'t unlike it.',
@@ -250,8 +251,6 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
-
-        Event::fire(new VoteWasRemoved($vote));
 
         return $vote;
     }
@@ -264,6 +263,8 @@ class QuestionService implements QuestionServiceInterface
             $new = $this->answerRepository->create($data);
             $answer = $this->answerRepository->withRelationCount()
                 ->findWithRelations($new->id, ['user', 'question']);
+
+            Event::fire(new AnswerWasAdded($answer));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such answer',
@@ -271,8 +272,6 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
-
-        Event::fire(new AnswerWasAdded($answer));
 
         return $answer;
     }
@@ -294,7 +293,7 @@ class QuestionService implements QuestionServiceInterface
     public function getTags($pageSize = null)
     {
         try {
-            $tags = $this->tagRepository->paginate(10);
+            $tags = $this->tagRepository->paginate($pageSize);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -314,6 +313,7 @@ class QuestionService implements QuestionServiceInterface
         try {
             $comment = $this->commentRepository
                 ->findWithRelations($new->id, ['user']);
+            Event::fire(new CommentWasAdded($comment));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such answer',
@@ -322,16 +322,23 @@ class QuestionService implements QuestionServiceInterface
             );
         }
 
-        Event::fire(new CommentWasAdded($comment));
-
         return $comment;
     }
 
-    public function getTagsPopular($pageSize = null)
+    public function getTagsPopular($pageSize = null, $search = '')
     {
+        $where = [];
+        if (!empty($search)) {
+            $where[] = ['title', 'like', $search . '%'];
+        }
         try {
             $tags = $this->tagRepository
-                ->loadRelationPopular('questions', $pageSize);
+                ->loadRelationPopularPaginate(
+                    ['questions', 'questions_count'],
+                    $pageSize,
+                    false,
+                    $where
+                );
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -386,7 +393,7 @@ class QuestionService implements QuestionServiceInterface
         }
         try {
             $questions = $this->questionRepository
-                ->loadRelationPopular('answers', $pageSize, $where);
+                ->loadRelationPopular('answers', $pageSize, true, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -410,7 +417,7 @@ class QuestionService implements QuestionServiceInterface
         }
         try {
             $questions = $this->questionRepository
-                ->loadRelationPopular('votes', $pageSize, $where);
+                ->loadRelationPopular('votes', $pageSize, true, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -434,7 +441,7 @@ class QuestionService implements QuestionServiceInterface
         }
         try {
             $questions = $this->questionRepository
-                ->loadRelationPopular('comments', $pageSize, $where);
+                ->loadRelationPopular('comments', $pageSize, true, $where);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -449,6 +456,7 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $folder = $this->folderRepository->delete($id);
+            Event::fire(new FolderWasRemoved($folder));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -456,8 +464,6 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
-
-        Event::fire(new FolderWasRemoved($folder));
         return $folder;
     }
 
@@ -465,6 +471,7 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $folder = $this->folderRepository->create($data);
+            Event::fire(new FolderWasAdded($folder));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -472,8 +479,6 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
-
-        Event::fire(new FolderWasAdded($folder));
         return $folder;
     }
 
@@ -481,6 +486,7 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $folder = $this->folderRepository->update($data, $id);
+            Event::fire(new FolderWasUpdated($folder));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -488,7 +494,6 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
-        Event::fire(new FolderWasUpdated($folder));
         return $folder;
     }
 

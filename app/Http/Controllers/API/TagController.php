@@ -26,13 +26,40 @@ class TagController extends Controller
      */
     public function index(Request $request)
     {
-        $is_popular = $request->get('type') === 'popular';
-        if (!empty($is_popular)) {
-            $tags = $this->questionService->getTagsPopular($request->get('page_size'));
-        } else {
-            $tags = $this->questionService->getTags($request->get('page_size'));
+        $type = $request->get('type');
+        if (empty($type)) {
+            $type = 'list';
         }
 
-        return Response::json($tags, 200, [], JSON_NUMERIC_CHECK);
+        switch ($type) {
+            case 'popular':
+                $tags = $this->questionService->getTagsPopular(
+                    $request->get('page_size')
+                );
+                $result = $tags->items();
+                break;
+            case 'search':
+                $result = $this->questionService->getTags(
+                    $request->get('page_size')
+                );
+                break;
+            case 'list':
+                $tags = $this->questionService->getTagsPopular(
+                    $request->get('page_size'),
+                    $request->get('search')
+                );
+                $result = [
+                    [
+                        'total_entries' => $tags->total(),
+                        'currentPage' => $tags->currentPage()
+                    ],
+                    $tags->items()
+                ];
+                break;
+            default:
+                $result = [];
+        }
+
+        return Response::json($result, 200, [], JSON_NUMERIC_CHECK);
     }
 }

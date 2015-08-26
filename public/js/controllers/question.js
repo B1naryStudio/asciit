@@ -2,13 +2,12 @@ define([
     'app',
     'views/question/collection',
     'views/question/collection_layout',
-    'views/paginator/paginator',
     'views/question/single',
     'views/question/add',
     'views/folder/select',
     'views/answer/collection',
     'views/tag/select',
-    'views/tag/collection',
+    'views/tag/collection_popular',
     'models/answer',
     'views/comment/collection',
     'models/comment',
@@ -19,7 +18,6 @@ define([
     App,
     CollectionView,
     CollectionLayout,
-    PaginatorView,
     SingleView,
     AddView,
     SelectFolderView,
@@ -34,11 +32,23 @@ define([
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery, searchTag, searchFolder) {
                 $.when(
-                    App.request('question:collection', searchQuery, searchTag, searchFolder),
-                    App.request('tag:collection', {
-                        type: 'popular',
-                        page_size: 10
-                    })
+                    App.request(
+                        'question:collection',
+                        searchQuery,
+                        searchTag,
+                        searchFolder
+                    ),
+                    App.request(
+                        'tag:collection',
+                        {
+                            type: 'popular',
+                            options: {
+                                state: {
+                                    pageSize: 10
+                                }
+                            }
+                        }
+                    )
                 ).done(function (questions, tags) {
                     if (searchQuery) {
                         questions.searchQuery = searchQuery; // For live upd
@@ -194,7 +204,6 @@ define([
                             });
                             questionView.commentsRegion.show(commentsView);
 
-
                             Question.Controller.listenTo(
                                 commentsView,
                                 'form:submit',
@@ -228,7 +237,7 @@ define([
                 $.when(
                     App.request('folder:collection'),
                     App.request('tag:collection', {
-                        type: 'select',
+                        type: 'search',
                         page_size: 10
                     })
                 ).done(function (folders, tags) {

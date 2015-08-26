@@ -35,15 +35,22 @@ class QuestionController extends Controller
         $search = $request->get('search');
         $tag = $request->get('tag');
 
-        if (empty($search) && empty($folder) && !empty($tag)) {
-            /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-            $questions = $this->questionService->getQuestions($request->get('page_size'), ['tag' => $tag]);
-        } if (empty($search) && empty($tag) && !empty($folder)) {
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-        $questions = $this->questionService->getQuestions($request->get('page_size'), ['folder' => $folder]);
+
+        if (empty($search) && empty($folder) && !empty($tag)) {
+            $questions = $this->questionService->getQuestions(
+                $request->get('page_size'),
+                ['tag' => $tag]
+            );
+        } elseif (empty($search) && empty($tag) && !empty($folder)) {
+            $questions = $this->questionService->getQuestions(
+                $request->get('page_size'),
+                ['folder' => $folder]
+            );
         } else {
-            /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-            $questions = $this->questionService->getQuestions($request->get('page_size'));
+            $questions = $this->questionService->getQuestions(
+                $request->get('page_size')
+            );
         }
 
         return Response::json(
@@ -103,6 +110,7 @@ class QuestionController extends Controller
     public function my(Request $request)
     {
         try {
+            /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
             $questions = $this->questionService
                 ->getQuestionsByUser($request->get('page_size'));
         } catch (QuestionServiceException $e) {

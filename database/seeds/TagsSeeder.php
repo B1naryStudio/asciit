@@ -39,7 +39,7 @@ class TagsSeeder extends Seeder
         $folders = $this->folderRepository->all();
 
         $tags = [];
-        while (count($tags) < 100) {
+        while (count($tags) < 150) {
             $title = $faker->word;
             if (empty($tags[$title])) {
                 $tags[$title] = ['title' => $title];
@@ -47,11 +47,10 @@ class TagsSeeder extends Seeder
         }
         $tags = $this->tagRepository->createSeveral(array_values($tags));
 
-
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < 150; $i++) {
             $tmp = array_slice($tags, $i, rand(1, 3));
 
-            for ($j = 0; $j < 5; $j++) {
+            for ($j = 0; $j < 1; $j++) {
                 $model = $this->questionRepository->create([
                     'title' => $faker->sentence,
                     'description' => $faker->realText(1500),

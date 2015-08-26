@@ -83,9 +83,9 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.close(data);
                 });
             },
-            tags: function () {
+            tags: function (searchQuery) {
                 require(['controllers/tag'], function (controller) {
-                    controller.tags();
+                    controller.tags(searchQuery);
                 });
             },
             tagSearch: function (searchQuery) {

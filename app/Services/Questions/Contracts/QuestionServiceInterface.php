@@ -42,7 +42,7 @@ interface QuestionServiceInterface
 
     public function getTags($pageSize = null);
 
-    public function getTagsPopular($pageSize = null);
+    public function getTagsPopular($pageSize = null, $search = '');
 
     public function createComment($data, $question_id);
 
