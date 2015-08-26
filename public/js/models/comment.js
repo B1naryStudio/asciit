@@ -1,6 +1,6 @@
 define([
     'app',
-    'models/model-mixins',
+    'models/model-mixins'
 ], function(App, ModelMixins) {
     App.module('Comment', function(Comment, App, Backbone, Marionette, $, _) {
         Comment.Model = Backbone.Model.extend(

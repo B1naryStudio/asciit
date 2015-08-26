@@ -1,7 +1,7 @@
 define([
     'app',
     'paginator',
-    'models/model-mixins',
+    'models/model-mixins'
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Answer', function(Answer, App, Backbone, Marionette, $, _) {
         Answer.Model = Backbone.Model.extend(
@@ -45,7 +45,8 @@ define([
                         + '/answers';
                 },
                 initialize: function (options) {
-                    this.liveURI = 'questions/' + options.question_id + '/answers';
+                    this.liveURI = 'questions/' +
+                        options.question_id + '/answers';
                     this.url = App.prefix + '/api/v1/' + this.liveURI;
 
                     this.startLiveUpdating();
@@ -65,7 +66,9 @@ define([
 
                     if (model1.get(compareField) > model2.get(compareField)) {
                         return -1; // before
-                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                    } else if (
+                        model2.get(compareField) > model1.get(compareField)
+                    ) {
                         return 1; // after
                     } else {
                         return 0; // equal
@@ -83,7 +86,7 @@ define([
                     },
                     sortedBy: 'desc'
                 },
-                initialize: function(options) {
+                initialize: function (options) {
                     this.sort();
                     this.liveURI = 'user/'
                         + App.User.Current.get('id')

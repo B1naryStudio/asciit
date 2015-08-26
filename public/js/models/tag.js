@@ -17,7 +17,8 @@ define(['app', 'paginator'], function(App, PageableCollection) {
             },
             initialize: function (options) {
                 this.type = options && options.type ? options.type : 'select';
-                this.pageSize = options && options.page_size ? options.page_size : 5;
+                this.pageSize = options && options.page_size ?
+                    options.page_size : 5;
             }
         });
 

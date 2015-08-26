@@ -150,8 +150,6 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             $model = $model->getModel();
         }
 
-        // TODO: add check if main table already joined
-
         if ($use_main_table) {
             $query->select(['main.*']);
         }

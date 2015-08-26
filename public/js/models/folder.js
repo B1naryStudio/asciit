@@ -56,7 +56,9 @@ define([
 
                     if (model1.get(compareField) > model2.get(compareField)) {
                         return -1; // before
-                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                    } else if (
+                        model2.get(compareField) > model1.get(compareField)
+                    ) {
                         return 1; // after
                     } else {
                         return 0; // equal
@@ -74,7 +76,7 @@ define([
                     },
                     sortedBy: 'desc'
                 },
-                initialize: function(options) {
+                initialize: function (options) {
                     this.sort();
                     this.startLiveUpdating();
                 }

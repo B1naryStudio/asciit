@@ -18,8 +18,7 @@ define([
             childView: View.FolderSelectRow,
             onShow: function () {
                 this.$el.attr('name', 'folder').select2({
-                    placeholder: 'Select a folder',
-                    //tags: true
+                    placeholder: 'Select a folder'
                 });
             }
         });

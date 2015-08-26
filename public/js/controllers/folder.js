@@ -3,7 +3,7 @@ define([
     'views/folder/layout',
     'views/folder/collection',
     'views/folder/add',
-    'models/folder',
+    'models/folder'
 ], function (App, Layout, FolderCollectionView, NewFolderView, Folder) {
     App.module('Folder', function (Folder, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({

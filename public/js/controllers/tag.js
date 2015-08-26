@@ -20,7 +20,7 @@ define([
                     }
                 )).done(function (tags) {
                     if (searchQuery) {
-                        tags.searchQuery = searchQuery; // For live upd
+                        tags.searchQuery = searchQuery; // For live update
                     }
 
                     var view = new CollectionView({
