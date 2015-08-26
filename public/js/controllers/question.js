@@ -1,7 +1,7 @@
 define([
     'app',
     'views/question/collection',
-    'views/question/collection_layout',
+    'views/question/collection-layout',
     'views/question/single',
     'views/question/add',
     'views/folder/select',

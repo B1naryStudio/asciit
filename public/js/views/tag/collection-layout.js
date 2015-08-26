@@ -1,6 +1,6 @@
 define([
     'app',
-    'tpl!views/templates/tag/collection_layout.tpl'
+    'tpl!views/templates/tag/collection-layout.tpl'
 ], function (App, CollectionLayoutTpl) {
     App.module('Tag.Views', function (View, App, Backbone, Marionette, $, _) {
         View.CollectionLayout = Marionette.LayoutView.extend({

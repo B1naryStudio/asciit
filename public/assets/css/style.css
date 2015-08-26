@@ -434,6 +434,30 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+.tag-element {
+    float: left;
+    text-align: center;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.tag-element a {
+    display: block;
+    text-decoration: none;
+    color: #444;
+}
+
+.tag-element a:hover {
+    background-color: #009933;
+    color: #ffffff;
+    border-color: #ffffff;
+    border-radius: 5px;
+}
+
+.tags-collection {
+    float: left;
+}
 
 /*
  |------------------------------------------------------------------------------
@@ -681,7 +705,7 @@ div .fa-05 {
  |------------------------------------------------------------------------------
  */
 .nav>li>a {
-    padding: 15px 12px;
+    padding: 15px 11px;
 }
 
 .new-folder-form {
@@ -781,6 +805,68 @@ div .fa-05 {
 
 /*
  |------------------------------------------------------------------------------
+ | Top button
+ |------------------------------------------------------------------------------
+ */
+
+#top-link {
+    cursor: pointer;
+    display: none;
+    position: fixed;
+    right: 30px;
+    bottom: 20px;
+    padding: 0;
+    z-index: 1;
+}
+
+#top-link a {
+    display: block;
+    width: 100px;
+    text-align: center;
+    background: #333;
+    color: white;
+    padding: 5px 0;
+    margin: 5px;
+    text-decoration: none !important;
+    border-radius: 5px;
+}
+
+#top-link:hover a {
+    background:#000;
+}
+
+#topicon {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-bottom: 7px solid #fff;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    margin-right: 5px;
+}
+
+#backicon {
+    width: 0;
+    height: 0;
+    display: inline-block;
+    border-top: 7px solid #fff;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    margin-right: 5px;
+}
+
+#textButton {
+    display: none;
+}
+
+.confirm-form {
+    width: 25%;
+    margin: auto;
+    height: 33%;
+}
+
+/*
+ |------------------------------------------------------------------------------
  | Media
  |------------------------------------------------------------------------------
  */
@@ -848,13 +934,13 @@ div .fa-05 {
         margin-left: 0;
     }
 
-    .col-xs-9 {
+    /*.col-xs-9 {
         width: 85%;
     }
 
     .col-xs-3 {
         width: 15%;
-    }
+    }*/
 
     .new-folder-form {
         width: 100%;
@@ -949,7 +1035,7 @@ div .fa-05 {
         word-break: break-all;
     }
 
-    .col-xs-9 {
+    /*.col-xs-9 {
         width: 80%;
     }
 
@@ -963,7 +1049,7 @@ div .fa-05 {
 
     .new-folder-form .col-xs-3 {
         width: 25%;
-    }
+    */
 }
 
 @media (min-width: 351px) and (max-width: 550px) {
@@ -992,7 +1078,7 @@ div .fa-05 {
 
     .tag-element:nth-child(2n),
     .tag-element:nth-child(4n-1) {
-        margin-left: 5%;
+        margin-left: 6.5%;
     }
 }
 
@@ -1092,14 +1178,6 @@ div .fa-05 {
         width: 100%;
     }
 
-    .col-sm-10 {
-        width: 80%;
-    }
-
-    .col-sm-2 {
-        width: 20%;
-    }
-
     .tag-element {
         width: 15%;
     }
@@ -1108,7 +1186,7 @@ div .fa-05 {
     .tag-element:nth-child(5n-2),
     .tag-element:nth-child(5n-1),
     .tag-element:nth-child(5n) {
-        margin-left: 6%;
+        margin-left: 6.2%;
     }
 }
 
@@ -1129,14 +1207,6 @@ div .fa-05 {
         width: 1170px;
     }
 
-    .col-sm-10 {
-        width: 88%;
-    }
-
-    .col-sm-2 {
-        width: 12%;
-    }
-
     .comments-region, .comment-form {
         width: 88%;
         margin-left: 12%;
@@ -1147,61 +1217,4 @@ div .fa-05 {
     #top-link{
         display:none!important;
     }
-}
-
-#top-link{
-    cursor:pointer;
-    display:none;
-    position:fixed;
-    right:30px;
-    bottom:20px;
-    padding:0;
-    z-index:1;
-    /*padding-top:35px;*/
-}
-
-#top-link a {
-    display: block;
-    width: 100px;
-    text-align: center;
-    background: #333;
-    color: white;
-    padding: 5px 0;
-    margin:5px;
-    text-decoration:none !important;
-    border-radius: 5px;
-}
-
-#top-link:hover a{
-    background:#000;
-}
-
-#topicon{
-    width:0;
-    height:0;
-    display:inline-block;
-    border-bottom:7px solid #fff;
-    border-left:7px solid transparent;
-    border-right:7px solid transparent;
-    margin-right:5px;
-}
-
-#backicon{
-    width:0;
-    height:0;
-    display:inline-block;
-    border-top:7px solid #fff;
-    border-left:7px solid transparent;
-    border-right:7px solid transparent;
-    margin-right:5px;
-}
-
-#textButton{
-    display:none;
-}
-
-.confirm-form {
-    width: 25%;
-    margin: auto;
-    height: 33%;
 }

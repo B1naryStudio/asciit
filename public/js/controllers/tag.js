@@ -1,7 +1,7 @@
 define([
     'app',
     'views/tag/collection',
-    'views/tag/collection_layout',
+    'views/tag/collection-layout',
     'models/tag'
 ], function (App, CollectionView, CollectionLayout) {
     App.module('Tag', function (Tag, App, Backbone, Marionette, $, _) {

@@ -6,10 +6,10 @@
         <form class="form-horisontal folders-form">
             <div class="form-group wrapper-fields">
                 <div class="row">
-                    <label for="title" class="col-sm-2 col-xs-3 title-label">
+                    <label for="title" class="col-lg-2 col-sm-3 col-xs-4 title-label">
                         <%= _t("folders.title") %>:
                     </label>
-                    <div class="col-sm-10 col-xs-9">
+                    <div class="col-lg-10 col-sm-9 col-xs-8">
                         <input type="text" class="form-control" name="title" id="title">
                         <span class="help-block hidden"></span>
                     </div>

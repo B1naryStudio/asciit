@@ -1,6 +1,6 @@
 define([
     'app',
-    'tpl!views/templates/tag/select_row.tpl',
+    'tpl!views/templates/tag/select-row.tpl',
     'select2'
 ], function (App, SelectRowTpl) {
     App.module('Tag.Views', function (View, App, Backbone, Marionette, $, _) {

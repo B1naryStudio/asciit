@@ -41,7 +41,8 @@ define([
                         function (model) {
                             $.when(App.request('folder:add', model))
                                 .done(function (savedModel) {
-                                    var current_page_count = folders.state.totalPages;
+                                    var current_page_count =
+                                        folders.state.totalPages;
                                     if (current_page_count < 1) {
                                         current_page_count = 1;
                                     }

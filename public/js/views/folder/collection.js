@@ -1,7 +1,5 @@
 define([
     'app',
-    'tpl!views/templates/folder/row.tpl'
-], function (App, FolderRowTpl) {
     'tpl!views/templates/folder/row.tpl',
     'views/folder/confirm'
 ], function (App, FolderRowTpl, confirmView) {

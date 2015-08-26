@@ -1,7 +1,7 @@
 define([
     'app',
     'tpl!views/templates/tag/collection.tpl',
-    'tpl!views/templates/tag/collection_row.tpl'
+    'tpl!views/templates/tag/collection-row.tpl'
 ], function (App, CollectionTpl, TagTpl) {
     App.module('Tag.Views', function (View, App, Backbone, Marionette, $, _) {
         View.TagCollectionRow = Marionette.ItemView.extend({

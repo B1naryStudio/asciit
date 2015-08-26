@@ -33,7 +33,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             if ($this->with_relation_count) {
                 foreach ($this->relations as $relation => $options) {
                     $tmp = $this
-                        ->getRelationRecordCount($relation)
+                        ->getRelationRecordCount($relation, $relation)
                         ->whereIn('main.id', [$id])->get()->all();
 
                     $tmp2 = [];
