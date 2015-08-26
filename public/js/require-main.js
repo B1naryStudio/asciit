@@ -19,7 +19,7 @@ requirejs.config({
         text: 'vendor/require/text',
         tpl: 'vendor/backbone/underscore-tpl',
         syphon: 'vendor/backbone/backbone.syphon',
-        select2: 'vendor/select2/select2',
+        select2: 'vendor/select2/select2.min',
         paginator: 'vendor/backbone.paginator/backbone.paginator',
         ckeditor: 'vendor/ckeditor/ckeditor',
         'ckeditor.custom.settings': 'vendor/ckeditor/custom-instance-settings',
@@ -47,7 +47,11 @@ requirejs.config({
         validation: ['backbone'],
         tpl: ['text'],
         syphon: ['backbone'],
-        'ckeditor.adapter': ['ckeditor']
+        'ckeditor.adapter': ['ckeditor'],
+        select2: {
+            deps: ["jquery"],
+            exports: "$.fn.select2"
+        }
     }
 });
 
