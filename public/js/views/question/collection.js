@@ -31,7 +31,7 @@ define([
                 Backbone.Validation.callbacks.invalid(
                     this,
                     'search_query',
-                    'Nothing here...'
+                    i18n.t('ui.empty') + "..."
                 );
             },
             onShow: function () {

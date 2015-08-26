@@ -6,7 +6,7 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                 App.Main.Layout.getRegion('content').$el.html('');
                 App.trigger('popup:show', {
                     header: {
-                        title: 'Please log in',
+                        title: i18n.t('ui.login-title'),
                         without_close: true
                     },
                     class: 'login',

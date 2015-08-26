@@ -2,6 +2,9 @@ define([
     'app',
     'tpl!views/templates/folder/row.tpl'
 ], function (App, FolderRowTpl) {
+    'tpl!views/templates/folder/row.tpl',
+    'views/folder/confirm'
+], function (App, FolderRowTpl, confirmView) {
     App.module('Folder.Views', function (Views, App, Backbone, Marionette, $, _ ) {
         Views.SingleFolder = Marionette.ItemView.extend({
             tagName: 'div',
@@ -16,27 +19,40 @@ define([
             },
 
             deleteFolder: function() {
-                this.trigger('submit:delete', this.model);
+                var popupConfirm = new confirmView();
+                App.trigger('popup:show', {
+                    header: {
+                        title: i18n.t('folders.confirm-title')
+                    },
+                    class: 'confirm-form',
+                    contentView: popupConfirm
+                });
+                this.listenTo(
+                    popupConfirm,
+                    'form:submit',
+                    function () {
+                        this.trigger('submit:delete', this.model);
+                    }
+                )
             },
 
             editFolder: function () {
-                this.model.set(
-                    'oldValue',
-                    this.$el.find('[name="title"]').val()
-                );
-                App.helper.controllButtons(this.el, false);
+                var title = this.$el.find('[name="title"]');
+                this.model.set('oldValue', title.val());
+                App.helper.controllButtons(this.$el, false);
+                title.focus();
             },
 
             cancelUpdate: function () {
                 this.model.isValid(true);
                 this.$el.find('[name="title"]').val(this.model.get('oldValue'));
-                App.helper.controllButtons(this.el, true);
+                App.helper.controllButtons(this.$el, true);
             },
 
             updateFolder: function (e) {
                 e.preventDefault();
 
-                if(this.model.isValid(true)) {
+                if (!this.model.validationError) {
                     this.trigger('submit:update', this.model);
                 }
             },

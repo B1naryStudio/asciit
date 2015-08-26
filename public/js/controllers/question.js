@@ -7,7 +7,7 @@ define([
     'views/folder/select',
     'views/answer/collection',
     'views/tag/select',
-    'views/tag/collection_popular',
+    'views/tag/collection-popular',
     'models/answer',
     'views/comment/collection',
     'models/comment',
@@ -30,13 +30,14 @@ define([
 ) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
-            questions: function (searchQuery, searchTag, searchFolder) {
+            questions: function (searchQuery, searchTag, searchFolder, page) {
                 $.when(
                     App.request(
                         'question:collection',
                         searchQuery,
                         searchTag,
-                        searchFolder
+                        searchFolder,
+                        page
                     ),
                     App.request(
                         'tag:collection',
@@ -51,7 +52,7 @@ define([
                     )
                 ).done(function (questions, tags) {
                     if (searchQuery) {
-                        questions.searchQuery = searchQuery; // For live upd
+                        questions.searchQuery = searchQuery; // For live update
                     }
 
                     var questionsView = new CollectionView({
@@ -93,21 +94,22 @@ define([
                         questionsView,
                         'form:submit',
                         function (searchQuery) {
+                            var query;
                             if (/tag\:(.+)/.test(searchQuery)) {
-                                var query = searchQuery.replace(
+                                query = $.trim(searchQuery.replace(
                                     /tag\:(.+)/,
                                     '$1'
-                                );
+                                ));
                                 questionsView.options.searchQuery = '';
                                 Backbone.history.navigate(
                                     '/tags/' + query,
                                     { trigger: true }
                                 );
                             } else if (/folder\:(.+)/.test(searchQuery)) {
-                                var query = searchQuery.replace(
+                                query = $.trim(searchQuery.replace(
                                     /folder\:(.+)/,
                                     '$1'
-                                );
+                                ));
                                 questionsView.options.searchQuery = '';
                                 Backbone.history.navigate(
                                     '/folders/' + query,
@@ -134,7 +136,6 @@ define([
                             var questionView = new SingleView({
                                 model: question
                             });
-
 
                             App.Main.Layout
                                 .getRegion('content')
@@ -208,7 +209,6 @@ define([
                                 commentsView,
                                 'form:submit',
                                 function (model) {
-                                    //debugger;
                                     $.when(App.request('comment:add', model))
                                         .done(function (savedModel) {
                                             collectionComments.push(savedModel);
@@ -253,7 +253,7 @@ define([
                     });
                     App.trigger('popup:show', {
                         header: {
-                            title: 'Add new question'
+                            title: i18n.t('questions.add-title')
                         },
                         class: 'question-add',
                         contentView: view

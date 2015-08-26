@@ -12,9 +12,10 @@ define([
                 'submit .folders-form': 'saveFolder'
             },
 
-            saveFolder: function(event) {
+            saveFolder: function (event) {
                 event.preventDefault();
-                if(this.model.isValid(true)) {
+
+                if (!this.model.validationError) {
                     this.trigger('form:submit', this.model);
                 }
             },

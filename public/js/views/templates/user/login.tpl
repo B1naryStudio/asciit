@@ -11,16 +11,16 @@
         </div>
 
         <div class="control-group">
-            <label for="password" class="control-label col-md-4 col-lg-4 col-sm-4 col-xs-4">Password</label>
+            <label for="password" class="control-label col-md-4 col-lg-4 col-sm-4 col-xs-4"><%= _t("ui.password") %></label>
             <div class="col-md-8 col-lg-8 col-sm-8 col-xs-8">
-                <input type="password" name="password" class="password form-control" placeholder="Password">
+                <input type="password" name="password" class="password form-control" placeholder="<%= _t("ui.password") %>">
                 <div class="error password"></div>
             </div>
         </div>
 
         <div class="control-group buttons">
             <div class="controls">
-                <button type="submit" class="btn btn-info">Login</button>
+                <button type="submit" class="btn btn-info"><%= _t("ui.login") %></button>
             </div>
         </div>
     </div>    

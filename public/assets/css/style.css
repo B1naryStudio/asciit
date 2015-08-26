@@ -4,9 +4,36 @@
  |------------------------------------------------------------------------------
  */
 
-.menu .login {
+.menu .user-panel {
     float: right;
     margin-right: 15px;
+}
+
+.user-panel.nav.navbar-nav {
+    margin: 0;
+    margin-right: 15px;
+}
+
+.user-panel.nav.navbar-nav li {
+    float: left;
+}
+
+.lang .dropdown-menu {
+    min-width: 0;
+}
+
+.lang .dropdown-menu span {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: 400;
+    color: #333;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.lang .dropdown-menu span:hover {
+    background: #f3f3f3;
 }
 
 .logout-xs {
@@ -217,10 +244,6 @@
     margin: 15px auto 50px;
 }
 
-.new-answer-controls input {
-    width: 80px;
-}
-
 /*
  |------------------------------------------------------------------------------
  | Popups
@@ -426,15 +449,6 @@ pre {
 
 pre code.hljs {
     font-family: monospace, monospace;
-}
-
-.login.nav.navbar-nav {
-    margin: 0;
-    margin-right: 15px;
-}
-
-.login.nav.navbar-nav li {
-    float: left;
 }
 
 .modal-open {
@@ -667,7 +681,7 @@ div .fa-05 {
  |------------------------------------------------------------------------------
  */
 .nav>li>a {
-    padding: 15px 13px;
+    padding: 15px 12px;
 }
 
 .new-folder-form {
@@ -691,6 +705,10 @@ div .fa-05 {
     margin-bottom: 20px;
 }
 
+.folder-row .list-group-item {
+    height: 75px;
+}
+
 .folder-row:nth-child(2n) {
     margin-left: 5%;
 }
@@ -705,23 +723,30 @@ div .fa-05 {
 
 .control-buttons {
     display: none;
-    margin-top: 7px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
 }
 
 .edit-buttons {
-    margin-top: 7px;
+    position: absolute;
+    top: 15px;
+    right: 10px;
 }
 
 .folders-list .form-group {
     margin-bottom: 0;
+    margin-right: 55px;
+    margin-left: 10px;
 }
 
 .folders-form {
     position: relative;
+    height: 60px;
 }
 
 .folders-form .wrapper-control {
-    width: 70px;
+    width: 80px;
     float: right;
     position: absolute;
     top: 0;
@@ -729,7 +754,12 @@ div .fa-05 {
 }
 
 .folders-form .wrapper-fields {
-    margin-right: 85px;
+    margin-right: 95px;
+    margin-bottom: 0;
+}
+
+.folders-form .help-block {
+    margin-bottom: 0;
 }
 
 #folders-region {
@@ -737,90 +767,16 @@ div .fa-05 {
     width: 100%;
 }
 
-/*
- |------------------------------------------------------------------------------
- | Top/down button
- |------------------------------------------------------------------------------
- */
-#top-link {
-    cursor:pointer;
-    display:none;
-    position:fixed;
-    left:20px;
-    top:60px;
-    padding:0;
-    z-index:1;
-    /*padding-top:35px;*/
+.update-folder {
+    border: none;
+    background-color: #ffffff;
+    width: 20px;
+    outline: none;
 }
 
-#top-link a {
-    display: block;
-    width: 100px;
-    text-align: center;
-    background: #333;
-    color: white;
-    padding: 5px 0;
-    margin:5px;
-    text-decoration:none !important;
-    border-radius: 5px;
-}
-
-#top-link:hover a {
-    background:#000;
-}
-
-#topicon {
-    width: 0;
-    height: 0;
-    display: inline-block;
-    border-bottom: 7px solid #fff;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    margin-right: 5px;
-}
-
-#backicon {
-    width: 0;
-    height: 0;
-    display: inline-block;
-    border-top: 7px solid #fff;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    margin-right: 5px;
-}
-
-#textButton {
-    display: none;
-}
-
-/*
- |------------------------------------------------------------------------------
- | Tags
- |------------------------------------------------------------------------------
- */
-.tag-element {
-    float: left;
-    text-align: center;
-    border: 1px solid #eeeeee;
-    border-radius: 5px;
-    margin-bottom: 5px;
-}
-
-.tag-element a {
-    display: block;
+.folder a {
+    color: dimgray;
     text-decoration: none;
-    color: #444;
-}
-
-.tag-element a:hover {
-    background-color: #009933;
-    color: #ffffff;
-    border-color: #ffffff;
-    border-radius: 5px;
-}
-
-.tags-collection {
-    float: left;
 }
 
 /*
@@ -1187,8 +1143,65 @@ div .fa-05 {
     }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 767px) {
     #top-link{
         display:none!important;
     }
+}
+
+#top-link{
+    cursor:pointer;
+    display:none;
+    position:fixed;
+    right:30px;
+    bottom:20px;
+    padding:0;
+    z-index:1;
+    /*padding-top:35px;*/
+}
+
+#top-link a {
+    display: block;
+    width: 100px;
+    text-align: center;
+    background: #333;
+    color: white;
+    padding: 5px 0;
+    margin:5px;
+    text-decoration:none !important;
+    border-radius: 5px;
+}
+
+#top-link:hover a{
+    background:#000;
+}
+
+#topicon{
+    width:0;
+    height:0;
+    display:inline-block;
+    border-bottom:7px solid #fff;
+    border-left:7px solid transparent;
+    border-right:7px solid transparent;
+    margin-right:5px;
+}
+
+#backicon{
+    width:0;
+    height:0;
+    display:inline-block;
+    border-top:7px solid #fff;
+    border-left:7px solid transparent;
+    border-right:7px solid transparent;
+    margin-right:5px;
+}
+
+#textButton{
+    display:none;
+}
+
+.confirm-form {
+    width: 25%;
+    margin: auto;
+    height: 33%;
 }

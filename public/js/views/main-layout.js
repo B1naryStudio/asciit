@@ -18,9 +18,15 @@ define([
             },
             startRelativeTimeUpdating: function () {
                 setInterval(function () {
-                    $('time.relative[data-local-time]').html(
+                    $('time.relative[data-abs-time]').html(
                         function () {
-                           return moment($(this).data('local-time')).fromNow();
+                            var local = moment.utc($(this).data('abs-time'));
+                            return moment(local).fromNow();
+                        }
+                    );
+                    $('time.locale[data-abs-time]').html(
+                        function () {
+                            return moment.utc($(this).data('abs-time')).toDate();
                         }
                     );
                 }, 15000);
@@ -29,8 +35,7 @@ define([
                 this.getRegion('header').show(Menu);
 
                 this.startRelativeTimeUpdating();
-                require(['vendor/button_down/button_down'], function () {
-                });
+                require(['vendor/button_down/button_down']);
             }
         });
         Main.Layout = new Layout();

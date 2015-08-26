@@ -35,6 +35,9 @@ define([
                                 paginatorView.info = options.collection.state;
                                 paginatorView.render();
                             });
+                            if (options.pageChange) {
+                                options.pageChange(page);
+                            }
                         }
                     );
                 });

@@ -87,7 +87,13 @@ define(['app', 'moment'], function(App, moment) {
         _.extend(ModelMixins.LiveModel, ModelMixins.LiveUpdating);
 
         ModelMixins.RelativeTimestampsModel = {
+
+
             attachLocalDates: function () {
+                if (i18n.lng) {
+                    moment.locale(i18n.lng());
+                }
+
                 var updatedLocal = moment.utc(this.get('updated_at'));
                 this.set('updated_local', updatedLocal);
                 this.set('updated_local_formatted', moment(updatedLocal).toDate());
