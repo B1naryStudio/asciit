@@ -53,6 +53,9 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     {
         try {
             $collection = parent::findByField($field, $value, $columns);
+            if ($collection->count() === 0) {
+                throw new ModelNotFoundException();
+            }
             if ($this->with_relation_count) {
                 $collection = $this->setCountedFields($collection);
             }

@@ -123,11 +123,6 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                 require(['controllers/question'], function (controller) {
                     controller.questions('', '', $.trim(searchQuery));
                 });
-            },
-            empty: function () {
-                require(['controllers/empty'], function (controller) {
-                    controller.empty();
-                });
             }
         };
 
@@ -178,10 +173,6 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
 
         this.listenTo(App, 'paginator:get', function (options) {
             API.paginator(options);
-        });
-
-        this.listenTo(App, 'content:not_found', function () {
-            API.empty();
         });
 
         $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {

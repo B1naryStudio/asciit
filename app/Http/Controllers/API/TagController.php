@@ -38,6 +38,9 @@ class TagController extends Controller
                     $request->get('page_size')
                 );
                 $page = (int) Paginator::resolveCurrentPage();
+                if (empty($page)) {
+                    $page = 1;
+                }
                 if ($page !== $tags->currentPage()) {
                     return Response::json([
                         'error' => 'not found'
@@ -56,6 +59,9 @@ class TagController extends Controller
                     $request->get('search')
                 );
                 $page = (int) Paginator::resolveCurrentPage();
+                if (empty($page)) {
+                    $page = 1;
+                }
                 if ($page !== $tags->currentPage()) {
                     return Response::json([
                         'error' => 'not found'

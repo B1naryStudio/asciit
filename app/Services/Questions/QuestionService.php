@@ -190,12 +190,20 @@ class QuestionService implements QuestionServiceInterface
      */
     public function getAnswersOfQuestion($question_id)
     {
-        $answers = $this->answerRepository
-            ->findByFieldWithRelations(
-                'question_id',
-                $question_id,
-                ['user', 'comments.user', 'votes']
+        try {
+            $answers = $this->answerRepository
+                ->findByFieldWithRelations(
+                    'question_id',
+                    $question_id,
+                    ['user', 'comments.user', 'votes']
+                );
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage() . ' No such question',
+                null,
+                $e
             );
+        }
 
         foreach ($answers as $answer) {
             $votes = collect($answer->votes);

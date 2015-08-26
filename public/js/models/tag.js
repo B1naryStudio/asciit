@@ -85,10 +85,10 @@ define([
                         defer.resolve(data);
                     },
                     error: function (model, response) {
-                        if (response.status === 404) {
-                            App.trigger('content:not_found');
-                        }
-                        console.log(response);
+                        defer.reject({
+                            status: response.status,
+                            error: model.validationError
+                        });
                     }
                 });
                 return defer.promise();

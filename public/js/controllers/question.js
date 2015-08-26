@@ -11,6 +11,7 @@ define([
     'models/answer',
     'views/comment/collection',
     'models/comment',
+    'views/empty',
     'models/question',
     'models/folder',
     'models/tag'
@@ -26,7 +27,8 @@ define([
     TagsView,
     Answer,
     CommentsView,
-    Comment
+    Comment,
+    EmptyView
 ) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
@@ -131,6 +133,13 @@ define([
                             }
                         }
                     );
+                }).fail(function (data) {
+                    if (data.status === 404) {
+                        var view = new EmptyView();
+                        App.Main.Layout
+                            .getRegion('content')
+                            .show(view);
+                    }
                 });
             },
 
@@ -237,6 +246,13 @@ define([
                                 }
                             );
                         });
+                }).fail(function (data) {
+                    if (data.status === 404) {
+                        var view = new EmptyView();
+                        App.Main.Layout
+                            .getRegion('content')
+                            .show(view);
+                    }
                 });
             },
 

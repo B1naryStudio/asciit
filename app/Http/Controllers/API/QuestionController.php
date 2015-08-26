@@ -55,6 +55,9 @@ class QuestionController extends Controller
         }
 
         $page = (int) Paginator::resolveCurrentPage();
+        if (empty($page)) {
+            $page = 1;
+        }
         if ($page !== $questions->currentPage()) {
             return Response::json([
                 'error' => 'not found'

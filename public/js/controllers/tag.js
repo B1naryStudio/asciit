@@ -2,24 +2,27 @@ define([
     'app',
     'views/tag/collection',
     'views/tag/collection-layout',
+    'views/empty',
     'models/tag'
-], function (App, CollectionView, CollectionLayout) {
+], function (App, CollectionView, CollectionLayout, EmptyView) {
     App.module('Tag', function (Tag, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             tags: function (searchQuery, page) {
-                $.when(App.request(
-                    'tag:collection',
-                    {
-                        type: 'list',
-                        search: searchQuery,
-                        options: {
-                            state: {
-                                pageSize: 30,
-                                currentPage: page
+                $.when(
+                    App.request(
+                        'tag:collection',
+                        {
+                            type: 'list',
+                            search: searchQuery,
+                            options: {
+                                state: {
+                                    pageSize: 30,
+                                    currentPage: page
+                                }
                             }
                         }
-                    }
-                )).done(function (tags) {
+                    )
+                ).done(function (tags) {
                     if (searchQuery) {
                         tags.searchQuery = searchQuery; // For live update
                     }
@@ -61,6 +64,13 @@ define([
                             );
                         }
                     );
+                }).fail(function (data) {
+                    if (data.status === 404) {
+                        var view = new EmptyView();
+                        App.Main.Layout
+                            .getRegion('content')
+                            .show(view);
+                    }
                 });
             }
         });

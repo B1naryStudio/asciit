@@ -3,8 +3,9 @@ define([
     'views/folder/layout',
     'views/folder/collection',
     'views/folder/add',
-    'models/folder'
-], function (App, Layout, FolderCollectionView, NewFolderView, Folder) {
+    'models/folder',
+    'views/empty'
+], function (App, Layout, FolderCollectionView, NewFolderView, Folder, EmptyView) {
     App.module('Folder', function (Folder, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             current_page: 1,
@@ -135,6 +136,13 @@ define([
                                 });
                         }
                     );
+                }).fail(function (data) {
+                    if (data.status === 404) {
+                        var view = new EmptyView();
+                        App.Main.Layout
+                            .getRegion('content')
+                            .show(view);
+                    }
                 });
             },
 

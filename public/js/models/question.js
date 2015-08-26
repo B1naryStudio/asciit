@@ -167,10 +167,10 @@ define([
                         defer.resolve(data);
                     },
                     error: function (model, response) {
-                        if (response.status === 404) {
-                            App.trigger('content:not_found');
-                        }
-                        console.log(response);
+                        defer.reject({
+                            status: response.status,
+                            error: model.validationError
+                        });
                     }
                 });
                 return defer.promise();
@@ -183,8 +183,11 @@ define([
                     success: function (model) {
                         defer.resolve(model);
                     },
-                    error: function (data) {
-                        defer.reject(data.validationError);
+                    error: function (model, response) {
+                        defer.reject({
+                            status: response.status,
+                            error: model.validationError
+                        });
                     }
                 });
 
