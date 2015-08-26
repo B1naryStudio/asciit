@@ -25,6 +25,7 @@ use App\Events\VoteWasRemoved;
 use App\Events\FolderWasAdded;
 use App\Events\FolderWasUpdated;
 use App\Events\FolderWasRemoved;
+use App\Events\TagWasAdded;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -79,16 +80,16 @@ class QuestionService implements QuestionServiceInterface
                     }
                 }
                 if (!empty($not_exist)) {
-                    $tags = array_merge(
-                        $tags,
-                        $this->tagRepository->createSeveral($not_exist)
-                    );
+                    $result = $this->tagRepository->createSeveral($not_exist);
+                    $tags = array_merge($tags, $result);
+                    foreach ($result as $tag) {
+                        $tag->question_count = 1;
+                        Event::fire(new TagWasAdded($tag));
+                        unset ($tag->question_count);
+                    }
                 }
                 $this->questionRepository->relationsAdd($question, 'tags', $tags);
 
-                Event::fire(new QuestionWasAdded(
-                    $this->getQuestionById($question->id)
-                ));
             }
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
@@ -97,6 +98,10 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new QuestionWasAdded(
+            $this->getQuestionById($question->id)
+        ));
 
         return $question;
     }
@@ -243,7 +248,6 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $vote = $this->voteRepository->delete($vote_id);
-            Event::fire(new VoteWasRemoved($vote));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' Can\'t unlike it.',
@@ -251,6 +255,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new VoteWasRemoved($vote));
 
         return $vote;
     }
@@ -263,8 +269,6 @@ class QuestionService implements QuestionServiceInterface
             $new = $this->answerRepository->create($data);
             $answer = $this->answerRepository->withRelationCount()
                 ->findWithRelations($new->id, ['user', 'question']);
-
-            Event::fire(new AnswerWasAdded($answer));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such answer',
@@ -272,6 +276,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new AnswerWasAdded($answer));
 
         return $answer;
     }
@@ -313,7 +319,6 @@ class QuestionService implements QuestionServiceInterface
         try {
             $comment = $this->commentRepository
                 ->findWithRelations($new->id, ['user']);
-            Event::fire(new CommentWasAdded($comment));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such answer',
@@ -321,6 +326,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new CommentWasAdded($comment));
 
         return $comment;
     }
@@ -456,7 +463,6 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $folder = $this->folderRepository->delete($id);
-            Event::fire(new FolderWasRemoved($folder));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -464,6 +470,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new FolderWasRemoved($folder));
         return $folder;
     }
 
@@ -471,7 +479,6 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $folder = $this->folderRepository->create($data);
-            Event::fire(new FolderWasAdded($folder));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -479,6 +486,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new FolderWasAdded($folder));
         return $folder;
     }
 
@@ -486,7 +495,6 @@ class QuestionService implements QuestionServiceInterface
     {
         try {
             $folder = $this->folderRepository->update($data, $id);
-            Event::fire(new FolderWasUpdated($folder));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -494,6 +502,8 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        Event::fire(new FolderWasUpdated($folder));
         return $folder;
     }
 

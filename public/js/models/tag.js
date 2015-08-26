@@ -1,8 +1,20 @@
-define(['app', 'paginator'], function(App, PageableCollection) {
+define([
+    'app',
+    'paginator',
+    'models/model-mixins'
+], function(App, PageableCollection, ModelMixins) {
     App.module('Tag', function(Tag, App, Backbone, Marionette, $, _) {
-        Tag.Model = Backbone.Model.extend({
-            urlRoot: App.prefix + '/api/v1/tags'
-        });
+        Tag.Model = Backbone.Model.extend(
+            _.extend({}, ModelMixins.LiveModel, {
+                urlRoot: App.prefix + '/api/v1/tags',
+                initialize: function (options) {
+                    if (this.id) {
+                        this.liveURI = 'tags/' + this.id;
+                        this.startLiveUpdating();
+                    }
+                }
+            })
+        );
 
         Tag.Collection = Backbone.Collection.extend({
             model: Tag.Model,
@@ -22,33 +34,39 @@ define(['app', 'paginator'], function(App, PageableCollection) {
             }
         });
 
-        Tag.PageableCollection = PageableCollection.extend({
-            model: Tag.Model,
-            url: App.prefix + '/api/v1/tags',
-            sortKey: 'question_count',
-            order: 'desc',
-            queryParams: {
-                pageSize: 'page_size',
-                type: function () {
-                    return this.type;
-                }
-            },
-            comparator: function (model1, model2) {
-                var compareField = this.sortKey;
+        Tag.PageableCollection = PageableCollection.extend(
+            _.extend({}, ModelMixins.LiveCollection, {
+                model: Tag.Model,
+                url: App.prefix + '/api/v1/tags',
+                liveURI: 'tags',
+                sortKey: 'question_count',
+                order: 'desc',
+                queryParams: {
+                    pageSize: 'page_size',
+                    type: function () {
+                        return this.type;
+                    }
+                },
+                comparator: function (model1, model2) {
+                    var compareField = this.sortKey;
 
-                if (model1.get(compareField) > model2.get(compareField)) {
-                    return -1; // before
-                } else if (model2.get(compareField) > model1.get(compareField)) {
-                    return 1; // after
-                } else {
-                    return 0; // equal
+                    if (model1.get(compareField) > model2.get(compareField)) {
+                        return -1; // before
+                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                        return 1; // after
+                    } else {
+                        return 0; // equal
+                    }
+                },
+                initialize: function (options) {
+                    this.type = options && options.type ? options.type : 'select';
+                    this.options = options;
+                    this.sort();
+
+                    this.startLiveUpdating();
                 }
-            },
-            initialize: function (options) {
-                this.type = options && options.type ? options.type : 'select';
-                this.options = options;
-            }
-        });
+            })
+        );
 
         var API = {
             collection: function (data) {

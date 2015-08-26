@@ -37,6 +37,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\FolderWasRemoved' => [
             'App\Listeners\FolderRemovingToBroadcasting',
         ],
+        'App\Events\TagWasAdded' => [
+            'App\Listeners\TagToBroadcasting',
+        ],
     ];
 
     /**
