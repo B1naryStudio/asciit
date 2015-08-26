@@ -21,9 +21,15 @@ define([
             childViewContainer: "#folder-options",
 
             onShow: function () {
-                this.$el.attr('name', 'folder').select2({
-                    placeholder: i18n.t('folders.select'),
-                    allowClear: true
+                var self = this;
+                var lang = i18n.lng();
+
+                require(['vendor/select2/i18n/' + lang], function () {
+                    self.$el.attr('name', 'folder').select2({
+                        placeholder: i18n.t('folders.select'),
+                        language: lang,
+                        allowClear: true
+                    });
                 });
             }
         });
