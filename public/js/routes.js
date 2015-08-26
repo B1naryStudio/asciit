@@ -59,9 +59,8 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                 });
             },
             questions: function (data) {
-                var self = this;
                 require(['controllers/question'], function (controller) {
-                    var tmp = self.parseUrl(data);
+                    var tmp = App.helper.parseUrl(data);
                     controller.questions(
                         tmp['search'] ? tmp['search'] : '',
                         '',
@@ -90,9 +89,13 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.close(data);
                 });
             },
-            tags: function (searchQuery) {
+            tags: function (data) {
+                var tmp = App.helper.parseUrl(data);
                 require(['controllers/tag'], function (controller) {
-                    controller.tags(searchQuery);
+                    controller.tags(
+                        tmp['search'] ? tmp['search'] : '',
+                        tmp['page'] ? parseInt(tmp['page']) : 1
+                    );
                 });
             },
             tagSearch: function (searchQuery) {
@@ -110,9 +113,10 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.paginator(options);
                 });
             },
-            folders: function () {
+            folders: function (data) {
                 require(['controllers/folder'], function (controller) {
-                    controller.getFolders();
+                    var tmp = App.helper.parseUrl(data);
+                    controller.getFolders(tmp['page'] ? parseInt(tmp['page']) : 1);
                 })
             },
             folderSearch: function (searchQuery) {
@@ -120,21 +124,10 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.questions('', '', $.trim(searchQuery));
                 });
             },
-            parseUrl: function (url) {
-                var data = {};
-                if (url) {
-                    var tmp = url.split('&');
-                    var tmp2;
-                    for (var i = 0; i < tmp.length; i++) {
-                        tmp2 = tmp[i].split('=');
-                        if (tmp2.length === 2) {
-                            data[tmp2[0]] = tmp2[1];
-                        } else {
-                            data['search'] = tmp2[0];
-                        }
-                    }
-                }
-                return data;
+            empty: function () {
+                require(['controllers/empty'], function (controller) {
+                    controller.empty();
+                });
             }
         };
 
@@ -185,6 +178,10 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
 
         this.listenTo(App, 'paginator:get', function (options) {
             API.paginator(options);
+        });
+
+        this.listenTo(App, 'content:not_found', function () {
+            API.empty();
         });
 
         $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {

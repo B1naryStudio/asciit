@@ -25,6 +25,19 @@ define([
                         'form:page',
                         function (page) {
                             options.collection.getPage(page);
+
+                            if (options.navigate) {
+                                var tmp = window.location.hash;
+                                tmp = tmp.split('?');
+                                var url_params = [];
+                                if (tmp.length > 1) {
+                                    url_params = App.helper.parseUrl(tmp[1]);
+                                }
+                                url_params['page'] = page;
+                                Backbone.history.navigate(
+                                    tmp[0] + '?' + App.helper.makeUrl(url_params)
+                                );
+                            }
                             $.when(
                                 App.request(
                                     'paginator:collection',

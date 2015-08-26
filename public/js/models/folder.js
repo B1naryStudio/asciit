@@ -95,6 +95,12 @@ define([
                 if (!collection.fetch({
                         success: function (data) {
                             defer.resolve(data);
+                        },
+                        error: function (model, response) {
+                            if (response.status === 404) {
+                                App.trigger('content:not_found');
+                            }
+                            console.log(response);
                         }
                     })
                 ) {
@@ -130,8 +136,10 @@ define([
                 return this.addFolder(model);
             },
 
-            getFolders: function () {
-                var questions = new Folder.Folders();
+            getFolders: function (data) {
+                var options = data.options ? data.options : {};
+                delete data.options;
+                var questions = new Folder.Folders(data, options);
                 return this.fetch(questions);
             },
 
@@ -167,8 +175,8 @@ define([
             return API.addFolder(collection, model);
         });
 
-        App.reqres.setHandler('folders:get', function (page) {
-            return API.getFolders(page ? parseInt(page) : 1);
+        App.reqres.setHandler('folders:get', function (data) {
+            return API.getFolders(data);
         });
 
         App.reqres.setHandler('folder:update', function (model) {

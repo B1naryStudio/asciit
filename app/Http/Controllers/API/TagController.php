@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Pagination\Paginator;
 
 class TagController extends Controller
 {
@@ -36,6 +37,12 @@ class TagController extends Controller
                 $tags = $this->questionService->getTagsPopular(
                     $request->get('page_size')
                 );
+                $page = (int) Paginator::resolveCurrentPage();
+                if ($page !== $tags->currentPage()) {
+                    return Response::json([
+                        'error' => 'not found'
+                    ], 404, [], JSON_NUMERIC_CHECK);
+                }
                 $result = $tags->items();
                 break;
             case 'search':
@@ -48,6 +55,12 @@ class TagController extends Controller
                     $request->get('page_size'),
                     $request->get('search')
                 );
+                $page = (int) Paginator::resolveCurrentPage();
+                if ($page !== $tags->currentPage()) {
+                    return Response::json([
+                        'error' => 'not found'
+                    ], 404, [], JSON_NUMERIC_CHECK);
+                }
                 $result = [
                     [
                         'total_entries' => $tags->total(),

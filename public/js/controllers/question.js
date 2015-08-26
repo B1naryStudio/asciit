@@ -34,10 +34,16 @@ define([
                 $.when(
                     App.request(
                         'question:collection',
-                        searchQuery,
-                        searchTag,
-                        searchFolder,
-                        page
+                        {
+                            searchQuery: searchQuery,
+                            searchTag: searchTag,
+                            searchFolder: searchFolder,
+                            options: {
+                                state: {
+                                    currentPage: page
+                                }
+                            }
+                        }
                     ),
                     App.request(
                         'tag:collection',
@@ -78,6 +84,7 @@ define([
 
                     App.trigger('paginator:get', {
                         collection: questions,
+                        navigate: true,
                         success: function (paginatorView) {
                             collectionLayout
                                 .getRegion('paginatorRegion')

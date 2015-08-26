@@ -10,8 +10,6 @@ use App\Repositories\Contracts\RepositoryInterface;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 abstract class Repository extends BaseRepository implements RepositoryInterface
 {

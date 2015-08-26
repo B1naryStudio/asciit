@@ -10,6 +10,7 @@ use App\Services\Questions\Exceptions\QuestionServiceException;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\QuestionValidatedRequest;
+use Illuminate\Pagination\Paginator;
 
 class QuestionController extends Controller
 {
@@ -51,6 +52,13 @@ class QuestionController extends Controller
             $questions = $this->questionService->getQuestions(
                 $request->get('page_size')
             );
+        }
+
+        $page = (int) Paginator::resolveCurrentPage();
+        if ($page !== $questions->currentPage()) {
+            return Response::json([
+                'error' => 'not found'
+            ], 404, [], JSON_NUMERIC_CHECK);
         }
 
         return Response::json(

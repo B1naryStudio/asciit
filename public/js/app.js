@@ -56,6 +56,39 @@ define([
             el.find('[name="title"]').attr('disabled', option);
             el.find('.control-buttons').toggle();
             el.find('.edit-buttons').toggle();
+        },
+
+        parseUrl: function (url) {
+            var data = {};
+            if (url) {
+                var tmp = url.split('&');
+                var tmp2;
+                for (var i = 0; i < tmp.length; i++) {
+                    tmp2 = tmp[i].split('=');
+                    if (tmp2.length === 2) {
+                        data[tmp2[0]] = tmp2[1];
+                    } else {
+                        data['search'] = tmp2[0];
+                    }
+                }
+            }
+            return data;
+        },
+
+        makeUrl: function (params) {
+            var url = [];
+            for (var i in params) {
+                if (!params.hasOwnProperty(i)) {
+                    continue;
+                }
+
+                if (i === 'search') {
+                    url[url.length] = params[i];
+                } else {
+                    url[url.length] = i + '=' + params[i];
+                }
+            }
+            return url.join('&');
         }
     };
 

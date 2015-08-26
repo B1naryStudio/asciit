@@ -151,21 +151,26 @@ define([
         );
 
         var API = {
-            questionCollection: function (searchQuery, searchTag, searchFolder, page) {
-                var questions = new Question.Collection({
-                    searchQuery: searchQuery,
-                    searchTag: searchTag,
-                    searchFolder: searchFolder
-                }, {
-                    state: {
-                        currentPage: page
-                    }
-                });
+            questionCollection: function (data) {
+                var options = data.options ? data.options : {};
+                delete data.options;
                 var defer = $.Deferred();
+
+                var questions = new Question.Collection({
+                    searchQuery: data.searchQuery,
+                    searchTag: data.searchTag,
+                    searchFolder: data.searchFolder
+                }, options);
 
                 questions.fetch({
                     success: function (data) {
                         defer.resolve(data);
+                    },
+                    error: function (model, response) {
+                        if (response.status === 404) {
+                            App.trigger('content:not_found');
+                        }
+                        console.log(response);
                     }
                 });
                 return defer.promise();
@@ -182,6 +187,7 @@ define([
                         defer.reject(data.validationError);
                     }
                 });
+
                 return defer.promise();
             },
             questionAdd: function (data) {
@@ -218,17 +224,9 @@ define([
             }
         };
 
-        App.reqres.setHandler(
-            'question:collection',
-            function (searchQuery, searchTag, searchFolder, page) {
-                return API.questionCollection(
-                    searchQuery, 
-                    searchTag, 
-                    searchFolder, 
-                    page
-                );
-            }
-        );
+        App.reqres.setHandler('question:collection', function (data) {
+            return API.questionCollection(data);
+        });
 
         App.reqres.setHandler('question:model', function (id) {
             return API.questionGet(id);

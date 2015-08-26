@@ -6,7 +6,7 @@ define([
 ], function (App, CollectionView, CollectionLayout) {
     App.module('Tag', function (Tag, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
-            tags: function (searchQuery) {
+            tags: function (searchQuery, page) {
                 $.when(App.request(
                     'tag:collection',
                     {
@@ -14,7 +14,8 @@ define([
                         search: searchQuery,
                         options: {
                             state: {
-                                pageSize: 30
+                                pageSize: 30,
+                                currentPage: page
                             }
                         }
                     }
@@ -37,6 +38,7 @@ define([
 
                     App.trigger('paginator:get', {
                         collection: tags,
+                        navigate: true,
                         success: function (paginatorView) {
                             collectionLayout
                                 .getRegion('paginatorRegion')

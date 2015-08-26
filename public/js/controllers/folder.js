@@ -11,7 +11,13 @@ define([
             getFolders: function (page) {
                 var self = this;
                 $.when(
-                    App.request('folders:get')
+                    App.request('folders:get', {
+                        options: {
+                            state: {
+                                currentPage: page
+                            }
+                        }
+                    })
                 ).done(function (folders) {
                     var layout = new Layout();
                     App.Main.Layout.getRegion('content').show(layout);
@@ -25,15 +31,7 @@ define([
                     var folderForm = new NewFolderView({ model: folder });
                     layout.getRegion('newFolderRegion').show(folderForm);
 
-                    App.trigger('paginator:get', {
-                        collection: folders,
-                        success: function (paginatorView) {
-                            layout
-                                .getRegion('paginationRegion')
-                                .show(paginatorView);
-                        },
-                        pageChange: self.pageChange
-                    });
+                    self.updatePagination(folders, layout);
 
                     Folder.Controller.listenTo(
                         folderForm,
@@ -143,6 +141,7 @@ define([
             updatePagination: function (folders, layout) {
                 App.trigger('paginator:get', {
                     collection: folders,
+                    navigate: true,
                     success: function (paginatorView) {
                         layout
                             .getRegion('paginationRegion')
