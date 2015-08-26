@@ -9,10 +9,12 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Creativeorange\Gravatar\Facades\Gravatar;
+use SmartCrowd\Rbac\Contracts\Assignable;
+use SmartCrowd\Rbac\Traits\AllowedTrait;
 
-class User extends Model implements Transformable, AuthenticatableContract
+class User extends Model implements Transformable, AuthenticatableContract, Assignable
 {
-    use TransformableTrait, Authenticatable, CanResetPassword;
+    use TransformableTrait, Authenticatable, CanResetPassword, AllowedTrait;
 
     /**
      * The database table used by the model.
@@ -52,5 +54,22 @@ class User extends Model implements Transformable, AuthenticatableContract
         }
 
         return $avatar;
+    }
+
+    /**
+     * Should return array of permissions and roles names,
+     * assigned to user.
+     *
+     * @return array Array of user assignments.
+     */
+    public function getAssignments()
+    {
+        $role = $this->role;
+
+        if ($role) {
+            return [$role];
+        } else {
+            return ['USER'];
+        }
     }
 }

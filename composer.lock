@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ed2c39c5a13ac307b642009cfc6819da",
+    "hash": "eed6ac88f57b1308dbb0e17eacdcfa49",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -172,16 +172,16 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "v1.0.5",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "be106998879b03b2be3ddf02a51d104ecdafd3a2"
+                "reference": "5f4c144e942c6a0d99197c723f6cb4d237be40e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/be106998879b03b2be3ddf02a51d104ecdafd3a2",
-                "reference": "be106998879b03b2be3ddf02a51d104ecdafd3a2",
+                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/5f4c144e942c6a0d99197c723f6cb4d237be40e7",
+                "reference": "5f4c144e942c6a0d99197c723f6cb4d237be40e7",
                 "shasum": ""
             },
             "require": {
@@ -212,7 +212,7 @@
                 "gravatar",
                 "laravel"
             ],
-            "time": "2015-06-09 19:26:38"
+            "time": "2015-08-25 11:21:47"
         },
         {
             "name": "cviebrock/eloquent-sluggable",
@@ -1756,6 +1756,50 @@
             "time": "2014-09-10 03:32:31"
         },
         {
+            "name": "smart-crowd/laravel-rbac",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Antarus66/laravel-rbac.git",
+                "reference": "7ed79b90bc966d84074b30f38166988113e0e1d9"
+            },
+            "require": {
+                "illuminate/container": "5.1.*",
+                "illuminate/support": "5.1.*"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SmartCrowd\\Rbac\\": "src/Rbac/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Yuri Agapov",
+                    "email": "y.agapov@smart-crowd.ru"
+                },
+                {
+                    "name": "Paul Klementev",
+                    "email": "klermonte@yandex.ru"
+                }
+            ],
+            "description": "Laravel RBAC implementation.",
+            "keywords": [
+                "ACL",
+                "RBAC",
+                "laravel",
+                "role-based access control"
+            ],
+            "time": "2015-08-26 10:36:51"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v5.4.1",
             "source": {
@@ -3238,16 +3282,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.5",
+            "version": "4.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "9b7417edaf28059ea63d86be941e6004dbfcc0cc"
+                "reference": "2246830f4a1a551c67933e4171bf2126dc29d357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9b7417edaf28059ea63d86be941e6004dbfcc0cc",
-                "reference": "9b7417edaf28059ea63d86be941e6004dbfcc0cc",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2246830f4a1a551c67933e4171bf2126dc29d357",
+                "reference": "2246830f4a1a551c67933e4171bf2126dc29d357",
                 "shasum": ""
             },
             "require": {
@@ -3306,7 +3350,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-08-19 09:20:57"
+            "time": "2015-08-24 04:09:38"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -3787,7 +3831,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "smart-crowd/laravel-rbac": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
