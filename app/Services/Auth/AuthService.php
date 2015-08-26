@@ -7,8 +7,11 @@ use App\Services\Auth\Exceptions\AuthException;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Cookie;
+
 
 class AuthService implements AuthServiceInterface
 {
@@ -41,10 +44,15 @@ class AuthService implements AuthServiceInterface
 
     public function getUser()
     {
-        if (Auth::check()) {
-            return Auth::user();
-        } else {
+        if(Cookie::get('x-access-token')==null) {
             throw new AuthException('User is not authorized');
+        } else {
+            if (Auth::check()) {
+                return Auth::user();
+            } else {
+                throw new AuthException('User is not authorized');
+            }
         }
+
     }
 }
