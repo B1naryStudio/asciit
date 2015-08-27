@@ -100,7 +100,10 @@ class AuthService implements AuthServiceInterface
 
     public function getRemoteUserInfo($cookie) {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,            url(env('AUTH_ME')));
+        /*
+         * Hardcoded url!
+         */
+        curl_setopt($ch, CURLOPT_URL,            'http://team.binary-studio.com/auth/api/me');
         curl_setopt($ch, CURLOPT_HEADER,         1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
