@@ -21,6 +21,7 @@ class FolderController extends Controller
         $this->questionService = $questionService;
 
         $this->middleware('auth');
+        $this->middleware('rbac');
     }
 
     /**

@@ -10,7 +10,6 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Repositories\Contracts\UserRepository;
-
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
@@ -24,19 +23,21 @@ class AuthService implements AuthServiceInterface
 
     protected $email;
     protected $password;
-    private $userRepository;
+    protected $userRepository;
 
     public function __construct(
         UserRepository $userRepository
-    )
-    {
+    ) {
         $this->userRepository = $userRepository;
     }
 
     public function authenticate($data)
     {
         if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-            return Auth::user();
+            return $this->userRepository->findWithRelations(
+                Auth::id(),
+                ['roles']
+            );
         } else {
             return Response::json(['error' => 'Wrong login or password'], 404);
         }
@@ -54,7 +55,10 @@ class AuthService implements AuthServiceInterface
     public function getUser()
     {
         if (Auth::check()) {
-            return Auth::user();
+            return $this->userRepository->findWithRelations(
+                Auth::id(),
+                ['roles']
+            );
         } else {
             throw new AuthException('User is not authorized');
         }

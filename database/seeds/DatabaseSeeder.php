@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
             DB::table('tags')->truncate();
             DB::table('comment')->truncate();
             DB::table('votes')->truncate();
+            DB::table('roles')->truncate();
+            DB::table('role_user')->truncate();
             DB::statement('SET foreign_key_checks = 1;');
 
             $this->call(UsersSeeder::class);
@@ -32,6 +34,8 @@ class DatabaseSeeder extends Seeder
             $this->call(VotesSeeder::class);
             $this->call(CommentForAnswerSeeder::class);
             $this->call(CommentForQuestionSeeder::class);
+            $this->call(RolesTableSeeder::class);
+            $this->call(RoleUserTableSeeder::class);
         });
 
         Model::reguard();

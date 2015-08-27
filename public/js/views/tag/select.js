@@ -16,6 +16,7 @@ define([
             tagName: 'select',
             className: 'tag-select',
             childView: View.TagSelectRow,
+
             onShow: function () {
                 var self = this;
                 var lang = i18n.lng().substr(0, 2);

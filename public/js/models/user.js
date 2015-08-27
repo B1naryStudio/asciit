@@ -17,6 +17,25 @@ define(['app'], function (App) {
                     msg: i18n.t('validation.required-field')
                 }
             },
+            isAdmin: function () {
+                var roles = this.get('roles');
+
+                for (var r in roles) {
+                    var roleTitle = roles[r].title;
+                    if (roleTitle == 'ADMIN') {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
+            setAdminFlag: function () {
+                if (this.isAdmin()) {
+                    this.set('admin', true);
+                } else {
+                    this.set('admin', false);
+                }
+            },
             initialize: function () {
                 this.urlRoot = App.prefix + '/api/v1/user/login';
             }
@@ -26,13 +45,15 @@ define(['app'], function (App) {
             login: function (email, password) {
                 var user = new User.Model();
                 var defer = $.Deferred();
+
                 if (!user.save({
                     email: email,
                     password: password
                 }, {
                     wait: true,
-                    success: function (data) {
-                        defer.resolve(user);
+                    success: function (model) {
+                        model.setAdminFlag();
+                        defer.resolve(model);
                     },
                     error: function (data) {
                         defer.reject(data.validationError);
@@ -49,7 +70,8 @@ define(['app'], function (App) {
                 user.fetch({
                     wait: true,
                     success: function (model, response, options) {
-                        defer.resolve(user);
+                        model.setAdminFlag();
+                        defer.resolve(model);
                     },
                     error: function (model, response, options) {
                         defer.reject();

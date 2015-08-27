@@ -26,16 +26,15 @@ class UsersSeeder extends Seeder
                 'first_name' => $faker->firstNameMale,
                 'last_name'  => $faker->lastName,
                 'email'     => $faker->unique()->email,
-                'password'  => bcrypt('secret'),
                 'remember_token' => str_random(10),
             ]);
         }
 
         $this->userRepository->create([
-            'first_name' => 'admin',
-            'last_name'  => 'admin',
-            'email'     => 'admin@admin.com',
-            'password' => bcrypt('admin'),
+            'first_name'     => 'admin',
+            'last_name'      => 'admin',
+            'email'          => 'admin@admin.com',
+            'password'       => bcrypt('admin'),
             'remember_token' => str_random(10),
         ]);
 
