@@ -9,10 +9,13 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Creativeorange\Gravatar\Facades\Gravatar;
+use Creativeorange\Gravatar\Exceptions\InvalidEmailException;
+use SmartCrowd\Rbac\Contracts\Assignable;
+use SmartCrowd\Rbac\Traits\AllowedTrait;
 
-class User extends Model implements Transformable, AuthenticatableContract
+class User extends Model implements Transformable, AuthenticatableContract, Assignable
 {
-    use TransformableTrait, Authenticatable, CanResetPassword;
+    use TransformableTrait, Authenticatable, CanResetPassword, AllowedTrait;
 
     /**
      * The database table used by the model.
@@ -26,7 +29,8 @@ class User extends Model implements Transformable, AuthenticatableContract
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'avatar'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password',
+                           'avatar', 'country', 'city', 'gender', 'birthday'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -45,12 +49,38 @@ class User extends Model implements Transformable, AuthenticatableContract
         return $this->hasMany('App\Repositories\Entities\Folder');
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany('App\Repositories\Entities\Role');
+    }
+
     public function getAvatarAttribute($avatar)
     {
         if (empty($avatar)) {
-            return Gravatar::get($this->attributes['email'], ['fallback' => 'identicon']);
+            try {
+                return Gravatar::get($this->attributes['email'], ['fallback' => 'identicon']);
+            } catch (InvalidEmailException $e) {
+                return Gravatar::get('example@example.com', ['fallback' => 'identicon']);
+            }
         }
 
         return $avatar;
+    }
+
+    /**
+     * Should return array of permissions and roles names,
+     * assigned to user.
+     *
+     * @return array Array of user assignments.
+     */
+    public function getAssignments()
+    {
+        $roles = $this->roles->pluck('title')->all();
+
+        if ($roles == []) {
+            $roles = ['USER'];
+        }
+
+        return $roles;
     }
 }

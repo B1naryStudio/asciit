@@ -1219,3 +1219,60 @@ div .fa-05 {
         display:none!important;
     }
 }
+
+#top-link{
+    cursor:pointer;
+    display:none;
+    position:fixed;
+    right:30px;
+    bottom:20px;
+    padding:0;
+    z-index:1;
+    /*padding-top:35px;*/
+}
+
+#top-link a {
+    display: block;
+    width: 100px;
+    text-align: center;
+    background: #333;
+    color: white;
+    padding: 5px 0;
+    margin:5px;
+    text-decoration:none !important;
+    border-radius: 5px;
+}
+
+#top-link:hover a{
+    background:#000;
+}
+
+#topicon{
+    width:0;
+    height:0;
+    display:inline-block;
+    border-bottom:7px solid #fff;
+    border-left:7px solid transparent;
+    border-right:7px solid transparent;
+    margin-right:5px;
+}
+
+#backicon{
+    width:0;
+    height:0;
+    display:inline-block;
+    border-top:7px solid #fff;
+    border-left:7px solid transparent;
+    border-right:7px solid transparent;
+    margin-right:5px;
+}
+
+#textButton{
+    display:none;
+}
+
+.confirm-form {
+    width: 25%;
+    margin: auto;
+    height: 33%;
+}
