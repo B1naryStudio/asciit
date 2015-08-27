@@ -30,7 +30,7 @@ class RoleUserTableSeeder extends Seeder
         $roleUser = $this->roleRepository->firstWhere(['title' => 'USER']);
         $this->roleRepository->relationsAdd($roleUser, 'users', $usersArray);
 
-        $admin = $this->userRepository->firstWhere(['first_name' => 'admin']);
+        $admin = $this->userRepository->firstWhere(['email' => 'admin@admin.com']);
         $role_admin = $this->roleRepository->firstWhere(['title' => 'ADMIN']);
         $this->userRepository->relationsAdd($admin, 'roles', [$role_admin]);
     }

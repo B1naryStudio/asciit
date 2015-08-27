@@ -32,9 +32,9 @@ define(['app'], function (App) {
             setAdminFlag: function () {
                 if (this.isAdmin()) {
                     this.set('admin', true);
+                } else {
+                    this.set('admin', false);
                 }
-
-                this.set('admin', false);
             },
             initialize: function () {
                 this.urlRoot = App.prefix + '/api/v1/user/login';
