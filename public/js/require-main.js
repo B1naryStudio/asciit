@@ -11,7 +11,7 @@ requirejs.config({
         backbone: 'vendor/backbone/backbone',
         'backbone.syphon': 'vendor/backbone/backbone.syphon',
         jquery: 'vendor/jquery/jquery',
-        'jquery.scroll': 'vendor/jquery/jquery.scrollTo',
+        'jquery.scroll': 'vendor/jquery/jquery.scrollTo.min',
         marionette: 'vendor/backbone.marionette/backbone.marionette',
         underscore: 'vendor/backbone/underscore',
         bootstrap: 'vendor/bootstrap/bootstrap.min',
