@@ -97,10 +97,10 @@ class AuthService implements AuthServiceInterface
     }
 
     public function getRemoteUserInfo($cookie) {
-        $cookie = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU1ZGMxMzM5MTg0NmM2OGExYWQ1NmRhYSIsImVtYWlsIjoiYWRtaW5AYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE0NDA2NzM4MDV9.rjYkrSZUnBZ1l_eztXgLen-luSq0dsCbMmWW0onCUvo';
+        //$cookie = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU1ZGMxMzM5MTg0NmM2OGExYWQ1NmRhYSIsImVtYWlsIjoiYWRtaW5AYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE0NDA2NzM4MDV9.rjYkrSZUnBZ1l_eztXgLen-luSq0dsCbMmWW0onCUvo';
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,            'http://team.binary-studio.com/auth/api/me');
-//        curl_setopt($ch, CURLOPT_URL,            env('AUTH_ME'));
+        curl_setopt($ch, CURLOPT_URL,            env('AUTH_ME'));
         curl_setopt($ch, CURLOPT_HEADER,         1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
