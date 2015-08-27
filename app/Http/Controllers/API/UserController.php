@@ -38,7 +38,7 @@ class UserController extends Controller
 
     }
     
-    public function logout($id)
+    public function logout(Request $request, $id)
     {
         try {
             $this->authService->logout();
@@ -47,6 +47,11 @@ class UserController extends Controller
                 'error' => [$e->getMessage()]
             ], 500);
         }
+
+        $cookie = $request->cookie('x-access-token');
+        $this->sendRemoteLogout($cookie);
+        setcookie('x-access-token', '', -1, '/');
+
         return Response::json(null, 200, [], JSON_NUMERIC_CHECK);
     }
 
@@ -69,5 +74,18 @@ class UserController extends Controller
         }
 
         return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
+    }
+
+    public function sendRemoteLogout($cookie) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,            url(env('AUTH_LOGOUT')));
+        curl_setopt($ch, CURLOPT_HEADER,         1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,        30);
+        curl_setopt($ch, CURLOPT_COOKIE,        "x-access-token=".$cookie);
+        $response = curl_exec($ch);
+
+        return $response;
     }
 }

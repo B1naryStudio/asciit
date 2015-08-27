@@ -37,19 +37,21 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                         wait: true,
                         success: function(model, response) {
                             delete App.User.Current;
-                            Backbone.history.navigate(
-                                '/login',
-                                { trigger: true }
-                            );
-                            App.Main.Menu.triggerMethod('user:leave');
+                            //Backbone.history.navigate(
+                            //    '/login',
+                            //    { trigger: true }
+                            //);
+                            //document.location = "http://team.binary-studio.com/auth/logout";
+                            //App.Main.Menu.triggerMethod('user:leave');
+
+                            document.location = '/';
                         },
                         error: function(model, xhr) {
                             console.log(JSON.parse(xhr.responseText));
                         }
                     });
                 } else {
-                    document.location = "http://team.binary-studio.com/auth/logout";
-                    //Backbone.history.navigate('/login', { trigger: true });
+                    location.reload();
                 }
             },
             session: function () {
