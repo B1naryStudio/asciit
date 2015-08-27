@@ -64,7 +64,7 @@ class UserController extends Controller
                 /*
                  * Hardcoded url!
                  */
-                return Redirect::to('http://chewbakka.com/')
+                return Redirect::to('http://team.binary-studio.com/auth/')
                     ->withCookie('referer', 'http://team.binary-studio.com/asciit/');
             } catch (AuthException $e){
                 return Response::json([
