@@ -10,7 +10,8 @@ requirejs.config({
     paths: {
         backbone: 'vendor/backbone/backbone',
         'backbone.syphon': 'vendor/backbone/backbone.syphon',
-        jquery: 'vendor/backbone/jquery',
+        jquery: 'vendor/jquery/jquery',
+        'jquery.scroll': 'vendor/jquery/jquery.scrollTo',
         marionette: 'vendor/backbone.marionette/backbone.marionette',
         underscore: 'vendor/backbone/underscore',
         bootstrap: 'vendor/bootstrap/bootstrap.min',
@@ -28,7 +29,8 @@ requirejs.config({
         'moment': 'vendor/moment/moment-with-locales.min',
         'wampy': 'vendor/wampy/wampy-all.min',
         'progressbar': 'vendor/progressbar/progressbar.min',
-        i18next: 'vendor/i18next-1.10.1/i18next-1.10.1.min'
+        i18next: 'vendor/i18next-1.10.1/i18next-1.10.1.min',
+        updown: 'vendor/updown/updown'
     },
     shim: {
         underscore: {
@@ -49,9 +51,11 @@ requirejs.config({
         syphon: ['backbone'],
         'ckeditor.adapter': ['ckeditor'],
         select2: {
-            deps: ["jquery"],
-            exports: "$.fn.select2"
-        }
+            deps: ['jquery'],
+            exports: '$.fn.select2'
+        },
+        'jquery.scroll': ['jquery'],
+        updown: ['jquery.scroll']
     }
 });
 
