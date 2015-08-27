@@ -57,5 +57,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\CommentRepository',
             'App\Repositories\Repositories\CommentRepositoryEloquent'
         );
+
+        $this->app->singleton(
+            'App\Repositories\Contracts\RoleRepository',
+            'App\Repositories\Repositories\RoleRepositoryEloquent'
+        );
     }
 }

@@ -16,9 +16,10 @@ define([
             tagName: 'select',
             className: 'tag-select',
             childView: View.TagSelectRow,
+
             onShow: function () {
                 var self = this;
-                var lang = i18n.lng();
+                var lang = i18n.lng().substr(0, 2);
 
                 require(['vendor/select2/i18n/' + lang], function () {
                     self.$el.attr('name', 'tag')

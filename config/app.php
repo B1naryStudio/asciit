@@ -155,7 +155,9 @@ return [
         Creativeorange\Gravatar\GravatarServiceProvider::class,
         Intervention\Image\ImageServiceProviderLaravel5::class,
         App\Providers\GosWebSocketClientProvider::class,
-        Cviebrock\EloquentSluggable\SluggableServiceProvider::class
+        Cviebrock\EloquentSluggable\SluggableServiceProvider::class,
+        Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        SmartCrowd\Rbac\RbacServiceProvider::class,
     ],
 
     /*
@@ -194,6 +196,7 @@ return [
         'Mail'      => Illuminate\Support\Facades\Mail::class,
         'Password'  => Illuminate\Support\Facades\Password::class,
         'Queue'     => Illuminate\Support\Facades\Queue::class,
+        'Rbac'      => SmartCrowd\Rbac\Facades\Rbac::class,
         'Redirect'  => Illuminate\Support\Facades\Redirect::class,
         'Redis'     => Illuminate\Support\Facades\Redis::class,
         'Request'   => Illuminate\Support\Facades\Request::class,
@@ -205,6 +208,8 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class
 
     ],
 

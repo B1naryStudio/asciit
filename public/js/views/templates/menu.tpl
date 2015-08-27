@@ -43,8 +43,12 @@
             <li><a id="nav-question" href="#questions"><%= _t("questions.all") %></a></li>
             <li><a id="nav-question-add"><%= _t("questions.add") %></a></li>
             <li><a href="#activity"><%= _t("questions.my") %></a></li>
+
+            <% if (admin) { %>
+                <li><a id="nav-question" href="#folders"><%= _t("folders.folders") %></a></li>
+            <% } %>
+
             <li><a id="nav-tags" href="#tags"><%= _t("tags.tags") %></a></li>
-            <li><a id="nav-question" href="#folders"><%= _t("folders.folders") %></a></li>
             <li>
             <span class="hidden-lg hidden-md hidden-sm logout-xs    ">
                 <%= email %>

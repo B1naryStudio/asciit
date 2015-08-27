@@ -175,6 +175,8 @@ define([
             App.trigger('spinner:check');
             if (xhr.status === 401 ) {
                 Backbone.history.navigate('/login', { trigger: true });
+            } else if (xhr.status === 303 ) {
+                location.reload();
             } else {
                 error(xhr, textStatus, errorThrown);
             }

@@ -14,6 +14,12 @@ class ImageController extends Controller
 {
     protected $localImagePath = '/images/';
 
+    public function __construct(QuestionServiceInterface $questionService)
+    {
+        $this->middleware('auth');
+        $this->middleware('rbac');
+    }
+
     /**
      * Store a newly created resource in storage.
      *

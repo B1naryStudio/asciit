@@ -13,7 +13,6 @@ class FoldersSeeder extends Seeder
         $this->folderRepository = $folderRepository;
     }
 
-
     /**
      * Run the database seeds.
      *
