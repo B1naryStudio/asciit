@@ -48,6 +48,7 @@
                 <li><a id="nav-question" href="#folders"><%= _t("folders.folders") %></a></li>
             <% } %>
 
+            <li><a id="nav-tags" href="#tags"><%= _t("tags.tags") %></a></li>
             <li>
             <span class="hidden-lg hidden-md hidden-sm logout-xs    ">
                 <%= email %>

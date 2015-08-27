@@ -38,7 +38,7 @@ define(['app', 'moment'], function(App, moment) {
                     }
                 );
             }
-        },
+        };
 
         ModelMixins.LiveCollection = {
             onLiveUpdate: function(topic, message) {
@@ -67,6 +67,9 @@ define(['app', 'moment'], function(App, moment) {
                 // If there is remote call parameters
                 if (calls) {
                     for (var funcName in calls) {
+                        if (!calls.hasOwnProperty(funcName)) {
+                            continue;
+                        }
                         // Taking a function name from object
                         // Try to get a func from the current model/collection
                         var fn = this[funcName];
@@ -87,8 +90,6 @@ define(['app', 'moment'], function(App, moment) {
         _.extend(ModelMixins.LiveModel, ModelMixins.LiveUpdating);
 
         ModelMixins.RelativeTimestampsModel = {
-
-
             attachLocalDates: function () {
                 if (i18n.lng) {
                     moment.locale(i18n.lng());

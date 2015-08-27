@@ -10,7 +10,6 @@ use App\Repositories\Contracts\RepositoryInterface;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Query\Expression;
 
 abstract class Repository extends BaseRepository implements RepositoryInterface
 {
@@ -32,7 +31,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             if ($this->with_relation_count) {
                 foreach ($this->relations as $relation => $options) {
                     $tmp = $this
-                        ->getRelationRecordCount($relation)
+                        ->getRelationRecordCount($relation, $relation)
                         ->whereIn('main.id', [$id])->get()->all();
 
                     $tmp2 = [];
@@ -54,6 +53,9 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     {
         try {
             $collection = parent::findByField($field, $value, $columns);
+            if ($collection->count() === 0) {
+                throw new ModelNotFoundException();
+            }
             if ($this->with_relation_count) {
                 $collection = $this->setCountedFields($collection);
             }
@@ -130,43 +132,55 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         $model->$method()->saveMany($data);
     }
 
-    public function getRelationRecordCount($relation)
+    public function getRelationRecordCount($relation, $relation_count, $use_main_table = true)
     {
         $this->with($relation);
         $model = $this->model;
-        $query = Relation::noConstraints(function () use ($model, $relation) {
-            return $model->getRelation($relation)
-                ->groupBy(
+        $query = Relation::noConstraints(function () use (
+            $model,
+            $relation,
+            $relation_count
+        ) {
+            return $model->getRelation($relation_count)->groupBy(
                     $this->relations[$relation]['table'] . '.' .
                     $this->relations[$relation]['foreignKey']
-                )
-                ->orderBy($this->relations[$relation]['count'], 'desc');
+                )->orderBy($this->relations[$relation]['count'], 'desc');
         });
 
         if ($model instanceof Builder) {
             $model = $model->getModel();
         }
 
-        $query->select(['main.*']);
+        if ($use_main_table) {
+            $query->select(['main.*']);
+        }
 
         foreach ($this->relations[$relation]['fields'] as $field => $name) {
             $query->selectRaw($field . ' as ' . $name);
         }
 
-        $query->join(
+        if ($use_main_table) {
+            $query->join(
                 $model->getTable() . ' as main',
                 'main.id',
                 '=',
                 $this->relations[$relation]['table'] . '.' .
-                    $this->relations[$relation]['foreignKey']
+                $this->relations[$relation]['foreignKey']
             );
-
+        }
         return $query;
     }
 
-    public function loadRelationPopular($relation, $count, $where = array())
+    public function loadRelationPopular($relation, $count, $use_main_table = true, $where = array())
     {
-        $query = $this->getRelationRecordCount($relation);
+        if (!is_array($relation)) {
+            $relation_count = $relation;
+        } else {
+            $relation_count = $relation[1];
+            $relation = $relation[0];
+        }
+
+        $query = $this->getRelationRecordCount($relation, $relation_count, $use_main_table);
         if (!empty($where)) {
             foreach ($where as $condition) {
                 if (is_array($condition) && count($condition) === 2 ) {
@@ -184,6 +198,33 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             ->limit($count)
             ->get()
             ->all();
+    }
+
+    public function loadRelationPopularPaginate($relation, $limit, $use_main_table = true, $where = array())
+    {
+        if (!is_array($relation)) {
+            $relation_count = $relation;
+        } else {
+            $relation_count = $relation[1];
+            $relation = $relation[0];
+        }
+
+        $query = $this->getRelationRecordCount($relation, $relation_count, $use_main_table);
+        if (!empty($where)) {
+            foreach ($where as $condition) {
+                if (is_array($condition) && count($condition) === 2 ) {
+                    $query->whereRaw($condition[0], $condition[1]);
+                } elseif (is_array($condition) && count($condition) === 3 ) {
+                    $query->where($condition[0], $condition[1], $condition[2]);
+                } else {
+                    $query->whereRaw($condition);
+                }
+            }
+        }
+
+        return $query
+            ->orderBy($this->relations[$relation]['count'], 'desc')
+            ->paginate($limit);
     }
 
     public function withRelationCount()
@@ -221,7 +262,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
 
             foreach ($this->relations as $relation => $options) {
                 $tmp = $this
-                    ->getRelationRecordCount($relation)
+                    ->getRelationRecordCount($relation, $relation)
                     ->whereIn('main.id', $id)->get()->all();
 
                 $tmp2 = [];
@@ -255,7 +296,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
 
         foreach ($this->relations as $relation => $options) {
             $tmp = $this
-                ->getRelationRecordCount($relation)
+                ->getRelationRecordCount($relation, $relation)
                 ->whereIn('main.id', $id)->get()->all();
 
             $tmp2 = [];

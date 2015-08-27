@@ -57,7 +57,9 @@ define([
 
                     if (model1.get(compareField) > model2.get(compareField)) {
                         return -1; // before
-                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                    } else if (
+                        model2.get(compareField) > model1.get(compareField)
+                    ) {
                         return 1; // after
                     } else {
                         return 0; // equal
@@ -75,7 +77,7 @@ define([
                     },
                     sortedBy: 'desc'
                 },
-                initialize: function(options) {
+                initialize: function (options) {
                     this.sort();
                     this.startLiveUpdating();
                 }
@@ -93,6 +95,12 @@ define([
                 if (!collection.fetch({
                         success: function (data) {
                             defer.resolve(data);
+                        },
+                        error: function (model, response) {
+                            defer.reject({
+                                status: response.status,
+                                error: model.validationError
+                            });
                         }
                     })
                 ) {
@@ -128,8 +136,10 @@ define([
                 return this.addFolder(model);
             },
 
-            getFolders: function () {
-                var questions = new Folder.Folders();
+            getFolders: function (data) {
+                var options = data.options ? data.options : {};
+                delete data.options;
+                var questions = new Folder.Folders(data, options);
                 return this.fetch(questions);
             },
 
@@ -165,8 +175,8 @@ define([
             return API.addFolder(collection, model);
         });
 
-        App.reqres.setHandler('folders:get', function (page) {
-            return API.getFolders(page ? parseInt(page) : 1);
+        App.reqres.setHandler('folders:get', function (data) {
+            return API.getFolders(data);
         });
 
         App.reqres.setHandler('folder:update', function (model) {

@@ -3,7 +3,8 @@ define([
     'tpl!views/templates/main-layout.tpl',
     'views/menu',
     'moment',
-    'syphon'
+    'syphon',
+    'updown'
 ], function (App, Tpl, Menu, moment) {
     App.module('Main', function (Main, App, Backbone, Marionette, $, _) {
         var Layout = Marionette.LayoutView.extend({
@@ -35,7 +36,6 @@ define([
                 this.getRegion('header').show(Menu);
 
                 this.startRelativeTimeUpdating();
-                require(['vendor/button_down/button_down']);
             }
         });
         Main.Layout = new Layout();

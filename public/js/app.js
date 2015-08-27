@@ -4,23 +4,24 @@ define([
     'validation-model'
 ], function (Marionette) {
     var App = new Marionette.Application();
-
     App.queryFlag = [];
-
     App.helper = {
         getSelected: function() {
-            if(window.getSelection) { return window.getSelection(); }
-            else if(document.getSelection) { return document.getSelection(); }
-            else {
-                var selection = document.selection && document.selection.createRange();
-                if(selection.text) { return selection.text; }
+            if (window.getSelection) {
+                return window.getSelection();
+            } else if (document.getSelection) {
+                return document.getSelection();
+            } else {
+                var selection = document.selection &&
+                    document.selection.createRange();
+                if (selection.text) {
+                    return selection.text;
+                }
                 return false;
             }
-            return false;
         },
 
         moveFocus: function(editor, data) {
-
             var checkData = editor.getData();
             var el = $(editor.getSelection().document.$).find('body');
             if(checkData!='') {
@@ -32,7 +33,8 @@ define([
             var s = editor.getSelection(); // getting selection
             var selected_ranges = s.getRanges(); // getting ranges
 
-            var node = selected_ranges[0].startContainer; // selecting the starting node
+            // selecting the starting node
+            var node = selected_ranges[0].startContainer;
             var parents = node.getParents(true);
             node = parents[parents.length - 2].getFirst();
             while (true) {
@@ -44,7 +46,9 @@ define([
             }
             s.selectElement(node);
             selected_ranges = s.getRanges();
-            selected_ranges[0].collapse(false);  //  false collapses the range to the end of the selected node, true before the node.
+            //  false collapses the range to the end of the selected node,
+            // true before the node.
+            selected_ranges[0].collapse(false);
             s.selectRanges(selected_ranges);
         },
 
@@ -52,6 +56,39 @@ define([
             el.find('[name="title"]').attr('disabled', option);
             el.find('.control-buttons').toggle();
             el.find('.edit-buttons').toggle();
+        },
+
+        parseUrl: function (url) {
+            var data = {};
+            if (url) {
+                var tmp = url.split('&');
+                var tmp2;
+                for (var i = 0; i < tmp.length; i++) {
+                    tmp2 = tmp[i].split('=');
+                    if (tmp2.length === 2) {
+                        data[tmp2[0]] = tmp2[1];
+                    } else {
+                        data['search'] = tmp2[0];
+                    }
+                }
+            }
+            return data;
+        },
+
+        makeUrl: function (params) {
+            var url = [];
+            for (var i in params) {
+                if (!params.hasOwnProperty(i)) {
+                    continue;
+                }
+
+                if (i === 'search') {
+                    url[url.length] = params[i];
+                } else {
+                    url[url.length] = i + '=' + params[i];
+                }
+            }
+            return url.join('&');
         }
     };
 

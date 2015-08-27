@@ -54,7 +54,8 @@ define(['app'], function(App) {
                         options.totalPages - options.currentPage <
                         pages.links_one_side
                     ) {
-                        start = options.totalPages - pages.links_one_side * 2 - 1;
+                        start = options.totalPages -
+                            pages.links_one_side * 2 - 1;
                         if (start < 2) {
                             start = 2;
                         }
@@ -63,7 +64,8 @@ define(['app'], function(App) {
                     var page;
                     for (
                         var i = start;
-                        i < start + pages.links_one_side * 2 + 1 && i < options.totalPages;
+                        i < start + pages.links_one_side * 2 + 1 &&
+                        i < options.totalPages;
                         i++
                     ) {
                         page = { title: i, page: i, type: 'page' };

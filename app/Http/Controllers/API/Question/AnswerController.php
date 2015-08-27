@@ -28,8 +28,14 @@ class AnswerController extends Controller
      */
     public function index($question_id)
     {
-        $answers = $this->questionService->getAnswersOfQuestion($question_id);
-        return Response::json($answers->toArray(), 201, [], JSON_NUMERIC_CHECK);
+        try {
+            $answers = $this->questionService
+                ->getAnswersOfQuestion($question_id)
+                ->toArray();
+        } catch (QuestionServiceException $e) {
+            $answers = [];
+        }
+        return Response::json($answers, 201, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -41,7 +47,8 @@ class AnswerController extends Controller
     public function store(AnswerValidatedRequest $request, $question_id)
     {
         try {
-            $answer = $this->questionService->createAnswer($request->all(), $question_id);
+            $answer = $this->questionService
+                ->createAnswer($request->all(), $question_id);
         } catch (QuestionServiceException $e) {
             return Response::json([
                 'error' => [

@@ -1,17 +1,17 @@
 define([
     'app',
     'views/question/collection',
-    'views/question/collection_layout',
-    'views/paginator/paginator',
+    'views/question/collection-layout',
     'views/question/single',
     'views/question/add',
     'views/folder/select',
     'views/answer/collection',
     'views/tag/select',
-    'views/tag/collection',
+    'views/tag/collection-popular',
     'models/answer',
     'views/comment/collection',
     'models/comment',
+    'views/empty',
     'models/question',
     'models/folder',
     'models/tag'
@@ -19,7 +19,6 @@ define([
     App,
     CollectionView,
     CollectionLayout,
-    PaginatorView,
     SingleView,
     AddView,
     SelectFolderView,
@@ -28,17 +27,37 @@ define([
     TagsView,
     Answer,
     CommentsView,
-    Comment
+    Comment,
+    EmptyView
 ) {
     App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             questions: function (searchQuery, searchTag, searchFolder, page) {
                 $.when(
-                    App.request('question:collection', searchQuery, searchTag, searchFolder, page),
-                    App.request('tag:collection', {
-                        type: 'popular',
-                        page_size: 10
-                    })
+                    App.request(
+                        'question:collection',
+                        {
+                            searchQuery: searchQuery,
+                            searchTag: searchTag,
+                            searchFolder: searchFolder,
+                            options: {
+                                state: {
+                                    currentPage: page
+                                }
+                            }
+                        }
+                    ),
+                    App.request(
+                        'tag:collection',
+                        {
+                            type: 'popular',
+                            options: {
+                                state: {
+                                    pageSize: 10
+                                }
+                            }
+                        }
+                    )
                 ).done(function (questions, tags) {
                     if (searchQuery) {
                         questions.searchQuery = searchQuery; // For live update
@@ -67,6 +86,7 @@ define([
 
                     App.trigger('paginator:get', {
                         collection: questions,
+                        navigate: true,
                         success: function (paginatorView) {
                             collectionLayout
                                 .getRegion('paginatorRegion')
@@ -113,6 +133,13 @@ define([
                             }
                         }
                     );
+                }).fail(function (data) {
+                    if (data.status === 404) {
+                        var view = new EmptyView();
+                        App.Main.Layout
+                            .getRegion('content')
+                            .show(view);
+                    }
                 });
             },
 
@@ -219,6 +246,13 @@ define([
                                 }
                             );
                         });
+                }).fail(function (data) {
+                    if (data.status === 404) {
+                        var view = new EmptyView();
+                        App.Main.Layout
+                            .getRegion('content')
+                            .show(view);
+                    }
                 });
             },
 
@@ -226,7 +260,7 @@ define([
                 $.when(
                     App.request('folder:collection'),
                     App.request('tag:collection', {
-                        type: 'select',
+                        type: 'search',
                         page_size: 10
                     })
                 ).done(function (folders, tags) {

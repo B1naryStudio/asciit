@@ -10,6 +10,7 @@ use App\Services\Questions\Exceptions\QuestionServiceException;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\QuestionValidatedRequest;
+use Illuminate\Pagination\Paginator;
 
 class QuestionController extends Controller
 {
@@ -36,15 +37,32 @@ class QuestionController extends Controller
         $search = $request->get('search');
         $tag = $request->get('tag');
 
-        if (empty($search) && empty($folder) && !empty($tag)) {
-            /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-            $questions = $this->questionService->getQuestions($request->get('page_size'), ['tag' => $tag]);
-        } if (empty($search) && empty($tag) && !empty($folder)) {
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-        $questions = $this->questionService->getQuestions($request->get('page_size'), ['folder' => $folder]);
+
+        if (empty($search) && empty($folder) && !empty($tag)) {
+            $questions = $this->questionService->getQuestions(
+                $request->get('page_size'),
+                ['tag' => $tag]
+            );
+        } elseif (empty($search) && empty($tag) && !empty($folder)) {
+            $questions = $this->questionService->getQuestions(
+                $request->get('page_size'),
+                ['folder' => $folder]
+            );
         } else {
-            /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-            $questions = $this->questionService->getQuestions($request->get('page_size'));
+            $questions = $this->questionService->getQuestions(
+                $request->get('page_size')
+            );
+        }
+
+        $page = (int) Paginator::resolveCurrentPage();
+        if (empty($page)) {
+            $page = 1;
+        }
+        if ($page !== $questions->currentPage()) {
+            return Response::json([
+                'error' => 'not found'
+            ], 404, [], JSON_NUMERIC_CHECK);
         }
 
         return Response::json(
@@ -104,6 +122,7 @@ class QuestionController extends Controller
     public function my(Request $request)
     {
         try {
+            /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
             $questions = $this->questionService
                 ->getQuestionsByUser($request->get('page_size'));
         } catch (QuestionServiceException $e) {

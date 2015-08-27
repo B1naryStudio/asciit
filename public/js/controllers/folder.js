@@ -3,15 +3,22 @@ define([
     'views/folder/layout',
     'views/folder/collection',
     'views/folder/add',
-    'models/folder'
-], function (App, Layout, FolderCollectionView, NewFolderView, Folder) {
+    'models/folder',
+    'views/empty'
+], function (App, Layout, FolderCollectionView, NewFolderView, Folder, EmptyView) {
     App.module('Folder', function (Folder, App, Backbone, Marionette, $, _) {
         var Controller = Marionette.Controller.extend({
             current_page: 1,
             getFolders: function (page) {
                 var self = this;
                 $.when(
-                    App.request('folders:get')
+                    App.request('folders:get', {
+                        options: {
+                            state: {
+                                currentPage: page
+                            }
+                        }
+                    })
                 ).done(function (folders) {
                     var layout = new Layout();
                     App.Main.Layout.getRegion('content').show(layout);
@@ -25,15 +32,7 @@ define([
                     var folderForm = new NewFolderView({ model: folder });
                     layout.getRegion('newFolderRegion').show(folderForm);
 
-                    App.trigger('paginator:get', {
-                        collection: folders,
-                        success: function (paginatorView) {
-                            layout
-                                .getRegion('paginationRegion')
-                                .show(paginatorView);
-                        },
-                        pageChange: self.pageChange
-                    });
+                    self.updatePagination(folders, layout);
 
                     Folder.Controller.listenTo(
                         folderForm,
@@ -41,7 +40,8 @@ define([
                         function (model) {
                             $.when(App.request('folder:add', model))
                                 .done(function (savedModel) {
-                                    var current_page_count = folders.state.totalPages;
+                                    var current_page_count =
+                                        folders.state.totalPages;
                                     if (current_page_count < 1) {
                                         current_page_count = 1;
                                     }
@@ -136,12 +136,20 @@ define([
                                 });
                         }
                     );
+                }).fail(function (data) {
+                    if (data.status === 404) {
+                        var view = new EmptyView();
+                        App.Main.Layout
+                            .getRegion('content')
+                            .show(view);
+                    }
                 });
             },
 
             updatePagination: function (folders, layout) {
                 App.trigger('paginator:get', {
                     collection: folders,
+                    navigate: true,
                     success: function (paginatorView) {
                         layout
                             .getRegion('paginationRegion')

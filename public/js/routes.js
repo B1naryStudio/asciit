@@ -59,9 +59,8 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                 });
             },
             questions: function (data) {
-                var self = this;
                 require(['controllers/question'], function (controller) {
-                    var tmp = self.parseUrl(data);
+                    var tmp = App.helper.parseUrl(data);
                     controller.questions(
                         tmp['search'] ? tmp['search'] : '',
                         '',
@@ -90,9 +89,13 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.close(data);
                 });
             },
-            tags: function () {
+            tags: function (data) {
+                var tmp = App.helper.parseUrl(data);
                 require(['controllers/tag'], function (controller) {
-                    controller.tags();
+                    controller.tags(
+                        tmp['search'] ? tmp['search'] : '',
+                        tmp['page'] ? parseInt(tmp['page']) : 1
+                    );
                 });
             },
             tagSearch: function (searchQuery) {
@@ -110,31 +113,16 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.paginator(options);
                 });
             },
-            folders: function () {
+            folders: function (data) {
                 require(['controllers/folder'], function (controller) {
-                    controller.getFolders();
+                    var tmp = App.helper.parseUrl(data);
+                    controller.getFolders(tmp['page'] ? parseInt(tmp['page']) : 1);
                 })
             },
             folderSearch: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
                     controller.questions('', '', $.trim(searchQuery));
                 });
-            },
-            parseUrl: function (url) {
-                var data = {};
-                if (url) {
-                    var tmp = url.split('&');
-                    var tmp2;
-                    for (var i = 0; i < tmp.length; i++) {
-                        tmp2 = tmp[i].split('=');
-                        if (tmp2.length === 2) {
-                            data[tmp2[0]] = tmp2[1];
-                        } else {
-                            data['search'] = tmp2[0];
-                        }
-                    }
-                }
-                return data;
             }
         };
 

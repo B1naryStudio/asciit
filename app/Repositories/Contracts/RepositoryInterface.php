@@ -10,6 +10,10 @@ namespace App\Repositories\Contracts;
 use Prettus\Repository\Contracts\RepositoryInterface as BaseRepositoryInterface;
 
 use Prettus\Repository\Contracts\CriteriaInterface;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface RepositoryInterface extends BaseRepositoryInterface
 {
@@ -56,9 +60,42 @@ interface RepositoryInterface extends BaseRepositoryInterface
 
     public function firstWhere(array $where , $columns = array('*'));
 
-    public function getRelationRecordCount($relation);
+    /**
+     * Return query for request with count and group by
+     *
+     * @param $relation string Name of relation from repository
+     * @param $relation_count string Name of relation from model
+     * @param bool|true $use_main_table bool Join table from model or not.
+     *  Main table has alias `main`
+     * @return Builder
+     */
+    public function getRelationRecordCount($relation, $relation_count, $use_main_table = true);
 
-    public function loadRelationPopular($relation, $count, $where = array());
+    /**
+     * Return models with count records from related table
+     *
+     * @param $relation string|array Name of relation from repository or
+     *  array with name of relation from repository and name of relation from model
+     * @param $limit int Limit
+     * @param $use_main_table bool Join table from model or not.
+     *  Main table has alias `main`
+     * @param array $where array Where clauses
+     * @return array
+     */
+    public function loadRelationPopular($relation, $limit, $use_main_table, $where = array());
+
+    /**
+     * Return models with count records from related table for pagination
+     *
+     * @param $relation string|array Name of relation from repository or
+     *  array with name of relation from repository and name of relation from model
+     * @param $limit int Limit
+     * @param $use_main_table bool Join table from model or not.
+     *  Main table has alias `main`
+     * @param array $where array Where clauses
+     * @return LengthAwarePaginator
+     */
+    public function loadRelationPopularPaginate($relation, $limit, $use_main_table, $where = array());
 
     /**
      * @return RepositoryInterface
