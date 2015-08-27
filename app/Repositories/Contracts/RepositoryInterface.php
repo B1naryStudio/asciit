@@ -40,7 +40,12 @@ interface RepositoryInterface extends BaseRepositoryInterface
      * @param array $columns
      * @return collection
      */
-    public function findByFieldWithRelations($fieldName, $fieldValue, $relations, $columns = ['*']);
+    public function findByFieldWithRelations(
+        $fieldName,
+        $fieldValue,
+        $relations,
+        $columns = ['*']
+    );
 
     /**
      * @param array $attributes
@@ -69,7 +74,11 @@ interface RepositoryInterface extends BaseRepositoryInterface
      *  Main table has alias `main`
      * @return Builder
      */
-    public function getRelationRecordCount($relation, $relation_count, $use_main_table = true);
+    public function getRelationRecordCount(
+        $relation,
+        $relation_count,
+        $use_main_table = true
+    );
 
     /**
      * Return models with count records from related table
@@ -82,7 +91,13 @@ interface RepositoryInterface extends BaseRepositoryInterface
      * @param array $where array Where clauses
      * @return array
      */
-    public function loadRelationPopular($relation, $limit, $use_main_table, $where = array());
+    public function loadRelationPopular(
+        $relation,
+        $limit,
+        $use_main_table,
+        $relations = array(),
+        $where = array()
+    );
 
     /**
      * Return models with count records from related table for pagination
@@ -95,7 +110,13 @@ interface RepositoryInterface extends BaseRepositoryInterface
      * @param array $where array Where clauses
      * @return LengthAwarePaginator
      */
-    public function loadRelationPopularPaginate($relation, $limit, $use_main_table, $where = array());
+    public function loadRelationPopularPaginate(
+        $relation,
+        $limit,
+        $use_main_table,
+        $relations = array(),
+        $where = array()
+    );
 
     /**
      * @return RepositoryInterface
@@ -106,4 +127,6 @@ interface RepositoryInterface extends BaseRepositoryInterface
      * @return RepositoryInterface
      */
     public function withoutRelationCount();
+
+    public function setCountedFields($collection);
 }
