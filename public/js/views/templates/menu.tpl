@@ -49,6 +49,7 @@
             <% } %>
 
             <li><a id="nav-tags" href="#tags"><%= _t("tags.tags") %></a></li>
+            <li><a id="nav-tags" href="http://chewbakka.com/">Chewbakka</a></li>
             <li>
             <span class="hidden-lg hidden-md hidden-sm logout-xs    ">
                 <%= email %>
