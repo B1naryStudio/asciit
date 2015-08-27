@@ -34,39 +34,35 @@ define([
             }
         });
 
-        Tag.PageableCollection = PageableCollection.extend(
-            _.extend({}, ModelMixins.LiveCollection, {
-                model: Tag.Model,
-                url: App.prefix + '/api/v1/tags',
-                liveURI: 'tags',
-                sortKey: 'question_count',
-                order: 'desc',
-                queryParams: {
-                    pageSize: 'page_size',
-                    type: function () {
-                        return this.type;
-                    }
-                },
-                comparator: function (model1, model2) {
-                    var compareField = this.sortKey;
-
-                    if (model1.get(compareField) > model2.get(compareField)) {
-                        return -1; // before
-                    } else if (model2.get(compareField) > model1.get(compareField)) {
-                        return 1; // after
-                    } else {
-                        return 0; // equal
-                    }
-                },
-                initialize: function (options) {
-                    this.type = options && options.type ? options.type : 'select';
-                    this.options = options;
-                    this.sort();
-
-                    this.startLiveUpdating();
+        Tag.PageableCollection = PageableCollection.extend({
+            model: Tag.Model,
+            url: App.prefix + '/api/v1/tags',
+            liveURI: 'tags',
+            sortKey: 'question_count',
+            order: 'desc',
+            queryParams: {
+                pageSize: 'page_size',
+                type: function () {
+                    return this.type;
                 }
-            })
-        );
+            },
+            comparator: function (model1, model2) {
+                var compareField = this.sortKey;
+
+                if (model1.get(compareField) > model2.get(compareField)) {
+                    return -1; // before
+                } else if (model2.get(compareField) > model1.get(compareField)) {
+                    return 1; // after
+                } else {
+                    return 0; // equal
+                }
+            },
+            initialize: function (options) {
+                this.type = options && options.type ? options.type : 'select';
+                this.options = options;
+                this.sort();
+            }
+        });
 
         var API = {
             collection: function (data) {
