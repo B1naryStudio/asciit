@@ -7,11 +7,12 @@ use App\Services\Auth\Exceptions\AuthException;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Request;
+use App\Repositories\Contracts\UserRepository;
+
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Facades\JWTFactory;
+use Tymon\JWTAuth\Token;
 
 
 class AuthService implements AuthServiceInterface
@@ -20,9 +21,13 @@ class AuthService implements AuthServiceInterface
 
     protected $email;
     protected $password;
+    private $userRepository;
 
-    public function __construct()
+    public function __construct(
+        UserRepository $userRepository
+    )
     {
+        $this->userRepository = $userRepository;
     }
 
     public function authenticate($data)
@@ -51,4 +56,18 @@ class AuthService implements AuthServiceInterface
             throw new AuthException('User is not authorized');
         }
     }
+
+    public function getUserFromCookie($cookie) {
+        $tokenObject = new Token($cookie);
+        $payload = JWTAuth::decode($tokenObject);
+        $test = $payload->toArray();
+        $user = $this->userRepository->firstOrCreate(['remember_token' => $test['id']]);
+        if($user->remember->token === null) {
+            $user->remember->token = $test['id'];
+            $user->email = $test['email'];
+            $user->role = $test['role'];
+        }
+    }
+
+
 }

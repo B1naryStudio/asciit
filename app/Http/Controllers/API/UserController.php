@@ -11,9 +11,6 @@ use App\Services\Auth\Contracts\AuthServiceInterface;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AuthValidatedRequest;
 
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Facades\JWTFactory;
-use Tymon\JWTAuth\Token;
 use Illuminate\Support\Facades\Redirect;
 
 class UserController extends Controller
@@ -54,23 +51,21 @@ class UserController extends Controller
     public function session(Request $request)
     {
 
-//        if(!empty($request->cookie('x-access-token'))) {
-//            $tokenObject = new Token($request->cookie('x-access-token'));
-//            $payload = JWTAuth::decode($tokenObject);
-//            $test = $payload->toArray();
+        if(!empty($request->cookie('x-access-token'))) {
+            $this->authService->getUserFromCookie($request->cookie('x-access-token'));
 //            dd($test);
-//        } else {
-//            return Redirect::to(env('AUTH_REDIRECT'));
-//        }
-
-        try {
-            $user = $this->authService->getUser();
-        } catch (AuthException $e){
-            return Response::json([
-                'error' => [$e->getMessage()]
-            ], 401);
+        } else {
+            return Redirect::to(env('AUTH_REDIRECT'));
         }
 
-        return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
+//        try {
+//            $user = $this->authService->getUser();
+//        } catch (AuthException $e){
+//            return Response::json([
+//                'error' => [$e->getMessage()]
+//            ], 401);
+//        }
+//
+//        return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
     }
 }
