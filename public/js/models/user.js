@@ -18,13 +18,8 @@ define(['app'], function (App) {
                 }
             },
             isAdmin: function () {
-                var roles = this.get('roles');
-
-                for (var r in roles) {
-                    var roleTitle = roles[r].title;
-                    if (roleTitle == 'ADMIN') {
-                        return true;
-                    }
+                if (this.has('role') && this.get('role').title == 'ADMIN') {
+                    return true;
                 }
 
                 return false;

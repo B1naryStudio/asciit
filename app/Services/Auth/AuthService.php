@@ -10,12 +10,10 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Repositories\Contracts\UserRepository;
+use App\Repositories\Contracts\RoleRepository;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Token;
-
-
 
 class AuthService implements AuthServiceInterface
 {
@@ -23,11 +21,14 @@ class AuthService implements AuthServiceInterface
 
     protected $email;
     protected $password;
+    protected $roleRepository;
     protected $userRepository;
 
     public function __construct(
+        RoleRepository $roleRepository,
         UserRepository $userRepository
     ) {
+        $this->roleRepository = $roleRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -36,7 +37,7 @@ class AuthService implements AuthServiceInterface
         if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
-                ['roles']
+                ['role']
             );
         } else {
             return Response::json(['error' => 'Wrong login or password'], 404);
@@ -57,7 +58,7 @@ class AuthService implements AuthServiceInterface
         if (Auth::check()) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
-                ['roles']
+                ['role']
             );
         } else {
             throw new AuthException('User is not authorized');
@@ -77,28 +78,57 @@ class AuthService implements AuthServiceInterface
         }
 
         $userInfo = $payload->toArray();
-        $user = $this->userRepository->firstOrCreate(['email' => $userInfo['email']]);
-        $remoteInfo = (array)$this->getRemoteUserInfo($cookie);
+        $this->attachRoleId($userInfo);
 
-        if (array_key_exists('name', $remoteInfo)) {
-            $remoteInfo['first_name'] = $remoteInfo['name'];
-        }
+        $user = $this->userRepository->updateFirstOrCreate(
+            ['email' => $userInfo['email']],
+            $userInfo
+        );
 
-        if (array_key_exists('surname', $remoteInfo)) {
-            $remoteInfo['last_name'] = $remoteInfo['name'];
-        }
-
-        $user = $this->userRepository->update($remoteInfo, $user->id);
+        $this->attachAdditionUserInfo($cookie, $user);
         Auth::login($user, true);
 
         if (Auth::check()) {
-            return Auth::user();
+            return $this->userRepository->findWithRelations(
+                Auth::id(),
+                ['role']
+            );
         } else {
             throw new AuthException('User is not authorized');
         }
     }
 
-    public function getRemoteUserInfo($cookie) {
+    protected function attachAdditionUserInfo($cookie, &$user) {
+        $remoteInfo = (array)$this->getRemoteUserInfo($cookie);
+
+        $this->renameArrayKeys($remoteInfo, [
+            'name' => 'first_name',
+            'surname' => 'last_name'
+        ]);
+
+        $this->attachRoleId($remoteInfo);
+        $user = $this->userRepository->update($remoteInfo, $user->id);
+    }
+
+    protected function renameArrayKeys(array &$arr, array $renamingMap)
+    {
+        foreach ($renamingMap as $old => $new) {
+            if (array_key_exists($old, $arr)) {
+                $arr[$new] = $arr[$old];
+                unset($arr[$old]);
+            }
+        }
+    }
+
+    protected function attachRoleId(array &$arr)
+    {
+        if (array_key_exists('role', $arr)) {
+            $role = $this->roleRepository->getByTitle($arr['role']);
+            $arr['role_id'] = $role->id;
+        }
+    }
+
+    protected function getRemoteUserInfo($cookie) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,            url(env('AUTH_ME')));
         curl_setopt($ch, CURLOPT_HEADER,         1);
