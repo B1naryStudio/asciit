@@ -78,17 +78,19 @@ class AuthService implements AuthServiceInterface
 
         $userInfo = $payload->toArray();
         $user = $this->userRepository->firstOrCreate(['email' => $userInfo['email']]);
-
         $remoteInfo = (array)$this->getRemoteUserInfo($cookie);
+
         if (array_key_exists('name', $remoteInfo)) {
             $remoteInfo['first_name'] = $remoteInfo['name'];
         }
+
         if (array_key_exists('surname', $remoteInfo)) {
             $remoteInfo['last_name'] = $remoteInfo['name'];
         }
-//        $remoteInfo['email'] = $userInfo['email'].'.com';
+
         $user = $this->userRepository->update($remoteInfo, $user->id);
         Auth::login($user, true);
+
         if (Auth::check()) {
             return Auth::user();
         } else {
@@ -97,9 +99,7 @@ class AuthService implements AuthServiceInterface
     }
 
     public function getRemoteUserInfo($cookie) {
-        //$cookie = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU1ZGMxMzM5MTg0NmM2OGExYWQ1NmRhYSIsImVtYWlsIjoiYWRtaW5AYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE0NDA2NzM4MDV9.rjYkrSZUnBZ1l_eztXgLen-luSq0dsCbMmWW0onCUvo';
         $ch = curl_init();
-        //curl_setopt($ch, CURLOPT_URL,            'http://team.binary-studio.com/auth/api/me');
         curl_setopt($ch, CURLOPT_URL,            url(env('AUTH_ME')));
         curl_setopt($ch, CURLOPT_HEADER,         1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -111,6 +111,4 @@ class AuthService implements AuthServiceInterface
         $resultBody = substr($response, $header_size );
         return json_decode($resultBody);
     }
-
-
 }

@@ -94,5 +94,5 @@ Route::get('/auth/#/', function () {
 });
 
 Route::get('/auth/#/logout', function () {
-    setcookie('x-access-token', '', -1);
+    setcookie('x-access-token', '', -1, '/');
 });
