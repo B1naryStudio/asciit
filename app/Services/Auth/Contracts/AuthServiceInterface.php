@@ -16,4 +16,7 @@ interface AuthServiceInterface
     public function getUser();
 
     public function getUserFromCookie($cookie);
+
+    public function getRemoteUserInfo($cookie);
+
 }

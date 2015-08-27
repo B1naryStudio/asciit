@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AuthValidatedRequest;
 
 use Illuminate\Support\Facades\Redirect;
+use App\Services\Auth\Exceptions\TokenInCookieExpiredException;
+use Illuminate\Support\Facades\URL;
 
 class UserController extends Controller
 {
@@ -50,22 +52,22 @@ class UserController extends Controller
 
     public function session(Request $request)
     {
-
         if(!empty($request->cookie('x-access-token'))) {
-            $this->authService->getUserFromCookie($request->cookie('x-access-token'));
-//            dd($test);
+            try {
+                $user = $this->authService->getUserFromCookie($request->cookie('x-access-token'));
+            } catch (TokenInCookieExpiredException $e) {
+                return Redirect::to(env('AUTH_REDIRECT'))
+                    ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
+            } catch (AuthException $e){
+                return Response::json([
+                    'error' => [$e->getMessage()]
+                ], 401);
+            }
         } else {
-            return Redirect::to(env('AUTH_REDIRECT'));
+            return Redirect::to(env('AUTH_REDIRECT'))
+                ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
         }
 
-//        try {
-//            $user = $this->authService->getUser();
-//        } catch (AuthException $e){
-//            return Response::json([
-//                'error' => [$e->getMessage()]
-//            ], 401);
-//        }
-//
-//        return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
+        return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
     }
 }

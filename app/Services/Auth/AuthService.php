@@ -4,15 +4,18 @@ namespace App\Services\Auth;
 
 use App\Services\Auth\Contracts\AuthServiceInterface;
 use App\Services\Auth\Exceptions\AuthException;
+use App\Services\Auth\Exceptions\TokenInCookieExpiredException;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Repositories\Contracts\UserRepository;
 
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
 use Tymon\JWTAuth\Token;
+
 
 
 class AuthService implements AuthServiceInterface
@@ -59,14 +62,51 @@ class AuthService implements AuthServiceInterface
 
     public function getUserFromCookie($cookie) {
         $tokenObject = new Token($cookie);
-        $payload = JWTAuth::decode($tokenObject);
-        $test = $payload->toArray();
-        $user = $this->userRepository->firstOrCreate(['remember_token' => $test['id']]);
-        if($user->remember->token === null) {
-            $user->remember->token = $test['id'];
-            $user->email = $test['email'];
-            $user->role = $test['role'];
+        try {
+            $payload = JWTAuth::decode($tokenObject);
+        } catch (TokenExpiredException $e) {
+            throw new TokenInCookieExpiredException(
+                'Token in cookie was expired',
+                null,
+                $e
+            );
         }
+
+        $userInfo = $payload->toArray();
+        $user = $this->userRepository->firstOrCreate(['email' => $userInfo['email']]);
+
+        $remoteInfo = (array)$this->getRemoteUserInfo($cookie);
+        if (array_key_exists('name', $remoteInfo)) {
+            $remoteInfo['first_name'] = $remoteInfo['name'];
+        }
+        if (array_key_exists('surname', $remoteInfo)) {
+            $remoteInfo['last_name'] = $remoteInfo['name'];
+        }
+//        $remoteInfo['email'] = $userInfo['email'].'.com';
+        $user = $this->userRepository->update($remoteInfo, $user->id);
+        Auth::login($user, true);
+        if (Auth::check()) {
+            return Auth::user();
+        } else {
+            throw new AuthException('User is not authorized');
+        }
+    }
+
+    public function getRemoteUserInfo($cookie) {
+        $cookie = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjU1ZGMxMzM5MTg0NmM2OGExYWQ1NmRhYSIsImVtYWlsIjoiYWRtaW5AYWRtaW4iLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE0NDA2NzM4MDV9.rjYkrSZUnBZ1l_eztXgLen-luSq0dsCbMmWW0onCUvo';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,            'http://team.binary-studio.com/auth/api/me');
+//        curl_setopt($ch, CURLOPT_URL,            env('AUTH_ME'));
+        curl_setopt($ch, CURLOPT_HEADER,         1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,        30);
+        curl_setopt($ch, CURLOPT_TIMEOUT,        30);
+        curl_setopt($ch, CURLOPT_COOKIE,        "x-access-token=".$cookie);
+        $response = curl_exec($ch);
+        $header_size = curl_getinfo($ch,CURLINFO_HEADER_SIZE);
+        $resultBody = substr($response, $header_size );
+        return json_decode($resultBody);
     }
 
 

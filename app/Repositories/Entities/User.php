@@ -9,6 +9,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Creativeorange\Gravatar\Facades\Gravatar;
+use Creativeorange\Gravatar\Exceptions\InvalidEmailException;
 
 class User extends Model implements Transformable, AuthenticatableContract
 {
@@ -26,7 +27,7 @@ class User extends Model implements Transformable, AuthenticatableContract
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'avatar'];
+    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'avatar', 'remember_token'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -48,9 +49,12 @@ class User extends Model implements Transformable, AuthenticatableContract
     public function getAvatarAttribute($avatar)
     {
         if (empty($avatar)) {
-            return Gravatar::get($this->attributes['email'], ['fallback' => 'identicon']);
+            try {
+                return Gravatar::get($this->attributes['email'], ['fallback' => 'identicon']);
+            } catch (InvalidEmailException $e) {
+                return Gravatar::get('example@example.com', ['fallback' => 'identicon']);
+            }
         }
-
         return $avatar;
     }
 }

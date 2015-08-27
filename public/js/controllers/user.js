@@ -48,7 +48,8 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                         }
                     });
                 } else {
-                    Backbone.history.navigate('/login', { trigger: true });
+                    document.location = "http://team.binary-studio.com/auth/logout";
+                    //Backbone.history.navigate('/login', { trigger: true });
                 }
             },
             session: function () {

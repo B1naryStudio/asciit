@@ -137,8 +137,9 @@ define([
             App.queryFlag.pop();
             App.trigger('spinner:check');
             if (xhr.status === 401 ) {
-                //window.location.href = 'http://team.binary-studio.com/auth/';
                 Backbone.history.navigate('/login', { trigger: true });
+            } else if (xhr.status === 303 ) {
+                location.reload();
             } else {
                 error(xhr, textStatus, errorThrown);
             }

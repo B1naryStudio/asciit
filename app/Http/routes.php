@@ -12,6 +12,7 @@
 */
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
+use Illuminate\Support\Facades\Response;
 
 Route::get('/', function () {
     return view('base');
@@ -78,9 +79,14 @@ Route::group(['prefix' => 'api/v1'], function() {
 
         $data = JWTAuth::encode($payload);
 
-
-        return redirect()->back()
+        return Response::json([
+            'message' => []
+        ], 303)
             ->withCookie('x-access-token', $data->get());
+    });
+
+    Route::get('/delete-cookie', function () {
+        setcookie('x-access-token', '', -1);
     });
 });
 
