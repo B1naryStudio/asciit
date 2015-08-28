@@ -46,7 +46,10 @@ define(['app'], function (App) {
                     password: password
                 }, {
                     wait: true,
-                    success: function (model) {
+                    success: function (model, response, options) {
+                        debugger;
+
+
                         model.setAdminFlag();
                         defer.resolve(model);
                     },
@@ -65,6 +68,12 @@ define(['app'], function (App) {
                 user.fetch({
                     wait: true,
                     success: function (model, response, options) {
+                        debugger;
+
+                        if (xhr.status === 302 ) {
+                            debugger;
+                        }
+
                         model.setAdminFlag();
                         defer.resolve(model);
                     },
