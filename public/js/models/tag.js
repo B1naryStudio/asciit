@@ -4,17 +4,9 @@ define([
     'models/model-mixins'
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Tag', function(Tag, App, Backbone, Marionette, $, _) {
-        Tag.Model = Backbone.Model.extend(
-            _.extend({}, ModelMixins.LiveModel, {
-                urlRoot: App.prefix + '/api/v1/tags',
-                initialize: function (options) {
-                    if (this.id) {
-                        this.liveURI = 'tags/' + this.id;
-                        this.startLiveUpdating();
-                    }
-                }
-            })
-        );
+        Tag.Model = Backbone.Model.extend({
+            urlRoot: App.prefix + '/api/v1/tags'
+        });
 
         Tag.Collection = Backbone.Collection.extend({
             model: Tag.Model,
