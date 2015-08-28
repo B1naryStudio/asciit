@@ -12,6 +12,10 @@
                 </button>
             </span>
         </div>
+        <ul class="search-info">
+            <li><%= _t("search.tagInfo") %><span><%= _t("search.tagInfoSpan") %></span></li>
+            <li><%= _t("search.folderInfo") %><span><%= _t("search.folderInfoSpan") %></span></li>
+        </ul>
         <span class="help-block hidden"></span>
     </div>
 </form>

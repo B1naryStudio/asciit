@@ -1294,3 +1294,12 @@ div .fa-05 {
     margin: auto;
     height: 33%;
 }
+
+.search-info {
+    margin-top: 10px;
+}
+
+.search-info span{
+    font-weight: bold;
+    font-style: italic;
+}
