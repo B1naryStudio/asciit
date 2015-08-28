@@ -37,7 +37,11 @@
         "select": "Выберите теги"
     },
     "search": {
-        "placeholder": "Ищи, ищи"
+        "placeholder": "Ищи, ищи",
+        "tagInfo": "Для поиска по тегам введите: ",
+        "folderInfo": "Для поиска по папкам введите: ",
+        "tagInfoSpan": "\"tag:название тега\"",
+        "folderInfoSpan": "\"folder:название папки\""
     },
     "ui": {
         "save": "Сохранить",
