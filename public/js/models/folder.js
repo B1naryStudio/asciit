@@ -1,7 +1,8 @@
 define([
     'app',
     'paginator',
-    'models/model-mixins'
+    'models/model-mixins',
+    'stickit'
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Folder', function(Folder, App, Backbone, Marionette, $, _) {
         Folder.Model = Backbone.Model.extend(
@@ -12,7 +13,8 @@ define([
                 },
                 validation: {
                     title: {
-                        required: true
+                        required: true,
+                        msg: i18n.t('validation.required-field')
                     }
                 },
                 initialize: function (options) {
@@ -55,7 +57,9 @@ define([
 
                     if (model1.get(compareField) > model2.get(compareField)) {
                         return -1; // before
-                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                    } else if (
+                        model2.get(compareField) > model1.get(compareField)
+                    ) {
                         return 1; // after
                     } else {
                         return 0; // equal
@@ -73,7 +77,7 @@ define([
                     },
                     sortedBy: 'desc'
                 },
-                initialize: function(options) {
+                initialize: function (options) {
                     this.sort();
                     this.startLiveUpdating();
                 }
@@ -81,14 +85,29 @@ define([
         );
 
         var API = {
-            folderCollection: function () {
+            folderCollection: function (page) {
                 var folders = new Folder.Collection();
+                return this.fetch(folders);
+            },
+
+            fetch: function (collection) {
                 var defer = $.Deferred();
-                folders.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    }
-                });
+                if (!collection.fetch({
+                        success: function (data) {
+                            defer.resolve(data);
+                        },
+                        error: function (model, response) {
+                            defer.reject({
+                                status: response.status,
+                                error: model.validationError
+                            });
+                        }
+                    })
+                ) {
+                    defer.reject({
+                        error: 'Server error, saving is impossible.'
+                    });
+                }
                 return defer.promise();
             },
 
@@ -97,14 +116,15 @@ define([
 
                 if (!model.save([], {
                         wait: true,
-                        success: function () {
-                            defer.resolve(model);
+                        success: function (newModel, attributes, options) {
+                            defer.resolve(newModel);
                         },
                         error: function (model, xhr, options) {
                             var errors = JSON.parse(xhr.responseText);
                             defer.reject(errors);
                         }
-                    })) {
+                    })
+                ) {
                     defer.reject({
                         description: 'Server error, saving is impossible.'
                     });
@@ -112,16 +132,15 @@ define([
                 return defer.promise();
             },
 
-            getFolders: function () {
-                var questions = new Folder.Folders();
-                var defer = $.Deferred();
+            updateFolder: function (model) {
+                return this.addFolder(model);
+            },
 
-                questions.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    }
-                });
-                return defer.promise();
+            getFolders: function (data) {
+                var options = data.options ? data.options : {};
+                delete data.options;
+                var questions = new Folder.Folders(data, options);
+                return this.fetch(questions);
             },
 
             deleteFolder: function (model) {
@@ -143,20 +162,29 @@ define([
                 return defer.promise();
             }
         };
+
+        App.reqres.setHandler('folders:fetch', function (collection) {
+            return API.fetch(collection);
+        });
+
         App.reqres.setHandler('folder:collection', function () {
             return API.folderCollection();
         });
 
-        App.reqres.setHandler('folder:add', function (data) {
-            return API.addFolder(data);
+        App.reqres.setHandler('folder:add', function (collection, model) {
+            return API.addFolder(collection, model);
         });
 
-        App.reqres.setHandler('folders:get', function () {
-            return API.getFolders();
+        App.reqres.setHandler('folders:get', function (data) {
+            return API.getFolders(data);
         });
 
-        App.reqres.setHandler('folder:delete', function (data) {
-            return API.deleteFolder(data);
+        App.reqres.setHandler('folder:update', function (model) {
+            return API.updateFolder(model);
+        });
+
+        App.reqres.setHandler('folder:delete', function (model) {
+            return API.deleteFolder(model);
         });
     });
 });

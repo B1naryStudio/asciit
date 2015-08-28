@@ -11,7 +11,8 @@ define([
             onDataInvalid: function (errors) {
                 $('.error').html('');
                 if (!errors) {
-                    $('.error.all').html('Wrong login or password');
+                    var msg = i18n.t('validation.login-error');
+                    $('.error.all').html(msg);
                 } else {
                     for (var i in errors) {
                         if (!errors.hasOwnProperty(i)) {

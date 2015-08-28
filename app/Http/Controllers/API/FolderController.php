@@ -8,6 +8,8 @@ use App\Services\Questions\Contracts\QuestionServiceInterface;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\FolderValidatedRequest;
 use Illuminate\Http\Request;
+use App\Services\Questions\Exceptions\QuestionServiceException;
+use Illuminate\Pagination\Paginator;
 
 class FolderController extends Controller
 {
@@ -21,6 +23,7 @@ class FolderController extends Controller
         $this->questionService = $questionService;
 
         $this->middleware('auth');
+        $this->middleware('rbac');
     }
 
     /**
@@ -83,6 +86,13 @@ class FolderController extends Controller
                 ->getFoldersForCrud($request->get('page_size'));
         } catch (QuestionServiceException $e) {
             return Response::json(['error' => $e->getMessage()], 404);
+        }
+
+        $page = (int) Paginator::resolveCurrentPage();
+        if ($page !== $folders->currentPage()) {
+            return Response::json([
+                'error' => 'not found'
+            ], 404, [], JSON_NUMERIC_CHECK);
         }
 
         return Response::json(

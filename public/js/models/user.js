@@ -10,11 +10,25 @@ define(['app'], function (App) {
                 email: {
                     required: true,
                     pattern: 'email',
-                    msg: 'You entered invalid email address'
+                    msg: i18n.t('validation.invalid-value')
                 },
                 password: {
                     required: true,
-                    msg: 'Please enter your password'
+                    msg: i18n.t('validation.required-field')
+                }
+            },
+            isAdmin: function () {
+                if (this.has('role') && this.get('role').title == 'ADMIN') {
+                    return true;
+                }
+
+                return false;
+            },
+            setAdminFlag: function () {
+                if (this.isAdmin()) {
+                    this.set('admin', true);
+                } else {
+                    this.set('admin', false);
                 }
             },
             initialize: function () {
@@ -26,13 +40,15 @@ define(['app'], function (App) {
             login: function (email, password) {
                 var user = new User.Model();
                 var defer = $.Deferred();
+
                 if (!user.save({
                     email: email,
                     password: password
                 }, {
                     wait: true,
-                    success: function (data) {
-                        defer.resolve(user);
+                    success: function (model, response, options) {
+                        model.setAdminFlag();
+                        defer.resolve(model);
                     },
                     error: function (data) {
                         defer.reject(data.validationError);
@@ -49,7 +65,9 @@ define(['app'], function (App) {
                 user.fetch({
                     wait: true,
                     success: function (model, response, options) {
-                        defer.resolve(user);
+                        model.setAdminFlag();
+                        defer.resolve(model);
+
                     },
                     error: function (model, response, options) {
                         defer.reject();

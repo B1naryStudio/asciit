@@ -16,6 +16,21 @@ class Tag extends Model implements Transformable
 
     public function questions()
     {
-        return $this->belongsToMany('App\Repositories\Entities\Question', 'tag_q_and_a', 'tag_id', 'q_and_a_id');
+        return $this->belongsToMany(
+            'App\Repositories\Entities\Question',
+            'tag_q_and_a',
+            'tag_id',
+            'q_and_a_id'
+        );
+    }
+
+    public function questions_count()
+    {
+        return $this->belongsToMany(
+            'App\Repositories\Entities\Tag',
+            'tag_q_and_a',
+            'q_and_a_id',
+            'tag_id'
+        );
     }
 }

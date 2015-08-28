@@ -44,7 +44,9 @@ define([
                     this.$el.addClass(this.options.class);
                 }
 
-                this.$el.modal(this.options.modal ? this.options.modal : 'show');
+                this.$el.modal(
+                    this.options.modal ? this.options.modal : 'show'
+                );
             }
         });
     });

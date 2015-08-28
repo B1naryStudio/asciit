@@ -14,14 +14,15 @@
         <div class="row">
             <!-- Time, title, folder -->
             <div class="col-md-10 col-sm-9 col-lg-10 col-xs-9">
-                <span class="time asked_time">Asked
-                    <time class="relative" data-local-time="<%- created_local %>">
+                <span class="time asked_time">
+                    <time class="relative" data-abs-time="<%- created_at %>">
                          <%- created_relative %>
                     </time>
                 </span>
                 <h2><%- title %></h2>
                 <div class="folder">
-                    <span class="icon glyphicon glyphicon-folder-open"></span> <%- folder.title %>
+                    <span class="icon glyphicon glyphicon-folder-open"></span>
+                    <a href="#folders/<%- folder.title %>"><%- folder.title %></a>
                 </div>
             </div>
             <!-- Voting block -->
@@ -33,8 +34,8 @@
         <p><%= description %></p>
         <!-- Comments -->
         <div class="comments">
-            <button class="btn btn-default btn-xs add-comment">Add comment</button>
-            <button class="btn btn-default btn-xs add-answer">Add answer</button>
+            <button class="btn btn-default btn-xs add-comment"><%- _t("comment.add") %></button>
+            <button class="btn btn-default btn-xs add-answer"><%- _t("answers.add") %></button>
         </div>
     </div>
 </div>

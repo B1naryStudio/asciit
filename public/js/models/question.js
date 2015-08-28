@@ -1,7 +1,7 @@
 define([
     'app',
     'paginator',
-    'models/model-mixins',
+    'models/model-mixins'
 ], function(App, PageableCollection, ModelMixins) {
     App.module('Question', function(Question, App, Backbone, Marionette, $, _) {
         Question.Model = Backbone.Model.extend(
@@ -15,11 +15,11 @@ define([
                     validation: {
                         title: {
                             required: true,
-                            msg: 'Please enter a title'
+                            msg: i18n.t('validation.required-field')
                         },
                         description: {
                             required: true,
-                            msg: 'Please enter a description'
+                            msg: i18n.t('validation.required-field')
                         }
                     },
                     answerAdd: function () {
@@ -28,13 +28,26 @@ define([
                             this.get('answers_count') + 1
                         );
                     },
+                    setupLiveUpdate: function () {
+                        this.liveURI = 'entries/' + this.get('id');
+
+                        if (this.wsSession) {
+                            this.wsSession.close();
+                        }
+
+                        this.startLiveUpdating();
+                    },
                     initialize: function (options) {
                         this.attachLocalDates();
                         this.on('change', this.attachLocalDates);
 
-                        if (this.id) {
-                            this.liveURI = 'entries/' + this.id;
-                            this.startLiveUpdating();
+                        // We need a numeric id for the subscription topic name.
+                        // On init may be slug only, but named as 'id', so if we
+                        // have a 'slug' attribute, 'id' contains numeric id.
+                        if (this.has('slug')) {
+                            this.setupLiveUpdate();
+                        } else {
+                            this.on('sync', this.setupLiveUpdate);
                         }
                     }
                 }
@@ -54,7 +67,9 @@ define([
 
                     if (model1.get(compareField) > model2.get(compareField)) {
                         return -1; // before
-                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                    } else if (
+                        model2.get(compareField) > model1.get(compareField)
+                    ) {
                         return 1; // after
                     } else {
                         return 0; // equal
@@ -70,20 +85,22 @@ define([
                     currentPage: 'page',
                     pageSize: 'page_size',
                     search: function () {
-                        return this.searchQuery;
+                        return this.options.searchQuery;
                     },
                     orderBy: function () {
                         return this.sortKey;
                     },
                     tag: function () {
-                        return this.searchTag;
+                        return this.options.searchTag;
+                    },
+                    folder: function () {
+                        return this.options.searchFolder;
                     },
                     sortedBy: 'desc'
                 },
 
-                initialize: function(options) {
-                    this.searchQuery = options.searchQuery;
-                    this.searchTag = options.searchTag;
+                initialize: function (options) {
+                    this.options = options;
                     this.sort();
 
                     this.startLiveUpdating();
@@ -106,7 +123,9 @@ define([
 
                     if (model1.get(compareField) > model2.get(compareField)) {
                         return -1; // before
-                    } else if (model2.get(compareField) > model1.get(compareField)) {
+                    } else if (
+                        model2.get(compareField) > model1.get(compareField)
+                    ) {
                         return 1; // after
                     } else {
                         return 0; // equal
@@ -124,7 +143,7 @@ define([
                     },
                     sortedBy: 'desc'
                 },
-                initialize: function(options) {
+                initialize: function (options) {
                     this.sort();
                     this.startLiveUpdating();
                 }
@@ -132,16 +151,26 @@ define([
         );
 
         var API = {
-            questionCollection: function (searchQuery, searchTag) {
-                var questions = new Question.Collection({
-                    searchQuery: searchQuery,
-                    searchTag: searchTag
-                });
+            questionCollection: function (data) {
+                var options = data.options ? data.options : {};
+                delete data.options;
                 var defer = $.Deferred();
+
+                var questions = new Question.Collection({
+                    searchQuery: data.searchQuery,
+                    searchTag: data.searchTag,
+                    searchFolder: data.searchFolder
+                }, options);
 
                 questions.fetch({
                     success: function (data) {
                         defer.resolve(data);
+                    },
+                    error: function (model, response) {
+                        defer.reject({
+                            status: response.status,
+                            error: model.validationError
+                        });
                     }
                 });
                 return defer.promise();
@@ -154,10 +183,14 @@ define([
                     success: function (model) {
                         defer.resolve(model);
                     },
-                    error: function (data) {
-                        defer.reject(data.validationError);
+                    error: function (model, response) {
+                        defer.reject({
+                            status: response.status,
+                            error: model.validationError
+                        });
                     }
                 });
+
                 return defer.promise();
             },
             questionAdd: function (data) {
@@ -194,12 +227,10 @@ define([
             }
         };
 
-        App.reqres.setHandler(
-            'question:collection',
-            function (searchQuery, searchTag) {
-                return API.questionCollection(searchQuery, searchTag);
-            }
-        );
+        App.reqres.setHandler('question:collection', function (data) {
+            var rr = API.questionCollection(data);
+            return rr;
+        });
 
         App.reqres.setHandler('question:model', function (id) {
             return API.questionGet(id);

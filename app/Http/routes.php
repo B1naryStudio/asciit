@@ -10,7 +10,11 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Facades\JWTFactory;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 Route::get('/', function () {
     return view('base');
 });
@@ -70,4 +74,24 @@ Route::group(['prefix' => 'api/v1/widget'], function() {
     Route::get('/questions/popular', 'API\WidgetController@questionsPopular');
     Route::get('/questions/upvoted', 'API\WidgetController@questionsUpvoted');
     Route::get('/questions/commented', 'API\WidgetController@questionsCommented');
+});
+
+Route::get('/auth/', function (Request $request) {
+
+    $customClaims = [
+        "id" =>  "55dc13391846c68a1ad56daa",
+        "email" =>  "admin@admin",
+        "role" => "ADMIN",
+        "iat" => 1440615292
+    ];
+
+    $payload = JWTFactory::make($customClaims);
+    $data = JWTAuth::encode($payload);
+    $redirectPath = $request->cookie('referer');
+
+    return Redirect::to($redirectPath, 303)->withCookie('x-access-token', $data->get());
+});
+
+Route::get('/auth/logout', function () {
+    setcookie('x-access-token', '', -1, '/');
 });

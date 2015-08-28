@@ -25,6 +25,7 @@ use App\Events\VoteWasRemoved;
 use App\Events\FolderWasAdded;
 use App\Events\FolderWasUpdated;
 use App\Events\FolderWasRemoved;
+use App\Events\TagWasAdded;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -79,12 +80,16 @@ class QuestionService implements QuestionServiceInterface
                     }
                 }
                 if (!empty($not_exist)) {
-                    $tags = array_merge(
-                        $tags,
-                        $this->tagRepository->createSeveral($not_exist)
-                    );
+                    $result = $this->tagRepository->createSeveral($not_exist);
+                    $tags = array_merge($tags, $result);
+                    foreach ($result as $tag) {
+                        $tag->question_count = 1;
+                        Event::fire(new TagWasAdded($tag));
+                        unset ($tag->question_count);
+                    }
                 }
                 $this->questionRepository->relationsAdd($question, 'tags', $tags);
+
             }
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
@@ -167,6 +172,10 @@ class QuestionService implements QuestionServiceInterface
             $this->questionRepository->pushCriteria(
                 new RelationLikeCriteria('tags', 'title', $data['tag'])
             );
+        } elseif (!empty($data['folder'])) {
+            $this->questionRepository->pushCriteria(
+                new RelationLikeCriteria('folder', 'title', $data['folder'])
+            );
         }
 
         $questions = $this->questionRepository
@@ -181,12 +190,20 @@ class QuestionService implements QuestionServiceInterface
      */
     public function getAnswersOfQuestion($question_id)
     {
-        $answers = $this->answerRepository
-            ->findByFieldWithRelations(
-                'question_id',
-                $question_id,
-                ['user', 'comments.user', 'votes']
+        try {
+            $answers = $this->answerRepository
+                ->findByFieldWithRelations(
+                    'question_id',
+                    $question_id,
+                    ['user', 'comments.user', 'votes']
+                );
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage() . ' No such question',
+                null,
+                $e
             );
+        }
 
         foreach ($answers as $answer) {
             $votes = collect($answer->votes);
@@ -290,7 +307,7 @@ class QuestionService implements QuestionServiceInterface
     public function getTags($pageSize = null)
     {
         try {
-            $tags = $this->tagRepository->paginate(10);
+            $tags = $this->tagRepository->paginate($pageSize);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -323,11 +340,21 @@ class QuestionService implements QuestionServiceInterface
         return $comment;
     }
 
-    public function getTagsPopular($pageSize = null)
+    public function getTagsPopular($pageSize = null, $search = '')
     {
+        $where = [];
+        if (!empty($search)) {
+            $where[] = ['title', 'like', $search . '%'];
+        }
         try {
             $tags = $this->tagRepository
-                ->loadRelationPopular('questions', $pageSize);
+                ->loadRelationPopularPaginate(
+                    ['questions', 'questions_count'],
+                    $pageSize,
+                    false,
+                    [],
+                    $where
+                );
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -382,7 +409,15 @@ class QuestionService implements QuestionServiceInterface
         }
         try {
             $questions = $this->questionRepository
-                ->loadRelationPopular('answers', $pageSize, $where);
+                ->loadRelationPopular(
+                    'answers',
+                    $pageSize,
+                    true,
+                    ['user', 'folder'],
+                    $where
+                );
+            $questions = $this->questionRepository
+                ->setCountedFields(new Collection($questions));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -406,7 +441,15 @@ class QuestionService implements QuestionServiceInterface
         }
         try {
             $questions = $this->questionRepository
-                ->loadRelationPopular('votes', $pageSize, $where);
+                ->loadRelationPopular(
+                    'votes',
+                    $pageSize,
+                    true,
+                    ['user', 'folder'],
+                    $where
+                );
+            $questions = $this->questionRepository
+                ->setCountedFields(new Collection($questions));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -430,7 +473,15 @@ class QuestionService implements QuestionServiceInterface
         }
         try {
             $questions = $this->questionRepository
-                ->loadRelationPopular('comments', $pageSize, $where);
+                ->loadRelationPopular(
+                    'comments',
+                    $pageSize,
+                    true,
+                    ['user', 'folder'],
+                    $where
+                );
+            $questions = $this->questionRepository
+                ->setCountedFields(new Collection($questions));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -484,6 +535,7 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
         Event::fire(new FolderWasUpdated($folder));
         return $folder;
     }

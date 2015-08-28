@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Pagination\Paginator;
 
 class TagController extends Controller
 {
@@ -17,6 +18,9 @@ class TagController extends Controller
 
     public function __construct(QuestionServiceInterface $questionService) {
         $this->questionService = $questionService;
+
+        $this->middleware('auth');
+        $this->middleware('rbac');
     }
 
     /**
@@ -26,13 +30,58 @@ class TagController extends Controller
      */
     public function index(Request $request)
     {
-        $is_popular = $request->get('type') === 'popular';
-        if (!empty($is_popular)) {
-            $tags = $this->questionService->getTagsPopular($request->get('page_size'));
-        } else {
-            $tags = $this->questionService->getTags($request->get('page_size'));
+        $type = $request->get('type');
+        if (empty($type)) {
+            $type = 'list';
         }
 
-        return Response::json($tags, 200, [], JSON_NUMERIC_CHECK);
+        switch ($type) {
+            case 'popular':
+                $tags = $this->questionService->getTagsPopular(
+                    $request->get('page_size')
+                );
+                $page = (int) Paginator::resolveCurrentPage();
+                if (empty($page)) {
+                    $page = 1;
+                }
+                if ($page !== $tags->currentPage()) {
+                    return Response::json([
+                        'error' => 'not found'
+                    ], 404, [], JSON_NUMERIC_CHECK);
+                }
+                $result = $tags->items();
+                break;
+            case 'search':
+                $result = $this->questionService->getTags(
+                    $request->get('page_size')
+                );
+                break;
+            case 'list':
+                $tags = $this->questionService->getTagsPopular(
+                    $request->get('page_size'),
+                    $request->get('search')
+                );
+                $page = (int) Paginator::resolveCurrentPage();
+                if (empty($page)) {
+                    $page = 1;
+                }
+                if ($page !== $tags->currentPage()) {
+                    return Response::json([
+                        'error' => 'not found'
+                    ], 404, [], JSON_NUMERIC_CHECK);
+                }
+                $result = [
+                    [
+                        'total_entries' => $tags->total(),
+                        'currentPage' => $tags->currentPage()
+                    ],
+                    $tags->items()
+                ];
+                break;
+            default:
+                $result = [];
+        }
+
+        return Response::json($result, 200, [], JSON_NUMERIC_CHECK);
     }
 }

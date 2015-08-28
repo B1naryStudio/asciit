@@ -12,7 +12,8 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                 'tags/:tag': 'tagSearch',
                 'activity': 'activity',
                 'question/:question_id/answer/:answer_id': 'question',
-                'folders': 'folders'
+                'folders': 'folders',
+                'folders/:folder': 'folderSearch'
             },
             execute: function (callback, args, name) {
                 if (
@@ -38,6 +39,9 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                         Routes.spinner = null;
                     });
                 }
+            },
+            onRoute: function () {
+                $('#top-link').hide();
             }
         });
 
@@ -54,9 +58,15 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.logout();
                 });
             },
-            questions: function (searchQuery) {
+            questions: function (data) {
                 require(['controllers/question'], function (controller) {
-                    controller.questions(searchQuery, '');
+                    var tmp = App.helper.parseUrl(data);
+                    controller.questions(
+                        tmp['search'] ? tmp['search'] : '',
+                        '',
+                        '',
+                        tmp['page'] ? parseInt(tmp['page']) : 1
+                    );
                 });
             },
             question: function (id, answer_id) {
@@ -79,14 +89,18 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.close(data);
                 });
             },
-            tags: function () {
+            tags: function (data) {
+                var tmp = App.helper.parseUrl(data);
                 require(['controllers/tag'], function (controller) {
-                    controller.tags();
+                    controller.tags(
+                        tmp['search'] ? tmp['search'] : '',
+                        tmp['page'] ? parseInt(tmp['page']) : 1
+                    );
                 });
             },
             tagSearch: function (searchQuery) {
                 require(['controllers/question'], function (controller) {
-                    controller.questions('', searchQuery);
+                    controller.questions('', $.trim(searchQuery), '');
                 });
             },
             activity: function () {
@@ -99,10 +113,16 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                     controller.paginator(options);
                 });
             },
-            folders: function() {
+            folders: function (data) {
                 require(['controllers/folder'], function (controller) {
-                    controller.getFolders();
+                    var tmp = App.helper.parseUrl(data);
+                    controller.getFolders(tmp['page'] ? parseInt(tmp['page']) : 1);
                 })
+            },
+            folderSearch: function (searchQuery) {
+                require(['controllers/question'], function (controller) {
+                    controller.questions('', '', $.trim(searchQuery));
+                });
             }
         };
 

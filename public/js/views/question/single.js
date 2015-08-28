@@ -33,18 +33,26 @@ define([
 
                 selectText: function() {
                     var text = App.helper.getSelected();
-                    if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
-                        text = '<blockquote><span class="author">'+this.model.attributes.created_relative+
-                        ' by '+this.model.attributes.user.first_name+
-                        ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
+                    if (
+                        text && (
+                            text = new String(text).replace(/^\s+|\s+$/g,''))
+                    ) {
+                        text = '<blockquote><span class="author">' +
+                            '<time class="relative" data-abs-time="' +
+                            this.model.get('created_at') + '">' +
+                            this.model.get('created_relative') + '</time>' +
+                            ' by ' + this.model.attributes.user.first_name+
+                            ' ' + this.model.attributes.user.last_name +
+                            ':</span><br/>' + text + ' </blockquote>';
                         this.newAnswerEditor.focus();
                         App.helper.moveFocus(this.newAnswerEditor, text);
-                        $('html, body').scrollTop($('#new-answer-form').offset().top);
-
+                        $('html, body').scrollTop(
+                            $('#new-answer-form').offset().top
+                        );
                     }
                 },
 
-                showCommentForm: function(e) {
+                showCommentForm: function (e) {
                     e.stopPropagation();
                     var el = $(e.target)
                         .parents('.question_view')
@@ -56,7 +64,9 @@ define([
                 },
 
                 toAnswerForm: function () {
-                    $('html, body').scrollTop($('#new-answer-form').offset().top);
+                    $('html, body').scrollTop(
+                        $('#new-answer-form').offset().top
+                    );
                     this.newAnswerEditor.focus();
                 },
 
@@ -76,6 +86,13 @@ define([
                     });
 
                     this.showVotes();
+                },
+
+                initialize: function (options) {
+                    var self = this;
+                    this.listenTo(this.model, 'change:vote_value', function() {
+                        self.showVotes();
+                    });
                 }
             })
         );

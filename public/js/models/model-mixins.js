@@ -38,7 +38,7 @@ define(['app', 'moment'], function(App, moment) {
                     }
                 );
             }
-        },
+        };
 
         ModelMixins.LiveCollection = {
             onLiveUpdate: function(topic, message) {
@@ -67,6 +67,9 @@ define(['app', 'moment'], function(App, moment) {
                 // If there is remote call parameters
                 if (calls) {
                     for (var funcName in calls) {
+                        if (!calls.hasOwnProperty(funcName)) {
+                            continue;
+                        }
                         // Taking a function name from object
                         // Try to get a func from the current model/collection
                         var fn = this[funcName];
@@ -88,6 +91,10 @@ define(['app', 'moment'], function(App, moment) {
 
         ModelMixins.RelativeTimestampsModel = {
             attachLocalDates: function () {
+                if (i18n.lng) {
+                    moment.locale(i18n.lng());
+                }
+
                 var updatedLocal = moment.utc(this.get('updated_at'));
                 this.set('updated_local', updatedLocal);
                 this.set('updated_local_formatted', moment(updatedLocal).toDate());
@@ -102,7 +109,7 @@ define(['app', 'moment'], function(App, moment) {
 
         ModelMixins.Votable = {
             voteAdd: function (vote) {
-                if (vote.sign) {
+                if (+vote.sign) {
                     this.set(
                         'vote_likes',
                         this.get('vote_likes') + 1
@@ -120,7 +127,7 @@ define(['app', 'moment'], function(App, moment) {
                 this.calcVoteValue();
             },
             voteDelete: function (vote) {
-                if (vote.sign) {
+                if (+vote.sign) {
                     this.set(
                         'vote_likes',
                         this.get('vote_likes') - 1

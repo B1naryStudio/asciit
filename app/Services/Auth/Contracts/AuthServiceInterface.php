@@ -12,4 +12,8 @@ interface AuthServiceInterface
     public function authenticate($data);
 
     public function logout();
+
+    public function getUser();
+
+    public function getUserFromCookie($cookie);
 }

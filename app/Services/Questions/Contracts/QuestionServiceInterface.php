@@ -4,6 +4,7 @@ namespace App\Services\Questions\Contracts;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 interface QuestionServiceInterface
 {
@@ -42,7 +43,12 @@ interface QuestionServiceInterface
 
     public function getTags($pageSize = null);
 
-    public function getTagsPopular($pageSize = null);
+    /**
+     * @param null $pageSize
+     * @param string $search
+     * @return LengthAwarePaginator
+     */
+    public function getTagsPopular($pageSize = null, $search = '');
 
     public function createComment($data, $question_id);
 
@@ -60,5 +66,9 @@ interface QuestionServiceInterface
 
     public function updateFolder($data, $id);
 
+    /**
+     * @param null $pageSize
+     * @return LengthAwarePaginator
+     */
     public function getFoldersForCrud($pageSize = null);
 }

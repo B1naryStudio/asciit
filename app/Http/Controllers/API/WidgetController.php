@@ -140,7 +140,7 @@ class WidgetController extends Controller
     private function addLinks(Request $request, $data)
     {
         if ($data instanceof Collection) {
-            $data = $data->items();
+            $data = $data->all();
         }
 
         foreach ($data as &$item) {

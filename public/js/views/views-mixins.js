@@ -13,11 +13,9 @@ define(['app'], function(App) {
                         q_and_a_id: self.model.id
                     });
 
-                    self.getRegion('votes').show(votesView);
-                });
-
-                this.listenTo(this.model, 'change:vote_value', function() {
-                    this.showVotes();
+                    var votesRegion = self.getRegion('votes');
+                    votesRegion.empty();
+                    votesRegion.show(votesView);
                 });
             }
         }

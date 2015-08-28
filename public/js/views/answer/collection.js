@@ -27,33 +27,37 @@ define([
                     saveButton: '.save-button'
                 },
 
-            events: {
-                'click @ui.editButton': 'onEdit',
-                'click @ui.saveButton': 'onSave',
-                'mouseup .description': 'selectText'
-            },
+                events: {
+                    'click @ui.editButton': 'onEdit',
+                    'click @ui.saveButton': 'onSave',
+                    'mouseup .description': 'selectText'
+                },
 
-            selectText: function(e) {
-                e.stopPropagation();
-                var editor = App.helper.editor;
-                var text = App.helper.getSelected();
-                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
-                    text = '<blockquote><span class="author">'+this.model.attributes.created_relative+
-                    ' by '+this.model.attributes.user.first_name+
-                    ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
-                    editor.focus();
+                selectText: function(e) {
+                    e.stopPropagation();
+                    var editor = App.helper.editor;
+                    var text = App.helper.getSelected();
+                    if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                        text = '<blockquote><span class="author">'+
+                            '<time class="relative" data-abs-time="'+this.model.get('created_at')+'">'+
+                            this.model.get('created_relative')+'</time>'+
+                        ' by '+this.model.attributes.user.first_name+
+                        ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
+                        editor.focus();
 
-                    App.helper.moveFocus(editor, text);
-                    $('html, body').scrollTop($('#new-answer-form').offset().top);
-                }
-            },
+                        App.helper.moveFocus(editor, text);
+                        $('html, body').scrollTop(
+                            $('#new-answer-form').offset().top
+                        );
+                    }
+                },
 
-            onEdit: function (event) {
-                var field = this.$el.find('.description');
-                field.attr('contenteditable', true);
+                onEdit: function (event) {
+                    var field = this.$el.find('.description');
+                    field.attr('contenteditable', true);
 
-                EditorSettings.startupFocus = true;
-                this.editor = field.ckeditor(EditorSettings).editor;
+                    EditorSettings.startupFocus = true;
+                    this.editor = field.ckeditor(EditorSettings).editor;
                 },
 
                 onShow: function () {
@@ -79,28 +83,43 @@ define([
                     });
                     this.getRegion('comments').show(commentsView);
 
-                    this.listenTo(commentsView, 'form:submit', function (model) {
-                        $.when(App.request('comment:add', model))
-                            .done(function (savedModel) {
-                                commentCollection.push(savedModel);
-                                // Add model and form clearing
-                                var newModel = new Comment.Model({
-                                    q_and_a_id: savedModel.attributes.q_and_a_id
-                                });
+                    this.listenTo(
+                        commentsView,
+                        'form:submit',
+                        function (model) {
+                            $.when(App.request('comment:add', model))
+                                .done(function (savedModel) {
+                                    commentCollection.push(savedModel);
+                                    // Add model and form clearing
+                                    var newModel = new Comment.Model({
+                                        q_and_a_id: savedModel.attributes.q_and_a_id
+                                    });
 
-                                commentsView.triggerMethod('model:refresh', newModel);
-                            }).fail(function (errors) {
-                                console.log(errors);
-                                commentsView.triggerMethod('data:invalid', errors);
-                            });
-                    });
+                                    commentsView.triggerMethod(
+                                        'model:refresh',
+                                        newModel
+                                    );
+                                }).fail(function (errors) {
+                                    console.log(errors);
+                                    commentsView.triggerMethod(
+                                        'data:invalid',
+                                        errors
+                                    );
+                                });
+                        }
+                    );
                 },
+
                 initialize: function (options) {
                     this.$el.attr('id', 'answer-' + this.model.get('id'));
+
+                    var self = this;
+                    this.listenTo(this.model, 'change:vote_value', function() {
+                        self.showVotes();
+                    });
                 }
             })
         );
-
 
         View.AnswersCompositeView = Marionette.CompositeView.extend({
             tagName: 'section',
@@ -114,7 +133,7 @@ define([
                 'click .show-form' : 'showForm'
             },
 
-            showForm: function(e) {
+            showForm: function (e) {
                 e.stopPropagation();
                 var el = $(e.target)
                     .parents('.row')
@@ -129,6 +148,7 @@ define([
                 event.preventDefault();
                 var data = Backbone.Syphon.serialize($('#new-answer-form')[0]);
                 this.model.set(data);
+
 
                 if (this.model.isValid(true)) {
                     // To event in controller
@@ -148,7 +168,8 @@ define([
                     );
                 }
             },
-            // Refresh model and form for the futher using without view rendering
+            // Refresh model and form for the futher using without
+            // view rendering
             onModelRefresh: function (freshModel) {
                 this.model = freshModel;
 
@@ -156,6 +177,8 @@ define([
                     // Erase the editor value.
                     this.editor.setData('');
                 }
+
+                Backbone.Validation.bind(this);
             },
             refreshCounter: function () {
                 this.model.set('count', this.collection.length);
@@ -165,7 +188,8 @@ define([
                 EditorSettings.height = '350px';
 
                 try {
-                    this.editor = $('#description').ckeditor(EditorSettings).editor;
+                    this.editor = $('#description').
+                        ckeditor(EditorSettings).editor;
                     //for focus from parent
                     this.trigger('editor:created', this.editor);
                 } catch (e) {
