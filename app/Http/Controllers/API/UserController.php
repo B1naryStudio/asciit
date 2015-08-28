@@ -24,7 +24,7 @@ class UserController extends Controller
 
         $this->middleware('auth', ['only' => ['logout']]);
     }
-    
+
     public function login(AuthValidatedRequest $request)
     {
         try {
@@ -37,8 +37,8 @@ class UserController extends Controller
         return $auth;
 
     }
-    
-    public function logout($id)
+
+    public function logout(Request $request, $id)
     {
         try {
             $this->authService->logout();
@@ -47,27 +47,46 @@ class UserController extends Controller
                 'error' => [$e->getMessage()]
             ], 500);
         }
+
+        $cookie = $request->cookie('x-access-token');
+        $this->sendRemoteLogout($cookie);
+        setcookie('x-access-token', '', -1, '/');
+
         return Response::json(null, 200, [], JSON_NUMERIC_CHECK);
     }
 
     public function session(Request $request)
     {
-        if(!empty($request->cookie('x-access-token'))) {
+        $cookie = $request->cookie('x-access-token');
+        if(!empty($cookie)) {
             try {
                 $user = $this->authService->getUserFromCookie($request->cookie('x-access-token'));
             } catch (TokenInCookieExpiredException $e) {
                 return Redirect::to(env('AUTH_REDIRECT'))
-                    ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
+                               ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
             } catch (AuthException $e){
                 return Response::json([
                     'error' => [$e->getMessage()]
                 ], 401);
             }
         } else {
-            return Redirect::to(env('AUTH_REDIRECT'))
-                ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
+            return Response::json(['redirectTo' => url(env('AUTH_REDIRECT'))], 302)
+                           ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
         }
 
         return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
+    }
+
+    public function sendRemoteLogout($cookie) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,            url(env('AUTH_LOGOUT')));
+        curl_setopt($ch, CURLOPT_HEADER,         1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT,        30);
+        curl_setopt($ch, CURLOPT_COOKIE,        "x-access-token=".$cookie);
+        $response = curl_exec($ch);
+
+        return $response;
     }
 }

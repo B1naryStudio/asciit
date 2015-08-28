@@ -48,10 +48,10 @@ interface RepositoryInterface extends BaseRepositoryInterface
     );
 
     /**
-     * @param array $attributes
+     * @param array $keyAttributes
      * @return model
      */
-    public function firstOrCreate(array $attributes);
+    public function firstOrCreate(array $keyAttributes);
 
     /**
      * @param $model

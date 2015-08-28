@@ -11,6 +11,10 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * Class Repository
+ * @package App\Repositories\Repositories
+ */
 abstract class Repository extends BaseRepository implements RepositoryInterface
 {
     protected $relations = [];
@@ -125,6 +129,18 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         }
 
         return static::create($attributes);
+    }
+
+
+    public function updateFirstOrCreate(array $keyAttributes, array $attributes=[])
+    {
+        $attrs = array_merge($keyAttributes, $attributes);
+
+        if (!is_null($instance = $this->findWhere($keyAttributes)->first())) {
+            return $this->update($attrs, $instance->id);
+        }
+
+        return $this->create($attrs);
     }
 
     public function relationsAdd($model, $method, array $data)

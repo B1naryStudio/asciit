@@ -21,7 +21,7 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                         .done(function (model) {
                             App.User.Current = model;
                             App.trigger('popup:close');
-                            App.trigger('init:openRoutes', '/');
+                            App.trigger('init:openRoutes', App.prefix + '/');
                             App.Main.Menu.triggerMethod(
                                 'user:authorized',
                                 App.User.Current
@@ -37,19 +37,14 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                         wait: true,
                         success: function(model, response) {
                             delete App.User.Current;
-                            Backbone.history.navigate(
-                                '/login',
-                                { trigger: true }
-                            );
-                            App.Main.Menu.triggerMethod('user:leave');
+                            document.location = App.prefix + '/';
                         },
                         error: function(model, xhr) {
                             console.log(JSON.parse(xhr.responseText));
                         }
                     });
                 } else {
-                    document.location = "http://team.binary-studio.com/auth/logout";
-                    //Backbone.history.navigate('/login', { trigger: true });
+                    location.reload();
                 }
             },
             session: function () {

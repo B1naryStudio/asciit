@@ -18,13 +18,8 @@ define(['app'], function (App) {
                 }
             },
             isAdmin: function () {
-                var roles = this.get('roles');
-
-                for (var r in roles) {
-                    var roleTitle = roles[r].title;
-                    if (roleTitle == 'ADMIN') {
-                        return true;
-                    }
+                if (this.has('role') && this.get('role').title == 'ADMIN') {
+                    return true;
                 }
 
                 return false;
@@ -51,7 +46,7 @@ define(['app'], function (App) {
                     password: password
                 }, {
                     wait: true,
-                    success: function (model) {
+                    success: function (model, response, options) {
                         model.setAdminFlag();
                         defer.resolve(model);
                     },
@@ -72,6 +67,7 @@ define(['app'], function (App) {
                     success: function (model, response, options) {
                         model.setAdminFlag();
                         defer.resolve(model);
+
                     },
                     error: function (model, response, options) {
                         defer.reject();
