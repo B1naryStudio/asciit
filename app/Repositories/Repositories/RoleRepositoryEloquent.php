@@ -29,4 +29,19 @@ class RoleRepositoryEloquent extends Repository implements RoleRepository
     {
         $this->pushCriteria( app(RequestCriteria::class) );
     }
+
+    /**
+     * @param $title
+     * @return array
+     */
+    public function getByTitle($title)
+    {
+        if ($title == 'ADMIN') {
+            $role = $this->firstWhere(['title' => 'ADMIN']);
+        } else {
+            $role = $this->firstWhere(['title' => 'USER']);
+        }
+
+        return $role;
+    }
 }

@@ -177,6 +177,8 @@ define([
                 Backbone.history.navigate('/login', { trigger: true });
             } else if (xhr.status === 303 ) {
                 location.reload();
+            } else if (xhr.status === 302 ) {
+                document.location = xhr.responseJSON.redirectTo;
             } else {
                 error(xhr, textStatus, errorThrown);
             }
