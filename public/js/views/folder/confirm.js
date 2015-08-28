@@ -5,7 +5,7 @@ define([
     App.module('Folder.Views', function (View, App, Backbone, Marionette, $, _) {
         View.ConfirmFolderDeleteView = Marionette.ItemView.extend({
             tagName: 'div',
-            id: 'question-add-layout',
+            id: 'folder-confirm',
             template: ConfirmTpl,
 
             events: {
