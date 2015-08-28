@@ -228,7 +228,8 @@ define([
         };
 
         App.reqres.setHandler('question:collection', function (data) {
-            return API.questionCollection(data);
+            var rr = API.questionCollection(data);
+            return rr;
         });
 
         App.reqres.setHandler('question:model', function (id) {

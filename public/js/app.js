@@ -68,7 +68,7 @@ define([
                     if (tmp2.length === 2) {
                         data[tmp2[0]] = tmp2[1];
                     } else {
-                        data['search'] = tmp2[0];
+                        data['search'] = decodeURIComponent(tmp2[0]);
                     }
                 }
             }
