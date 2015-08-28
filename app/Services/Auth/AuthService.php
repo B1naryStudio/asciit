@@ -102,8 +102,9 @@ class AuthService implements AuthServiceInterface
         $remoteInfo = (array)$this->getRemoteUserInfo($cookie);
 
         $this->renameArrayKeys($remoteInfo, [
-            'name' => 'first_name',
-            'surname' => 'last_name'
+            'id'      => 'binary_id',
+            'name'    => 'first_name',
+            'surname' => 'last_name',
         ]);
 
         $this->attachRoleId($remoteInfo);
