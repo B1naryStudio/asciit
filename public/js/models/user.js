@@ -47,9 +47,6 @@ define(['app'], function (App) {
                 }, {
                     wait: true,
                     success: function (model, response, options) {
-                        debugger;
-
-
                         model.setAdminFlag();
                         defer.resolve(model);
                     },
