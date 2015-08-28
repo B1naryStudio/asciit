@@ -37,7 +37,11 @@
         "select": "Оберіть теги"
     },
     "search": {
-        "placeholder": "Пошук"
+        "placeholder": "Пошук",
+        "tagInfo": "Для пошуку по тегам введіть: ",
+        "folderInfo": "Для пошуку по розділам введіть: ",
+        "tagInfoSpan": "\"tag:назва тега\"",
+        "folderInfoSpan": "\"folder:назва розділу\""
     },
     "ui": {
         "save": "Зберегти",
