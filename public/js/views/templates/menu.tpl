@@ -26,7 +26,7 @@
 
     <!-- Site logo -->
     <div class="navbar-header">
-        <a class="navbar-brand" href="#">AskIT</a>
+        <a class="navbar-brand" href="/#">AskIT</a>
 
         <button type="button" class="navbar-toggle collapsed"
                 data-toggle="collapse" data-target="#navbar"

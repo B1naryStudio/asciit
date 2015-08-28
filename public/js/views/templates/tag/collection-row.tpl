@@ -1,1 +1,4 @@
-<a href="#tags/<%- title %>"><%- title %><br/><%- question_count %></a>
+<a href="#tags/<%- title %>">
+    <%- title %>
+    <span class="badge"><%- question_count %></span>
+</a>

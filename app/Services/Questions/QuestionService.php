@@ -352,6 +352,7 @@ class QuestionService implements QuestionServiceInterface
                     ['questions', 'questions_count'],
                     $pageSize,
                     false,
+                    [],
                     $where
                 );
         } catch (RepositoryException $e) {
@@ -409,7 +410,7 @@ class QuestionService implements QuestionServiceInterface
         try {
             $questions = $this->questionRepository
                 ->loadRelationPopular(
-                    ['answers', 'answers_count'],
+                    'answers',
                     $pageSize,
                     true,
                     ['user', 'folder'],
