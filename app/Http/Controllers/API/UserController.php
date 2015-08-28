@@ -24,7 +24,7 @@ class UserController extends Controller
 
         $this->middleware('auth', ['only' => ['logout']]);
     }
-    
+
     public function login(AuthValidatedRequest $request)
     {
         try {
@@ -37,7 +37,7 @@ class UserController extends Controller
         return $auth;
 
     }
-    
+
     public function logout(Request $request, $id)
     {
         try {
@@ -62,27 +62,16 @@ class UserController extends Controller
             try {
                 $user = $this->authService->getUserFromCookie($request->cookie('x-access-token'));
             } catch (TokenInCookieExpiredException $e) {
-                /*
-                 * Hardcoded url!
-                 */
-                return Redirect::to('http://team.binary-studio.com/auth/')
-                    ->withCookie('referer', 'http://team.binary-studio.com/asciit/');
+                return Redirect::to(env('AUTH_REDIRECT'))
+                               ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
             } catch (AuthException $e){
                 return Response::json([
                     'error' => [$e->getMessage()]
                 ], 401);
             }
         } else {
-<<<<<<< HEAD
             return Response::json(['redirectTo' => url(env('AUTH_REDIRECT'))], 302)
-                ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
-=======
-            /*
-             * Hardcoded url!
-             */
-            return Redirect::to('http://team.binary-studio.com/auth/')
-                ->withCookie('referer', 'http://team.binary-studio.com/asciit/');
->>>>>>> master
+                           ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
         }
 
         return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
@@ -90,10 +79,7 @@ class UserController extends Controller
 
     public function sendRemoteLogout($cookie) {
         $ch = curl_init();
-        /*
-         * Hardcoded url!
-         */
-        curl_setopt($ch, CURLOPT_URL,            'http://team.binary-studio.com/auth/logout');
+        curl_setopt($ch, CURLOPT_URL,            url(env('AUTH_LOGOUT')));
         curl_setopt($ch, CURLOPT_HEADER,         1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
