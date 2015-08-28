@@ -75,13 +75,13 @@ Route::group(['prefix' => 'api/v1/widget'], function() {
     Route::get('/questions/commented', 'API\WidgetController@questionsCommented');
 });
 
-Route::get('/auth/#/', function () {
-    $customClaims = [
+Route::get('/auth/', function () {
+    dd($customClaims = [
         "id" =>  "55dc13391846c68a1ad56daa",
         "email" =>  "admin@admin",
         "role" => "ADMIN",
         "iat" => 1440615292
-    ];
+    ]);
 
     $payload = JWTFactory::make($customClaims);
 
@@ -93,6 +93,6 @@ Route::get('/auth/#/', function () {
         ->withCookie('x-access-token', $data->get());
 });
 
-Route::get('/auth/#/logout', function () {
+Route::get('/auth/logout', function () {
     setcookie('x-access-token', '', -1, '/');
 });

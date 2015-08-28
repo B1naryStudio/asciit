@@ -57,7 +57,8 @@ class UserController extends Controller
 
     public function session(Request $request)
     {
-        if(!empty($request->cookie('x-access-token'))) {
+        $cookie = $request->cookie('x-access-token');
+        if(!empty($cookie)) {
             try {
                 $user = $this->authService->getUserFromCookie($request->cookie('x-access-token'));
             } catch (TokenInCookieExpiredException $e) {
@@ -72,11 +73,16 @@ class UserController extends Controller
                 ], 401);
             }
         } else {
+<<<<<<< HEAD
+            return Response::json(['redirectTo' => url(env('AUTH_REDIRECT'))], 302)
+                ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
+=======
             /*
              * Hardcoded url!
              */
             return Redirect::to('http://team.binary-studio.com/auth/')
                 ->withCookie('referer', 'http://team.binary-studio.com/asciit/');
+>>>>>>> master
         }
 
         return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
