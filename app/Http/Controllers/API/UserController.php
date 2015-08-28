@@ -24,7 +24,7 @@ class UserController extends Controller
 
         $this->middleware('auth', ['only' => ['logout']]);
     }
-    
+
     public function login(AuthValidatedRequest $request)
     {
         try {
@@ -37,7 +37,7 @@ class UserController extends Controller
         return $auth;
 
     }
-    
+
     public function logout(Request $request, $id)
     {
         try {
@@ -63,7 +63,7 @@ class UserController extends Controller
                 $user = $this->authService->getUserFromCookie($request->cookie('x-access-token'));
             } catch (TokenInCookieExpiredException $e) {
                 return Redirect::to(env('AUTH_REDIRECT'))
-                    ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
+                               ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
             } catch (AuthException $e){
                 return Response::json([
                     'error' => [$e->getMessage()]
@@ -71,7 +71,7 @@ class UserController extends Controller
             }
         } else {
             return Response::json(['redirectTo' => url(env('AUTH_REDIRECT'))], 302)
-                ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
+                           ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
         }
 
         return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
