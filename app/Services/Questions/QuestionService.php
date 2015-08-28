@@ -352,6 +352,7 @@ class QuestionService implements QuestionServiceInterface
                     ['questions', 'questions_count'],
                     $pageSize,
                     false,
+                    [],
                     $where
                 );
         } catch (RepositoryException $e) {
@@ -408,7 +409,15 @@ class QuestionService implements QuestionServiceInterface
         }
         try {
             $questions = $this->questionRepository
-                ->loadRelationPopular('answers', $pageSize, true, $where);
+                ->loadRelationPopular(
+                    'answers',
+                    $pageSize,
+                    true,
+                    ['user', 'folder'],
+                    $where
+                );
+            $questions = $this->questionRepository
+                ->setCountedFields(new Collection($questions));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -432,7 +441,15 @@ class QuestionService implements QuestionServiceInterface
         }
         try {
             $questions = $this->questionRepository
-                ->loadRelationPopular('votes', $pageSize, true, $where);
+                ->loadRelationPopular(
+                    'votes',
+                    $pageSize,
+                    true,
+                    ['user', 'folder'],
+                    $where
+                );
+            $questions = $this->questionRepository
+                ->setCountedFields(new Collection($questions));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -456,7 +473,15 @@ class QuestionService implements QuestionServiceInterface
         }
         try {
             $questions = $this->questionRepository
-                ->loadRelationPopular('comments', $pageSize, true, $where);
+                ->loadRelationPopular(
+                    'comments',
+                    $pageSize,
+                    true,
+                    ['user', 'folder'],
+                    $where
+                );
+            $questions = $this->questionRepository
+                ->setCountedFields(new Collection($questions));
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),

@@ -63,9 +63,13 @@ define([
                         questions.searchQuery = searchQuery; // For live update
                     }
 
+                    var tmp = searchTag.length ? 'tag: ' + searchTag :
+                        (searchFolder.length ? 'folder: ' + searchFolder :
+                            searchQuery);
+
                     var questionsView = new CollectionView({
                         collection: questions.sort(),
-                        searchQuery: searchQuery,
+                        searchQuery: tmp,
                         searchTag: searchTag
                     });
                     var tagsView = new TagsView({

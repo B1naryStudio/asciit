@@ -167,6 +167,10 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             $model = $model->getModel();
         }
 
+        $table = $query->getQuery()->getModel()->getTable();
+        $query->setModel($this->model->getModel());
+        $query->getQuery()->getQuery()->from($table);
+
         if ($use_main_table) {
             $query->select(['main.*']);
         }
@@ -187,7 +191,13 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         return $query;
     }
 
-    public function loadRelationPopular($relation, $count, $use_main_table = true, $where = array())
+    public function loadRelationPopular(
+        $relation,
+        $count,
+        $use_main_table = true,
+        $relations = array(),
+        $where = array()
+    )
     {
         if (!is_array($relation)) {
             $relation_count = $relation;
@@ -196,7 +206,11 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             $relation = $relation[0];
         }
 
-        $query = $this->getRelationRecordCount($relation, $relation_count, $use_main_table);
+        $query = $this->getRelationRecordCount(
+            $relation,
+            $relation_count,
+            $use_main_table
+        );
         if (!empty($where)) {
             foreach ($where as $condition) {
                 if (is_array($condition) && count($condition) === 2 ) {
@@ -207,6 +221,10 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
                     $query->whereRaw($condition);
                 }
             }
+        }
+
+        if (!empty($relations)) {
+            $query->with($relations);
         }
 
         return $query
@@ -216,7 +234,13 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
             ->all();
     }
 
-    public function loadRelationPopularPaginate($relation, $limit, $use_main_table = true, $where = array())
+    public function loadRelationPopularPaginate(
+        $relation,
+        $limit,
+        $use_main_table = true,
+        $relations = array(),
+        $where = array()
+    )
     {
         if (!is_array($relation)) {
             $relation_count = $relation;
@@ -236,6 +260,10 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
                     $query->whereRaw($condition);
                 }
             }
+        }
+
+        if (!empty($relations)) {
+            $query->with($relations);
         }
 
         return $query
@@ -303,7 +331,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
      * @param $collection Collection
      * @return Collection
      */
-    protected function setCountedFields($collection)
+    public function setCountedFields($collection)
     {
         $id = [];
         $collection->each(function ($item, $key) use (&$id) {

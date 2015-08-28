@@ -35,9 +35,9 @@ define([
                 );
             },
             onShow: function () {
-                var query = this.collection.searchQuery;
+                var query = this.options.searchQuery;
                 if (query) {
-                    $('#search-query').val(query).focus();
+                    this.$el.find('#search-query').val(query).focus();
                 }
             },
             initialize: function (options) {
