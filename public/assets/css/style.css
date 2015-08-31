@@ -187,6 +187,7 @@
     text-decoration: none;
     padding: 0;
     color: #333;
+    display: block;
 }
 
 .menu-list li:hover,
