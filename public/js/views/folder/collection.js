@@ -1,7 +1,7 @@
 define([
     'app',
     'tpl!views/templates/folder/row.tpl',
-    'views/folder/confirm',
+    'views/popup/confirm',
     'views/empty'
 ], function (App, FolderRowTpl, confirmView, EmptyView) {
     App.module('Folder.Views', function (Views, App, Backbone, Marionette, $, _ ) {
@@ -12,13 +12,16 @@ define([
 
             events: {
                 'click .delete-folder': 'deleteFolder',
-                'click .edit-folder': 'editFolder',
+                'click .edit-folder':   'editFolder',
                 'click .update-folder': 'updateFolder',
                 'click .cancel-update': 'cancelUpdate'
             },
 
             deleteFolder: function() {
-                var popupConfirm = new confirmView();
+                var popupConfirm = new confirmView({
+                    message: i18n.t("folders.confirm-body")
+                });
+
                 App.trigger('popup:show', {
                     header: {
                         title: i18n.t('folders.confirm-title')
@@ -26,6 +29,7 @@ define([
                     class: 'confirm-form',
                     contentView: popupConfirm
                 });
+
                 this.listenTo(
                     popupConfirm,
                     'form:submit',
