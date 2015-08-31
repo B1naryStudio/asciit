@@ -36,7 +36,7 @@ class AnswerToBroadcasting extends DeliveryHandler
                 // remote func name must be an array key
                 'calls' => ['answerAdd' => null]
             ],
-            'topic' =>'questions/' . $event->answer->question_id
+            'topic' =>'entries/' . $event->answer->question_id
         ]);
     }
 }

@@ -37,6 +37,29 @@ define(['app', 'moment'], function(App, moment) {
                         'retryDelay': 2000
                     }
                 );
+            },
+            calls: function (calls) {
+                // If there is remote call parameters
+                if (calls) {
+                    for (var funcName in calls) {
+                        if (!calls.hasOwnProperty(funcName)) {
+                            continue;
+                        }
+                        // Taking a function name from object
+                        // Try to get a func from the current model/collection
+                        var fn = this[funcName];
+                        if (fn) {
+                            // arg or massive of args
+                            var args = calls[funcName];
+
+                            if (typeof args !== 'array') {
+                                args = [args];
+                            }
+
+                            fn.apply(this, args);
+                        }
+                    }
+                }
             }
         };
 
@@ -61,29 +84,6 @@ define(['app', 'moment'], function(App, moment) {
             update: function (patch) {
                 if (patch) {
                     this.set.call(this, patch);
-                }
-            },
-            calls: function (calls) {
-                // If there is remote call parameters
-                if (calls) {
-                    for (var funcName in calls) {
-                        if (!calls.hasOwnProperty(funcName)) {
-                            continue;
-                        }
-                        // Taking a function name from object
-                        // Try to get a func from the current model/collection
-                        var fn = this[funcName];
-                        if (fn) {
-                            // arg or massive of args
-                            var args = calls[funcName];
-
-                            if (typeof args !== 'array') {
-                                args = [args];
-                            }
-
-                            fn.apply(this, args);
-                        }
-                    }
                 }
             }
         };
