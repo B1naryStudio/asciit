@@ -46,11 +46,53 @@
     color: #a94442;
 }
 
+#page-content-wrapper {
+    padding-top: 20px;
+}
+
+.navbar {
+    min-height: 30px;
+    margin-bottom: 0;
+}
+
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
+    background-color: #000;
+}
+
+.nav>li>a.current-lang {
+    padding-right: 20px;
+}
+
+.navbar-toggle .icon-bar {
+    width: 15px;
+}
+
+.navbar-toggle {
+    padding: 9px 8px;
+    background-color: #ffa800;
+    margin-right: 18px;
+}
+
+.navbar-inverse .navbar-toggle:focus,
+.navbar-inverse .navbar-toggle:hover {
+    background-color: #ffa800;
+}
+
+.navbar-header {
+    background: #000;
+    margin-top: -15px;
+}
+
+.navbar-inverse .navbar-toggle .icon-bar {
+    /*background-color: #000;*/
+}
+
 /*
- |------------------------------------------------------------------------------
- | Questions list
- |------------------------------------------------------------------------------
- */
+|------------------------------------------------------------------------------
+| Questions list
+|------------------------------------------------------------------------------
+*/
 .question-row {
     margin: 10px 0;
 }
@@ -558,7 +600,6 @@ blockquote .author {
 #spinner {
     height: 0;
     position: relative;
-    top: -20px;
 }
 
 @keyframes move {
@@ -714,7 +755,7 @@ div .fa-05 {
  |------------------------------------------------------------------------------
  */
 .nav>li>a {
-    padding: 15px 11px;
+    padding: 0 11px 5px;
 }
 
 .new-folder-form {
@@ -1006,7 +1047,6 @@ div .fa-05 {
 
     .question_view .votes {
         position: relative;
-        top: 35px;
     }
 
     .votes .control {
@@ -1054,6 +1094,11 @@ div .fa-05 {
 
     .confirm-form {
         width: 70%;
+    }
+
+    .votes .counter.divided {
+        top: 2px;
+        line-height: 1.75em;
     }
 }
 
@@ -1138,6 +1183,24 @@ div .fa-05 {
         padding-top: 7px;
         margin-bottom: 0;
         text-align: right;
+    }
+
+    .navbar-header .navbar-nav .open .dropdown-menu {
+        position: absolute;
+        float: left;
+        width: auto;
+        margin-top: 0;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid rgba(0,0,0,.15);
+        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    }
+
+    .navbar-right .dropdown-menu {
+        right: 0;
+        left: auto;
     }
 }
 
