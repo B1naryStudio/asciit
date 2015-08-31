@@ -20,21 +20,30 @@ Rbac::permission('questions.view');
 Rbac::permission('questions.create');
 //Rbac::permission('questions.edit');
 //Rbac::permission('questions.edit.own', ['questions.edit'], function($params) {});
-//Rbac::permission('questions.delete');
-//Rbac::permission('questions.delete.own', ['questions.delete'], function($params) {});
+Rbac::permission('questions.delete');
+Rbac::permission('questions.delete.own', ['questions.delete'], function($params) {
+    $question_id = $params['questions'];
+    $question_repo = app('App\Repositories\Contracts\QuestionRepository');
+    $question = $question_repo->find($question_id);
+
+    $question_owner = $question->user_id;
+    $current_user = $this->user->id;
+
+    return $question_owner == $current_user;
+});
 
 
 Rbac::permission('questions.manage', [
     'questions.view',
     'questions.create',
 //    'questions.edit',
-//    'questions.delete'
+    'questions.delete'
 ]);
 
 Rbac::permission('questions.manage.own', [
     'questions.create',
 //    'questions.edit.own',
-//    'questions.delete.own'
+    'questions.delete.own'
 ]);
 
 // answers

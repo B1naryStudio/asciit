@@ -23,7 +23,7 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::resource(
         '/questions',
         'API\QuestionController',
-        ['only' => ['index', 'store', 'show']]
+        ['only' => ['index', 'store', 'show', 'destroy']]
     );
 
     Route::resource(

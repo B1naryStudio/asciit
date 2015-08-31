@@ -139,4 +139,14 @@ class QuestionController extends Controller
             ], 200, [], JSON_NUMERIC_CHECK
         );
     }
+
+    public function destroy($id) {
+        try {
+            $this->questionService->removeQuestion($id);
+        } catch (QuestionServiceException $e) {
+            return Response::json(['error' => $e->getMessage()], 404);
+        }
+
+        return Response::json([], 200);
+    }
 }
