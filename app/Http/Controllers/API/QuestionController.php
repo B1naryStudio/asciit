@@ -107,13 +107,18 @@ class QuestionController extends Controller
     public function show($id_or_slug)
     {
         try {
-            if (is_numeric($id_or_slug)) {
-                $question = $this->questionService->getQuestionById($id_or_slug);
-            } else {
-                $question = $this->questionService->getQuestionBySlug($id_or_slug);
-            }
+            $question = $this->questionService->getQuestionBySlug($id_or_slug);
         } catch (QuestionServiceException $e) {
-            return Response::json(['error' => $e->getMessage()], 404);
+            if (is_numeric($id_or_slug)) {
+                try {
+                    $question = $this->questionService
+                        ->getQuestionById($id_or_slug);
+                } catch (QuestionServiceException $e) {
+                    return Response::json(['error' => $e->getMessage()], 404);
+                }
+            } else {
+                return Response::json(['error' => $e->getMessage()], 404);
+            }
         }
 
         return Response::json($question->toArray(), 200, [], JSON_NUMERIC_CHECK);
