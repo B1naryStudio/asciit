@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\DeliveryHandlers\WebSocketHandlers;
 
 use App\Events\FolderWasAdded;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Listeners\Contracts\WebSocketDeliveryHandler;
 
-class FolderToBroadcasting extends DeliveryHandler
+class FolderToBroadcasting extends WebSocketDeliveryHandler
 {
     /**
      * Handle the event.

@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\DeliveryHandlers\WebSocketHandlers;
 
 use App\Events\TagWasAdded;
+use App\Listeners\Contracts\WebSocketDeliveryHandler;
 
-class TagToBroadcasting extends DeliveryHandler
+class TagToBroadcasting extends WebSocketDeliveryHandler
 {
     /**
      * Handle the event.

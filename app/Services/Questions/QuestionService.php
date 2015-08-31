@@ -258,12 +258,16 @@ class QuestionService implements QuestionServiceInterface
             'q_and_a_id' => $data['q_and_a_id'],
         ]);
 
+//        $this->voteRepository->
+
         // If this like is unique
         if (!$same) {
             $vote = $this->voteRepository->create($data);
         } else {
             throw new QuestionServiceException('User can\'t vote twice!');
         }
+
+        $vote = $this->voteRepository->findWithRelations($vote->id, ['user', 'question.user', 'answer.question']);
 
         Event::fire(new VoteWasAdded($vote));
 
@@ -273,7 +277,9 @@ class QuestionService implements QuestionServiceInterface
     public function removeVote($vote_id)
     {
         try {
-            $vote = $this->voteRepository->delete($vote_id);
+            $vote = $this->voteRepository->findWithRelations($vote_id, ['user', 'question.user', 'answer.question']);
+            $vote->delete($vote_id);
+
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' Can\'t unlike it.',
@@ -294,7 +300,7 @@ class QuestionService implements QuestionServiceInterface
         try {
             $new = $this->answerRepository->create($data);
             $answer = $this->answerRepository->withRelationCount()
-                ->findWithRelations($new->id, ['user', 'question']);
+                ->findWithRelations($new->id, ['user', 'question.user']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such answer',
@@ -408,7 +414,7 @@ class QuestionService implements QuestionServiceInterface
 
         try {
             $comment = $this->commentRepository
-                ->findWithRelations($new->id, ['user']);
+                ->findWithRelations($new->id, ['user', 'question.user', 'answer.question']);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage() . ' No such answer',

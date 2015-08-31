@@ -14,34 +14,38 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         'App\Events\QuestionWasAdded' => [
-            'App\Listeners\QuestionToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\QuestionToBroadcasting',
         ],
         'App\Events\QuestionWasRemoved' => [
             'App\Listeners\QuestionRemovingToBroadcasting',
         ],
         'App\Events\AnswerWasAdded' => [
-            'App\Listeners\AnswerToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\AnswerToBroadcasting',
+            'App\Listeners\DeliveryHandlers\HttpHandlers\AnswerToHttp',
         ],
         'App\Events\CommentWasAdded' => [
-            'App\Listeners\CommentToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentToBroadcasting',
+            'App\Listeners\DeliveryHandlers\HttpHandlers\CommentToHttp',
         ],
         'App\Events\VoteWasAdded' => [
-            'App\Listeners\VoteToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\VoteToBroadcasting',
+            'App\Listeners\DeliveryHandlers\HttpHandlers\VoteAddedToHttp',
         ],
         'App\Events\VoteWasRemoved' => [
-            'App\Listeners\VoteRemovingToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\VoteRemovingToBroadcasting',
+            'App\Listeners\DeliveryHandlers\HttpHandlers\VoteRemovedToHttp',
         ],
         'App\Events\FolderWasAdded' => [
-            'App\Listeners\FolderToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\FolderToBroadcasting',
         ],
         'App\Events\FolderWasUpdated' => [
-            'App\Listeners\FolderUpdatingToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\FolderUpdatingToBroadcasting',
         ],
         'App\Events\FolderWasRemoved' => [
-            'App\Listeners\FolderRemovingToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\FolderRemovingToBroadcasting',
         ],
         'App\Events\TagWasAdded' => [
-            'App\Listeners\TagToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\TagToBroadcasting',
         ],
     ];
 
