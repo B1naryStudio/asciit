@@ -90,7 +90,12 @@ Route::get('/auth/', function (Request $request) {
     $redirectPath = $request->cookie('referer');
 
     return Redirect::to($redirectPath, 303)
-        ->withCookie('x-access-token', $data->get());
+        ->withCookie('x-access-token', $data->get())
+        ->withCookie('serverUID', '55dc13391846c68a1ad56daa');
+});
+
+Route::get('/app/header', function () {
+    return view('menu-mockup');
 });
 
 Route::get('/auth/logout', function () {

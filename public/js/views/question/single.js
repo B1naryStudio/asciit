@@ -76,7 +76,10 @@ define([
                 },
 
                 showControls: function () {
-                    if (this.model.isCurrentUserOwner()) {
+                    if (
+                        this.model.isCurrentUserOwner()
+                        || App.User.Current.isAdmin()
+                    ) {
                         this.$el.find('.controls').show();
                     }
 

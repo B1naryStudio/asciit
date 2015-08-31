@@ -132,7 +132,7 @@ define(['app', 'progressbar', 'views/menu'], function (App, ProgressBar, Menu) {
             menuShow: function (options) {
                 var menu = new Menu({
                     model: options.model,
-                    url: 'http://team.binary-studio.com/app/header',
+                    url: '/app/header',
                     success: function () {
                         App.Main.Layout.getRegion('header').show(menu);
                         App.Main.Menu = menu;
