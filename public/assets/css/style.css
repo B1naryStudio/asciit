@@ -189,11 +189,17 @@
     color: #333;
 }
 
-.menu-list li a:hover,
-.menu-list li a:focus,
-.lang-list li span:hover,
-.lang-list li span:focus {
-    color: #fff;
+.menu-list li:hover,
+.menu-list li:focus,
+.lang-list li:hover,
+.lang-list li:focus {
+    background-color: #fff;
+}
+
+.menu-list li:hover a,
+.menu-list li:focus a,
+.lang-list li:hover span,
+.lang-list li:focus span {
     cursor: pointer;
     font-size: 20px;
     transition: .2s;
