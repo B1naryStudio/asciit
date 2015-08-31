@@ -1,3 +1,7 @@
+* {
+    outline: none;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Main menu
@@ -46,11 +50,166 @@
     color: #a94442;
 }
 
+#page-content-wrapper {
+    padding-top: 20px;
+}
+
+.navbar {
+    min-height: 30px;
+    margin-bottom: 0;
+}
+
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
+    background-color: #000;
+}
+
+.nav>li>a.current-lang {
+    padding-right: 20px;
+}
+
+.navbar-toggle {
+    padding: 9px 8px;
+    background-color: #ffa800;
+    margin-right: 18px;
+}
+
+.navbar-inverse .navbar-toggle:focus,
+.navbar-inverse .navbar-toggle:hover {
+    background-color: #ffa800;
+}
+
+.navbar-header {
+    background: #000;
+    margin-top: -15px;
+}
+
+.menu.navbar.navbar-inverse {
+    background: #000;
+}
+
+.main-menu {
+    margin-right: 85px;
+}
+
+.custom-menu {
+    width: 85px;
+    position: absolute;
+    right: 20px;
+    top: 25px;
+    display: flex;
+    align-self: center;
+}
+
+.custom-menu .button {
+    padding: 4px 0;
+    border: none;
+    height: 30px;
+    width: 30px;
+    border-radius: 5px;
+    background: #ffa800;
+    cursor: pointer;
+    margin-left: 10px;
+    color: #fff;
+}
+
+.menu-list:before {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #ffa800;
+    content: '';
+    margin-top: -25px;
+    margin-left: 120px;
+    position: absolute;
+}
+
+.lang-list:before {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 25px solid #ffa800;
+    content: '';
+    margin-top: -25px;
+    margin-left: 15px;
+    position: absolute;
+}
+
+.custom-menu .menu-list-control {
+    padding: 4px 7px;
+}
+
+.custom-menu .menu-list-control .icon-bar {
+    display: block;
+    height: 2px;
+    border-radius: 1px;
+    width: 15px;
+    background-color: #fff;
+    margin: 4px 0;
+}
+
+.menu-list,
+.lang-list {
+    padding: 10px;
+    z-index: 1;
+    background: #ffa800;
+    border-radius: 20px;
+    right: 0;
+    position: absolute;
+}
+
+.menu-list {
+    width: 230px;
+}
+
+.lang-list {
+    width: 70px;
+    margin-right: 15px;
+    padding: 10px;
+}
+
+.menu-list li,
+.lang-list li {
+    list-style: none;
+    border: 1px solid #808080;
+    text-align: center;
+    border-radius: 6px;
+    margin-bottom: 3px;
+    height: 30px;
+    line-height: 2em;
+    font-size: 14px;
+}
+
+.menu-list li a,
+.lang-list li a {
+    text-decoration: none;
+    padding: 0;
+    color: #333;
+}
+
+.menu-list li:hover,
+.menu-list li:focus,
+.lang-list li:hover,
+.lang-list li:focus {
+    background-color: #fff;
+}
+
+.menu-list li:hover a,
+.menu-list li:focus a,
+.lang-list li:hover span,
+.lang-list li:focus span {
+    cursor: pointer;
+    font-size: 20px;
+    transition: .2s;
+}
+
 /*
- |------------------------------------------------------------------------------
- | Questions list
- |------------------------------------------------------------------------------
- */
+|------------------------------------------------------------------------------
+| Questions list
+|------------------------------------------------------------------------------
+*/
 .question-row {
     margin: 10px 0;
 }
@@ -77,6 +236,10 @@
     float: right;
     margin-top: 8px;
     margin-right: 15px;
+}
+
+.address-control.search {
+    z-index: 0;
 }
 
 /*
@@ -558,7 +721,6 @@ blockquote .author {
 #spinner {
     height: 0;
     position: relative;
-    top: -20px;
 }
 
 @keyframes move {
@@ -714,7 +876,7 @@ div .fa-05 {
  |------------------------------------------------------------------------------
  */
 .nav>li>a {
-    padding: 15px 11px;
+    padding: 0 11px 5px;
 }
 
 .new-folder-form {
@@ -1006,7 +1168,6 @@ div .fa-05 {
 
     .question_view .votes {
         position: relative;
-        top: 35px;
     }
 
     .votes .control {
@@ -1054,6 +1215,11 @@ div .fa-05 {
 
     .confirm-form {
         width: 70%;
+    }
+
+    .votes .counter.divided {
+        top: 2px;
+        line-height: 1.75em;
     }
 }
 
@@ -1138,6 +1304,24 @@ div .fa-05 {
         padding-top: 7px;
         margin-bottom: 0;
         text-align: right;
+    }
+
+    .navbar-header .navbar-nav .open .dropdown-menu {
+        position: absolute;
+        float: left;
+        width: auto;
+        margin-top: 0;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid rgba(0,0,0,.15);
+        -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+        box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    }
+
+    .navbar-right .dropdown-menu {
+        right: 0;
+        left: auto;
     }
 }
 

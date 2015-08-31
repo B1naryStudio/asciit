@@ -1,11 +1,10 @@
 define([
     'app',
     'tpl!views/templates/main-layout.tpl',
-    'views/menu',
     'moment',
     'syphon',
     'updown'
-], function (App, Tpl, Menu, moment) {
+], function (App, Tpl, moment) {
     App.module('Main', function (Main, App, Backbone, Marionette, $, _) {
         var Layout = Marionette.LayoutView.extend({
             tagName: 'div',
@@ -33,8 +32,6 @@ define([
                 }, 15000);
             },
             onShow: function() {
-                this.getRegion('header').show(Menu);
-
                 this.startRelativeTimeUpdating();
             }
         });
