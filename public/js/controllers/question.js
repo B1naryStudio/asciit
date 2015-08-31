@@ -246,7 +246,25 @@ define([
                                                 'data:invalid',
                                                 errors
                                             );
-                                        });
+                                        }
+                                    );
+                                }
+                            );
+
+                            Question.Controller.listenTo(
+                                questionView,
+                                'submit:delete',
+                                function (model) {
+                                    $.when(App.request(
+                                        'question:delete',
+                                        model
+                                    )).done(function () {
+                                            Backbone.history.navigate(
+                                                '/questions',
+                                                { trigger: true }
+                                            );
+                                        }
+                                    );
                                 }
                             );
                         });

@@ -22,13 +22,18 @@ define([
                     votes: '.question-votes'
                 },
                 ui: {
+                    question: '.question_view *',
                     commentButton: '.add-comment',
-                    answerButton: '.add-answer'
+                    answerButton: '.add-answer',
+                    deleteButton: '.controls .delete'
                 },
                 events: {
                     'click @ui.commentButton': 'showCommentForm',
                     'click @ui.answerButton': 'toAnswerForm',
-                    'mouseup p': 'selectText'
+                    'mouseup p': 'selectText',
+                    'mouseover @ui.question': 'showControls',
+                    'mouseout @ui.question': 'hideControls',
+                    'click @ui.deleteButton': 'onDelete'
                 },
 
                 selectText: function() {
@@ -68,6 +73,21 @@ define([
                         $('#new-answer-form').offset().top
                     );
                     this.newAnswerEditor.focus();
+                },
+
+                showControls: function () {
+                    //if (this.model.isCurrentUserOwner()) {
+                        this.$el.find('.controls').show();
+                    //}
+
+                },
+
+                hideControls: function () {
+                    this.$el.find('.controls').hide();
+                },
+
+                onDelete: function () {
+                    this.trigger('submit:delete', this.model);
                 },
 
                 onShow: function () {

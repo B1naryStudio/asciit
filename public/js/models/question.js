@@ -10,6 +10,7 @@ define([
                 ModelMixins.RelativeTimestampsModel,
                 ModelMixins.LiveModel,
                 ModelMixins.Votable,
+                ModelMixins.Ownership,
                 {
                     urlRoot: App.prefix + '/api/v1/questions',
                     validation: {
@@ -214,6 +215,26 @@ define([
                 }
                 return defer.promise();
             },
+            questionDelete: function (model) {
+                var defer = $.Deferred();
+
+                if (!model.destroy({
+                        wait: true,
+                        success: function () {
+                            defer.resolve(model);
+                        },
+                        error: function (model, xhr, options) {
+                            var errors = JSON.parse(xhr.responseText);
+                            defer.reject(errors);
+                        }
+                    })) {
+                    defer.reject({
+                        description: 'Server error, deleting is impossible.'
+                    });
+                }
+
+                return defer.promise();
+            },
             questionCollectionByUser: function () {
                 var questions = new Question.CollectionByUser();
                 var defer = $.Deferred();
@@ -238,6 +259,10 @@ define([
 
         App.reqres.setHandler('question:add', function (data) {
             return API.questionAdd(data);
+        });
+
+        App.reqres.setHandler('question:delete', function (model) {
+            return API.questionDelete(model);
         });
 
         App.reqres.setHandler('question:my', function () {

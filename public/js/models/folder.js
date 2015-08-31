@@ -156,7 +156,7 @@ define([
                         }
                     })) {
                     defer.reject({
-                        description: 'Server error, saving is impossible.'
+                        description: 'Server error, deleting is impossible.'
                     });
                 }
                 return defer.promise();

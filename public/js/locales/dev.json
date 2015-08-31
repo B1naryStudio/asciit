@@ -53,10 +53,15 @@
         "login-title": "Please, login",
         "password": "Password",
         "empty": "Nothing here",
+
         "up": "Up",
         "down": "Down",
+
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+
+        "edit": "Edit",
+        "delete": "Delete"
     },
     "validation": {
         "required-field": "This field is required.",

@@ -111,6 +111,7 @@ define([
                                         ) {
                                             folders.state.currentPage--;
                                         }
+
                                         $.when(
                                             App.request(
                                                 'folders:fetch',

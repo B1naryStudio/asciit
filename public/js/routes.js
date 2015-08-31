@@ -36,7 +36,9 @@ define(['app', 'progressbar', 'views/menu'], function (App, ProgressBar, Menu) {
                         easing: 'easeOut'
                     }, function () {            // Callback on animation finish
                         setTimeout(function () { // Waiting for downloading finish
-                            Routes.spinner.destroy();
+                            if (Routes.spinner) {
+                                Routes.spinner.destroy();
+                            }
                             Routes.spinner = null;
                         }, 3000)
 
