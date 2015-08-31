@@ -187,6 +187,7 @@
     text-decoration: none;
     padding: 0;
     color: #333;
+    display: block;
 }
 
 .menu-list li:hover,
@@ -374,6 +375,25 @@
 
 /*
  |------------------------------------------------------------------------------
+ | Controls (edit, delete)
+ |------------------------------------------------------------------------------
+ */
+.question_view .controls {
+    float: right;
+    display: none;
+    margin-right: 20px;
+}
+
+    .question_view .controls .fa {
+        font-size: 1.2em;
+        padding: 2px;
+        margin-right: 3px;
+        cursor: pointer;
+        color: #555;
+    }
+
+/*
+ |------------------------------------------------------------------------------
  | Answers list
  |------------------------------------------------------------------------------
  */
@@ -421,23 +441,19 @@
 
 /*
  |------------------------------------------------------------------------------
- | User avatar
+ | Confirmation form
  |------------------------------------------------------------------------------
  */
-.img-thumbnail.big {
-    max-width: 100px;
-    max-height: 100px;
-    width: 100%;
+.confirm-form {
+    width: 25%;
+    margin: auto;
+    top: 10%;
+    bottom: auto;
 }
 
-.img-thumbnail.medium {
-    width: 70px;
-    height: 70px;
-}
-
-.avatar.small {
-    width: 50px;
-    height: 50px;
+.confirm-form .form-group.controls {
+    margin-bottom: 0;
+    text-align: center;
 }
 
 /*
@@ -445,14 +461,18 @@
  | Add question popup
  |------------------------------------------------------------------------------
  */
+#popup-layout-view {
+    padding: 0 !important;
+    position: absolute;
+    overflow: hidden;
+}
+
 #popup-layout-view.question-add {
     left: 10%;
     right: 10%;
     top: 10%;
     bottom: auto;
-    padding: 0 !important;
-    position: absolute;
-    overflow: hidden;
+
 }
 
 #popup-layout-view.question-add .select2-container {
@@ -504,6 +524,27 @@
 .login-form .controls {
     width: 60px;
     margin: 20px auto 0;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | User avatar
+ |------------------------------------------------------------------------------
+ */
+.img-thumbnail.big {
+    max-width: 100px;
+    max-height: 100px;
+    width: 100%;
+}
+
+.img-thumbnail.medium {
+    width: 70px;
+    height: 70px;
+}
+
+.avatar.small {
+    width: 50px;
+    height: 50px;
 }
 
 /*
@@ -688,7 +729,6 @@ blockquote .author {
  | Comments
  |------------------------------------------------------------------------------
  */
-
 .comment-form {
     display: none;
 }
@@ -1030,18 +1070,6 @@ div .fa-05 {
     display: none;
 }
 
-.confirm-form {
-    width: 25%;
-    margin: auto;
-    top: 10%;
-    bottom: auto;
-}
-
-#folder-confirm .form-group.controls {
-    margin-bottom: 0;
-    text-align: center;
-}
-
 /*
  |------------------------------------------------------------------------------
  | Media
@@ -1105,6 +1133,24 @@ div .fa-05 {
 
     .tag-element:nth-child(2n) {
         margin-left: 10%;
+    }
+
+    .custom-menu {
+        top: 75px;
+        right: initial;
+        left: 202px;
+    }
+
+    .buttons {
+        margin-top: -5px;
+    }
+
+    #searchBar {
+        margin-top: -40px;
+    }
+
+    .searchBtn {
+        margin-top: -42px;
     }
 }
 
@@ -1239,6 +1285,39 @@ div .fa-05 {
     .pagination>li>span {
         padding: 4px 12px;
         font-size: 14px;
+    }
+}
+
+@media (min-width: 401px) and (max-width: 580px) {
+    #searchBar {
+        padding-left: 10px;
+        margin-top: -65px;
+        height: 36px;
+        left: 0;
+        position: fixed;
+        width: 100%;
+        border: 2px solid #dadada;
+    }
+
+    .searchBtn {
+        margin-top: -64px;
+        padding-left: 25px;
+        padding-right: 25px;
+        height: 38px;
+        right: 0;
+        position: fixed;
+    }
+
+    .header {
+        margin-top: 40px;
+    }
+
+    .custom-menu {
+        top: 65px;
+    }
+
+    .logo {
+        width: 155px;
     }
 }
 

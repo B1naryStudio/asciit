@@ -31,12 +31,17 @@ define(['app', 'progressbar', 'views/menu'], function (App, ProgressBar, Menu) {
                         }
                     });
 
-                    Routes.spinner.animate(1.0, {
+                    Routes.spinner.animate(0.8, {
                         duration: 2000,
                         easing: 'easeOut'
                     }, function () {            // Callback on animation finish
-                        Routes.spinner.destroy();
-                        Routes.spinner = null;
+                        setTimeout(function () { // Waiting for downloading finish
+                            if (Routes.spinner) {
+                                Routes.spinner.destroy();
+                            }
+                            Routes.spinner = null;
+                        }, 3000)
+
                     });
                 }
             },

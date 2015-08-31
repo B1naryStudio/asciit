@@ -4,11 +4,13 @@ define([
     'views/answer/collection',
     'views/tag/view',
     'views/views-mixins',
+    'views/popup/confirm',
     'stickit',
     'highlight',
     'ckeditor',
     'ckeditor.adapter'
-], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, ViewsMixins) {
+], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, ViewsMixins,
+             confirmView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionLayout = Marionette.LayoutView.extend(
             _.extend({}, ViewsMixins.ContainsVotes, {
@@ -22,13 +24,18 @@ define([
                     votes: '.question-votes'
                 },
                 ui: {
+                    question: '.question_view *',
                     commentButton: '.add-comment',
-                    answerButton: '.add-answer'
+                    answerButton: '.add-answer',
+                    deleteButton: '.controls .delete'
                 },
                 events: {
                     'click @ui.commentButton': 'showCommentForm',
                     'click @ui.answerButton': 'toAnswerForm',
-                    'mouseup p': 'selectText'
+                    'mouseup p': 'selectText',
+                    'mouseover @ui.question': 'showControls',
+                    'mouseout @ui.question': 'hideControls',
+                    'click @ui.deleteButton': 'onDelete'
                 },
 
                 selectText: function() {
@@ -68,6 +75,42 @@ define([
                         $('#new-answer-form').offset().top
                     );
                     this.newAnswerEditor.focus();
+                },
+
+                showControls: function () {
+                    if (
+                        this.model.isCurrentUserOwner()
+                        || App.User.Current.isAdmin()
+                    ) {
+                        this.$el.find('.controls').show();
+                    }
+
+                },
+
+                hideControls: function () {
+                    this.$el.find('.controls').hide();
+                },
+
+                onDelete: function () {
+                    var popupConfirm = new confirmView({
+                        message: i18n.t("questions.confirm-del-body")
+                    });
+
+                    App.trigger('popup:show', {
+                        header: {
+                            title: i18n.t('questions.confirm-del-title')
+                        },
+                        class: 'confirm-form',
+                        contentView: popupConfirm
+                    });
+
+                    this.listenTo(
+                        popupConfirm,
+                        'form:submit',
+                        function () {
+                            this.trigger('submit:delete', this.model);
+                        }
+                    )
                 },
 
                 onShow: function () {

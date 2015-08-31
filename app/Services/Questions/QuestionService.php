@@ -1,5 +1,6 @@
 <?php
-namespace App\Services\Questions;;
+
+namespace App\Services\Questions;
 
 use App\Repositories\Criteria\CurrentUserCriteria;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -18,6 +19,7 @@ use App\Services\Questions\Exceptions\QuestionServiceException;
 use App\Repositories\Contracts\CommentRepository;
 use Illuminate\Support\Facades\Event;
 use App\Events\QuestionWasAdded;
+use App\Events\QuestionWasRemoved;
 use App\Events\AnswerWasAdded;
 use App\Events\CommentWasAdded;
 use App\Events\VoteWasAdded;
@@ -184,6 +186,22 @@ class QuestionService implements QuestionServiceInterface
         return $questions;
     }
 
+    public function removeQuestion($id)
+    {
+        try {
+            $question = $this->questionRepository->delete($id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new QuestionWasRemoved($question));
+        return $question;
+    }
+
     /**
      * @param int $question_id
      * @return Collection
@@ -307,6 +325,70 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+        return $folder;
+    }
+
+    // Folders
+    public function createFolder($data)
+    {
+        try {
+            $folder = $this->folderRepository->create($data);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new FolderWasAdded($folder));
+        return $folder;
+    }
+
+    public function updateFolder($data, $id)
+    {
+        try {
+            $folder = $this->folderRepository->update($data, $id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new FolderWasUpdated($folder));
+        return $folder;
+    }
+
+    public function getFoldersForCrud($pageSize = null)
+    {
+        try {
+            $folder = $this->folderRepository
+                ->paginate($pageSize);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+        return $folder;
+    }
+
+    public function removeFolder($id)
+    {
+        try {
+            $folder = $this->folderRepository->delete($id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new FolderWasRemoved($folder));
         return $folder;
     }
 
@@ -498,67 +580,5 @@ class QuestionService implements QuestionServiceInterface
         return $questions;
     }
 
-    public function removeFolder($id)
-    {
-        try {
-            $folder = $this->folderRepository->delete($id);
-        } catch (RepositoryException $e) {
-            throw new QuestionServiceException(
-                $e->getMessage(),
-                null,
-                $e
-            );
-        }
-
-        Event::fire(new FolderWasRemoved($folder));
-        return $folder;
-    }
-
-    public function createFolder($data)
-    {
-        try {
-            $folder = $this->folderRepository->create($data);
-        } catch (RepositoryException $e) {
-            throw new QuestionServiceException(
-                $e->getMessage(),
-                null,
-                $e
-            );
-        }
-
-        Event::fire(new FolderWasAdded($folder));
-        return $folder;
-    }
-
-    public function updateFolder($data, $id)
-    {
-        try {
-            $folder = $this->folderRepository->update($data, $id);
-        } catch (RepositoryException $e) {
-            throw new QuestionServiceException(
-                $e->getMessage(),
-                null,
-                $e
-            );
-        }
-
-        Event::fire(new FolderWasUpdated($folder));
-        return $folder;
-    }
-
-    public function getFoldersForCrud($pageSize = null)
-    {
-        try {
-            $folder = $this->folderRepository
-                ->paginate($pageSize);
-        } catch (RepositoryException $e) {
-            throw new QuestionServiceException(
-                $e->getMessage(),
-                null,
-                $e
-            );
-        }
-        return $folder;
-    }
 }
 

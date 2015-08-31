@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\QuestionWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\QuestionToBroadcasting',
         ],
+        'App\Events\QuestionWasRemoved' => [
+            'App\Listeners\QuestionRemovingToBroadcasting',
+        ],
         'App\Events\AnswerWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\AnswerToBroadcasting',
             'App\Listeners\DeliveryHandlers\HttpHandlers\AnswerToHttp',
