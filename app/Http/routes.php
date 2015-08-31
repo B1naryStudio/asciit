@@ -95,3 +95,10 @@ Route::get('/auth/', function (Request $request) {
 Route::get('/auth/logout', function () {
     setcookie('x-access-token', '', -1, '/');
 });
+
+Route::post('/notifications', function (Request $request) {
+    return Response::json([
+        'result' => $request->all()
+    ], 200);
+
+});

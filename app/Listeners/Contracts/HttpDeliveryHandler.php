@@ -8,7 +8,7 @@
 
 namespace App\Listeners\Contracts;
 
-
+use App\Services\Notifications\NotificationService;
 
 
 class HttpDeliveryHandler extends DeliveryHandler
@@ -18,8 +18,8 @@ class HttpDeliveryHandler extends DeliveryHandler
      *
      * @return void
      */
-    public function __construct(AbstractWebSocketFactory $factory)
+    public function __construct(NotificationService $notification)
     {
-        $this->delivery = $factory->getDeliveryService();
+        $this->delivery = $notification;
     }
 }

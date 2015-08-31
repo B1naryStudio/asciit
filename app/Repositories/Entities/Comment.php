@@ -22,12 +22,12 @@ class Comment extends Model implements Transformable
 
     public function question()
     {
-        return $this->belongsTo('App\Repositories\Entities\Question');
+        return $this->belongsTo('App\Repositories\Entities\Question', 'q_and_a_id');
     }
 
     public function answer()
     {
-        return $this->belongsTo('App\Repositories\Entities\Answer');
+        return $this->belongsTo('App\Repositories\Entities\Answer', 'q_and_a_id');
     }
 
     public function user()
