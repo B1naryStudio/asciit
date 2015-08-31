@@ -255,6 +255,8 @@ define([
                                 questionView,
                                 'submit:delete',
                                 function (model) {
+                                    App.trigger('popup:close');
+
                                     $.when(App.request(
                                         'question:delete',
                                         model

@@ -440,23 +440,19 @@
 
 /*
  |------------------------------------------------------------------------------
- | User avatar
+ | Confirmation form
  |------------------------------------------------------------------------------
  */
-.img-thumbnail.big {
-    max-width: 100px;
-    max-height: 100px;
-    width: 100%;
+.confirm-form {
+    width: 25%;
+    margin: auto;
+    top: 10%;
+    bottom: auto;
 }
 
-.img-thumbnail.medium {
-    width: 70px;
-    height: 70px;
-}
-
-.avatar.small {
-    width: 50px;
-    height: 50px;
+.confirm-form .form-group.controls {
+    margin-bottom: 0;
+    text-align: center;
 }
 
 /*
@@ -464,14 +460,18 @@
  | Add question popup
  |------------------------------------------------------------------------------
  */
+#popup-layout-view {
+    padding: 0 !important;
+    position: absolute;
+    overflow: hidden;
+}
+
 #popup-layout-view.question-add {
     left: 10%;
     right: 10%;
     top: 10%;
     bottom: auto;
-    padding: 0 !important;
-    position: absolute;
-    overflow: hidden;
+
 }
 
 #popup-layout-view.question-add .select2-container {
@@ -523,6 +523,27 @@
 .login-form .controls {
     width: 60px;
     margin: 20px auto 0;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | User avatar
+ |------------------------------------------------------------------------------
+ */
+.img-thumbnail.big {
+    max-width: 100px;
+    max-height: 100px;
+    width: 100%;
+}
+
+.img-thumbnail.medium {
+    width: 70px;
+    height: 70px;
+}
+
+.avatar.small {
+    width: 50px;
+    height: 50px;
 }
 
 /*
@@ -1047,18 +1068,6 @@ div .fa-05 {
 
 #textButton {
     display: none;
-}
-
-.confirm-form {
-    width: 25%;
-    margin: auto;
-    top: 10%;
-    bottom: auto;
-}
-
-#folder-confirm .form-group.controls {
-    margin-bottom: 0;
-    text-align: center;
 }
 
 /*

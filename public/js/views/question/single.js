@@ -4,11 +4,13 @@ define([
     'views/answer/collection',
     'views/tag/view',
     'views/views-mixins',
+    'views/popup/confirm',
     'stickit',
     'highlight',
     'ckeditor',
     'ckeditor.adapter'
-], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, ViewsMixins) {
+], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, ViewsMixins,
+             confirmView) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionLayout = Marionette.LayoutView.extend(
             _.extend({}, ViewsMixins.ContainsVotes, {
@@ -90,7 +92,25 @@ define([
                 },
 
                 onDelete: function () {
-                    this.trigger('submit:delete', this.model);
+                    var popupConfirm = new confirmView({
+                        message: i18n.t("questions.confirm-del-body")
+                    });
+
+                    App.trigger('popup:show', {
+                        header: {
+                            title: i18n.t('questions.confirm-del-title')
+                        },
+                        class: 'confirm-form',
+                        contentView: popupConfirm
+                    });
+
+                    this.listenTo(
+                        popupConfirm,
+                        'form:submit',
+                        function () {
+                            this.trigger('submit:delete', this.model);
+                        }
+                    )
                 },
 
                 onShow: function () {
