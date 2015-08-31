@@ -1,13 +1,13 @@
 define([
     'app',
     'tpl!views/templates/menu.tpl',
-    'tpl!views/templates/menu-unauthorized.tpl',
     'models/user',
     'syphon'
-], function (App, MenuTpl, MenuUnauthTpl) {
+], function (App, MenuTpl) {
     App.module('Main', function (Main, App, Backbone, Marionette, $, _) {
-        var MenuView = Marionette.ItemView.extend({
+        Main.MenuView = Marionette.ItemView.extend({
             tagName: 'div',
+            template: MenuTpl,
             id: 'menu-view',
             ui: {
                 login: '#nav-login',
@@ -27,14 +27,6 @@ define([
                 'mouseout @ui.lang_button' : 'foldMenu',
                 'click @ui.tags': 'tags',
                 'click @ui.lang_sel': 'swithLanguage'
-            },
-            // If there is user, we can render a new template
-            getTemplate: function() {
-                if (this.model.get('id')) {
-                    return MenuTpl;
-                } else {
-                    return MenuUnauthTpl;
-                }
             },
             login: function () {
                 this.$el.find('.navbar-nav .active').removeClass('active');
@@ -65,20 +57,34 @@ define([
                 i18n.setLng(lang);
                 location.reload();
             },
-            onUserAuthorized: function (user) {
-                this.model = user;
-                this.render();
-            },
-            onUserLeave: function () {
-                this.model.clear({silent: true});
-                this.render();
-            },
             tags: function () {
                 this.$el.find('.navbar-nav .active').removeClass('active');
                 this.ui.questions.closest('li').addClass('active');
+            },
+            onShow: function () {
+                this.$el.find('.main-menu').html(this.body);
+                headerFubction();
+                return this;
+            },
+            initialize: function (options) {
+                var self = this;
+                var request = new XMLHttpRequest();
+                request.open('GET', options.url, true);
+                request.send();
+                request.onreadystatechange = function () {
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+                    if (request.status === 200) {
+                        self.initRender(request.responseText);
+                        options.success();
+                    }
+                };
+            },
+            initRender: function (body) {
+                this.body = body;
             }
         });
-        Main.Menu = new MenuView({model: new App.User.Model});
     });
-    return App.Main.Menu;
+    return App.Main.MenuView;
 });
