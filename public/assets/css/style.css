@@ -187,6 +187,7 @@
     text-decoration: none;
     padding: 0;
     color: #333;
+    display: block;
 }
 
 .menu-list li:hover,
@@ -688,7 +689,6 @@ blockquote .author {
  | Comments
  |------------------------------------------------------------------------------
  */
-
 .comment-form {
     display: none;
 }
@@ -1106,6 +1106,24 @@ div .fa-05 {
     .tag-element:nth-child(2n) {
         margin-left: 10%;
     }
+
+    .custom-menu {
+        top: 75px;
+        right: initial;
+        left: 202px;
+    }
+
+    .buttons {
+        margin-top: -5px;
+    }
+
+    #searchBar {
+        margin-top: -40px;
+    }
+
+    .searchBtn {
+        margin-top: -42px;
+    }
 }
 
 @media (max-width: 650px) {
@@ -1239,6 +1257,39 @@ div .fa-05 {
     .pagination>li>span {
         padding: 4px 12px;
         font-size: 14px;
+    }
+}
+
+@media (min-width: 401px) and (max-width: 580px) {
+    #searchBar {
+        padding-left: 10px;
+        margin-top: -65px;
+        height: 36px;
+        left: 0;
+        position: fixed;
+        width: 100%;
+        border: 2px solid #dadada;
+    }
+
+    .searchBtn {
+        margin-top: -64px;
+        padding-left: 25px;
+        padding-right: 25px;
+        height: 38px;
+        right: 0;
+        position: fixed;
+    }
+
+    .header {
+        margin-top: 40px;
+    }
+
+    .custom-menu {
+        top: 65px;
+    }
+
+    .logo {
+        width: 155px;
     }
 }
 
