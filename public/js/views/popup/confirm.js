@@ -1,11 +1,11 @@
 define([
     'app',
-    'tpl!views/templates/folder/confirm.tpl'
+    'tpl!views/templates/popup/confirm.tpl'
 ], function (App, ConfirmTpl) {
     App.module('Folder.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.ConfirmFolderDeleteView = Marionette.ItemView.extend({
+        View.ConfirmView = Marionette.ItemView.extend({
             tagName: 'div',
-            id: 'folder-confirm',
+            id: 'confirm',
             template: ConfirmTpl,
 
             events: {
@@ -20,9 +20,20 @@ define([
             submit: function (event) {
                 event.preventDefault();
                 this.trigger('form:submit');
+            },
+
+            render: function () {
+                this.$el.html(this.template({
+                    message: this.message,
+                    _t: i18n.t
+                }));
+            },
+
+            initialize: function (options) {
+                this.message = options.message;
             }
         });
     });
-    return App.Folder.Views.ConfirmFolderDeleteView;
+    return App.Folder.Views.ConfirmView;
 });
 
