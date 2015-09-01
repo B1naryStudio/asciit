@@ -206,6 +206,14 @@
     transition: .2s;
 }
 
+#appsBlock:before {
+    margin-left: 85px;
+}
+
+#notificationBlock:before {
+    margin-left: 160px;
+}
+
 /*
 |------------------------------------------------------------------------------
 | Questions list
@@ -647,6 +655,7 @@
     text-overflow: ellipsis;
     padding-right: 30px;
     position: relative;
+    white-space: nowrap;
 }
 
 .tag-element .badge {
@@ -945,7 +954,7 @@ div .fa-05 {
 }
 
 .folder-row:nth-child(2n) {
-    margin-left: 5%;
+    margin-left: 10%;
 }
 
 .glyphicon {
@@ -1124,6 +1133,25 @@ div .fa-05 {
     .confirm-form {
         width: 96%;
     }
+
+    .custom-menu {
+        right: initial;
+        left: 69%;
+    }
+
+    #searchBar {
+        width: 48%;
+    }
+}
+
+@media (min-width: 351px) and (max-width: 380px) {
+    #searchBar {
+        width: 46%;
+    }
+
+    .custom-menu {
+        left: 67%;
+    }
 }
 
 @media (max-width: 400px) {
@@ -1136,21 +1164,21 @@ div .fa-05 {
     }
 
     .custom-menu {
-        top: 75px;
-        right: initial;
-        left: 202px;
+        top: 40px;
+        right: 13px;
     }
 
-    .buttons {
-        margin-top: -5px;
+    .main-menu {
+        margin-right: 0;
     }
 
-    #searchBar {
-        margin-top: -40px;
+    #appsBtn,
+    #notificationBtn {
+        margin-top: -20px;
     }
 
-    .searchBtn {
-        margin-top: -42px;
+    .header {
+        height: 80px;
     }
 }
 

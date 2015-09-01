@@ -59,7 +59,7 @@ define([
                         'form:submit',
                         function (searchQuery) {
                             Backbone.history.navigate(
-                                '/tags?' + searchQuery,
+                                '/tags?' + encodeURIComponent(searchQuery),
                                 { trigger: true }
                             );
                         }
