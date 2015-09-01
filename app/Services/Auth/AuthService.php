@@ -94,16 +94,28 @@ class AuthService implements AuthServiceInterface
                 ['role']
             );
         } else {
-            throw new AuthException('User is not authorized');
+            throw new AuthException('Login error. User is not authorized.');
         }
     }
 
+    /**
+     * Updates user according to the new information from server api
+     *
+     * @param $cookie
+     * @param $user
+     */
     protected function attachAdditionUserInfo($cookie, &$user) {
         $remoteInfo = (array)$this->getRemoteUserInfo($cookie);
         $preparedUserInfo = $this->prepareUserData($remoteInfo);
         $user = $this->userRepository->update($preparedUserInfo, $user->id);
     }
 
+    /**
+     * Renames array $arr keys according to the $renamingMap
+     *
+     * @param array $arr
+     * @param array $renamingMap
+     */
     protected function renameArrayKeys(array &$arr, array $renamingMap)
     {
         foreach ($renamingMap as $old => $new) {
@@ -114,6 +126,13 @@ class AuthService implements AuthServiceInterface
         }
     }
 
+    /**
+     * Renames the keys pfom payload to accessible in our application
+     * Attaches a role_id according to the role attribute in the array
+     *
+     * @param array $arr
+     * @return array
+     */
     protected function prepareUserData(array $arr)
     {
         $this->renameArrayKeys($arr, [
@@ -127,6 +146,11 @@ class AuthService implements AuthServiceInterface
         return $arr;
     }
 
+    /**
+     * Attaches a role_id according to the role attribut in the array
+     *
+     * @param array $arr
+     */
     protected function attachRoleId(array &$arr)
     {
         if (array_key_exists('role', $arr)) {
@@ -135,6 +159,10 @@ class AuthService implements AuthServiceInterface
         }
     }
 
+    /**
+     * @param $cookie
+     * @return mixed
+     */
     protected function getRemoteUserInfo($cookie) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,            url(env('AUTH_ME')));
