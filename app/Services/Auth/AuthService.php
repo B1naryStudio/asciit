@@ -78,11 +78,11 @@ class AuthService implements AuthServiceInterface
         }
 
         $userInfo = $payload->toArray();
-        $this->attachRoleId($userInfo);
+        $preparedUserInfo = $this->prepareUserData($userInfo);
 
         $user = $this->userRepository->updateFirstOrCreate(
-            ['email' => $userInfo['email']],
-            $userInfo
+            ['email' => $preparedUserInfo['email']],
+            $preparedUserInfo
         );
 
         $this->attachAdditionUserInfo($cookie, $user);
@@ -100,15 +100,8 @@ class AuthService implements AuthServiceInterface
 
     protected function attachAdditionUserInfo($cookie, &$user) {
         $remoteInfo = (array)$this->getRemoteUserInfo($cookie);
-
-        $this->renameArrayKeys($remoteInfo, [
-            'id'      => 'binary_id',
-            'name'    => 'first_name',
-            'surname' => 'last_name',
-        ]);
-
-        $this->attachRoleId($remoteInfo);
-        $user = $this->userRepository->update($remoteInfo, $user->id);
+        $preparedUserInfo = $this->prepareUserData($remoteInfo);
+        $user = $this->userRepository->update($preparedUserInfo, $user->id);
     }
 
     protected function renameArrayKeys(array &$arr, array $renamingMap)
@@ -119,6 +112,19 @@ class AuthService implements AuthServiceInterface
                 unset($arr[$old]);
             }
         }
+    }
+
+    protected function prepareUserData(array $arr)
+    {
+        $this->renameArrayKeys($arr, [
+            'id'      => 'binary_id',
+            'name'    => 'first_name',
+            'surname' => 'last_name',
+        ]);
+
+        $this->attachRoleId($arr);
+
+        return $arr;
     }
 
     protected function attachRoleId(array &$arr)
