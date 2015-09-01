@@ -493,6 +493,7 @@
 
 .error {
     color: red;
+    font-weight: normal;
 }
 
 .error.all {
