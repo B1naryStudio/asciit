@@ -7,7 +7,6 @@
  | Main menu
  |------------------------------------------------------------------------------
  */
-
 .menu .user-panel {
     float: right;
     margin-right: 15px;
@@ -212,6 +211,10 @@
 
 #notificationBlock:before {
     margin-left: 160px;
+}
+
+#logOutBox {
+    right: 185px;
 }
 
 /*
