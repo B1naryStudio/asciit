@@ -501,6 +501,7 @@ body.modal-open {
 
 .error {
     color: red;
+    font-weight: normal;
 }
 
 .error.all {
