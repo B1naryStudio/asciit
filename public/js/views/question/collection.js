@@ -35,6 +35,7 @@ define([
                 );
             },
             onShow: function () {
+                $('[data-toggle="popover"]').popover();
                 var query = this.options.searchQuery;
                 if (query) {
                     this.$el.find('#search-query').val(query).focus();

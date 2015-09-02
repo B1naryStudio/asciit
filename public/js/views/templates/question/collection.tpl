@@ -2,6 +2,13 @@
     <div class="form-group">
         <div class="input-group address-control search">
             <input type="text"
+
+                   data-content='<%= _t("search.searchInfo") %>'
+                   data-toggle="popover"
+                   data-placement="bottom"
+                   data-container="body"
+                   data-trigger="focus"
+
                    class="form-control"
                    name="search_query"
                    id="search-query"
@@ -12,10 +19,6 @@
                 </button>
             </span>
         </div>
-        <ul class="search-info">
-            <li><%= _t("search.tagInfo") %><span><%= _t("search.tagInfoSpan") %></span></li>
-            <li><%= _t("search.folderInfo") %><span><%= _t("search.folderInfoSpan") %></span></li>
-        </ul>
         <span class="help-block hidden"></span>
     </div>
 </form>
