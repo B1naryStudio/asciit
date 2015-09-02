@@ -1,9 +1,7 @@
-<form action="#">
+<form action="#" class="question-form">
     <div class="form-group">
         <div class="input-group address-control search">
             <input type="text"
-
-                   data-content='<%= _t("search.searchInfo") %>'
                    data-toggle="popover"
                    data-placement="bottom"
                    data-container="body"
@@ -20,6 +18,9 @@
             </span>
         </div>
         <span class="help-block hidden"></span>
+    </div>
+    <div class="help">
+        <%= _t("search.searchInfo") %>
     </div>
 </form>
 
