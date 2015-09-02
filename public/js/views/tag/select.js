@@ -41,10 +41,11 @@ define([
                                 processResults: function (data, params) {
                                     var tmp;
                                     for (var i = 0; i < data[1].length; i++ ) {
-                                        debugger;
-                                        tmp = App.helper.htmlspecialchars(data[i]['title']);
-                                        data[i].text = tmp;
-                                        data[i].id = tmp;
+                                        tmp = App.helper.htmlspecialchars(
+                                            data[i]['title']
+                                        );
+                                        data[1][i].text = tmp;
+                                        data[1][i].id = tmp;
                                     }
                                     return {
                                         results: data

@@ -92,6 +92,9 @@ define([
         },
 
         htmlspecialchars: function (html) {
+            if (html) {
+                return '';
+            }
             return html.replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
