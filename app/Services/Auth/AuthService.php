@@ -170,7 +170,7 @@ class AuthService implements AuthServiceInterface
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT,        30);
-        curl_setopt($ch, CURLOPT_COOKIE,        "x-access-token=".$cookie);
+        curl_setopt($ch, CURLOPT_COOKIE,         "x-access-token=".$cookie);
         $response = curl_exec($ch);
         $header_size = curl_getinfo($ch,CURLINFO_HEADER_SIZE);
         $resultBody = substr($response, $header_size );
