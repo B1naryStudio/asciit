@@ -92,7 +92,7 @@ define([
         },
 
         htmlspecialchars: function (html) {
-            if (html) {
+            if (!html) {
                 return '';
             }
             return html.replace(/&/g, '&amp;')
