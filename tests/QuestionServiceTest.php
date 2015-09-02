@@ -189,7 +189,7 @@ class QuestionServiceTest extends TestCase
             'folder_id' => $this->folder->id
         ];
 
-        $this->folderRepo->shouldReceive('firstOrCreate')
+        $this->folderRepo->shouldReceive('firstWhere')
             ->andReturn($this->folder);
 
         $this->questionRepo->shouldReceive('create')
@@ -213,7 +213,7 @@ class QuestionServiceTest extends TestCase
             'tag'    => ['tests'],
         ];
 
-        $this->folderRepo->shouldReceive('firstOrCreate')
+        $this->folderRepo->shouldReceive('firstWhere')
             ->once()
             ->with(['title' => $newQuestionData['folder']])
             ->andReturn($this->folder);
