@@ -10,9 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Facades\JWTFactory;
-use Illuminate\Support\Facades\Redirect;
+
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
@@ -76,35 +74,16 @@ Route::group(['prefix' => 'api/v1/widget'], function() {
     Route::get('/questions/commented', 'API\WidgetController@questionsCommented');
 });
 
-Route::get('/auth/', function (Request $request) {
+// Auth mockups
+Route::get('/auth/', 'Mockups\AuthController@auth');
+Route::get('/auth/logout', 'Mockups\AuthController@logout');
 
-    $customClaims = [
-        'id' =>  '55dc13391846c68a1ad56daa',
-        'email' =>  'admin@admin',
-        'role' => 'ADMIN',
-        'iat' => 1440615292
-    ];
+// Header mockups
+Route::get('/app/header', 'Mockups\HeaderController@getMenu');
 
-    $payload = JWTFactory::make($customClaims);
-    $data = JWTAuth::encode($payload);
-    $redirectPath = $request->cookie('referer');
-
-    return Redirect::to($redirectPath, 303)
-        ->withCookie('x-access-token', $data->get())
-        ->withCookie('serverUID', '55dc13391846c68a1ad56daa');
-});
-
-Route::get('/app/header', function () {
-    return view('menu-mockup');
-});
-
-Route::get('/auth/logout', function () {
-    setcookie('x-access-token', '', -1, '/');
-});
-
-Route::post('/notifications', function (Request $request) {
-    return Response::json([
-        'result' => $request->all()
-    ], 200);
-
-});
+// Notification mockup
+Route::resource(
+    '/notifications',
+    'Mockups\NotificationController',
+    ['only' => ['store']]
+);
