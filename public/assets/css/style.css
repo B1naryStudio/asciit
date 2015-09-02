@@ -12,6 +12,7 @@ body.modal-open {
  | Main menu
  |------------------------------------------------------------------------------
  */
+
 .menu .user-panel {
     float: right;
     margin-right: 15px;
@@ -222,6 +223,10 @@ body.modal-open {
     right: 185px;
 }
 
+#userName {
+    white-space: nowrap;
+}
+
 /*
 |------------------------------------------------------------------------------
 | Questions list
@@ -257,6 +262,52 @@ body.modal-open {
 
 .address-control.search {
     z-index: 0;
+}
+
+#question-list .help {
+    width: 330px;
+    position: absolute;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    z-index: 132;
+    background-color: #fff;
+    padding: 10px;
+    display: none;
+    top: 44px;
+    left: 50%;
+    margin-left: -165px;
+}
+
+#question-list .question-form:hover .help {
+    display: block;
+}
+
+#question-list .help:before {
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 15px solid #fff;
+    margin-left: -30px;
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    left: 53%;
+    bottom: 100%;
+    z-index: 1;
+}
+
+#question-list .help:after {
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 16px solid #ccc;
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 0;
+    left: 53%;
+    bottom: 100%;
+    z-index: 0;
+    margin-left: -32px;
 }
 
 /*
@@ -1366,6 +1417,16 @@ div .fa-05 {
     .tag-element:nth-child(2n),
     .tag-element:nth-child(4n-1) {
         margin-left: 6.5%;
+    }
+}
+
+@media (max-width: 710px) {
+    #userName {
+        display: none;
+    }
+
+    #userProfile {
+        padding-right: 0;
     }
 }
 

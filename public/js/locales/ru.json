@@ -43,7 +43,8 @@
         "tagInfo": "Для поиска по тегам введите: ",
         "folderInfo": "Для поиска по папкам введите: ",
         "tagInfoSpan": "\"tag:название тега\"",
-        "folderInfoSpan": "\"folder:название папки\""
+        "folderInfoSpan": "\"folder:название папки\"",
+        "searchInfo": "Для поиска по тегам введите: \"tag:tag title\". <br> Для поиска по папкам введите: \"folder:folder title\""
     },
     "ui": {
         "save": "Сохранить",
