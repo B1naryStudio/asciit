@@ -20,6 +20,18 @@
         <div id="search"></div>
     </div>
 </div>
+<div id="logOutBox" class="invisible">
+    <div id="userprofileBtnInBox" class="logOutButtons">
+        <button id="userProfileInBoxBtn" class="userprofileAndLogoutBtn">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAADXElEQVRoQ+2ai3HTQBCGow7oAKcCQgU4FQAVxK6ApAJMBSQVoFRAUgGmgiQVoFQAqcD8v2elWZ3Puj3lLqcx7IzGr729/bS3q3u4OjoQqQ6E42gQZLPZzAD6CdcHXHxfQhp0eoPrqqoqvveKFwQAr6D9FdeihOcDfdb47QJAf1ydHRCB+AHFk4lBtO7c482pC9MDCUA8wsDe0GaC5nB+7bG9A+OCMHRnTsNbfD4fGp+ZILZmJU8v8fa90881fOqGfgciDX45yksoE664wD86/c1x5Li9wRqE1KxQrdxCidVqMgIYVi8dGVayczqoQRiNmfK6ox1Dgk7fqXYPvkoTaxc2WYDuVLsGdo9dkI1SeISChjL1KcWCUeVdYgnXUuPDl+fmGvpoYKcrALC3DYaOiAb5id/nJu9FSXLsOz4OlW3W/wUuvvJm0akoQT9rNOiinQOEIY999tRwZBlDkhUExldw5nOMQ0qXw43tTZINRPKChcLNCZNjomQuLDlBOObd+h4DQV3On1j+g5ITxK3tQWc8CuZnVk4Q9/kzBsRcJXOC6LI9BmLbpi2jIQP/QQx3KEVEnhARU9XLGZEUyT6JHOG8isvi50hvbTFkKGdE3On/GKBJlN81PNdT9jEgkxhaBwOSYmhNIkfcVduYoXWK8svIBiVbsrNnGK/x4u6+BJ0SBXN+SF+9oZxjYTUGhntlJzHr+awRkTvFHRcudWPEPH1vjWYHEZgGr76dQR/cE76cxUTjRYaWdLLAq3WRFbXEfdGICIxl7hWdGyVAVug0tBERnRslQHgkMQ9k/BK5wSoXLVmTXXZSON9ijlj2i7lBx1kznyEsEGZJDiLO8yFI52M35rTjBGFecQa8DhElA5GtUeYAAVILoVYAut5nOBak2+XWBmGEAKvU3nvsEYh5tBMh+PAbv3XLYt8UhY31w+wtlHjExbkUG5Y4V7yEDxctqOdYgccV22E9dNBzA6WPBSFa/7uNbvjCKZAuJt6DnhmU3KM3DiMepIyd2aYahe2OffjoTYZQPQGnrfC9xZjveJoJ9sZqrZDeA/qd6wnnvj8MTBlmB6KX7PrOSoJzLV46N9yAX+ELPmc4M+iJ5U81nEqwUljXGalHG2fKfPKzFDf7jP8bf3NKfWtz2vsLW+k7UaxgsbwAAAAASUVORK5CYII=" class="userprofileAndLogoutImg"/>
+        </button>
+    </div>
+    <div id="logOutBtnInBox" class="logOutButtons">
+        <button id="logOutButton" class="userprofileAndLogoutBtn">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAB+0lEQVRoQ+2ajU3DMBCFkw26AWECugEdoUxA2KCdgDIBMAHpBnQDmICOEDZgg/Ce5KDIOPFVtiM7sqWoVeOf+3zPd47TslhIKRfCUWSQ2Dwp9kjXdRsYf4+rmgmixTjHsiw/JOOJQACxQ2fPkg4D1NkD5sXWrxUEEGt08mXrKPD9a8DQQ6NFAnJA68fAhtq6fwII7XACoUZvBz0c8b2xjex4v0Z7rse+nACy9Q1inR1HiAJy1lXwCZBNBuEMYHZ0aWWPSCWXpTU1U1laUh0Z6qkkzBB/o26nGbVUkFnhk1sT5pM0QNRerkGu+NEdhHtMjtskEqJah1cw+A4Gnw0wKxPksJ5krxU8j2gBZQejXy9dYjGCkOEd14PNC7F7pLevHZOayVuxemRoq0hqQUGg/e5SrY/Ut0otFRDyTUotJZBvlU/+hWdSpgJygq31VBQLCiJdH4aN6bCpt1OUuRNiDzEpJX2SYvWIVUopgIikFDNINRaVsIaS2TTySDb9bbwputEL+J3nzTWuNB6sdBD1qPuG33nuzJIsyAHGD8+bM8ift/NxkHR/YqiXTxqnJm/J0mqYvByUI2nK3MGrL15e9OihUGKI7zrWVxmS3e8yXoZyahfxerrXiPrDAHVb+dbNSH8t16LXPwzMZLjTMNY14tT7jI0zyIyTLRrqF74MkEI5G3CLAAAAAElFTkSuQmCC" class="userprofileAndLogoutImg"/>
+        </button>
+    </div>
+</div>
 <div id="appsBlock" class="invisible">
     <div id="appsList"></div>
 </div>

@@ -4,8 +4,10 @@
 
         <div class="form-group folder">
             <label for="folder" class="control-label col-md-2 col-sm-2 col-lg-1"><%= _t("folders.folder") %>:</label>
-            <div class="col-md-10 col-sm-10 col-lg-11 folder-select-wrapper"></div>
-            <div class="error folder"></div>
+            <div class="col-md-10 col-sm-10 col-lg-11">
+                <div class="folder-select-wrapper"></div>
+                <div class="error folder"></div>
+            </div>
         </div>
 
         <div class="form-group title">

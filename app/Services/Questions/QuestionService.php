@@ -57,9 +57,10 @@ class QuestionService implements QuestionServiceInterface
     public function createQuestion($data)
     {
         try {
-            $folder = $this->folderRepository->firstOrCreate([
+            $folder = $this->folderRepository->firstWhere([
                 'title' => $data['folder']
             ]);
+
             $data['folder_id'] = $folder->id;
             $question = $this->questionRepository->create($data);
 
@@ -257,8 +258,6 @@ class QuestionService implements QuestionServiceInterface
             'user_id'    => $data['user_id'],
             'q_and_a_id' => $data['q_and_a_id'],
         ]);
-
-//        $this->voteRepository->
 
         // If this like is unique
         if (!$same) {

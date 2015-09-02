@@ -21,6 +21,10 @@ define([
                         description: {
                             required: true,
                             msg: i18n.t('validation.required-field')
+                        },
+                        folder: {
+                            required: true,
+                            msg: i18n.t('validation.required-field')
                         }
                     },
                     answerAdd: function () {

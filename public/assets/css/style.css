@@ -2,6 +2,11 @@
     outline: none;
 }
 
+body.modal-open {
+    overflow: inherit;
+    padding-right: 0 !important;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Main menu
@@ -212,6 +217,10 @@
 
 #notificationBlock:before {
     margin-left: 160px;
+}
+
+#logOutBox {
+    right: 185px;
 }
 
 #userName {
@@ -543,6 +552,7 @@
 
 .error {
     color: red;
+    font-weight: normal;
 }
 
 .error.all {
@@ -1128,7 +1138,6 @@ div .fa-05 {
 #textButton {
     display: none;
 }
-
 
 /*
  |------------------------------------------------------------------------------
