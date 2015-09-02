@@ -43,7 +43,8 @@
         "tagInfo": "Для пошуку по тегам введіть: ",
         "folderInfo": "Для пошуку по розділам введіть: ",
         "tagInfoSpan": "\"tag:назва тега\"",
-        "folderInfoSpan": "\"folder:назва розділу\""
+        "folderInfoSpan": "\"folder:назва розділу\"",
+        "searchInfo": "Для пошуку по тегам введіть: \"tag:tag title\". <br> Для пошуку по розділам введіть: \"folder:folder title\""
     },
     "ui": {
         "save": "Зберегти",

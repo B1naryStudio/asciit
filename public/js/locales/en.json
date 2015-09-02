@@ -43,7 +43,8 @@
         "tagInfo": "To search by tags enter: ",
         "folderInfo": "To search by folders enter: ",
         "tagInfoSpan": "\"tag:tag title\"",
-        "folderInfoSpan": "\"folder:folder title\""
+        "folderInfoSpan": "\"folder:folder title\"",
+        "searchInfo": "To search by tags enter: \"tag:tag title\". <br> To search by folders enter: \"folder:folder title\""
     },
     "ui": {
         "save": "Save",
