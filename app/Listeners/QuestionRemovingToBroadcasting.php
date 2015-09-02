@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\QuestionWasAdded;
+use App\Events\QuestionWasRemoved;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class QuestionToBroadcasting extends DeliveryHandler
+class QuestionRemovingToBroadcasting extends DeliveryHandler
 {
     /**
      * Handle the event.
@@ -14,17 +14,17 @@ class QuestionToBroadcasting extends DeliveryHandler
      * @param  QuestionWasAdded  $event
      * @return void
      */
-    public function handle(QuestionWasAdded $event)
+    public function handle(QuestionWasRemoved $event)
     {
         // to 'questions' topic
         $this->delivery->send([
-            'data'  => ['post' => $event->question],
+            'data'  => ['delete' => $event->question],
             'topic' =>'questions'
         ]);
 
         // to 'user/{id}/questions' topic
         $this->delivery->send([
-            'data'  => ['post' => $event->question],
+            'data'  => ['delete' => $event->question],
             'topic' =>'user/' . $event->question->user_id . '/questions'
         ]);
     }

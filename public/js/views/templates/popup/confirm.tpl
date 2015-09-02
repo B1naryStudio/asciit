@@ -1,9 +1,9 @@
-<form action="/api/v1/folders">
+<form action="">
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                 <p>
-                    <%= _t("folders.confirm-body") %>
+                    <%= message %>
                 </p>
             </div>
         </div>

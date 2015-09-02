@@ -65,9 +65,9 @@ class UserController extends Controller
                 return Redirect::to(env('AUTH_REDIRECT'))
                                ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
             } catch (AuthException $e){
-                return Response::json([
-                    'error' => [$e->getMessage()]
-                ], 401);
+                // Redirect to the authorisation server if user is not authorised
+                return Response::json(['redirectTo' => url(env('AUTH_REDIRECT'))], 302)
+                    ->withCookie('referer', url(env('SERVER_PREFIX', '') . '/'));
             }
         } else {
             return Response::json(['redirectTo' => url(env('AUTH_REDIRECT'))], 302)

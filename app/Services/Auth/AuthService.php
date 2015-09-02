@@ -78,11 +78,11 @@ class AuthService implements AuthServiceInterface
         }
 
         $userInfo = $payload->toArray();
-        $this->attachRoleId($userInfo);
+        $preparedUserInfo = $this->prepareUserData($userInfo);
 
         $user = $this->userRepository->updateFirstOrCreate(
-            ['email' => $userInfo['email']],
-            $userInfo
+            ['email' => $preparedUserInfo['email']],
+            $preparedUserInfo
         );
 
         $this->attachAdditionUserInfo($cookie, $user);
@@ -94,23 +94,28 @@ class AuthService implements AuthServiceInterface
                 ['role']
             );
         } else {
-            throw new AuthException('User is not authorized');
+            throw new AuthException('Login error. User is not authorized.');
         }
     }
 
+    /**
+     * Updates user according to the new information from server api
+     *
+     * @param $cookie
+     * @param $user
+     */
     protected function attachAdditionUserInfo($cookie, &$user) {
         $remoteInfo = (array)$this->getRemoteUserInfo($cookie);
-
-        $this->renameArrayKeys($remoteInfo, [
-            'id'      => 'binary_id',
-            'name'    => 'first_name',
-            'surname' => 'last_name',
-        ]);
-
-        $this->attachRoleId($remoteInfo);
-        $user = $this->userRepository->update($remoteInfo, $user->id);
+        $preparedUserInfo = $this->prepareUserData($remoteInfo);
+        $user = $this->userRepository->update($preparedUserInfo, $user->id);
     }
 
+    /**
+     * Renames array $arr keys according to the $renamingMap
+     *
+     * @param array $arr
+     * @param array $renamingMap
+     */
     protected function renameArrayKeys(array &$arr, array $renamingMap)
     {
         foreach ($renamingMap as $old => $new) {
@@ -121,6 +126,31 @@ class AuthService implements AuthServiceInterface
         }
     }
 
+    /**
+     * Renames the keys pfom payload to accessible in our application
+     * Attaches a role_id according to the role attribute in the array
+     *
+     * @param array $arr
+     * @return array
+     */
+    protected function prepareUserData(array $arr)
+    {
+        $this->renameArrayKeys($arr, [
+            'id'      => 'binary_id',
+            'name'    => 'first_name',
+            'surname' => 'last_name',
+        ]);
+
+        $this->attachRoleId($arr);
+
+        return $arr;
+    }
+
+    /**
+     * Attaches a role_id according to the role attribut in the array
+     *
+     * @param array $arr
+     */
     protected function attachRoleId(array &$arr)
     {
         if (array_key_exists('role', $arr)) {
@@ -129,6 +159,10 @@ class AuthService implements AuthServiceInterface
         }
     }
 
+    /**
+     * @param $cookie
+     * @return mixed
+     */
     protected function getRemoteUserInfo($cookie) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,            url(env('AUTH_ME')));
@@ -136,7 +170,7 @@ class AuthService implements AuthServiceInterface
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT,        30);
-        curl_setopt($ch, CURLOPT_COOKIE,        "x-access-token=".$cookie);
+        curl_setopt($ch, CURLOPT_COOKIE,         "x-access-token=".$cookie);
         $response = curl_exec($ch);
         $header_size = curl_getinfo($ch,CURLINFO_HEADER_SIZE);
         $resultBody = substr($response, $header_size );

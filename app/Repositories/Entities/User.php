@@ -31,7 +31,7 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      */
     protected $fillable = ['first_name', 'last_name', 'email', 'password',
                            'avatar', 'country', 'city', 'gender', 'birthday',
-                           'role_id'];
+                           'role_id', 'binary_id'];
 
     /**
      * The attributes excluded from the model's JSON form.

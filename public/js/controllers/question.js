@@ -115,7 +115,7 @@ define([
                                 ));
                                 questionsView.options.searchQuery = '';
                                 Backbone.history.navigate(
-                                    '/tags/' + query,
+                                    '/tags/' + encodeURIComponent(query),
                                     { trigger: true }
                                 );
                             } else if (/folder\:(.+)/.test(searchQuery)) {
@@ -125,13 +125,13 @@ define([
                                 ));
                                 questionsView.options.searchQuery = '';
                                 Backbone.history.navigate(
-                                    '/folders/' + query,
+                                    '/folders/' + encodeURIComponent(query),
                                     { trigger: true }
                                 );
                             } else {
                                 questionsView.options.searchTag = '';
                                 Backbone.history.navigate(
-                                    '/questions?' + searchQuery,
+                                    '/questions?' + encodeURIComponent(searchQuery),
                                     { trigger: true }
                                 );
                             }
@@ -246,7 +246,27 @@ define([
                                                 'data:invalid',
                                                 errors
                                             );
-                                        });
+                                        }
+                                    );
+                                }
+                            );
+
+                            Question.Controller.listenTo(
+                                questionView,
+                                'submit:delete',
+                                function (model) {
+                                    App.trigger('popup:close');
+
+                                    $.when(App.request(
+                                        'question:delete',
+                                        model
+                                    )).done(function () {
+                                            Backbone.history.navigate(
+                                                '/questions',
+                                                { trigger: true }
+                                            );
+                                        }
+                                    );
                                 }
                             );
                         });

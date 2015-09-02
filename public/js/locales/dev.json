@@ -10,7 +10,9 @@
         "add-title": "Add a new question",
         "title": "Title",
         "description": "Description",
-        "empty": "There is no questions. You can be the first!"
+        "empty": "There is no questions. You can be the first!",
+        "confirm-del-title": "Question deleting confirm",
+        "confirm-del-body": "Are you really want to delete this question?"
     },
     "folders" : {
         "folders": "Folders",
@@ -42,7 +44,8 @@
         "tagInfo": "To search by tags enter: ",
         "folderInfo": "To search by folders enter: ",
         "tagInfoSpan": "\"tag:tag title\"",
-        "folderInfoSpan": "\"folder:folder title\""
+        "folderInfoSpan": "\"folder:folder title\"",
+        "searchInfo": "To search by tags enter: \"tag:tag title\". <br> To search by folders enter: \"folder:folder title\""
     },
     "ui": {
         "save": "Save",
@@ -53,10 +56,15 @@
         "login-title": "Please, login",
         "password": "Password",
         "empty": "Nothing here",
+
         "up": "Up",
         "down": "Down",
+
         "yes": "Yes",
-        "no": "No"
+        "no": "No",
+
+        "edit": "Edit",
+        "delete": "Delete"
     },
     "validation": {
         "required-field": "This field is required.",

@@ -1,4 +1,4 @@
-define(['app', 'progressbar'], function (App, ProgressBar) {
+define(['app', 'progressbar', 'views/menu'], function (App, ProgressBar, Menu) {
     App.module('Routes', function (Routes, App, Backbone, Marionette, $, _) {
         // routes
         Routes.Router = Marionette.AppRouter.extend({
@@ -31,12 +31,17 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                         }
                     });
 
-                    Routes.spinner.animate(1.0, {
+                    Routes.spinner.animate(0.8, {
                         duration: 2000,
                         easing: 'easeOut'
                     }, function () {            // Callback on animation finish
-                        Routes.spinner.destroy();
-                        Routes.spinner = null;
+                        setTimeout(function () { // Waiting for downloading finish
+                            if (Routes.spinner) {
+                                Routes.spinner.destroy();
+                            }
+                            Routes.spinner = null;
+                        }, 3000)
+
                     });
                 }
             },
@@ -123,6 +128,16 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
                 require(['controllers/question'], function (controller) {
                     controller.questions('', '', $.trim(searchQuery));
                 });
+            },
+            menuShow: function (options) {
+                var menu = new Menu({
+                    model: options.model,
+                    url: '/app/header',
+                    success: function () {
+                        App.Main.Layout.getRegion('header').show(menu);
+                        App.Main.Menu = menu;
+                    }
+                });
             }
         };
 
@@ -173,6 +188,10 @@ define(['app', 'progressbar'], function (App, ProgressBar) {
 
         this.listenTo(App, 'paginator:get', function (options) {
             API.paginator(options);
+        });
+
+        this.listenTo(App, 'user:authorized', function (user) {
+            API.menuShow({ model: user });
         });
 
         $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {

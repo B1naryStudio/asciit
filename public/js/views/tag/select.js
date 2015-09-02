@@ -39,9 +39,13 @@ define([
                                     };
                                 },
                                 processResults: function (data, params) {
-                                    for (var i = 0; i < data.length; i++ ) {
-                                        data[i].text = data[i]['title'];
-                                        data[i].id = data[i]['title'];
+                                    var tmp;
+                                    for (var i = 0; i < data[1].length; i++ ) {
+                                        tmp = App.helper.htmlspecialchars(
+                                            data[i]['title']
+                                        );
+                                        data[1][i].text = tmp;
+                                        data[1][i].id = tmp;
                                     }
                                     return {
                                         results: data
@@ -65,12 +69,12 @@ define([
                                 return SelectRowTpl(repo);
                             },
                             templateSelection: function (repo) {
-                                return repo.title || repo.text;
+                                return App.helper.htmlspecialchars(
+                                    repo.title || repo.text
+                                );
                             }
                         }).val(null).trigger('change');
                 });
-
-
             }
         });
     });

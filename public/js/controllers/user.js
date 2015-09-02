@@ -22,7 +22,7 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
                             App.User.Current = model;
                             App.trigger('popup:close');
                             App.trigger('init:openRoutes', App.prefix + '/');
-                            App.Main.Menu.triggerMethod(
+                            App.triggerMethod(
                                 'user:authorized',
                                 App.User.Current
                             );
@@ -53,8 +53,7 @@ define(['app', 'views/user/login', 'models/user'], function (App, View) {
 
                     $.when(App.request('user:session')).done(function (user) {
                         App.User.Current = user;
-
-                        App.Main.Menu.triggerMethod(
+                        App.triggerMethod(
                             'user:authorized',
                             App.User.Current
                         );

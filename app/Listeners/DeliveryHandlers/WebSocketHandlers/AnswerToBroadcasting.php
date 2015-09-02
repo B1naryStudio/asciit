@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\DeliveryHandlers\WebSocketHandlers;
 
 use App\Events\AnswerWasAdded;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Listeners\Contracts\WebSocketDeliveryHandler;
 
-class AnswerToBroadcasting extends DeliveryHandler
+class AnswerToBroadcasting extends WebSocketDeliveryHandler
 {
     /**
      * Handle the event.
@@ -36,7 +37,7 @@ class AnswerToBroadcasting extends DeliveryHandler
                 // remote func name must be an array key
                 'calls' => ['answerAdd' => null]
             ],
-            'topic' =>'questions/' . $event->answer->question_id
+            'topic' =>'entries/' . $event->answer->question_id
         ]);
     }
 }
