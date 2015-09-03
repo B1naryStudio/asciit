@@ -209,6 +209,17 @@ define([
                                 }
                             );
 
+                            Question.Controller.listenTo(
+                                answersView,
+                                'childview:submit:delete',
+                                function (childview) {
+                                    App.request(
+                                        'answer:delete',
+                                        childview.model
+                                    );
+                                }
+                            );
+
                             // New comments to question view
                             var commentModel = new Comment.Model({
                                 q_and_a_id: question.get('id')
@@ -247,6 +258,17 @@ define([
                                                 errors
                                             );
                                         }
+                                    );
+                                }
+                            );
+
+                            Question.Controller.listenTo(
+                                commentsView,
+                                'childview:submit:delete',
+                                function (childview) {
+                                    App.request(
+                                        'comment:delete',
+                                        childview.model
                                     );
                                 }
                             );

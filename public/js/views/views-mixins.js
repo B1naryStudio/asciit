@@ -30,12 +30,12 @@ define(['app'], function(App) {
                     this.model.isCurrentUserOwner()
                     || App.User.Current.isAdmin()
                 ) {
-                    this.ui.itemArea.find('.controls').show();
+                    this.ui.entryControls.show();
                 }
 
             },
             hideControls: function () {
-                this.ui.itemArea.find('.controls').hide();
+                this.ui.entryControls.hide();
             }
         };
 

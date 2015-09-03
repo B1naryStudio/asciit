@@ -17,5 +17,11 @@
             </span>
             <p><%- text %></p>
         </div>
+        <div class="entry-controls">
+            <span class="delete"
+                  title="<%- _t('ui.delete') %>">
+                <i class="fa fa-times"></i>
+            </span>
+        </div>
     </div>
 </div>

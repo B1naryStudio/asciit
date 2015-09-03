@@ -445,19 +445,42 @@ body.modal-open {
  | Controls (edit, delete)
  |------------------------------------------------------------------------------
  */
-.actions .controls {
-    float: right;
+.entry-controls {
     display: none;
+}
+
+.entry-controls .fa {
+    font-size: 16px;
+    padding: 2px;
+    margin-right: 3px;
+    cursor: pointer;
+    color: #555;
+}
+
+.question_view .entry-controls {
+    float: right;
     margin-right: 20px;
 }
 
-    .actions .controls .fa {
-        font-size: 1.2em;
-        padding: 2px;
-        margin-right: 3px;
-        cursor: pointer;
-        color: #555;
-    }
+.single-answer .row,
+.single-comment .row {
+    position: relative;
+}
+
+.single-answer .entry-controls,
+.single-comment .entry-controls {
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+}
+
+.single-answer .single-comment .entry-controls {
+    right: -5px;
+}
+
+.question_view .single-comment .entry-controls {
+    right: 10px;
+}
 
 /*
  |------------------------------------------------------------------------------

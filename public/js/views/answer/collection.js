@@ -27,10 +27,11 @@ define([
                     },
 
                     ui: {
-                        itemArea:     '.single-answer',
+                        itemArea:     '.answer-body',
                         editButton:   '.edit-button',
                         saveButton:   '.save-button',
-                        deleteButton: '.controls .delete'
+                        entryControls: '.entry-controls',
+                        deleteButton:  '.answer-body .entry-controls .delete'
                     },
 
                     events: {
@@ -67,6 +68,10 @@ define([
 
                         EditorSettings.startupFocus = true;
                         this.editor = field.ckeditor(EditorSettings).editor;
+                    },
+
+                    onDelete: function () {
+                        this.trigger('submit:delete', this.model);
                     },
 
                     onShow: function () {
@@ -114,7 +119,19 @@ define([
                                             'data:invalid',
                                             errors
                                         );
-                                    });
+                                    }
+                                );
+                            }
+                        );
+
+                        this.listenTo(
+                            commentsView,
+                            'childview:submit:delete',
+                            function (childview) {
+                                App.request(
+                                    'comment:delete',
+                                    childview.model
+                                )
                             }
                         );
                     },

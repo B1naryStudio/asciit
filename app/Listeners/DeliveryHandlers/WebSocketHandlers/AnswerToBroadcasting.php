@@ -23,7 +23,7 @@ class AnswerToBroadcasting extends WebSocketDeliveryHandler
             'topic' =>'questions/' . $event->answer->question_id . '/answers'
         ]);
 
-        $questionAuthorId = $event->answer->question->user_id;
+        $questionAuthorId = $event->answer->user_id;
 
         // to the topic 'user/{id}/questions-answers'
         $this->delivery->send([

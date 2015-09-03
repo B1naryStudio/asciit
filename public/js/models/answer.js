@@ -119,6 +119,12 @@ define([
             return API.deferOperation('save', model);
         });
 
+        App.reqres.setHandler('answer:delete', function (model) {
+            return API.deferOperation('destroy', model, [], {
+                wait: true
+            });
+        });
+
         App.reqres.setHandler('answer:my', function () {
             return API.answerCollectionByUser();
         });

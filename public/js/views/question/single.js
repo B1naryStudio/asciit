@@ -30,7 +30,8 @@ define([
                         itemArea: '.question_view *',
                         commentButton: '.add-comment',
                         answerButton: '.add-answer',
-                        deleteButton: '.controls .delete'
+                        entryControls: '.actions .entry-controls',
+                        deleteButton:  '.actions .entry-controls .delete'
                     },
                     events: {
                         'click @ui.commentButton': 'showCommentForm',
