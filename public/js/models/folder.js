@@ -85,46 +85,22 @@ define([
         );
 
         var API = _.extend(ModelMixins.API, {
-            folderCollection: function (page) {
+            folderCollection: function (page) {           // Why page?
                 var folders = new Folder.Collection();
-                return this.fetch(folders);
-            },
-
-            fetch: function (collection) {
-                var defer = $.Deferred();
-                if (!collection.fetch({
-                        success: function (data) {
-                            defer.resolve(data);
-                        },
-                        error: function (model, response) {
-                            defer.reject({
-                                status: response.status,
-                                error: model.validationError
-                            });
-                        }
-                    })
-                ) {
-                    defer.reject({
-                        error: 'Server error, saving is impossible.'
-                    });
-                }
-                return defer.promise();
-            },
-
-            updateFolder: function (model) {
-                return this.addFolder(model);
+                return this.deferOperation('fetch', folders);
             },
 
             getFolders: function (data) {
                 var options = data.options ? data.options : {};
                 delete data.options;
-                var questions = new Folder.Folders(data, options);
-                return this.fetch(questions);
+                var folders = new Folder.Folders(data, options);
+
+                return this.deferOperation('fetch', folders);
             }
         });
 
         App.reqres.setHandler('folders:fetch', function (collection) {
-            return API.fetch(collection);
+            return this.deferOperation('fetch', collection);
         });
 
         App.reqres.setHandler('folder:collection', function () {
@@ -140,7 +116,7 @@ define([
         });
 
         App.reqres.setHandler('folder:update', function (model) {
-            return API.updateFolder(model);
+            return API.deferOperation('save', model);
         });
 
         App.reqres.setHandler('folder:delete', function (model) {

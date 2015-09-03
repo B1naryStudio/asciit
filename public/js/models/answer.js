@@ -101,27 +101,12 @@ define([
         var API = _.extend(ModelMixins.API, {
             getAnswers: function (question_id) {
                 var answers = new Answer.Collection({question_id: question_id});
-                var defer = $.Deferred();
-
-                answers.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    }
-                });
-
-                return defer.promise();
+                return this.deferOperation('fetch', answers);
             },
-            
-            answerCollectionByUser: function () {
-                var questions = new Answer.CollectionByUser();
-                var defer = $.Deferred();
 
-                questions.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    }
-                });
-                return defer.promise();
+            answerCollectionByUser: function () {
+                var answers = new Answer.CollectionByUser();
+                return this.deferOperation('fetch', answers);
             }
         });
 

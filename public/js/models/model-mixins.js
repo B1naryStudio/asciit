@@ -195,21 +195,6 @@ define(['app', 'moment'], function(App, moment) {
                 }
 
                 return this.defer.promise();
-            },
-
-            fetch: function (collection) {
-                var defer = $.Deferred();
-
-                if (!collection.fetch({
-                        success:  _.bind(this.successCallback, this),
-                        error: _.bind(this.errorCallback, this)
-                    })
-                ) {
-                    defer.reject({
-                        error: 'Server error, saving is impossible.'
-                    });
-                }
-                return defer.promise();
             }
         };
     });

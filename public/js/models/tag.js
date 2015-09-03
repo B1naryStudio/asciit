@@ -1,7 +1,8 @@
 define([
     'app',
-    'paginator'
-], function(App, PageableCollection) {
+    'paginator',
+    'models/model-mixins'
+], function(App, PageableCollection, ModelMixins) {
     App.module('Tag', function(Tag, App, Backbone, Marionette, $, _) {
         Tag.Model = Backbone.Model.extend({
             urlRoot: App.prefix + '/api/v1/tags'
@@ -55,31 +56,25 @@ define([
             }
         });
 
-        var API = {
+        var API = _.extend(ModelMixins.API, {
             collection: function (data) {
                 var tags;
                 var options = data.options ? data.options : {};
                 delete data.options;
+
                 if (data['type'] && data['type'] === 'list') {
                     tags = new Tag.PageableCollection(data, options);
                 } else {
                     tags = new Tag.Collection(data, options);
                 }
-                var defer = $.Deferred();
-                tags.fetch({
+
+                return this.deferOperation('fetch', tags, [], {
                     data: data,
-                    success: function (data) {
-                        defer.resolve(data);
-                    },
-                    error: function (model, response) {
-                        defer.reject({
-                            status: response.status,
-                            error: model.validationError
-                        });
-                    }
-                });
-                return defer.promise();
+                    success: _.bind(this.successCallback, this),
+                    error: _.bind(this.errorCallback, this)
+                })
             },
+            
             collectionReset: function (data) {
                 var tags = new Tag.Collection();
                 var tmp = [];
@@ -91,7 +86,7 @@ define([
                 defer.resolve(tags);
                 return defer.promise();
             }
-        };
+        });
 
         App.reqres.setHandler('tag:collection', function (data) {
             return API.collection(data);

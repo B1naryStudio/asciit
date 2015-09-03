@@ -159,6 +159,7 @@ define([
             questionCollection: function (data) {
                 var options = data.options ? data.options : {};
                 delete data.options;
+
                 var defer = $.Deferred();
 
                 var questions = new Question.Collection({
@@ -178,26 +179,20 @@ define([
                         });
                     }
                 });
+
                 return defer.promise();
             },
+
             questionGet: function (id) {
                 var question = new Question.Model({ id: id });
-                var defer = $.Deferred();
-
-                question.fetch({
-                    success: function (model) {
-                        defer.resolve(model);
-                    },
-                    error: function (model, response) {
-                        defer.reject({
-                            status: response.status,
-                            error: model.validationError
-                        });
-                    }
-                });
-
-                return defer.promise();
+                return this.deferOperation('fetch', question);
             },
+
+            //questionCollectionByUser: function () {
+            //    var questions = new Question.CollectionByUser();
+            //    return this.deferOperation('fetch', questions);
+            //}
+
             questionCollectionByUser: function () {
                 var questions = new Question.CollectionByUser();
                 var defer = $.Deferred();
