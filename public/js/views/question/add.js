@@ -7,7 +7,7 @@ define([
     'syphon',
     'ckeditor',
     'ckeditor.adapter'
-], function (App, AddTpl, EditorSettings) {
+], function (App, AddTpl, EditorSettings, Question) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.AddForm = Marionette.LayoutView.extend({
             tagName: 'div',
@@ -16,6 +16,36 @@ define([
             regions: {
                 folder_select: '.folder-select-wrapper',
                 tag_select: '.tag-select-wrapper'
+            },
+            events: {
+                'submit form': 'submit'
+            },
+            submit: function (event) {
+                event.preventDefault();
+                var data = Backbone.Syphon.serialize(this);
+                this.model.set(data);
+
+                if (this.model.isValid(true)) {
+                    // To event in controller
+                    this.trigger('form:submit', this.model);
+                }
+            },
+            onDataInvalid: function (errors) {
+                for (var field in errors) {
+                    if (!errors.hasOwnProperty(field)) {
+                        continue;
+                    }
+
+                    Backbone.Validation.callbacks.invalid(
+                        this,
+                        field,
+                        errors[field]
+                    );
+                }
+            },
+            initialize: function () {
+                this.model = new Question.Model();
+                Backbone.Validation.bind(this);
             },
             onShow: function () {
                 this.getRegion('folder_select').show(this.options.folder_view);
@@ -30,38 +60,6 @@ define([
                     console.log('This environment officially is non-supported'
                     + ' with CKEditor');
                 }
-            },
-            onDataInvalid: function (errors) {
-                $('.error').html('');
-                if (!errors) {
-                    $('.error.all').html('Something went wrong.');
-                } else {
-                    for (var i in errors) {
-                        if (!errors.hasOwnProperty(i)) {
-                            continue;
-                        }
-
-                        if (errors[i] && Array.isArray(errors[i])) {
-                            for (var j in errors[i]) {
-                                if (!errors[i].hasOwnProperty(j)) {
-                                    continue;
-                                }
-
-                                $('.error.' + i).html(errors[i][j]);
-                            }
-                        } else {
-                            $('.error.' + i).html(errors[i]);
-                        }
-                    }
-                }
-            },
-            events: {
-                'submit form': 'submit'
-            },
-            submit: function (event) {
-                event.preventDefault();
-                var data = Backbone.Syphon.serialize(this);
-                this.trigger('form:submit', data);
             },
             remove: function() {
                 Backbone.Validation.unbind(this);

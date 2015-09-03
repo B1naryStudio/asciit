@@ -84,7 +84,7 @@ define([
             })
         );
 
-        var API = {
+        var API = _.extend(ModelMixins.API, {
             folderCollection: function (page) {
                 var folders = new Folder.Collection();
                 return this.fetch(folders);
@@ -111,27 +111,6 @@ define([
                 return defer.promise();
             },
 
-            addFolder: function (model) {
-                var defer = $.Deferred();
-
-                if (!model.save([], {
-                        wait: true,
-                        success: function (newModel, attributes, options) {
-                            defer.resolve(newModel);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })
-                ) {
-                    defer.reject({
-                        description: 'Server error, saving is impossible.'
-                    });
-                }
-                return defer.promise();
-            },
-
             updateFolder: function (model) {
                 return this.addFolder(model);
             },
@@ -141,27 +120,8 @@ define([
                 delete data.options;
                 var questions = new Folder.Folders(data, options);
                 return this.fetch(questions);
-            },
-
-            deleteFolder: function (model) {
-                var defer = $.Deferred();
-                if (!model.destroy({
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })) {
-                    defer.reject({
-                        description: 'Server error, deleting is impossible.'
-                    });
-                }
-                return defer.promise();
             }
-        };
+        });
 
         App.reqres.setHandler('folders:fetch', function (collection) {
             return API.fetch(collection);
@@ -171,8 +131,8 @@ define([
             return API.folderCollection();
         });
 
-        App.reqres.setHandler('folder:add', function (collection, model) {
-            return API.addFolder(collection, model);
+        App.reqres.setHandler('folder:add', function (model) {
+            return API.saveModel(model);
         });
 
         App.reqres.setHandler('folders:get', function (data) {
@@ -184,7 +144,7 @@ define([
         });
 
         App.reqres.setHandler('folder:delete', function (model) {
-            return API.deleteFolder(model);
+            return API.deleteModel(model);
         });
     });
 });

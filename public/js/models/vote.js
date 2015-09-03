@@ -1,4 +1,4 @@
-define(['app'], function(App) {
+define(['app', 'models/model-mixins'], function(App, ModelMixins) {
     App.module('Vote', function(Vote, App, Backbone, Marionette, $, _) {
         Vote.Model = Backbone.Model.extend({
             urlRoot: App.prefix + '/api/v1/votes',
@@ -12,55 +12,13 @@ define(['app'], function(App) {
             url: App.prefix + '/api/v1/votes'
         });
 
-        var API = {
-            addVote: function (model) {
-                var defer = $.Deferred();
+        var API = ModelMixins.API;
 
-                if (!model.save([], {
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                            console.log(errors);
-                        }
-                    })) {
-                    defer.reject({
-                        description: 'Server error, voting is impossible.'
-                    });
-                }
-
-                return defer.promise();
-            },
-            cancelVote: function (model) {
-                var defer = $.Deferred();
-
-                if (!model.destroy({
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                            console.log(errors);
-                        }
-                    })) {
-                    defer.reject({
-                        description: 'Server error, unvoting is impossible.'
-                    });
-                }
-
-                return defer.promise();
-            }
-        };
         App.reqres.setHandler('vote:add', function (model) {
-            return API.addVote(model);
+            return API.saveModel(model);
         });
         App.reqres.setHandler('vote:cancel', function (model) {
-            return API.cancelVote(model);
+            return API.deleteModel(model);
         });
     });
 

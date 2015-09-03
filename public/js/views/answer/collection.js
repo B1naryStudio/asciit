@@ -149,7 +149,6 @@ define([
                 var data = Backbone.Syphon.serialize($('#new-answer-form')[0]);
                 this.model.set(data);
 
-
                 if (this.model.isValid(true)) {
                     // To event in controller
                     this.trigger('form:submit', this.model);

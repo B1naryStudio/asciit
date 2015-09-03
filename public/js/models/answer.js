@@ -98,7 +98,7 @@ define([
             })
         );
 
-        var API = {
+        var API = _.extend(ModelMixins.API, {
             getAnswers: function (question_id) {
                 var answers = new Answer.Collection({question_id: question_id});
                 var defer = $.Deferred();
@@ -108,28 +108,6 @@ define([
                         defer.resolve(data);
                     }
                 });
-
-                return defer.promise();
-            },
-
-            addAnswer: function (model) {
-                var defer = $.Deferred();
-
-                if (!model.save([], {
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    }))
-                {
-                    defer.reject({
-                        description: 'Server error, saving is impossible!'
-                    });
-                }
 
                 return defer.promise();
             },
@@ -145,14 +123,14 @@ define([
                 });
                 return defer.promise();
             }
-        };
+        });
 
         App.reqres.setHandler('answer:collection', function (question_id) {
             return API.getAnswers(question_id);
         });
 
-        App.reqres.setHandler('answer:add', function (data) {
-            return API.addAnswer(data);
+        App.reqres.setHandler('answer:add', function (model) {
+            return API.saveModel(model);
         });
 
         App.reqres.setHandler('answer:my', function () {

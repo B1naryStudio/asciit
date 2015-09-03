@@ -155,7 +155,7 @@ define([
             })
         );
 
-        var API = {
+        var API = _.extend(ModelMixins.API, {
             questionCollection: function (data) {
                 var options = data.options ? data.options : {};
                 delete data.options;
@@ -198,47 +198,6 @@ define([
 
                 return defer.promise();
             },
-            questionAdd: function (data) {
-                var question = new Question.Model();
-                var defer = $.Deferred();
-
-                if (!question.save(data, {
-                    wait: true,
-                    success: function (data) {
-                        defer.resolve(question);
-                    },
-                    error: function (data, response) {
-                        if (data.validationError) {
-                            defer.reject(data.validationError);
-                        } else {
-                            defer.reject(response.responseJSON);
-                        }
-                    }
-                })) {
-                    defer.reject(question.validationError);
-                }
-                return defer.promise();
-            },
-            questionDelete: function (model) {
-                var defer = $.Deferred();
-
-                if (!model.destroy({
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })) {
-                    defer.reject({
-                        description: 'Server error, deleting is impossible.'
-                    });
-                }
-
-                return defer.promise();
-            },
             questionCollectionByUser: function () {
                 var questions = new Question.CollectionByUser();
                 var defer = $.Deferred();
@@ -250,27 +209,28 @@ define([
                 });
                 return defer.promise();
             }
-        };
+        });
 
         App.reqres.setHandler('question:collection', function (data) {
-            var rr = API.questionCollection(data);
-            return rr;
+            return API.questionCollection(data);
         });
 
         App.reqres.setHandler('question:model', function (id) {
             return API.questionGet(id);
         });
 
-        App.reqres.setHandler('question:add', function (data) {
-            return API.questionAdd(data);
+        App.reqres.setHandler('question:add', function (model) {
+            return API.saveModel(model);
         });
 
         App.reqres.setHandler('question:delete', function (model) {
-            return API.questionDelete(model);
+            return API.deleteModel(model);
         });
 
         App.reqres.setHandler('question:my', function () {
             return API.questionCollectionByUser();
         });
     });
+
+    return App.Question;
 });

@@ -157,7 +157,50 @@ define(['app', 'moment'], function(App, moment) {
             isCurrentUserOwner: function () {
                 return (App.User.Current.get('id') === this.get('user_id'));
             }
-        }
+        };
+
+        ModelMixins.API = {
+            successCallback: function (model, attributes, options) {
+                this.defer.resolve(model);
+            },
+
+            errorCallback: function (model, xhr, options) {
+                var errors = JSON.parse(xhr.responseText);
+                this.defer.reject(errors);
+            },
+
+            saveModel: function (model) {
+                this.defer = $.Deferred();
+
+                if (!model.save([], {
+                        wait: true,
+                        success: _.bind(this.successCallback, this),
+                        error: _.bind(this.errorCallback, this)
+                    })
+                ) {
+                    this.defer.reject({
+                        description: 'Server error, saving is impossible.'
+                    });
+                }
+                return this.defer.promise();
+            },
+
+            deleteModel: function (model) {
+                this.defer = $.Deferred();
+
+                if (!model.destroy({
+                        wait: true,
+                        success: _.bind(this.successCallback, this),
+                        error: _.bind(this.errorCallback, this)
+                    })
+                ) {
+                    this.defer.reject({
+                        description: 'Server error, deleting is impossible.'
+                    });
+                }
+                return this.defer.promise();
+            }
+        };
     });
 
     return App.ModelMixins;

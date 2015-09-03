@@ -461,6 +461,60 @@ body.modal-open {
 
 /*
  |------------------------------------------------------------------------------
+ | Select2
+ |------------------------------------------------------------------------------
+ */
+/* The same color for the select 2 border as from Bootstrap 3 */
+.select2-container--default .select2-selection {
+    border: 1px solid #ccc;
+    font-weight: normal;
+
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.select2-container .select2-selection--single {
+    height: 34px;
+}
+
+.select2-selection--single .select2-selection__rendered {
+    padding: 3px 20px 3px 6px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Errors
+ |------------------------------------------------------------------------------
+ */
+.error {
+    color: red;
+    font-weight: normal;
+}
+
+.error.all {
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.has-error .control-label {
+    color: #333;
+    font-weight: normal;
+}
+
+.has-error .help-block {
+    font-weight: normal;
+}
+
+.has-error .select2-selection {
+    border-color: #a94442;
+}
+
+/*
+ |------------------------------------------------------------------------------
  | Answers list
  |------------------------------------------------------------------------------
  */
@@ -550,17 +604,6 @@ body.modal-open {
     margin-bottom: 5px;
 }
 
-.error {
-    color: red;
-    font-weight: normal;
-}
-
-.error.all {
-    text-align: center;
-    margin-top: -10px;
-    margin-bottom: 5px;
-}
-
 #question-add-layout .controls {
     margin: 15px 0 0 0;
     text-align: center;
@@ -568,6 +611,10 @@ body.modal-open {
 
 #nav-question-add {
     cursor: pointer;
+}
+
+#popup-layout-view .form-group.description {
+    margin: 0;
 }
 
 /*

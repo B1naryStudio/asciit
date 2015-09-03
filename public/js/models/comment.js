@@ -43,31 +43,10 @@ define([
             })
         );
 
-        var API = {
-            addComment: function (model) {
-                var defer = $.Deferred();
+        var API = ModelMixins.API;
 
-                if (!model.save([], {
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })) {
-                    defer.reject({
-                        description: 'Server error, saving is impossible.'
-                    });
-                }
-
-                return defer.promise();
-            }
-        };
-
-        App.reqres.setHandler('comment:add', function (data) {
-            return API.addComment(data);
+        App.reqres.setHandler('comment:add', function (model) {
+            return API.addModel(model);
         })
     });
     return App.Comment;

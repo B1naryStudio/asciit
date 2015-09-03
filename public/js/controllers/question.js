@@ -309,14 +309,15 @@ define([
                     Question.Controller.listenTo(
                         view,
                         'form:submit',
-                        function (data) {
-                            $.when(App.request('question:add', data))
-                                .done(function (model) {
+                        function (model) {
+                            $.when(App.request('question:add', model))
+                                .done(function () {
                                     App.trigger('popup:close');
                                     App.trigger('questions:list');
                                 }).fail(function (errors) {
                                     view.triggerMethod('data:invalid', errors);
-                                });
+                                }
+                            );
                         }
                     );
                 });
