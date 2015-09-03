@@ -46,7 +46,7 @@ define([
         var API = ModelMixins.API;
 
         App.reqres.setHandler('comment:add', function (model) {
-            return API.addModel(model);
+            return API.deferOperation('save', model);
         })
     });
     return App.Comment;

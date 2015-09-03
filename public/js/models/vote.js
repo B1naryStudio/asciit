@@ -15,10 +15,10 @@ define(['app', 'models/model-mixins'], function(App, ModelMixins) {
         var API = ModelMixins.API;
 
         App.reqres.setHandler('vote:add', function (model) {
-            return API.saveModel(model);
+            return API.deferOperation('save', model);
         });
         App.reqres.setHandler('vote:cancel', function (model) {
-            return API.deleteModel(model);
+            return API.deferOperation('destroy', model);
         });
     });
 

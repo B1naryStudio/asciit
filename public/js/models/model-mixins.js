@@ -160,8 +160,8 @@ define(['app', 'moment'], function(App, moment) {
         };
 
         ModelMixins.API = {
-            successCallback: function (model, attributes, options) {
-                this.defer.resolve(model);
+            successCallback: function (data, attributes, options) {
+                this.defer.resolve(data);
             },
 
             errorCallback: function (model, xhr, options) {
@@ -169,36 +169,47 @@ define(['app', 'moment'], function(App, moment) {
                 this.defer.reject(errors);
             },
 
-            saveModel: function (model) {
-                this.defer = $.Deferred();
-
-                if (!model.save([], {
-                        wait: true,
+            deferOperation: function (operation, item, attrs, options) {
+                // initializing the default attributes
+                if (!options) {
+                    options = {
+                        //wait: true,
                         success: _.bind(this.successCallback, this),
                         error: _.bind(this.errorCallback, this)
-                    })
-                ) {
+                    };
+                }
+
+                var attrs = attrs || [];
+                this.defer = $.Deferred();
+
+                if (operation == 'save') {
+                    var res = item[operation](attrs, options);
+                } else {
+                    var res = item[operation](options);
+                }
+
+                if (!res) {
                     this.defer.reject({
-                        description: 'Server error, saving is impossible.'
+                        description: 'Server error, executing is impossible.'
                     });
                 }
+
                 return this.defer.promise();
             },
 
-            deleteModel: function (model) {
-                this.defer = $.Deferred();
+            fetch: function (collection) {
+                var defer = $.Deferred();
 
-                if (!model.destroy({
-                        wait: true,
-                        success: _.bind(this.successCallback, this),
+                if (!collection.fetch({
+                        success:  _.bind(this.successCallback, this),
                         error: _.bind(this.errorCallback, this)
                     })
                 ) {
-                    this.defer.reject({
-                        description: 'Server error, deleting is impossible.'
+                    defer.reject({
+                        error: 'Server error, saving is impossible.'
                     });
                 }
-                return this.defer.promise();
+                return defer.promise();
             }
         };
     });

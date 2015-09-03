@@ -132,7 +132,7 @@ define([
         });
 
         App.reqres.setHandler('folder:add', function (model) {
-            return API.saveModel(model);
+            return API.deferOperation('save', model);
         });
 
         App.reqres.setHandler('folders:get', function (data) {
@@ -144,7 +144,7 @@ define([
         });
 
         App.reqres.setHandler('folder:delete', function (model) {
-            return API.deleteModel(model);
+            return API.deferOperation('destroy', model);
         });
     });
 });

@@ -130,7 +130,7 @@ define([
         });
 
         App.reqres.setHandler('answer:add', function (model) {
-            return API.saveModel(model);
+            return API.deferOperation('save', model);
         });
 
         App.reqres.setHandler('answer:my', function () {

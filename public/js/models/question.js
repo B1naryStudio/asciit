@@ -220,11 +220,11 @@ define([
         });
 
         App.reqres.setHandler('question:add', function (model) {
-            return API.saveModel(model);
+            return API.deferOperation('save', model);
         });
 
         App.reqres.setHandler('question:delete', function (model) {
-            return API.deleteModel(model);
+            return API.deferOperation('destroy', model);
         });
 
         App.reqres.setHandler('question:my', function () {
