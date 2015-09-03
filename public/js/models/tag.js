@@ -69,9 +69,7 @@ define([
                 }
 
                 return this.deferOperation('fetch', tags, [], {
-                    data: data,
-                    success: _.bind(this.successCallback, this),
-                    error: _.bind(this.errorCallback, this)
+                    data: data
                 })
             },
             

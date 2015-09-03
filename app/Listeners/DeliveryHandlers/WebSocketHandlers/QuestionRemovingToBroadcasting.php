@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\DeliveryHandlers\WebSocketHandlers;
 
 use App\Events\QuestionWasRemoved;
 use Illuminate\Queue\InteractsWithQueue;

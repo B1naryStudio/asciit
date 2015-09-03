@@ -10,6 +10,7 @@ define([
                 ModelMixins.RelativeTimestampsModel,
                 ModelMixins.LiveModel,
                 ModelMixins.Votable,
+                ModelMixins.Ownership,
                 {
                     defaults: {
                         'description': ''

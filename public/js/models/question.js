@@ -160,27 +160,13 @@ define([
                 var options = data.options ? data.options : {};
                 delete data.options;
 
-                var defer = $.Deferred();
-
                 var questions = new Question.Collection({
                     searchQuery: data.searchQuery,
                     searchTag: data.searchTag,
                     searchFolder: data.searchFolder
                 }, options);
 
-                questions.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    },
-                    error: function (model, response) {
-                        defer.reject({
-                            status: response.status,
-                            error: model.validationError
-                        });
-                    }
-                });
-
-                return defer.promise();
+                return this.deferOperation('fetch', questions);
             },
 
             questionGet: function (id) {
@@ -188,21 +174,10 @@ define([
                 return this.deferOperation('fetch', question);
             },
 
-            //questionCollectionByUser: function () {
-            //    var questions = new Question.CollectionByUser();
-            //    return this.deferOperation('fetch', questions);
-            //}
-
             questionCollectionByUser: function () {
                 var questions = new Question.CollectionByUser();
-                var defer = $.Deferred();
+                return this.deferOperation('fetch', questions);
 
-                questions.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    }
-                });
-                return defer.promise();
             }
         });
 

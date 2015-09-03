@@ -160,27 +160,25 @@ define(['app', 'moment'], function(App, moment) {
         };
 
         ModelMixins.API = {
-            successCallback: function (data, attributes, options) {
-                this.defer.resolve(data);
-            },
+            deferOperation: function (operation, item, attrs, customOptions) {
+                var defer = $.Deferred();
 
-            errorCallback: function (model, xhr, options) {
-                var errors = JSON.parse(xhr.responseText);
-                this.defer.reject(errors);
-            },
+                var options = {
+                    //wait: true,
+                    success: function (data, attributes, options) {
+                        defer.resolve(data);
+                    },
+                    error: function (model, xhr, options) {
+                        var errors = JSON.parse(xhr.responseText);
+                        defer.reject(errors);
+                    }
+                };
 
-            deferOperation: function (operation, item, attrs, options) {
-                // initializing the default attributes
-                if (!options) {
-                    options = {
-                        //wait: true,
-                        success: _.bind(this.successCallback, this),
-                        error: _.bind(this.errorCallback, this)
-                    };
+                if (customOptions) {
+                    options =_.extend(options, customOptions);
                 }
 
                 var attrs = attrs || [];
-                this.defer = $.Deferred();
 
                 if (operation == 'save') {
                     var res = item[operation](attrs, options);
@@ -188,13 +186,7 @@ define(['app', 'moment'], function(App, moment) {
                     var res = item[operation](options);
                 }
 
-                if (!res) {
-                    this.defer.reject({
-                        description: 'Server error, executing is impossible.'
-                    });
-                }
-
-                return this.defer.promise();
+                return defer.promise();
             }
         };
     });

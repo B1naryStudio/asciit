@@ -100,7 +100,7 @@ define([
         });
 
         App.reqres.setHandler('folders:fetch', function (collection) {
-            return this.deferOperation('fetch', collection);
+            return API.deferOperation('fetch', collection);
         });
 
         App.reqres.setHandler('folder:collection', function () {

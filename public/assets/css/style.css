@@ -445,13 +445,13 @@ body.modal-open {
  | Controls (edit, delete)
  |------------------------------------------------------------------------------
  */
-.question_view .controls {
+.actions .controls {
     float: right;
     display: none;
     margin-right: 20px;
 }
 
-    .question_view .controls .fa {
+    .actions .controls .fa {
         font-size: 1.2em;
         padding: 2px;
         margin-right: 3px;

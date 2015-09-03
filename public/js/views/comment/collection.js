@@ -64,18 +64,6 @@ define(['app',
                 }
             },
 
-            onDataInvalid: function (errors) {
-                for (var field in errors) {
-                    if (!errors.hasOwnProperty(field)) {
-                        continue;
-                    }
-                    Backbone.Validation.callbacks.invalid(
-                        this,
-                        field,
-                        errors[field]
-                    );
-                }
-            },
             // Refresh model and form for the futher using without
             // view rendering
             onModelRefresh: function (newModel) {

@@ -20,9 +20,20 @@
             </span>
             <div class="description"><%= description %></div>
 
-            <!-- Comments -->
-            <div class="comments">
-                <button class="btn btn-default btn-xs show-form"><%= _t("comment.add") %></button>
+            <!-- Actions -->
+            <div class="actions">
+                <!-- Controls -->
+                <div class="controls">
+                    <!--span class="edit"><i class="fa fa-pencil"></i></span-->
+                    <span class="delete"
+                          title="<%- _t('ui.delete') %>">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
+                <!-- Comments -->
+                <div class="comments">
+                    <button class="btn btn-default btn-xs show-form"><%= _t("comment.add") %></button>
+                </div>
             </div>
         </div>
     </div>
