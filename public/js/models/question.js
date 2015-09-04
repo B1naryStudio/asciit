@@ -155,11 +155,14 @@ define([
             })
         );
 
-        var API = {
+        var API = _.extend(ModelMixins.API, {
+            notFoundChecker: function (data, xhr, options) {
+                options.defer.reject({status: xhr.status});
+            },
+
             questionCollection: function (data) {
                 var options = data.options ? data.options : {};
                 delete data.options;
-                var defer = $.Deferred();
 
                 var questions = new Question.Collection({
                     searchQuery: data.searchQuery,
@@ -167,110 +170,43 @@ define([
                     searchFolder: data.searchFolder
                 }, options);
 
-                questions.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    },
-                    error: function (model, response) {
-                        defer.reject({
-                            status: response.status,
-                            error: model.validationError
-                        });
-                    }
-                });
-                return defer.promise();
+                return this.deferOperation('fetch', questions);
             },
+
             questionGet: function (id) {
                 var question = new Question.Model({ id: id });
-                var defer = $.Deferred();
-
-                question.fetch({
-                    success: function (model) {
-                        defer.resolve(model);
-                    },
-                    error: function (model, response) {
-                        defer.reject({
-                            status: response.status,
-                            error: model.validationError
-                        });
-                    }
+                return this.deferOperation('fetch', question, [], {
+                    error: this.notFoundChecker
                 });
-
-                return defer.promise();
             },
-            questionAdd: function (data) {
-                var question = new Question.Model();
-                var defer = $.Deferred();
 
-                if (!question.save(data, {
-                    wait: true,
-                    success: function (data) {
-                        defer.resolve(question);
-                    },
-                    error: function (data, response) {
-                        if (data.validationError) {
-                            defer.reject(data.validationError);
-                        } else {
-                            defer.reject(response.responseJSON);
-                        }
-                    }
-                })) {
-                    defer.reject(question.validationError);
-                }
-                return defer.promise();
-            },
-            questionDelete: function (model) {
-                var defer = $.Deferred();
-
-                if (!model.destroy({
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })) {
-                    defer.reject({
-                        description: 'Server error, deleting is impossible.'
-                    });
-                }
-
-                return defer.promise();
-            },
             questionCollectionByUser: function () {
                 var questions = new Question.CollectionByUser();
-                var defer = $.Deferred();
+                return this.deferOperation('fetch', questions);
 
-                questions.fetch({
-                    success: function (data) {
-                        defer.resolve(data);
-                    }
-                });
-                return defer.promise();
             }
-        };
+        });
 
         App.reqres.setHandler('question:collection', function (data) {
-            var rr = API.questionCollection(data);
-            return rr;
+            return API.questionCollection(data);
         });
 
         App.reqres.setHandler('question:model', function (id) {
             return API.questionGet(id);
         });
 
-        App.reqres.setHandler('question:add', function (data) {
-            return API.questionAdd(data);
+        App.reqres.setHandler('question:add', function (model) {
+            return API.deferOperation('save', model);
         });
 
         App.reqres.setHandler('question:delete', function (model) {
-            return API.questionDelete(model);
+            return API.deferOperation('destroy', model);
         });
 
         App.reqres.setHandler('question:my', function () {
             return API.questionCollectionByUser();
         });
     });
+
+    return App.Question;
 });

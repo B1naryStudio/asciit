@@ -27,7 +27,7 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::resource(
         '/questions/{id}/answers',
         'API\Question\AnswerController',
-        ['only' => ['index', 'store']]
+        ['only' => ['index', 'store', 'destroy']]
     );
 
     Route::resource(
@@ -60,7 +60,7 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::resource(
         '/questions/{id}/comments',
         'API\Question\CommentController',
-        ['only' => ['store']]
+        ['only' => ['store', 'destroy']]
     );
 
     Route::get('/questions-my', 'API\QuestionController@my');

@@ -157,7 +157,61 @@ define(['app', 'moment'], function(App, moment) {
             isCurrentUserOwner: function () {
                 return (App.User.Current.get('id') === this.get('user_id'));
             }
-        }
+        };
+
+        ModelMixins.API = {
+            deferOperation: function (operation, item, attrs, customOptions) {
+                var defer = $.Deferred();
+
+                var options = {
+                    success: function (data, response, options) {
+                        defer.resolve(data);
+                    },
+                    error: function (model, xhr, options) {
+                        var errors = JSON.parse(xhr.responseText);
+                        defer.reject(errors);
+                    }
+                };
+
+                // defining a defer object for custom success and error callbacks
+                if (customOptions) {
+                    if (customOptions.success) {
+                        var func = customOptions.success;
+
+                        options.success = function (data, response, options) {
+                            options.defer = defer;
+                            func(data, response, options);
+                        };
+
+                        delete customOptions.success;
+                    }
+
+                    if (customOptions.error) {
+                        var func = customOptions.error;
+
+                        options.error = function (data, response, options) {
+                            options.defer = defer;
+                            func(data, response, options);
+                        };
+
+                        delete customOptions.error;
+                    }
+
+                    options =_.extend(options, customOptions);
+                }
+
+                attrs = attrs || [];
+                var res;
+
+                if (operation == 'save') {
+                    res = item[operation](attrs, options);
+                } else {
+                    res = item[operation](options);
+                }
+
+                return defer.promise();
+            }
+        };
     });
 
     return App.ModelMixins;

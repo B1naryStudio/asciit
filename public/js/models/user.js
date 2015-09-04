@@ -1,4 +1,4 @@
-define(['app'], function (App) {
+define(['app', 'models/model-mixins'], function (App, ModelMixins) {
     App.module('User', function (User, App, Backbone, Marionette, $, _) {
         User.Model = Backbone.Model.extend({
             defaults: {
@@ -33,51 +33,30 @@ define(['app'], function (App) {
             },
             initialize: function () {
                 this.urlRoot = App.prefix + '/api/v1/user/login';
+                this.on('sync', this.setAdminFlag);
             }
         });
 
-        var API = {
+        var API = _.extend(ModelMixins.API, {
             login: function (email, password) {
-                var user = new User.Model();
-                var defer = $.Deferred();
-
-                if (!user.save({
+                var user = new User.Model({
                     email: email,
                     password: password
-                }, {
-                    wait: true,
-                    success: function (model, response, options) {
-                        model.setAdminFlag();
-                        defer.resolve(model);
-                    },
-                    error: function (data) {
-                        defer.reject(data.validationError);
-                    }
-                })) {
-                    defer.reject(user.validationError);
-                }
-                return defer.promise();
+                });
+
+                return this.deferOperation('save', user, [], {
+                    wait: true
+                });
             },
 
             session: function () {
                 var user = new User.Model();
-                var defer = $.Deferred();
-                user.fetch({
-                    wait: true,
-                    success: function (model, response, options) {
-                        model.setAdminFlag();
-                        defer.resolve(model);
 
-                    },
-                    error: function (model, response, options) {
-                        defer.reject();
-                    }
+                return this.deferOperation('fetch', user, [], {
+                    wait: true
                 });
-                return defer.promise();
-
             }
-
-        };
+        });
 
         App.reqres.setHandler('user:login', function (email, password) {
             return API.login(email, password);

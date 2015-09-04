@@ -21,7 +21,9 @@ use Illuminate\Support\Facades\Event;
 use App\Events\QuestionWasAdded;
 use App\Events\QuestionWasRemoved;
 use App\Events\AnswerWasAdded;
+use App\Events\AnswerWasRemoved;
 use App\Events\CommentWasAdded;
+use App\Events\CommentWasRemoved;
 use App\Events\VoteWasAdded;
 use App\Events\VoteWasRemoved;
 use App\Events\FolderWasAdded;
@@ -313,6 +315,22 @@ class QuestionService implements QuestionServiceInterface
         return $answer;
     }
 
+    public function removeAnswer($id)
+    {
+        try {
+            $answer = $this->answerRepository->delete($id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new AnswerWasRemoved($answer));
+        return $answer;
+    }
+
     public function getFolders()
     {
         try {
@@ -424,6 +442,22 @@ class QuestionService implements QuestionServiceInterface
 
         Event::fire(new CommentWasAdded($comment));
 
+        return $comment;
+    }
+
+    public function removeComment($id)
+    {
+        try {
+            $comment = $this->commentRepository->delete($id);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new CommentWasRemoved($comment));
         return $comment;
     }
 

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\DeliveryHandlers\WebSocketHandlers;
 
 use App\Events\QuestionWasRemoved;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Listeners\Contracts\WebSocketDeliveryHandler;
 
-class QuestionRemovingToBroadcasting extends DeliveryHandler
+class QuestionRemovingToBroadcasting extends WebSocketDeliveryHandler
 {
     /**
      * Handle the event.

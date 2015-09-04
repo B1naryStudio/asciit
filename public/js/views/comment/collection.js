@@ -1,37 +1,53 @@
 define(['app',
     'tpl!views/templates/comment/comments.tpl',
     'tpl!views/templates/comment/single-comment.tpl',
+    'views/views-mixins',
     'stickit'
-], function (App, CommentsTpl, SingleCommentTpl) {
+], function (App, CommentsTpl, SingleCommentTpl, ViewsMixins) {
     App.module('Comment.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.SingleCommentCompositeView = Marionette.CompositeView.extend({
-            template: SingleCommentTpl,
+        View.SingleCommentCompositeView = Marionette.CompositeView.extend(
+            _.extend({}, ViewsMixins.Editable, {
+                template: SingleCommentTpl,
 
-            events: {
-                'mouseup p': 'selectText'
-            },
+                ui: {
+                    itemArea:      '.single-comment',
+                    entryControls: '.entry-controls',
+                    deleteButton:  '.entry-controls .delete'
+                },
 
-            selectText: function(e) {
-                e.stopPropagation();
-                var editor = App.helper.editor;
-                var text = App.helper.getSelected();
-                if (
-                    text &&
-                    ( text = new String(text).replace(/^\s+|\s+$/g,''))
-                ) {
-                    text = '<blockquote><strong>' +
-                        this.model.get('created_relative') +
-                        ' by ' + this.model.get('user').first_name +
-                        ' ' + this.model.get('user').last_name +
-                        '</strong><br/>' + text + '</blockquote>';
-                    editor.focus();
-                    App.helper.moveFocus(editor, text);
-                    $('html, body').scrollTop(
-                        $('#new-answer-form').offset().top
-                    );
+                events: {
+                    'mouseup p': 'selectText',
+                    'mouseover @ui.itemArea': 'showControls',
+                    'mouseout @ui.itemArea': 'hideControls',
+                    'click @ui.deleteButton': 'onDelete'
+                },
+
+                onDelete: function () {
+                    this.trigger('submit:delete', this.model);
+                },
+
+                selectText: function(e) {
+                    e.stopPropagation();
+                    var editor = App.helper.editor;
+                    var text = App.helper.getSelected();
+                    if (
+                        text &&
+                        ( text = new String(text).replace(/^\s+|\s+$/g,''))
+                    ) {
+                        text = '<blockquote><strong>' +
+                            this.model.get('created_relative') +
+                            ' by ' + this.model.get('user').first_name +
+                            ' ' + this.model.get('user').last_name +
+                            '</strong><br/>' + text + '</blockquote>';
+                        editor.focus();
+                        App.helper.moveFocus(editor, text);
+                        $('html, body').scrollTop(
+                            $('#new-answer-form').offset().top
+                        );
+                    }
                 }
-            }
-        });
+            })
+        );
 
         View.CommentsCompositeView = Marionette.CompositeView.extend({
             tagName: 'section',
@@ -64,18 +80,6 @@ define(['app',
                 }
             },
 
-            onDataInvalid: function (errors) {
-                for (var field in errors) {
-                    if (!errors.hasOwnProperty(field)) {
-                        continue;
-                    }
-                    Backbone.Validation.callbacks.invalid(
-                        this,
-                        field,
-                        errors[field]
-                    );
-                }
-            },
             // Refresh model and form for the futher using without
             // view rendering
             onModelRefresh: function (newModel) {

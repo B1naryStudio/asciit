@@ -35,7 +35,7 @@
         <!-- Actions -->
         <div class="actions">
             <!-- Controls -->
-            <div class="controls">
+            <div class="entry-controls">
                 <!--span class="edit"><i class="fa fa-pencil"></i></span-->
                 <span class="delete"
                       title="<%- _t('ui.delete') %>">

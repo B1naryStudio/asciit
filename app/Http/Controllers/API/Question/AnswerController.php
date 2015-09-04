@@ -80,4 +80,14 @@ class AnswerController extends Controller
             ], 200, [], JSON_NUMERIC_CHECK
         );
     }
+
+    public function destroy($question_id, $answer_id) {
+        try {
+            $this->questionService->removeAnswer($answer_id);
+        } catch (QuestionServiceException $e) {
+            return Response::json(['error' => $e->getMessage()], 404);
+        }
+
+        return Response::json([], 200);
+    }
 }

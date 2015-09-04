@@ -137,13 +137,6 @@ define([
                             }
                         }
                     );
-                }).fail(function (data) {
-                    if (data.status === 404) {
-                        var view = new EmptyView();
-                        App.Main.Layout
-                            .getRegion('content')
-                            .show(view);
-                    }
                 });
             },
 
@@ -209,6 +202,17 @@ define([
                                 }
                             );
 
+                            Question.Controller.listenTo(
+                                answersView,
+                                'childview:submit:delete',
+                                function (childview) {
+                                    App.request(
+                                        'answer:delete',
+                                        childview.model
+                                    );
+                                }
+                            );
+
                             // New comments to question view
                             var commentModel = new Comment.Model({
                                 q_and_a_id: question.get('id')
@@ -247,6 +251,17 @@ define([
                                                 errors
                                             );
                                         }
+                                    );
+                                }
+                            );
+
+                            Question.Controller.listenTo(
+                                commentsView,
+                                'childview:submit:delete',
+                                function (childview) {
+                                    App.request(
+                                        'comment:delete',
+                                        childview.model
                                     );
                                 }
                             );
@@ -309,14 +324,15 @@ define([
                     Question.Controller.listenTo(
                         view,
                         'form:submit',
-                        function (data) {
-                            $.when(App.request('question:add', data))
-                                .done(function (model) {
+                        function (model) {
+                            $.when(App.request('question:add', model))
+                                .done(function () {
                                     App.trigger('popup:close');
                                     App.trigger('questions:list');
                                 }).fail(function (errors) {
                                     view.triggerMethod('data:invalid', errors);
-                                });
+                                }
+                            );
                         }
                     );
                 });

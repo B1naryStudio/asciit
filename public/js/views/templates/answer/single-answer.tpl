@@ -1,5 +1,5 @@
 <div class="list-group-item single-answer">
-    <div class="row">
+    <div class="row answer-body">
         <!-- User info -->
         <div class="col-md-2 col-lg-2 col-sm-2">
             <figure class="user-info text-center">
@@ -15,7 +15,7 @@
             <span class="time asked_time">
 
                 <time class="relative" data-abs-time="<%- created_at %>">
-                     <%- created_relative %>
+                    <%- created_relative %>
                 </time>
             </span>
             <div class="description"><%= description %></div>
@@ -24,6 +24,12 @@
             <div class="comments">
                 <button class="btn btn-default btn-xs show-form"><%= _t("comment.add") %></button>
             </div>
+        </div>
+        <div class="entry-controls">
+            <span class="delete"
+                  title="<%- _t('ui.delete') %>">
+                <i class="fa fa-times"></i>
+            </span>
         </div>
     </div>
     <div class="answers-comments-region"></div>

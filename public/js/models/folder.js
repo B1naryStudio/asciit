@@ -84,95 +84,31 @@ define([
             })
         );
 
-        var API = {
-            folderCollection: function (page) {
+        var API = _.extend(ModelMixins.API, {
+            folderCollection: function (page) {           // Why page?
                 var folders = new Folder.Collection();
-                return this.fetch(folders);
-            },
-
-            fetch: function (collection) {
-                var defer = $.Deferred();
-                if (!collection.fetch({
-                        success: function (data) {
-                            defer.resolve(data);
-                        },
-                        error: function (model, response) {
-                            defer.reject({
-                                status: response.status,
-                                error: model.validationError
-                            });
-                        }
-                    })
-                ) {
-                    defer.reject({
-                        error: 'Server error, saving is impossible.'
-                    });
-                }
-                return defer.promise();
-            },
-
-            addFolder: function (model) {
-                var defer = $.Deferred();
-
-                if (!model.save([], {
-                        wait: true,
-                        success: function (newModel, attributes, options) {
-                            defer.resolve(newModel);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })
-                ) {
-                    defer.reject({
-                        description: 'Server error, saving is impossible.'
-                    });
-                }
-                return defer.promise();
-            },
-
-            updateFolder: function (model) {
-                return this.addFolder(model);
+                return this.deferOperation('fetch', folders);
             },
 
             getFolders: function (data) {
                 var options = data.options ? data.options : {};
                 delete data.options;
-                var questions = new Folder.Folders(data, options);
-                return this.fetch(questions);
-            },
+                var folders = new Folder.Folders(data, options);
 
-            deleteFolder: function (model) {
-                var defer = $.Deferred();
-                if (!model.destroy({
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })) {
-                    defer.reject({
-                        description: 'Server error, deleting is impossible.'
-                    });
-                }
-                return defer.promise();
+                return this.deferOperation('fetch', folders);
             }
-        };
+        });
 
         App.reqres.setHandler('folders:fetch', function (collection) {
-            return API.fetch(collection);
+            return API.deferOperation('fetch', collection);
         });
 
         App.reqres.setHandler('folder:collection', function () {
             return API.folderCollection();
         });
 
-        App.reqres.setHandler('folder:add', function (collection, model) {
-            return API.addFolder(collection, model);
+        App.reqres.setHandler('folder:add', function (model) {
+            return API.deferOperation('save', model);
         });
 
         App.reqres.setHandler('folders:get', function (data) {
@@ -180,11 +116,11 @@ define([
         });
 
         App.reqres.setHandler('folder:update', function (model) {
-            return API.updateFolder(model);
+            return API.deferOperation('save', model);
         });
 
         App.reqres.setHandler('folder:delete', function (model) {
-            return API.deleteFolder(model);
+            return API.deferOperation('destroy', model);
         });
     });
 });

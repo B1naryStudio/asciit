@@ -43,4 +43,14 @@ class CommentController extends Controller
 
         return Response::json($comment->toArray(), 201);
     }
+
+    public function destroy($entry_id, $comment_id) {
+        try {
+            $this->questionService->removeComment($comment_id);
+        } catch (QuestionServiceException $e) {
+            return Response::json(['error' => $e->getMessage()], 404);
+        }
+
+        return Response::json([], 200);
+    }
 }

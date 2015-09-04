@@ -18,6 +18,40 @@ define(['app'], function(App) {
                     votesRegion.show(votesView);
                 });
             }
+        };
+
+        ViewsMixins.Editable = {
+            events: {
+                'mouseover @ui.itemArea': 'showControls',
+                'mouseout @ui.itemArea': 'hideControls'
+            },
+            showControls: function () {
+                if (
+                    this.model.isCurrentUserOwner()
+                    || App.User.Current.isAdmin()
+                ) {
+                    this.ui.entryControls.show();
+                }
+
+            },
+            hideControls: function () {
+                this.ui.entryControls.hide();
+            }
+        };
+
+        ViewsMixins.ServerValidation = {
+            onDataInvalid: function (errors) {
+                for (var field in errors) {
+                    if (!errors.hasOwnProperty(field)) {
+                        continue;
+                    }
+                    Backbone.Validation.callbacks.invalid(
+                        this,
+                        field,
+                        errors[field]
+                    );
+                }
+            }
         }
     });
 

@@ -51,19 +51,28 @@ Rbac::permission('answers.view');
 Rbac::permission('answers.create');
 //Rbac::permission('answers.edit');
 //Rbac::permission('answers.edit.own', ['answers.edit'], function($params) {});
-//Rbac::permission('answers.delete');
-//Rbac::permission('answers.delete.own', ['answers.delete'], function($params) {});
+Rbac::permission('answers.delete');
+Rbac::permission('answers.delete.own', ['answers.delete'], function($params) {
+    $answer_id = $params['answers'];
+    $answer_repo = app('App\Repositories\Contracts\AnswerRepository');
+    $answer = $answer_repo->find($answer_id);
+
+    $owner = $answer->user_id;
+    $current_user = $this->user->id;
+
+    return $owner == $current_user;
+});
 
 Rbac::permission('answers.manage', [
     'answers.view',
     'answers.create',
 //    'answers.edit',
-//    'answers.delete'
+    'answers.delete'
 ]);
 Rbac::permission('answers.manage.own', [
     'answers.create',
 //    'answers.edit.own',
-//    'answers.delete.own'
+    'answers.delete.own'
 ]);
 
 // comments
@@ -71,19 +80,19 @@ Rbac::permission('comments.view');
 Rbac::permission('comments.create');
 //Rbac::permission('comments.edit');
 //Rbac::permission('comments.edit.own', ['comments.edit'], function($params) {});
-//Rbac::permission('comments.delete');
-//Rbac::permission('comments.delete.own', ['comments.delete'], function($params) {});
+Rbac::permission('comments.delete');
+Rbac::permission('comments.delete.own', ['comments.delete'], function($params) {});
 
 Rbac::permission('comments.manage', [
     'comments.view',
     'comments.create',
 //    'comments.edit',
-//    'comments.delete'
+    'comments.delete'
 ]);
 Rbac::permission('comments.manage.own', [
     'comments.create',
 //    'comments.edit.own',
-//    'comments.delete.own'
+    'comments.delete.own'
 ]);
 
 // tags

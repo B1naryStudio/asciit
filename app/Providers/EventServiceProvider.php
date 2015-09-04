@@ -17,15 +17,21 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\QuestionToBroadcasting',
         ],
         'App\Events\QuestionWasRemoved' => [
-            'App\Listeners\QuestionRemovingToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\QuestionRemovingToBroadcasting',
         ],
         'App\Events\AnswerWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\AnswerToBroadcasting',
             'App\Listeners\DeliveryHandlers\HttpHandlers\AnswerToHttp',
         ],
+        'App\Events\AnswerWasRemoved' => [
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\AnswerRemovingToBroadcasting',
+        ],
         'App\Events\CommentWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentToBroadcasting',
             'App\Listeners\DeliveryHandlers\HttpHandlers\CommentToHttp',
+        ],
+        'App\Events\CommentWasRemoved' => [
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentRemovingToBroadcasting',
         ],
         'App\Events\VoteWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\VoteToBroadcasting',
