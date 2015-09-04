@@ -137,13 +137,6 @@ define([
                             }
                         }
                     );
-                }).fail(function (data) {
-                    if (data.status === 404) {
-                        var view = new EmptyView();
-                        App.Main.Layout
-                            .getRegion('content')
-                            .show(view);
-                    }
                 });
             },
 

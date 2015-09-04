@@ -164,8 +164,7 @@ define(['app', 'moment'], function(App, moment) {
                 var defer = $.Deferred();
 
                 var options = {
-                    //wait: true,
-                    success: function (data, attributes, options) {
+                    success: function (data, response, options) {
                         defer.resolve(data);
                     },
                     error: function (model, xhr, options) {
@@ -174,16 +173,40 @@ define(['app', 'moment'], function(App, moment) {
                     }
                 };
 
+                // defining a defer object for custom success and error callbacks
                 if (customOptions) {
+                    if (customOptions.success) {
+                        var func = customOptions.success;
+
+                        options.success = function (data, response, options) {
+                            options.defer = defer;
+                            func(data, response, options);
+                        };
+
+                        delete customOptions.success;
+                    }
+
+                    if (customOptions.error) {
+                        var func = customOptions.error;
+
+                        options.error = function (data, response, options) {
+                            options.defer = defer;
+                            func(data, response, options);
+                        };
+
+                        delete customOptions.error;
+                    }
+
                     options =_.extend(options, customOptions);
                 }
 
-                var attrs = attrs || [];
+                attrs = attrs || [];
+                var res;
 
                 if (operation == 'save') {
-                    var res = item[operation](attrs, options);
+                    res = item[operation](attrs, options);
                 } else {
-                    var res = item[operation](options);
+                    res = item[operation](options);
                 }
 
                 return defer.promise();

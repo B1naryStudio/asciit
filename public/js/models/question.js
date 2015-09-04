@@ -156,6 +156,10 @@ define([
         );
 
         var API = _.extend(ModelMixins.API, {
+            notFoundChecker: function (data, xhr, options) {
+                options.defer.reject({status: xhr.status});
+            },
+
             questionCollection: function (data) {
                 var options = data.options ? data.options : {};
                 delete data.options;
@@ -171,7 +175,9 @@ define([
 
             questionGet: function (id) {
                 var question = new Question.Model({ id: id });
-                return this.deferOperation('fetch', question);
+                return this.deferOperation('fetch', question, [], {
+                    error: this.notFoundChecker
+                });
             },
 
             questionCollectionByUser: function () {
