@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Event;
 use App\Events\QuestionWasAdded;
 use App\Events\QuestionWasRemoved;
 use App\Events\AnswerWasAdded;
+use App\Events\AnswerWasUpdated;
 use App\Events\AnswerWasRemoved;
 use App\Events\CommentWasAdded;
 use App\Events\CommentWasRemoved;
@@ -312,6 +313,22 @@ class QuestionService implements QuestionServiceInterface
 
         Event::fire(new AnswerWasAdded($answer));
 
+        return $answer;
+    }
+
+    public function updateAnswer($data)
+    {
+        try {
+            $answer = $this->answerRepository->update($data, $data['id']);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new AnswerWasUpdated($answer));
         return $answer;
     }
 

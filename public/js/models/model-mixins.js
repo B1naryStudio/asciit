@@ -187,7 +187,7 @@ define(['app', 'moment'], function(App, moment) {
                     }
 
                     if (customOptions.error) {
-                        var func = customOptions.error;
+                        func = customOptions.error;
 
                         options.error = function (data, response, options) {
                             options.defer = defer;

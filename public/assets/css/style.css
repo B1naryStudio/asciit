@@ -445,7 +445,9 @@ body.modal-open {
  | Controls (edit, delete)
  |------------------------------------------------------------------------------
  */
-.entry-controls {
+.entry-controls,
+.entry-controls .save,
+.entry-controls .cancel {
     display: none;
 }
 

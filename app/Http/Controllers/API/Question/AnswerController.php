@@ -81,6 +81,22 @@ class AnswerController extends Controller
         );
     }
 
+    public function update(AnswerValidatedRequest $request, $question_id)
+    {
+        try {
+            $answer = $this->questionService
+                ->updateAnswer($request->all(), $question_id);
+        } catch (QuestionServiceException $e) {
+            return Response::json([
+                'error' => [
+                    'message' => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        return Response::json($answer->toArray(), 202, [], JSON_NUMERIC_CHECK);
+    }
+
     public function destroy($question_id, $answer_id) {
         try {
             $this->questionService->removeAnswer($answer_id);

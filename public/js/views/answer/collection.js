@@ -9,7 +9,8 @@ define([
     'views/comment/collection',
     'ckeditor',
     'ckeditor.adapter',
-    'highlight'
+    'highlight',
+    'syphon',
 ], function (App, AnswersTpl, SingleAnswerTpl, Answer, ViewsMixins,
              EditorSettings, Comment, CommentsCompositeView) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
@@ -28,9 +29,10 @@ define([
 
                     ui: {
                         itemArea:     '.answer-body',
-                        editButton:   '.edit-button',
-                        saveButton:   '.save-button',
                         entryControls: '.entry-controls',
+                        editButton:  '.answer-body .entry-controls .edit',
+                        saveButton:  '.answer-body .entry-controls .save',
+                        cancelButton:  '.answer-body .entry-controls .cancel',
                         deleteButton:  '.answer-body .entry-controls .delete'
                     },
 
@@ -40,6 +42,7 @@ define([
                         'mouseout @ui.itemArea': 'hideControls',
                         'click @ui.editButton': 'onEdit',
                         'click @ui.saveButton': 'onSave',
+                        'click @ui.cancelButton': 'onCancel',
                         'click @ui.deleteButton': 'onDelete'
                     },
 
@@ -65,13 +68,40 @@ define([
                     onEdit: function (event) {
                         var field = this.$el.find('.description');
                         field.attr('contenteditable', true);
-
                         EditorSettings.startupFocus = true;
                         this.editor = field.ckeditor(EditorSettings).editor;
+
+                        this.showEditingControls();
                     },
 
-                    onDelete: function () {
-                        this.trigger('submit:delete', this.model);
+                    onSave: function () {
+                        Backbone.Validation.bind(this);
+
+                        this.model.set({
+                            description: this.editor.getData()
+                        });
+
+                        this.trigger('submit:update', this.model);
+                    },
+
+                    onAnswerUpdated: function () {
+                        this.editor.destroy();
+                        var field = this.$el.find('.description');
+                        field.attr('contenteditable', false);
+
+                        this.hideEditingControls();
+                    },
+
+                    onCancel: function () {
+                        this.editor.destroy();
+                        var field = this.$el.find('.description');
+                        field.attr('contenteditable', false);
+
+                        var previousDescription = this.model.previous('description')
+                        this.model.set({description: previousDescription});
+                        field.html(previousDescription);
+
+                        this.hideEditingControls();
                     },
 
                     onShow: function () {
@@ -178,11 +208,7 @@ define([
                         event.preventDefault();
                         var data = Backbone.Syphon.serialize($('#new-answer-form')[0]);
                         this.model.set(data);
-
-                        if (this.model.isValid(true)) {
-                            // To event in controller
-                            this.trigger('form:submit', this.model);
-                        }
+                        this.trigger('form:submit', this.model);
                     },
                     // Refresh model and form for the futher using without
                     // view rendering

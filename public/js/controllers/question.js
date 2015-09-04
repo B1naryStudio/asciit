@@ -198,7 +198,29 @@ define([
                                                 'model:invalid',
                                                 errors
                                             );
-                                        });
+                                        }
+                                    );
+                                }
+                            );
+
+                            Question.Controller.listenTo(
+                                answersView,
+                                'childview:submit:update',
+                                function (childview) {
+                                    $.when(App.request(
+                                        'answer:update',
+                                        childview.model
+                                    )).done(function (savedModel) {
+                                        childview.triggerMethod(
+                                            'answer:updated',
+                                            savedModel
+                                        );
+                                    }).fail(function (errors) {
+                                        childview.triggerMethod(
+                                            'model:invalid',
+                                            errors
+                                        );
+                                    });
                                 }
                             );
 
