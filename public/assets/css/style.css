@@ -585,6 +585,12 @@ body.modal-open {
     font-weight: bold;
 }
 
+#popup-layout-view {
+    padding: 0 !important;
+    position: fixed;
+    overflow: hidden;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Confirmation form
@@ -607,12 +613,6 @@ body.modal-open {
  | Add question popup
  |------------------------------------------------------------------------------
  */
-#popup-layout-view {
-    padding: 0 !important;
-    position: absolute;
-    overflow: hidden;
-}
-
 #popup-layout-view.question-add {
     left: 10%;
     right: 10%;

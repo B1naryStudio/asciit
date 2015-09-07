@@ -59,11 +59,7 @@ define([
                         behaviorClass: DeleteButton
                     },
                     EditButton: {
-                        behaviorClass:     EditButton,
-                        controlsContainer: '.answer-body .entry-controls',
-                        editButton:        '.answer-body .entry-controls .edit',
-                        saveButton:        '.answer-body .entry-controls .save',
-                        cancelButton:      '.answer-body .entry-controls .cancel'
+                        behaviorClass: EditButton
                     },
                     ContainsVotes: {
                         behaviorClass: ContainsVotes

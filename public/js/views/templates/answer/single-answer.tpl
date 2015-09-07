@@ -20,7 +20,7 @@
             </span>
             <div class="form-group">
                 <input class="hidden" name="description">
-                <div class="description"><%= description %></div>
+                <div class="model-field description"><%= description %></div>
                 <span class="help-block hidden"></span>
             </div>
 

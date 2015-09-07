@@ -15,7 +15,7 @@
                      <%- created_relative %>
                 </time>
             </span>
-            <p><%- text %></p>
+            <p class="model-field"><%- text %></p>
         </div>
         <div class="entry-controls">
             <span class="control delete"

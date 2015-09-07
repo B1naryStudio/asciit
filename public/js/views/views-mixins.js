@@ -62,14 +62,14 @@ define(['app'], function(App) {
                     );
                 }
             }
-        }
+        };
 
         ViewsMixins.SelectText = {
             selectText: function(e) {
-                var event = e;
-                if ($(event.target).attr('contenteditable') == true) return;
-
                 e.stopPropagation();
+                var modelFieldContainer = e.target.closest('.model-field');
+
+                if ($(modelFieldContainer).attr('contenteditable') == 'true') return;
 
                 var editor = App.helper.editor;
                 var text = App.helper.getSelected();

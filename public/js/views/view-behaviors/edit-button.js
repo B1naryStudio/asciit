@@ -2,10 +2,7 @@ define(['app', 'ckeditor.custom.settings'], function(App, EditorSettings) {
     App.module('Behaviors', function (Behaviors, App, Backbone, Marionette, $, _) {
         Behaviors.EditButton = Marionette.Behavior.extend({
             defaults: {
-                controlsContainer: '.entry-controls',
-                editButton:        '.entry-controls .edit',
-                saveButton:        '.entry-controls .save',
-                cancelButton:      '.entry-controls .cancel'
+                controlsContainer: '.entry-controls'
             },
 
             onEditStart: function () {
@@ -28,7 +25,7 @@ define(['app', 'ckeditor.custom.settings'], function(App, EditorSettings) {
             },
 
             hideEditingControls: function () {
-                $(this.options.controlsContainer + " .control").show();
+                this.$(this.options.controlsContainer + " .control").show();
                 this.ui.saveButton.hide();
                 this.ui.cancelButton.hide();
             }
