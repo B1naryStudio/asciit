@@ -6,12 +6,13 @@ define([
     'views/view-behaviors/hiding-controls',
     'views/view-behaviors/delete-button',
     'views/view-behaviors/contains-votes',
+    'views/view-behaviors/code-highlighter',
     'stickit',
     'highlight',
     'ckeditor',
     'ckeditor.adapter'
 ], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView,
-             HidingControls, DeleteButton, ContainsVotes) {
+             HidingControls, DeleteButton, ContainsVotes,CodeHighlighter) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionLayout = Marionette.LayoutView.extend(
             {
@@ -57,6 +58,9 @@ define([
                     //},
                     ContainsVotes: {
                         behaviorClass: ContainsVotes
+                    },
+                    CodeHighlighter: {
+                        behaviorClass: CodeHighlighter
                     }
                 },
 
@@ -107,11 +111,6 @@ define([
                                 .show(new TagView({
                                     collection: tags
                                 }));
-                    });
-
-                    // Highligting code-snippets
-                    $('pre code').each(function(i, block) {
-                        hljs.highlightBlock(block);
                     });
                 }
             }

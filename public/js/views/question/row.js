@@ -3,8 +3,9 @@ define([
     'tpl!views/templates/question/row.tpl',
     'views/tag/view',
     'models/tag',
+    'views/view-behaviors/code-highlighter',
     'syphon'
-], function (App, QuestionTpl, TagView) {
+], function (App, QuestionTpl, TagView, CodeHighlighter) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionCollectionRow = Marionette.LayoutView.extend({
             tagName: 'div',
@@ -12,6 +13,11 @@ define([
             template: QuestionTpl,
             regions: {
                 tag: '.tags'
+            },
+            behaviors: {
+                CodeHighlighter: {
+                    behaviorClass: CodeHighlighter
+                }
             },
             onShow: function () {
                 var self = this;
@@ -22,13 +28,10 @@ define([
                                 collection: tags,
                                 searchTag: self.options.searchTag ?
                                     self.options.searchTag() : ''
-                            }));
-                    });
-
-                // Highligting code-snippets
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
+                            })
+                        );
+                    }
+                );
             },
             initialize: function () {
                 this.listenTo(this.model, 'change', function() {

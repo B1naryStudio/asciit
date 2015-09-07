@@ -11,13 +11,14 @@ define([
     'views/view-behaviors/delete-button',
     'views/view-behaviors/edit-button',
     'views/view-behaviors/contains-votes',
+    'views/view-behaviors/code-highlighter',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
     'syphon',
 ], function (App, AnswersTpl, SingleAnswerTpl, Answer, EditorSettings, Comment,
              CommentsCompositeView, ViewsMixins, HidingControls, DeleteButton,
-             EditButton, ContainsVotes) {
+             EditButton, ContainsVotes, CodeHighlighter) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend(
             {
@@ -62,6 +63,9 @@ define([
                     },
                     ContainsVotes: {
                         behaviorClass: ContainsVotes
+                    },
+                    CodeHighlighter: {
+                        behaviorClass: CodeHighlighter
                     }
                 },
 
@@ -118,11 +122,6 @@ define([
                 },
 
                 onShow: function () {
-                    // Highligting code-snippets
-                    $('pre code').each(function (i, block) {
-                        hljs.highlightBlock(block);
-                    });
-
                     // Comments
                     var commentModel = new Comment.Model({
                         q_and_a_id: this.model.get('id')
