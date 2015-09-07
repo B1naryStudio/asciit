@@ -8,7 +8,7 @@ define([
 ], function (App, AnswerTpl, EmptyView, ContainsVotes,CodeHighlighter) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.AnswerCollectionByUserRow = Marionette.LayoutView.extend(
-            _.extend({}, ViewsMixins.ContainsVotes, {
+            {
                 tagName: 'div',
                 className: 'answer-row',
                 template: AnswerTpl,
@@ -28,7 +28,7 @@ define([
                         this.render();
                     });
                 }
-            })
+            }
         );
 
         View.Answers = Marionette.CollectionView.extend({

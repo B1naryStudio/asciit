@@ -21,7 +21,7 @@ define([
              EditButton, ContainsVotes, CodeHighlighter) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend(
-            {
+            _.extend({}, ViewsMixins.SelectText, {
                 template: SingleAnswerTpl,
 
                 regions: {
@@ -35,6 +35,10 @@ define([
                     editButton:   '.answer-body .entry-controls .edit',
                     saveButton:   '.answer-body .entry-controls .save',
                     cancelButton: '.answer-body .entry-controls .cancel'
+                },
+
+                events: {
+                    'mouseup p': 'selectText'
                 },
 
                 triggers: {
@@ -102,25 +106,6 @@ define([
                     field.attr('contenteditable', false);
                 },
 
-                selectText: function(e) {
-                    e.stopPropagation();
-                    var editor = App.helper.editor;
-                    var text = App.helper.getSelected();
-                    if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
-                        text = '<blockquote><span class="author">'+
-                            '<time class="relative" data-abs-time="'+this.model.get('created_at')+'">'+
-                            this.model.get('created_relative')+'</time>'+
-                        ' by '+this.model.attributes.user.first_name+
-                        ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
-                        editor.focus();
-
-                        App.helper.moveFocus(editor, text);
-                        $('html, body').scrollTop(
-                            $('#new-answer-form').offset().top
-                        );
-                    }
-                },
-
                 onShow: function () {
                     // Comments
                     var commentModel = new Comment.Model({
@@ -179,7 +164,7 @@ define([
                 initialize: function (options) {
                     this.$el.attr('id', 'answer-' + this.model.get('id'));
                 }
-            }
+            })
         );
 
         View.AnswersCompositeView = Marionette.CompositeView.extend(

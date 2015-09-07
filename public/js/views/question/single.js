@@ -3,6 +3,7 @@ define([
     'tpl!views/templates/question/question-layout.tpl',
     'views/answer/collection',
     'views/tag/view',
+    'views/views-mixins',
     'views/view-behaviors/hiding-controls',
     'views/view-behaviors/delete-button',
     'views/view-behaviors/contains-votes',
@@ -11,11 +12,11 @@ define([
     'highlight',
     'ckeditor',
     'ckeditor.adapter'
-], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView,
+], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, ViewsMixins,
              HidingControls, DeleteButton, ContainsVotes,CodeHighlighter) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
         View.QuestionLayout = Marionette.LayoutView.extend(
-            {
+            _.extend({}, ViewsMixins.SelectText, {
                 tagname: 'div',
                 id: 'question-view',
                 template: QuestionLayoutTpl,
@@ -64,27 +65,6 @@ define([
                     }
                 },
 
-                selectText: function() {
-                    var text = App.helper.getSelected();
-                    if (
-                        text && (
-                            text = new String(text).replace(/^\s+|\s+$/g,''))
-                    ) {
-                        text = '<blockquote><span class="author">' +
-                            '<time class="relative" data-abs-time="' +
-                            this.model.get('created_at') + '">' +
-                            this.model.get('created_relative') + '</time>' +
-                            ' by ' + this.model.attributes.user.first_name+
-                            ' ' + this.model.attributes.user.last_name +
-                            ':</span><br/>' + text + ' </blockquote>';
-                        this.newAnswerEditor.focus();
-                        App.helper.moveFocus(this.newAnswerEditor, text);
-                        $('html, body').scrollTop(
-                            $('#new-answer-form').offset().top
-                        );
-                    }
-                },
-
                 showCommentForm: function (e) {
                     e.stopPropagation();
                     var el = $(e.target)
@@ -113,7 +93,7 @@ define([
                                 }));
                     });
                 }
-            }
+            })
         );
     });
     return App.Question.Views.QuestionLayout;

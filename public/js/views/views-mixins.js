@@ -1,25 +1,5 @@
 define(['app'], function(App) {
     App.module('ViewsMixins', function(ViewsMixins, App, Backbone, Marionette, $, _) {
-        ViewsMixins.ContainsVotes = {
-            showVotes: function () {
-                var vote = this.model.get('vote');
-                var self = this;
-
-                require(['views/vote/single'], function(VotesView) {
-                    var votesView = new VotesView({
-                        vote: vote,
-                        likes: self.model.get('vote_likes'),
-                        dislikes: self.model.get('vote_dislikes'),
-                        q_and_a_id: self.model.id
-                    });
-
-                    var votesRegion = self.getRegion('votes');
-                    votesRegion.empty();
-                    votesRegion.show(votesView);
-                });
-            }
-        };
-
         ViewsMixins.AdvancedEditable = {
             onEditStart: function () {
                 EditorSettings.startupFocus = true;
@@ -79,6 +59,41 @@ define(['app'], function(App) {
                         this,
                         field,
                         errors[field]
+                    );
+                }
+            }
+        }
+
+        ViewsMixins.SelectText = {
+            selectText: function(e) {
+                var event = e;
+                if ($(event.target).attr('contenteditable') == true) return;
+
+                e.stopPropagation();
+
+                var editor = App.helper.editor;
+                var text = App.helper.getSelected();
+
+                if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                    text = '<blockquote><span class="author">' +
+                           '<time class="relative" data-abs-time="' +
+                           this.model.get('created_at') +
+                           '">' +
+                           this.model.get('created_relative') +
+                           '</time>' +
+                           ' by ' +
+                           this.model.attributes.user.first_name +
+                           ' ' +
+                           this.model.attributes.user.last_name +
+                           ':</span><br/>' +
+                           text +
+                           ' </blockquote>';
+
+                    editor.focus();
+                    App.helper.moveFocus(editor, text);
+
+                    $('html, body').scrollTop(
+                        $('#new-answer-form').offset().top
                     );
                 }
             }
