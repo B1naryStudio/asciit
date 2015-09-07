@@ -63,7 +63,10 @@
         "no": "No",
 
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+
+        "confirm-title": "Confirmation",
+        "confirm-body": "Are you really want to perform this action?"
     },
     "validation": {
         "required-field": "This field is required.",

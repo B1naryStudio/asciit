@@ -212,7 +212,7 @@ define([
                                         childview.model
                                     )).done(function (savedModel) {
                                         childview.triggerMethod(
-                                            'answer:updated',
+                                            'model:updated',
                                             savedModel
                                         );
                                     }).fail(function (errors) {
@@ -292,8 +292,6 @@ define([
                                 questionView,
                                 'submit:delete',
                                 function (model) {
-                                    App.trigger('popup:close');
-
                                     $.when(App.request(
                                         'question:delete',
                                         model

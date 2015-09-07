@@ -3,178 +3,184 @@ define([
     'tpl!views/templates/answer/answers.tpl',
     'tpl!views/templates/answer/single-answer.tpl',
     'models/answer',
-    'views/views-mixins',
     'ckeditor.custom.settings',
     'models/comment',
     'views/comment/collection',
+    'views/views-mixins',
+    'views/view-behaviors/hiding-controls',
+    'views/view-behaviors/delete-button',
+    'views/view-behaviors/edit-button',
+    'views/view-behaviors/contains-votes',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
     'syphon',
-], function (App, AnswersTpl, SingleAnswerTpl, Answer, ViewsMixins,
-             EditorSettings, Comment, CommentsCompositeView) {
+], function (App, AnswersTpl, SingleAnswerTpl, Answer, EditorSettings, Comment,
+             CommentsCompositeView, ViewsMixins, HidingControls, DeleteButton,
+             EditButton, ContainsVotes) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend(
-            _.extend(
-                {},
-                ViewsMixins.ContainsVotes,
-                ViewsMixins.Editable,
-                {
-                    template: SingleAnswerTpl,
+            {
+                template: SingleAnswerTpl,
 
-                    regions: {
-                        votes: '.votes',
-                        comments: '.answers-comments-region'
+                regions: {
+                    votes:    '.votes',
+                    comments: '.answers-comments-region'
+                },
+
+                ui: {
+                    itemArea:     '.answer-body',
+                    deleteButton: '.answer-body .entry-controls .delete',
+                    editButton:   '.answer-body .entry-controls .edit',
+                    saveButton:   '.answer-body .entry-controls .save',
+                    cancelButton: '.answer-body .entry-controls .cancel'
+                },
+
+                triggers: {
+                    'mouseover @ui.itemArea': 'show:controls',
+                    'mouseout @ui.itemArea':  'hide:controls',
+                    'click @ui.deleteButton': 'delete',
+                    'click @ui.editButton':   'edit:start',
+                    'click @ui.saveButton':   'edit:save',
+                    'click @ui.cancelButton': 'edit:cancel'
+                },
+
+                behaviors: {
+                    HidingControls: {
+                        behaviorClass:     HidingControls,
+                        controlsContainer: '.entry-controls'
                     },
-
-                    ui: {
-                        itemArea:     '.answer-body',
-                        entryControls: '.entry-controls',
-                        editButton:  '.answer-body .entry-controls .edit',
-                        saveButton:  '.answer-body .entry-controls .save',
-                        cancelButton:  '.answer-body .entry-controls .cancel',
-                        deleteButton:  '.answer-body .entry-controls .delete'
+                    DeleteButton: {
+                        behaviorClass: DeleteButton
                     },
-
-                    events: {
-                        'mouseup .description': 'selectText',
-                        'mouseover @ui.itemArea': 'showControls',
-                        'mouseout @ui.itemArea': 'hideControls',
-                        'click @ui.editButton': 'onEdit',
-                        'click @ui.saveButton': 'onSave',
-                        'click @ui.cancelButton': 'onCancel',
-                        'click @ui.deleteButton': 'onDelete'
+                    EditButton: {
+                        behaviorClass:     EditButton,
+                        controlsContainer: '.answer-body .entry-controls',
+                        editButton:        '.answer-body .entry-controls .edit',
+                        saveButton:        '.answer-body .entry-controls .save',
+                        cancelButton:      '.answer-body .entry-controls .cancel'
                     },
+                    ContainsVotes: {
+                        behaviorClass: ContainsVotes
+                    }
+                },
 
-                    selectText: function(e) {
-                        e.stopPropagation();
-                        var editor = App.helper.editor;
-                        var text = App.helper.getSelected();
-                        if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
-                            text = '<blockquote><span class="author">'+
-                                '<time class="relative" data-abs-time="'+this.model.get('created_at')+'">'+
-                                this.model.get('created_relative')+'</time>'+
-                            ' by '+this.model.attributes.user.first_name+
-                            ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
-                            editor.focus();
+                onEditStart: function (event) {
+                    var field = this.$el.find('.description');
+                    field.attr('contenteditable', true);
+                    EditorSettings.startupFocus = true;
+                    this.editor = field.ckeditor(EditorSettings).editor;
+                },
 
-                            App.helper.moveFocus(editor, text);
-                            $('html, body').scrollTop(
-                                $('#new-answer-form').offset().top
+                onEditSave: function () {
+                    Backbone.Validation.bind(this);
+
+                    this.model.set({
+                        description: this.editor.getData()
+                    });
+
+                    this.trigger('submit:update', this.model);
+                },
+
+                onEditCancel: function () {
+                    this.editor.destroy();
+                    var field = this.$el.find('.description');
+                    field.attr('contenteditable', false);
+
+                    var previousDescription = this.model.previous('description')
+                    this.model.set({description: previousDescription});
+                    field.html(previousDescription);
+                },
+
+                onModelUpdated: function () {
+                    this.editor.destroy();
+                    var field = this.$el.find('.description');
+                    field.attr('contenteditable', false);
+                },
+
+                selectText: function(e) {
+                    e.stopPropagation();
+                    var editor = App.helper.editor;
+                    var text = App.helper.getSelected();
+                    if(text && ( text = new String(text).replace(/^\s+|\s+$/g,''))) {
+                        text = '<blockquote><span class="author">'+
+                            '<time class="relative" data-abs-time="'+this.model.get('created_at')+'">'+
+                            this.model.get('created_relative')+'</time>'+
+                        ' by '+this.model.attributes.user.first_name+
+                        ' '+this.model.attributes.user.last_name+':</span><br/>'+text+' </blockquote>';
+                        editor.focus();
+
+                        App.helper.moveFocus(editor, text);
+                        $('html, body').scrollTop(
+                            $('#new-answer-form').offset().top
+                        );
+                    }
+                },
+
+                onShow: function () {
+                    // Highligting code-snippets
+                    $('pre code').each(function (i, block) {
+                        hljs.highlightBlock(block);
+                    });
+
+                    // Comments
+                    var commentModel = new Comment.Model({
+                        q_and_a_id: this.model.get('id')
+                    });
+                    var commentCollection = new Comment.Collection(
+                        this.model.get('comments'),
+                        {q_and_a_id: this.model.get('id')}
+                    );
+                    var commentsView = new CommentsCompositeView({
+                        model: commentModel,
+                        collection: commentCollection,
+                        id: this.id
+                    });
+                    this.getRegion('comments').show(commentsView);
+
+                    this.listenTo(
+                        commentsView,
+                        'form:submit',
+                        function (model) {
+                            $.when(App.request('comment:add', model))
+                                .done(function (savedModel) {
+                                    commentCollection.push(savedModel);
+                                    // Add model and form clearing
+                                    var newModel = new Comment.Model({
+                                        q_and_a_id: savedModel.attributes.q_and_a_id
+                                    });
+
+                                    commentsView.triggerMethod(
+                                        'model:refresh',
+                                        newModel
+                                    );
+                                }).fail(function (errors) {
+                                    console.log(errors);
+                                    commentsView.triggerMethod(
+                                        'data:invalid',
+                                        errors
+                                    );
+                                }
                             );
                         }
-                    },
+                    );
 
-                    onEdit: function (event) {
-                        var field = this.$el.find('.description');
-                        field.attr('contenteditable', true);
-                        EditorSettings.startupFocus = true;
-                        this.editor = field.ckeditor(EditorSettings).editor;
+                    this.listenTo(
+                        commentsView,
+                        'childview:submit:delete',
+                        function (childview) {
+                            App.request(
+                                'comment:delete',
+                                childview.model
+                            )
+                        }
+                    );
+                },
 
-                        this.showEditingControls();
-                    },
-
-                    onSave: function () {
-                        Backbone.Validation.bind(this);
-
-                        this.model.set({
-                            description: this.editor.getData()
-                        });
-
-                        this.trigger('submit:update', this.model);
-                    },
-
-                    onAnswerUpdated: function () {
-                        this.editor.destroy();
-                        var field = this.$el.find('.description');
-                        field.attr('contenteditable', false);
-
-                        this.hideEditingControls();
-                    },
-
-                    onCancel: function () {
-                        this.editor.destroy();
-                        var field = this.$el.find('.description');
-                        field.attr('contenteditable', false);
-
-                        var previousDescription = this.model.previous('description')
-                        this.model.set({description: previousDescription});
-                        field.html(previousDescription);
-
-                        this.hideEditingControls();
-                    },
-
-                    onShow: function () {
-                        // Highligting code-snippets
-                        $('pre code').each(function (i, block) {
-                            hljs.highlightBlock(block);
-                        });
-
-                        this.showVotes();
-
-                        // Comments
-                        var commentModel = new Comment.Model({
-                            q_and_a_id: this.model.get('id')
-                        });
-                        var commentCollection = new Comment.Collection(
-                            this.model.get('comments'),
-                            {q_and_a_id: this.model.get('id')}
-                        );
-                        var commentsView = new CommentsCompositeView({
-                            model: commentModel,
-                            collection: commentCollection,
-                            id: this.id
-                        });
-                        this.getRegion('comments').show(commentsView);
-
-                        this.listenTo(
-                            commentsView,
-                            'form:submit',
-                            function (model) {
-                                $.when(App.request('comment:add', model))
-                                    .done(function (savedModel) {
-                                        commentCollection.push(savedModel);
-                                        // Add model and form clearing
-                                        var newModel = new Comment.Model({
-                                            q_and_a_id: savedModel.attributes.q_and_a_id
-                                        });
-
-                                        commentsView.triggerMethod(
-                                            'model:refresh',
-                                            newModel
-                                        );
-                                    }).fail(function (errors) {
-                                        console.log(errors);
-                                        commentsView.triggerMethod(
-                                            'data:invalid',
-                                            errors
-                                        );
-                                    }
-                                );
-                            }
-                        );
-
-                        this.listenTo(
-                            commentsView,
-                            'childview:submit:delete',
-                            function (childview) {
-                                App.request(
-                                    'comment:delete',
-                                    childview.model
-                                )
-                            }
-                        );
-                    },
-
-                    initialize: function (options) {
-                        this.$el.attr('id', 'answer-' + this.model.get('id'));
-
-                        var self = this;
-                        this.listenTo(this.model, 'change:vote_value', function() {
-                            self.showVotes();
-                        });
-                    }
-            })
+                initialize: function (options) {
+                    this.$el.attr('id', 'answer-' + this.model.get('id'));
+                }
+            }
         );
 
         View.AnswersCompositeView = Marionette.CompositeView.extend(

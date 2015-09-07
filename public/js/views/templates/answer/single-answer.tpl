@@ -31,19 +31,19 @@
             </div>
         </div>
         <div class="entry-controls">
-            <span class="edit"
+            <span class="control edit"
                   title="<%- _t('ui.edit') %>">
                 <i class="fa fa-pencil"></i>
             </span>
-            <span class="save"
+            <span class="control save"
                   title="<%- _t('ui.edit') %>">
                 <i class="fa fa-floppy-o "></i>
             </span>
-            <span class="cancel"
+            <span class="control cancel"
                   title="<%- _t('ui.edit') %>">
                 <i class="fa fa-ban"></i>
             </span>
-            <span class="delete"
+            <span class="control delete"
                   title="<%- _t('ui.delete') %>">
                 <i class="fa fa-times"></i>
             </span>

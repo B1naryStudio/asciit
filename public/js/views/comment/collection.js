@@ -1,53 +1,59 @@
 define(['app',
     'tpl!views/templates/comment/comments.tpl',
     'tpl!views/templates/comment/single-comment.tpl',
-    'views/views-mixins',
+    'views/view-behaviors/hiding-controls',
+    'views/view-behaviors/delete-button',
     'stickit'
-], function (App, CommentsTpl, SingleCommentTpl, ViewsMixins) {
+], function (App, CommentsTpl, SingleCommentTpl, HidingControls, DeleteButton) {
     App.module('Comment.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.SingleCommentCompositeView = Marionette.CompositeView.extend(
-            _.extend({}, ViewsMixins.Editable, {
-                template: SingleCommentTpl,
+        View.SingleCommentCompositeView = Marionette.CompositeView.extend({
+            template: SingleCommentTpl,
+            ui: {
+                itemArea:      '.single-comment',
+                deleteButton:  '.entry-controls .delete'
+            },
 
-                ui: {
-                    itemArea:      '.single-comment',
-                    entryControls: '.entry-controls',
-                    deleteButton:  '.entry-controls .delete'
+            events: {
+                'mouseup p': 'selectText'
+            },
+
+            triggers: {
+                'mouseover @ui.itemArea': 'show:controls',
+                'mouseout @ui.itemArea': 'hide:controls',
+                'click @ui.deleteButton': 'delete'
+            },
+
+            behaviors: {
+                HidingControls: {
+                    behaviorClass: HidingControls,
+                    controlsContainer: '.entry-controls'
                 },
-
-                events: {
-                    'mouseup p': 'selectText',
-                    'mouseover @ui.itemArea': 'showControls',
-                    'mouseout @ui.itemArea': 'hideControls',
-                    'click @ui.deleteButton': 'onDelete'
-                },
-
-                onDelete: function () {
-                    this.trigger('submit:delete', this.model);
-                },
-
-                selectText: function(e) {
-                    e.stopPropagation();
-                    var editor = App.helper.editor;
-                    var text = App.helper.getSelected();
-                    if (
-                        text &&
-                        ( text = new String(text).replace(/^\s+|\s+$/g,''))
-                    ) {
-                        text = '<blockquote><strong>' +
-                            this.model.get('created_relative') +
-                            ' by ' + this.model.get('user').first_name +
-                            ' ' + this.model.get('user').last_name +
-                            '</strong><br/>' + text + '</blockquote>';
-                        editor.focus();
-                        App.helper.moveFocus(editor, text);
-                        $('html, body').scrollTop(
-                            $('#new-answer-form').offset().top
-                        );
-                    }
+                DeleteButton: {
+                    behaviorClass: DeleteButton
                 }
-            })
-        );
+            },
+
+            selectText: function(e) {
+                e.stopPropagation();
+                var editor = App.helper.editor;
+                var text = App.helper.getSelected();
+                if (
+                    text &&
+                    ( text = new String(text).replace(/^\s+|\s+$/g,''))
+                ) {
+                    text = '<blockquote><strong>' +
+                        this.model.get('created_relative') +
+                        ' by ' + this.model.get('user').first_name +
+                        ' ' + this.model.get('user').last_name +
+                        '</strong><br/>' + text + '</blockquote>';
+                    editor.focus();
+                    App.helper.moveFocus(editor, text);
+                    $('html, body').scrollTop(
+                        $('#new-answer-form').offset().top
+                    );
+                }
+            }
+        });
 
         View.CommentsCompositeView = Marionette.CompositeView.extend({
             tagName: 'section',
@@ -60,7 +66,6 @@ define(['app',
                 'submit .comments-form': 'submit',
                 'mouseup p': 'selectText'
             },
-
 
             submit: function(event) {
                 event.preventDefault();
