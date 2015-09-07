@@ -12,7 +12,7 @@
         "description": "Description",
         "empty": "There is no questions. You can be the first!",
         "confirm-del-title": "Question deleting confirm",
-        "confirm-del-body": "Are you really want to delete this question?"
+        "confirm-del-body": "Do you really want to delete this question?"
     },
     "folders" : {
         "folders": "Folders",
@@ -67,7 +67,7 @@
         "delete": "Delete",
 
         "confirm-title": "Confirmation",
-        "confirm-body": "Are you really want to perform this action?"
+        "confirm-body": "Do you really want to perform this action?"
     },
     "validation": {
         "required-field": "This field is required.",
