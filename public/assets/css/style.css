@@ -459,6 +459,10 @@ body.modal-open {
     color: #555;
 }
 
+.entry-controls .delete .fa {
+    color: firebrick;
+}
+
 .question_view .entry-controls {
     float: right;
     margin-right: 20px;

@@ -1,4 +1,5 @@
-define(['app',
+define([
+    'app',
     'tpl!views/templates/comment/comments.tpl',
     'tpl!views/templates/comment/single-comment.tpl',
     'views/views-mixins',
