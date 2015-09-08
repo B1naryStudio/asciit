@@ -6,7 +6,7 @@
             <button class="searchBtn">Filter</button>
             <a id="userLink" class="noTextDecoration">
                 <div id="userProfile">
-                    <img id="avatar" class="avatar" src="http://team.binary-studio.com/profile/api/files/get/31859551-3951-4d3e-83ab-2ce58c361c1b.jpg">
+                    <img id="avatar" class="avatar" src="http://team.binary-studio.com/profile/api/files/get/992bd47c-3279-4230-9aee-307e078dbf2d.jpg">
                     <span id="userName">Edik Dolynskyi</span>
                 </div>
             </a>
