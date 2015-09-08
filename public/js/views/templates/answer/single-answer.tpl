@@ -18,7 +18,7 @@
                     <%- created_relative %>
                 </time>
             </span>
-            <div class="form-group">
+            <div class="editing-form-group">
                 <input class="hidden" name="description">
                 <div class="model-field description"><%= description %></div>
                 <span class="help-block hidden"></span>

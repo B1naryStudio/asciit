@@ -531,7 +531,6 @@ body.modal-open {
 
 .has-error .control-label {
     color: #333;
-    font-weight: normal;
 }
 
 .has-error .help-block {

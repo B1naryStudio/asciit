@@ -22,12 +22,15 @@ define(['app', 'ckeditor.custom.settings'], function(App, EditorSettings) {
                 this.$(this.options.controlsContainer + " .control").hide();
                 this.ui.saveButton.show();
                 this.ui.cancelButton.show();
+                this.$('.editing-form-group').toggleClass('form-group');
             },
 
             hideEditingControls: function () {
                 this.$(this.options.controlsContainer + " .control").show();
                 this.ui.saveButton.hide();
                 this.ui.cancelButton.hide();
+                this.$('.editing-form-group').toggleClass('form-group');
+
             }
         });
     });

@@ -12,13 +12,14 @@ define([
     'views/view-behaviors/edit-button',
     'views/view-behaviors/contains-votes',
     'views/view-behaviors/code-highlighter',
+    'views/view-behaviors/server-validation',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
     'syphon',
 ], function (App, AnswersTpl, SingleAnswerTpl, Answer, EditorSettings, Comment,
              CommentsCompositeView, ViewsMixins, HidingControls, DeleteButton,
-             EditButton, ContainsVotes, CodeHighlighter) {
+             EditButton, ContainsVotes, CodeHighlighter, ServerValidation) {
     App.module('Answer.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleAnswerLayoutView = Marionette.LayoutView.extend(
             _.extend({}, ViewsMixins.SelectText, {
@@ -53,7 +54,7 @@ define([
                 behaviors: {
                     HidingControls: {
                         behaviorClass:     HidingControls,
-                        controlsContainer: '.entry-controls'
+                        controlsContainer: '.answer-body .entry-controls'
                     },
                     DeleteButton: {
                         behaviorClass: DeleteButton
@@ -66,6 +67,9 @@ define([
                     },
                     CodeHighlighter: {
                         behaviorClass: CodeHighlighter
+                    },
+                    ServerValidation: {
+                        behaviorClass: ServerValidation
                     }
                 },
 
@@ -164,96 +168,98 @@ define([
         );
 
         View.AnswersCompositeView = Marionette.CompositeView.extend(
-            _.extend(
-                {},
-                ViewsMixins.ServerValidation,
-                {
-                    tagName: 'section',
-                    id: 'answers-list',
-                    template: AnswersTpl,
-                    childView: View.SingleAnswerLayoutView,
-                    childViewContainer: '#answers',
+            {
+                tagName: 'section',
+                id: 'answers-list',
+                template: AnswersTpl,
+                childView: View.SingleAnswerLayoutView,
+                childViewContainer: '#answers',
 
-                    events: {
-                        'submit form': 'onSubmit',
-                        'click .show-form': 'showForm'
-                    },
+                events: {
+                    'submit form': 'onSubmit',
+                    'click .show-form': 'showForm'
+                },
 
-                    showForm: function (e) {
-                        e.stopPropagation();
-                        var el = $(e.target)
-                            .parents('.row')
-                            .siblings('.answers-comments-region')
-                            .find('section .comment-form');
-                        el.toggle();
-                        $(e.target).toggleClass('form-open');
-                        el.find('textarea').focus();
-                    },
-
-                    onSubmit: function (event) {
-                        event.preventDefault();
-                        var data = Backbone.Syphon.serialize($('#new-answer-form')[0]);
-                        this.model.set(data);
-                        this.trigger('form:submit', this.model);
-                    },
-                    // Refresh model and form for the futher using without
-                    // view rendering
-                    onModelRefresh: function (freshModel) {
-                        this.model = freshModel;
-
-                        if (this.editor) {
-                            // Erase the editor value.
-                            this.editor.setData('');
-                        }
-
-                        Backbone.Validation.bind(this);
-                    },
-                    refreshCounter: function () {
-                        this.model.set('count', this.collection.length);
-                        this.$el.find('.counter.answers').html(this.model.get('count'));
-                    },
-                    onShow: function () {
-                        EditorSettings.height = '350px';
-
-                        try {
-                            this.editor = $('#description').
-                                ckeditor(EditorSettings).editor;
-                            //for focus from parent
-                            this.trigger('editor:created', this.editor);
-                        } catch (e) {
-                            console.log('This environment officially is non-supported'
-                            + ' with CKEditor');
-                        } finally {
-                            if (this.options.answer_id) {
-                                var element = this.$el.find(
-                                    '#answer-' + this.options.answer_id
-                                );
-                                if (element.length) {
-                                    $('html, body').scrollTop(
-                                        element.focus().offset().top
-                                    );
-                                }
-                            } else {
-                                $('html, body').scrollTop(0);
-                            }
-                        }
-                        App.helper.editor = this.editor;
-                    },
-                    initialize: function (options) {
-                        this.childViewOptions = {
-                            id: this.id
-                        };
-                        Backbone.Validation.bind(this);
-                        this.listenTo(this.collection, 'update', this.refreshCounter);
-                    },
-                    remove: function () {
-                        // Remove the validation binding
-                        // See: http://thedersen.com/projects/backbone-validation/#using-form-model-validation/unbinding
-                        Backbone.Validation.unbind(this);
-                        return Backbone.View.prototype.remove.apply(this, arguments);
+                behaviors: {
+                    ServerValidation: {
+                        behaviorClass: ServerValidation
                     }
+                },
+
+                showForm: function (e) {
+                    e.stopPropagation();
+                    var el = $(e.target)
+                        .parents('.row')
+                        .siblings('.answers-comments-region')
+                        .find('section .comment-form');
+                    el.toggle();
+                    $(e.target).toggleClass('form-open');
+                    el.find('textarea').focus();
+                },
+
+                onSubmit: function (event) {
+                    event.preventDefault();
+                    var data = Backbone.Syphon.serialize($('#new-answer-form')[0]);
+                    this.model.set(data);
+                    this.trigger('form:submit', this.model);
+                },
+                // Refresh model and form for the futher using without
+                // view rendering
+                onModelRefresh: function (freshModel) {
+                    this.model = freshModel;
+
+                    if (this.editor) {
+                        // Erase the editor value.
+                        this.editor.setData('');
+                    }
+
+                    Backbone.Validation.bind(this);
+                },
+                refreshCounter: function () {
+                    this.model.set('count', this.collection.length);
+                    this.$el.find('.counter.answers').html(this.model.get('count'));
+                },
+                onShow: function () {
+                    EditorSettings.height = '350px';
+
+                    try {
+                        this.editor = $('#description').
+                            ckeditor(EditorSettings).editor;
+                        //for focus from parent
+                        this.trigger('editor:created', this.editor);
+                    } catch (e) {
+                        console.log('This environment officially is non-supported'
+                        + ' with CKEditor');
+                    } finally {
+                        if (this.options.answer_id) {
+                            var element = this.$el.find(
+                                '#answer-' + this.options.answer_id
+                            );
+                            if (element.length) {
+                                $('html, body').scrollTop(
+                                    element.focus().offset().top
+                                );
+                            }
+                        } else {
+                            $('html, body').scrollTop(0);
+                        }
+                    }
+                    App.helper.editor = this.editor;
+                },
+                initialize: function (options) {
+                    this.childViewOptions = {
+                        id: this.id
+                    };
+                    Backbone.Validation.bind(this);
+                    this.listenTo(this.collection, 'update', this.refreshCounter);
+                },
+                remove: function () {
+                    // Remove the validation binding
+                    // See: http://thedersen.com/projects/backbone-validation/#using-form-model-validation/unbinding
+                    Backbone.Validation.unbind(this);
+                    return Backbone.View.prototype.remove.apply(this, arguments);
                 }
-            )
+            }
         );
     });
 

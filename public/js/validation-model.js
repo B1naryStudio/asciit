@@ -1,7 +1,7 @@
 define(['backbone', 'validation'], function () {
     _.extend(Backbone.Model.prototype, Backbone.Validation.mixin);
 
-    // Valisdation settings for bootstrap
+    // Validation settings for bootstrap
     _.extend(Backbone.Validation.callbacks, {
         valid: function (view, attr, selector) {
             var $el = view.$('[name=' + attr + ']'),

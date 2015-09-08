@@ -5,9 +5,10 @@ define([
     'views/views-mixins',
     'views/view-behaviors/hiding-controls',
     'views/view-behaviors/delete-button',
+    'views/view-behaviors/server-validation',
     'stickit'
 ], function (App, CommentsTpl, SingleCommentTpl, ViewsMixins, HidingControls,
-             DeleteButton) {
+             DeleteButton, ServerValidation) {
     App.module('Comment.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleCommentCompositeView = Marionette.CompositeView.extend(
             _.extend({}, ViewsMixins.SelectText, {
@@ -30,10 +31,13 @@ define([
                 behaviors: {
                     HidingControls: {
                         behaviorClass: HidingControls,
-                        controlsContainer: '.entry-controls'
+                        controlsContainer: '.single-comment .entry-controls'
                     },
                     DeleteButton: {
                         behaviorClass: DeleteButton
+                    },
+                    ServerValidation: {
+                        behaviorClass: ServerValidation
                     }
                 }
             })
@@ -54,18 +58,22 @@ define([
             submit: function(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                if (this.model.isValid(true)) {
-                    // To event in controller
-                    this.trigger('form:submit', this.model);
-                }
-
+                // To event in controller
+                this.trigger('form:submit', this.model);
             },
+
             bindings: {
                 '[name=text]': {
                     observe: 'text',
                     setOptions: {
                         validate: true
                     }
+                }
+            },
+
+            behaviors: {
+                ServerValidation: {
+                    behaviorClass: ServerValidation
                 }
             },
 

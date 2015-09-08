@@ -269,7 +269,7 @@ define([
                                             );
                                         }).fail(function (errors) {
                                             commentsView.triggerMethod(
-                                                'data:invalid',
+                                                'model:invalid',
                                                 errors
                                             );
                                         }
@@ -350,7 +350,7 @@ define([
                                     App.trigger('popup:close');
                                     App.trigger('questions:list');
                                 }).fail(function (errors) {
-                                    view.triggerMethod('data:invalid', errors);
+                                    view.triggerMethod('model:invalid', errors);
                                 }
                             );
                         }
