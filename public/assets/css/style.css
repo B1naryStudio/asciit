@@ -465,10 +465,21 @@ body.modal-open {
     margin-right: 3px;
     cursor: pointer;
     color: #555;
+    text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
 }
 
-.entry-controls .delete .fa {
+.entry-controls .save .fa,
+.entry-controls .cancel .fa {
+    text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.6);
+}
+
+.entry-controls .delete .fa,
+.entry-controls .cancel .fa {
     color: firebrick;
+}
+
+.entry-controls .save .fa {
+    color: #000060;
 }
 
 .question_view .entry-controls {
