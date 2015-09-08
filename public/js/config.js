@@ -1,1 +1,1 @@
-var jsPath = '/min';
+var jsPath = 'js';

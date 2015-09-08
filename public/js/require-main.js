@@ -1,5 +1,5 @@
 requirejs.config({
-    baseUrl: 'js' + jsPath,
+    baseUrl: jsPath,
     config: {
         //Set the config for the i18n
         //module ID
