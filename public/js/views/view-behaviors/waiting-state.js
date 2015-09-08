@@ -4,7 +4,7 @@ define(['app'], function(App) {
             onWaitingStart: function () {
                 this.$el.css('opacity', 0.5);
             },
-            onWaitingDisable: function () {
+            onWaitingStop: function () {
                 this.$el.css('opacity', 1);
             }
         });

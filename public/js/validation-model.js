@@ -11,11 +11,19 @@ define(['backbone', 'validation'], function () {
             $group.find('.help-block').html('').addClass('hidden');
         },
         invalid: function (view, attr, error, selector) {
-            var $el = view.$('[name=' + attr + ']'),
-                $group = $el.closest('.form-group');
+            var messageBlock;
 
-            $group.addClass('has-error');
-            $group.find('.help-block').html(error).removeClass('hidden');
+            if (attr === "error") {
+                messageBlock = view.$('.error-block');
+            } else {
+                var $el = view.$('[name=' + attr + ']'),
+                    $group = $el.closest('.form-group');
+
+                $group.addClass('has-error');
+                messageBlock = $group.find('.help-block')
+            }
+
+            messageBlock.html(error).removeClass('hidden');
         }
     });
 });

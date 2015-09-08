@@ -16,6 +16,7 @@
                 </time>
             </span>
             <p class="model-field"><%- text %></p>
+            <span class="error-block hidden"></span>
         </div>
         <div class="entry-controls">
             <span class="control delete"

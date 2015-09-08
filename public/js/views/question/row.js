@@ -2,8 +2,8 @@ define([
     'app',
     'tpl!views/templates/question/row.tpl',
     'views/tag/view',
-    'models/tag',
     'views/view-behaviors/code-highlighter',
+    'models/tag',
     'syphon'
 ], function (App, QuestionTpl, TagView, CodeHighlighter) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {

@@ -34,7 +34,8 @@ define([
                         controlsContainer: '.single-comment .entry-controls'
                     },
                     DeleteButton: {
-                        behaviorClass: DeleteButton
+                        behaviorClass: DeleteButton,
+                        itemArea: '.single-comment'
                     },
                     ServerValidation: {
                         behaviorClass: ServerValidation

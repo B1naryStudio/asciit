@@ -228,10 +228,15 @@ define([
                                 answersView,
                                 'childview:submit:delete',
                                 function (childview) {
-                                    App.request(
+                                    $.when(App.request(
                                         'answer:delete',
                                         childview.model
-                                    );
+                                    )).fail(function (errors) {
+                                        childview.triggerMethod(
+                                            'delete:error',
+                                            errors
+                                        );
+                                    });
                                 }
                             );
 
@@ -281,10 +286,15 @@ define([
                                 commentsView,
                                 'childview:submit:delete',
                                 function (childview) {
-                                    App.request(
+                                    $.when(App.request(
                                         'comment:delete',
                                         childview.model
-                                    );
+                                    )).fail(function (errors) {
+                                        childview.triggerMethod(
+                                            'delete:error',
+                                            errors
+                                        );
+                                    });
                                 }
                             );
 
@@ -299,6 +309,12 @@ define([
                                             Backbone.history.navigate(
                                                 '/questions',
                                                 { trigger: true }
+                                            );
+                                        }
+                                    ).fail(function (errors) {
+                                            questionView.triggerMethod(
+                                                'delete:error',
+                                                errors
                                             );
                                         }
                                     );

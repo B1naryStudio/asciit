@@ -22,6 +22,7 @@
                 <input class="hidden" name="description">
                 <div class="model-field description"><%= description %></div>
                 <span class="help-block hidden"></span>
+                <div class="error-block hidden"></div>
             </div>
 
 

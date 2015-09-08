@@ -48,7 +48,8 @@ define([
                         controlsContainer: '.actions .entry-controls'
                     },
                     DeleteButton: {
-                        behaviorClass: DeleteButton
+                        behaviorClass: DeleteButton,
+                        itemArea: '.question_view'
                     },
                     //EditButton: {
                     //    behaviorClass:     EditButton,

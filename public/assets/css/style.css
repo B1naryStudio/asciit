@@ -542,9 +542,14 @@ body.modal-open {
  | Errors
  |------------------------------------------------------------------------------
  */
-.error {
+.error,
+.error-block {
     color: red;
     font-weight: normal;
+}
+
+.error-block {
+    margin: 15px 0;
 }
 
 .error.all {

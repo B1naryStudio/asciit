@@ -57,7 +57,8 @@ define([
                         controlsContainer: '.answer-body .entry-controls'
                     },
                     DeleteButton: {
-                        behaviorClass: DeleteButton
+                        behaviorClass: DeleteButton,
+                        itemArea: '.answer-body'
                     },
                     EditButton: {
                         behaviorClass: EditButton

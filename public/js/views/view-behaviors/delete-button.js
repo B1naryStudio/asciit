@@ -6,7 +6,8 @@ define([
     App.module('Behaviors', function (Behaviors, App, Backbone, Marionette, $, _) {
         Behaviors.DeleteButton = Marionette.Behavior.extend({
             defaults: {
-                'confirmation': true
+                'confirmation': true,
+                'itemArea': ""
             },
 
             behaviors: {
@@ -33,6 +34,20 @@ define([
             onPerformDelete: function () {
                 this.view.triggerMethod('waiting:start');
                 this.view.trigger('submit:delete', this.view.model);
+            },
+
+            onDeleteError: function (errors) {
+                this.view.triggerMethod('waiting:stop');
+
+                var messageBlock = this.view.$(
+                    this.options.itemArea + ' .error-block'
+                );
+                messageBlock.html(errors.error).removeClass('hidden');
+
+                setTimeout(function () {
+                    messageBlock.addClass('hidden');
+                }, 3000)
+
             }
         });
     });

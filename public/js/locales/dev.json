@@ -72,7 +72,9 @@
         "cancel": "Cancel",
 
         "confirm-title": "Confirmation",
-        "confirm-body": "Do you really want to perform this action?"
+        "confirm-body": "Do you really want to perform this action?",
+
+        "server-error": "Server error! Cannot perform the operation!"
     },
     "validation": {
         "required-field": "This field is required.",
