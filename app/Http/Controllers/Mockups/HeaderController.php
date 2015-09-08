@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Mockups;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Response;
 
 class HeaderController extends Controller
 {
@@ -14,8 +13,17 @@ class HeaderController extends Controller
      *
      * @return Response
      */
-    public function getMenu()
+    public function menu()
     {
         return view('menu-mockup');
+    }
+
+    public function config()
+    {
+        return Response::json([
+            'loginserver' => env('AUTH_REDIRECT'),
+            'notificationserver' => url('app'),
+            'userprofileserver' => url('profile')
+        ]);
     }
 }

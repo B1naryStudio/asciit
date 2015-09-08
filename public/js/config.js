@@ -1,1 +1,1 @@
-var jsPath = 'js';
+var jsPath = document.getElementById('config-jspath').value;

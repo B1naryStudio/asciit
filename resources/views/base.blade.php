@@ -11,9 +11,10 @@
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
 </head>
 <body>
+<input type="hidden" id="config-jspath" value="{{ env('JSPATH') }}">
 </body>
-<script src="js/config.js"></script>
+<script src="{{ env('JSPATH') }}/config.js"></script>
 <script src="{{ env('JSPATH') }}/vendor/autobahn/autobahn.js"></script>
-<script data-main="js/require-main" src="{{ env('JSPATH') }}/vendor/require/require.js"></script>
+<script data-main="{{ env('JSPATH') }}/require-main" src="{{ env('JSPATH') }}/vendor/require/require.js"></script>
 <script src="http://team.binary-studio.com/app/javascripts/header.js"></script>
 </html>
