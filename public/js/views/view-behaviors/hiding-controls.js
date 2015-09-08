@@ -18,7 +18,7 @@ define(['app'], function(App) {
             onHideControls: function () {
                 this.$(this.options.controlsContainer).hide();
             }
-        }); 
+        });
     });
 
     return App.Behaviors.HidingControls;

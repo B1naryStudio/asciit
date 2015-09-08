@@ -318,6 +318,14 @@ body.modal-open {
 .votes {
     color: #444444;
     cursor: default;
+    background: #fff;
+
+    /* For gracefully overlapping a border for the editing elements */
+    padding: 0 0 5px 10px;
+    padding-right: 1px;
+    right: -1px;
+    position: relative;
+    z-index: 2;
 }
 
 .question_view .votes {
@@ -486,6 +494,11 @@ body.modal-open {
 
 .question_view .single-comment .entry-controls {
     right: 10px;
+}
+
+[contenteditable=true] {
+    outline: dotted 1px orange;
+    position: relative;
 }
 
 /*
