@@ -88,7 +88,8 @@ define([
 
                 // Moving rating parameter to template
                 this.$el.html(this.template({
-                    rating: rating
+                    rating: rating,
+                    _t: i18n.t
                 }));
 
                 this.onShow();

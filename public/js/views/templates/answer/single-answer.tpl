@@ -36,11 +36,11 @@
                 <i class="fa fa-pencil"></i>
             </span>
             <span class="control save"
-                  title="<%- _t('ui.edit') %>">
+                  title="<%- _t('ui.save') %>">
                 <i class="fa fa-floppy-o "></i>
             </span>
             <span class="control cancel"
-                  title="<%- _t('ui.edit') %>">
+                  title="<%- _t('ui.cancel') %>">
                 <i class="fa fa-ban"></i>
             </span>
             <span class="control delete"

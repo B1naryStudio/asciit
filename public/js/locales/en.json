@@ -62,8 +62,13 @@
         "yes": "Yes",
         "no": "No",
 
+        "like": "Like",
+        "dislike": "Dislike",
+
         "edit": "Edit",
         "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
 
         "confirm-title": "Confirmation",
         "confirm-body": "Do you really want to perform this action?"
