@@ -74,16 +74,18 @@ define([
                     }
                 },
 
-                onEditStart: function (event) {
-                    var field = this.$el.find('.description');
-                    field.attr('contenteditable', true);
+                onEditStart: function () {
+                    Backbone.Validation.bind(this);
+
+                    this.editableField = this.$el.find('.description');
+                    this.editableField.attr('contenteditable', true);
                     EditorSettings.startupFocus = true;
-                    this.editor = field.ckeditor(EditorSettings).editor;
+                    this.editor = this.editableField
+                                      .ckeditor(EditorSettings)
+                                      .editor;
                 },
 
                 onEditSave: function () {
-                    Backbone.Validation.bind(this);
-
                     this.model.set({
                         description: this.editor.getData()
                     });
@@ -93,18 +95,16 @@ define([
 
                 onEditCancel: function () {
                     this.editor.destroy();
-                    var field = this.$el.find('.description');
-                    field.attr('contenteditable', false);
+                    this.editableField.attr('contenteditable', false);
 
-                    var previousDescription = this.model.previous('description')
+                    var previousDescription = this.model.previous('description');
                     this.model.set({description: previousDescription});
-                    field.html(previousDescription);
+                    this.editableField.html(previousDescription);
                 },
 
                 onModelUpdated: function () {
                     this.editor.destroy();
-                    var field = this.$el.find('.description');
-                    field.attr('contenteditable', false);
+                    this.editableField.attr('contenteditable', false);
                 },
 
                 onShow: function () {

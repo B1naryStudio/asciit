@@ -15,15 +15,22 @@ define(['backbone', 'validation'], function () {
 
             if (attr === "error") {
                 messageBlock = view.$('.error-block');
+                messageBlock.html(error).removeClass('hidden');
+
+                setTimeout(function () {
+                    messageBlock.html(error).addClass('hidden');
+                }, 3000)
+
             } else {
                 var $el = view.$('[name=' + attr + ']'),
                     $group = $el.closest('.form-group');
 
                 $group.addClass('has-error');
                 messageBlock = $group.find('.help-block')
+                messageBlock.html(error).removeClass('hidden');
+
             }
 
-            messageBlock.html(error).removeClass('hidden');
         }
     });
 });

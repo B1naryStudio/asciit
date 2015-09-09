@@ -54,6 +54,10 @@ define([
             return API.deferOperation('save', model);
         });
 
+        App.reqres.setHandler('comment:update', function (model) {
+            return API.deferOperation('save', model);
+        });
+
         App.reqres.setHandler('comment:delete', function (model) {
             return API.deferOperation('destroy', model, [], {
                 wait: true
