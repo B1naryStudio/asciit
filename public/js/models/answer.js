@@ -119,6 +119,10 @@ define([
             return API.deferOperation('save', model);
         });
 
+        App.reqres.setHandler('answer:update', function (model) {
+            return API.deferOperation('save', model);
+        });
+
         App.reqres.setHandler('answer:delete', function (model) {
             return API.deferOperation('destroy', model, [], {
                 wait: true

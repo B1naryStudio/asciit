@@ -49,8 +49,8 @@ Rbac::permission('questions.manage.own', [
 // answers
 Rbac::permission('answers.view');
 Rbac::permission('answers.create');
-//Rbac::permission('answers.edit');
-//Rbac::permission('answers.edit.own', ['answers.edit'], function($params) {});
+Rbac::permission('answers.edit');
+Rbac::permission('answers.edit.own', ['answers.edit'], function($params) {});
 Rbac::permission('answers.delete');
 Rbac::permission('answers.delete.own', ['answers.delete'], function($params) {
     $answer_id = $params['answers'];
@@ -66,12 +66,12 @@ Rbac::permission('answers.delete.own', ['answers.delete'], function($params) {
 Rbac::permission('answers.manage', [
     'answers.view',
     'answers.create',
-//    'answers.edit',
+    'answers.edit',
     'answers.delete'
 ]);
 Rbac::permission('answers.manage.own', [
     'answers.create',
-//    'answers.edit.own',
+    'answers.edit.own',
     'answers.delete.own'
 ]);
 

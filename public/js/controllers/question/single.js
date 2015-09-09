@@ -78,7 +78,29 @@ define([
                                                     'model:invalid',
                                                     errors
                                                 );
-                                            });
+                                            }
+                                        );
+                                    }
+                                );
+
+                                ControllerOptions.Single.listenTo(
+                                    answersView,
+                                    'childview:submit:update',
+                                    function (childview) {
+                                        $.when(App.request(
+                                            'answer:update',
+                                            childview.model
+                                        )).done(function (savedModel) {
+                                            childview.triggerMethod(
+                                                'model:updated',
+                                                savedModel
+                                            );
+                                        }).fail(function (errors) {
+                                            childview.triggerMethod(
+                                                'model:invalid',
+                                                errors
+                                            );
+                                        });
                                     }
                                 );
 
@@ -86,10 +108,15 @@ define([
                                     answersView,
                                     'childview:submit:delete',
                                     function (childview) {
-                                        App.request(
+                                        $.when(App.request(
                                             'answer:delete',
                                             childview.model
-                                        );
+                                        )).fail(function (errors) {
+                                            childview.triggerMethod(
+                                                'delete:error',
+                                                errors
+                                            );
+                                        });
                                     }
                                 );
 
@@ -127,7 +154,7 @@ define([
                                                 );
                                             }).fail(function (errors) {
                                                 commentsView.triggerMethod(
-                                                    'data:invalid',
+                                                    'model:invalid',
                                                     errors
                                                 );
                                             }
@@ -139,10 +166,15 @@ define([
                                     commentsView,
                                     'childview:submit:delete',
                                     function (childview) {
-                                        App.request(
+                                        $.when(App.request(
                                             'comment:delete',
                                             childview.model
-                                        );
+                                        )).fail(function (errors) {
+                                            childview.triggerMethod(
+                                                'delete:error',
+                                                errors
+                                            );
+                                        });
                                     }
                                 );
 
@@ -150,8 +182,6 @@ define([
                                     questionView,
                                     'submit:delete',
                                     function (model) {
-                                        App.trigger('popup:close');
-
                                         $.when(App.request(
                                             'question:delete',
                                             model
@@ -159,6 +189,12 @@ define([
                                                 Backbone.history.navigate(
                                                     '/questions',
                                                     { trigger: true }
+                                                );
+                                            }
+                                        ).fail(function (errors) {
+                                                questionView.triggerMethod(
+                                                    'delete:error',
+                                                    errors
                                                 );
                                             }
                                         );

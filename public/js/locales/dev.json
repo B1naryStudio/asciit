@@ -12,7 +12,7 @@
         "description": "Description",
         "empty": "There is no questions. You can be the first!",
         "confirm-del-title": "Question deleting confirm",
-        "confirm-del-body": "Are you really want to delete this question?"
+        "confirm-del-body": "Do you really want to delete this question?"
     },
     "folders" : {
         "folders": "Folders",
@@ -63,8 +63,18 @@
         "yes": "Yes",
         "no": "No",
 
+        "like": "Like",
+        "dislike": "Dislike",
+
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+
+        "confirm-title": "Confirmation",
+        "confirm-body": "Do you really want to perform this action?",
+
+        "server-error": "Server error! Cannot perform the operation!"
     },
     "validation": {
         "required-field": "This field is required.",

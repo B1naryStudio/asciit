@@ -15,10 +15,11 @@
                      <%- created_relative %>
                 </time>
             </span>
-            <p><%- text %></p>
+            <p class="model-field"><%- text %></p>
+            <span class="error-block hidden"></span>
         </div>
         <div class="entry-controls">
-            <span class="delete"
+            <span class="control delete"
                   title="<%- _t('ui.delete') %>">
                 <i class="fa fa-times"></i>
             </span>

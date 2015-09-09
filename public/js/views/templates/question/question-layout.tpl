@@ -19,7 +19,7 @@
                          <%- created_relative %>
                     </time>
                 </span>
-                <h2><%- title %></h2>
+                <h2 class="model-field"><%- title %></h2>
                 <div class="folder">
                     <span class="icon glyphicon glyphicon-folder-open"></span>
                     <a href="#folders/<%- folder.title %>"><%- folder.title %></a>
@@ -31,7 +31,8 @@
             </div>
         </div>
         <!-- Text -->
-        <p><%= description %></p>
+        <p class="model-field"><%= description %></p>
+        <div class="error-block hidden"></div>
         <!-- Actions -->
         <div class="actions">
             <!-- Controls -->

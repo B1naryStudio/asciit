@@ -1,49 +1,44 @@
-define(['app',
+define([
+    'app',
     'tpl!views/templates/comment/comments.tpl',
     'tpl!views/templates/comment/single-comment.tpl',
     'views/views-mixins',
+    'views/view-behaviors/hiding-controls',
+    'views/view-behaviors/delete-button',
+    'views/view-behaviors/server-validation',
     'stickit'
-], function (App, CommentsTpl, SingleCommentTpl, ViewsMixins) {
+], function (App, CommentsTpl, SingleCommentTpl, ViewsMixins, HidingControls,
+             DeleteButton, ServerValidation) {
     App.module('Comment.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleCommentCompositeView = Marionette.CompositeView.extend(
-            _.extend({}, ViewsMixins.Editable, {
+            _.extend({}, ViewsMixins.SelectText, {
                 template: SingleCommentTpl,
-
                 ui: {
                     itemArea:      '.single-comment',
-                    entryControls: '.entry-controls',
                     deleteButton:  '.entry-controls .delete'
                 },
 
                 events: {
-                    'mouseup p': 'selectText',
-                    'mouseover @ui.itemArea': 'showControls',
-                    'mouseout @ui.itemArea': 'hideControls',
-                    'click @ui.deleteButton': 'onDelete'
+                    'mouseup p': 'selectText'
                 },
 
-                onDelete: function () {
-                    this.trigger('submit:delete', this.model);
+                triggers: {
+                    'mouseover @ui.itemArea': 'show:controls',
+                    'mouseout @ui.itemArea': 'hide:controls',
+                    'click @ui.deleteButton': 'delete'
                 },
 
-                selectText: function(e) {
-                    e.stopPropagation();
-                    var editor = App.helper.editor;
-                    var text = App.helper.getSelected();
-                    if (
-                        text &&
-                        ( text = new String(text).replace(/^\s+|\s+$/g,''))
-                    ) {
-                        text = '<blockquote><strong>' +
-                            this.model.get('created_relative') +
-                            ' by ' + this.model.get('user').first_name +
-                            ' ' + this.model.get('user').last_name +
-                            '</strong><br/>' + text + '</blockquote>';
-                        editor.focus();
-                        App.helper.moveFocus(editor, text);
-                        $('html, body').scrollTop(
-                            $('#new-answer-form').offset().top
-                        );
+                behaviors: {
+                    HidingControls: {
+                        behaviorClass: HidingControls,
+                        controlsContainer: '.single-comment .entry-controls'
+                    },
+                    DeleteButton: {
+                        behaviorClass: DeleteButton,
+                        itemArea: '.single-comment'
+                    },
+                    ServerValidation: {
+                        behaviorClass: ServerValidation
                     }
                 }
             })
@@ -61,22 +56,25 @@ define(['app',
                 'mouseup p': 'selectText'
             },
 
-
             submit: function(event) {
                 event.preventDefault();
                 event.stopPropagation();
-                if (this.model.isValid(true)) {
-                    // To event in controller
-                    this.trigger('form:submit', this.model);
-                }
-
+                // To event in controller
+                this.trigger('form:submit', this.model);
             },
+
             bindings: {
                 '[name=text]': {
                     observe: 'text',
                     setOptions: {
                         validate: true
                     }
+                }
+            },
+
+            behaviors: {
+                ServerValidation: {
+                    behaviorClass: ServerValidation
                 }
             },
 
