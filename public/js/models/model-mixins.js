@@ -155,7 +155,7 @@ define(['app', 'moment'], function(App, moment) {
 
         ModelMixins.Ownership = {
             isCurrentUserOwner: function () {
-                return (App.User.Current.get('id') === this.get('user_id'));
+                return (App.User.Current.get('id') === +this.get('user_id'));
             }
         };
 
