@@ -64,7 +64,7 @@ define(['app', 'progressbar', 'views/menu'], function (App, ProgressBar, Menu) {
                 });
             },
             questions: function (data) {
-                require(['controllers/question'], function (controller) {
+                require(['controllers/question/init'], function (controller) {
                     var tmp = App.helper.parseUrl(data);
                     controller.questions(
                         tmp['search'] ? tmp['search'] : '',
@@ -75,12 +75,12 @@ define(['app', 'progressbar', 'views/menu'], function (App, ProgressBar, Menu) {
                 });
             },
             question: function (id, answer_id) {
-                require(['controllers/question'], function (controller) {
+                require(['controllers/question/init'], function (controller) {
                     controller.question(id, answer_id);
                 });
             },
             questionsAdd: function () {
-                require(['controllers/question'], function (controller) {
+                require(['controllers/question/init'], function (controller) {
                     controller.add();
                 });
             },
