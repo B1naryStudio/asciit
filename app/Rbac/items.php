@@ -1,43 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-
-function isOwner($params, $idParamName, $repo_name)
-{
-    $item_id = $params[$idParamName];
-    $repository = app($repo_name);
-    $answer = $repository->find($item_id);
-
-    $owner = $answer->user_id;
-    $current_user = Auth::id();
-
-    return $owner == $current_user;
-}
-
-function isAnswersOwner($params)
-{
-    return isOwner(
-        $params,
-        'answers',
-        'App\Repositories\Contracts\AnswerRepository'
-    );
-}
-function isQuestionsOwner($params)
-{
-    return isOwner(
-        $params,
-        'questions',
-        'App\Repositories\Contracts\QuestionRepository'
-    );
-}
-function isCommentsOwner($params)
-{
-    return isOwner(
-        $params,
-        'comments',
-        'App\Repositories\Contracts\CommentRepository'
-    );
-}
+use App\Rbac\Facades\Ownership;
 
 /*
  * Permissions
@@ -59,9 +22,13 @@ Rbac::permission('folders.manage', [
 Rbac::permission('questions.view');
 Rbac::permission('questions.create');
 //Rbac::permission('questions.edit');
-//Rbac::permission('questions.edit.own', ['questions.edit'], 'isQuestionsOwner');
+//Rbac::permission('questions.edit.own', ['questions.edit'], function ($params) {
+//return Ownership::isQuestionsOwner($params);
+//});
 Rbac::permission('questions.delete');
-Rbac::permission('questions.delete.own', ['questions.delete'], 'isQuestionsOwner');
+Rbac::permission('questions.delete.own', ['questions.delete'], function ($params) {
+    return Ownership::isQuestionsOwner($params);
+});
 
 
 Rbac::permission('questions.manage', [
@@ -81,9 +48,13 @@ Rbac::permission('questions.manage.own', [
 Rbac::permission('answers.view');
 Rbac::permission('answers.create');
 Rbac::permission('answers.edit');
-Rbac::permission('answers.edit.own', ['answers.edit'], 'isAnswersOwner');
+Rbac::permission('answers.edit.own', ['answers.edit'], function ($params) {
+    return Ownership::isAnswersOwner($params);
+});
 Rbac::permission('answers.delete');
-Rbac::permission('answers.delete.own', ['answers.delete'], 'isAnswersOwner');
+Rbac::permission('answers.delete.own', ['answers.delete'], function ($params) {
+    return Ownership::isAnswersOwner($params);
+});
 
 Rbac::permission('answers.manage', [
     'answers.view',
@@ -101,9 +72,13 @@ Rbac::permission('answers.manage.own', [
 Rbac::permission('comments.view');
 Rbac::permission('comments.create');
 //Rbac::permission('comments.edit');
-//Rbac::permission('comments.edit.own', ['comments.edit'], 'isCommentsOwner');
+//Rbac::permission('comments.edit.own', ['comments.edit'], function ($params) {
+//    return Ownership::isCommentsOwner($params);
+//});
 Rbac::permission('comments.delete');
-Rbac::permission('comments.delete.own', ['comments.delete'], 'isCommentsOwner');
+Rbac::permission('comments.delete.own', ['comments.delete'], function ($params) {
+    return Ownership::isCommentsOwner($params);
+});
 
 Rbac::permission('comments.manage', [
     'comments.view',
