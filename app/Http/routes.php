@@ -11,8 +11,6 @@
 |
 */
 
-use Illuminate\Http\Request;
-
 Route::get('/', function () {
     return view('base');
 });
@@ -79,7 +77,8 @@ Route::get('/auth/', 'Mockups\AuthController@auth');
 Route::get('/auth/logout', 'Mockups\AuthController@logout');
 
 // Header mockups
-Route::get('/app/header', 'Mockups\HeaderController@getMenu');
+Route::get('/app/header', 'Mockups\HeaderController@menu');
+Route::get('app/api/config', 'Mockups\HeaderController@config');
 
 // Notification mockup
 Route::resource(
