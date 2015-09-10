@@ -43,8 +43,8 @@ define([
                 },
 
                 triggers: {
-                    'mouseover @ui.itemArea': 'show:controls',
-                    'mouseout @ui.itemArea':  'hide:controls',
+                    'mouseover @ui.itemArea': 'controls:show',
+                    'mouseout @ui.itemArea':  'controls:hide',
                     'click @ui.deleteButton': 'delete',
                     'click @ui.editButton':   'edit:start',
                     'click @ui.saveButton':   'edit:save',
@@ -54,14 +54,16 @@ define([
                 behaviors: {
                     HidingControls: {
                         behaviorClass:     HidingControls,
-                        controlsContainer: '.answer-body .entry-controls'
+                        controlsContainer: ".answer-body .entry-controls"
+
                     },
                     DeleteButton: {
                         behaviorClass: DeleteButton,
                         itemArea: '.answer-body'
                     },
                     EditButton: {
-                        behaviorClass: EditButton
+                        behaviorClass: EditButton,
+                        controlsContainer: ".answer-body .entry-controls"
                     },
                     ContainsVotes: {
                         behaviorClass: ContainsVotes
@@ -152,12 +154,38 @@ define([
 
                     this.listenTo(
                         commentsView,
+                        'childview:submit:update',
+                        function (childview) {
+                            $.when(App.request(
+                                'comment:update',
+                                childview.model
+                            )).done(function (savedModel) {
+                                childview.triggerMethod(
+                                    'model:updated',
+                                    savedModel
+                                );
+                            }).fail(function (errors) {
+                                childview.triggerMethod(
+                                    'model:invalid',
+                                    errors
+                                );
+                            });
+                        }
+                    );
+
+                    this.listenTo(
+                        commentsView,
                         'childview:submit:delete',
                         function (childview) {
-                            App.request(
+                            $.when(App.request(
                                 'comment:delete',
                                 childview.model
-                            )
+                            )).fail(function (errors) {
+                                childview.triggerMethod(
+                                    'delete:error',
+                                    errors
+                                );
+                            });
                         }
                     );
                 },

@@ -28,8 +28,8 @@ define([
                 },
 
                 triggers: {
-                    'mouseover @ui.itemArea': 'show:controls',
-                    'mouseout @ui.itemArea':  'hide:controls',
+                    'mouseover @ui.itemArea': 'controls:show',
+                    'mouseout @ui.itemArea':  'controls:hide',
                     'click @ui.deleteButton': 'delete',
                     'click @ui.editButton':   'edit:start',
                     'click @ui.saveButton':   'edit:save',
@@ -89,8 +89,13 @@ define([
 
                 onEditCancel: function () {
                     this.model.set(this.model.oldValues);
-                    this.$(this.ui.itemArea.selector + ' .help-block')
-                          .addClass('hidden');
+                    this.$(
+                        this.ui.itemArea.selector +
+                        ' .help-block, ' +
+                        this.ui.itemArea.selector +
+                        ' .error-block'
+                    ).addClass('hidden');
+
                     this.switchToText();
                 },
 
@@ -168,7 +173,7 @@ define([
                         .siblings('.row')
                         .find('.show-form');
                 }
-                
+
                 button.trigger("click");
             },
 

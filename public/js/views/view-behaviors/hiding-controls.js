@@ -6,7 +6,7 @@ define(['app'], function(App) {
                 controlsContainer: '.entry-controls'
             },
 
-            onShowControls: function () {
+            onControlsShow: function () {
                 if (
                     this.view.model.isCurrentUserOwner()
                     || App.User.Current.isAdmin()
@@ -15,7 +15,7 @@ define(['app'], function(App) {
                 }
             },
 
-            onHideControls: function () {
+            onControlsHide: function () {
                 this.$(this.options.controlsContainer).hide();
             }
         });
