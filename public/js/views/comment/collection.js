@@ -77,7 +77,7 @@ define([
                     this.editableField
                         .val(this.model.get('text'))
                         .removeClass('hidden')
-                        .elastic()
+                        .elastic({compactOnBlur: false})
                         .focus();
                 },
 
@@ -89,11 +89,13 @@ define([
 
                 onEditCancel: function () {
                     this.model.set(this.model.oldValues);
+
+                    // hiding the error messages
                     this.$(
                         this.ui.itemArea.selector +
-                        ' .help-block, ' +
+                        ' .help-block, ' +             // validation errors
                         this.ui.itemArea.selector +
-                        ' .error-block'
+                        ' .error-block'                // server errors
                     ).addClass('hidden');
 
                     this.switchToText();
@@ -105,9 +107,11 @@ define([
 
                 switchToText: function () {
                     // revert the fields visibility
-                    this.textElem.html(this.model.get('text'));
                     this.editableField.val('');
                     this.editableField.addClass('hidden');
+                    
+                    var escapedText = _.escape(this.model.get('text'));
+                    this.textElem.html(escapedText);
                     this.textElem.show();
 
                     // unbind the bindings

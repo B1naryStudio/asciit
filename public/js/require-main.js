@@ -12,7 +12,7 @@ requirejs.config({
         'backbone.syphon': 'vendor/backbone/backbone.syphon',
         jquery: 'vendor/jquery/jquery',
         'jquery.scroll': 'vendor/jquery/jquery.scrollTo',
-        'jquery.elastic': 'vendor/jquery/jquery.elastic.source',
+        'jquery.elastic': 'vendor/jquery/jquery.elastic.source.antarus66fork',
         marionette: 'vendor/backbone.marionette/backbone.marionette',
         underscore: 'vendor/backbone/underscore',
         bootstrap: 'vendor/bootstrap/bootstrap',
