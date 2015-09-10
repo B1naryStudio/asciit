@@ -24,7 +24,12 @@ define([
                 },
 
                 events: {
-                    'mouseup p': 'selectText'
+                    'mouseup p': 'selectText',
+                    'model:live:updated': 'onModelLiveUpdated'
+                },
+
+                modelEvents: {
+                    'live:updated': 'onModelLiveUpdated'
                 },
 
                 triggers: {
@@ -105,11 +110,20 @@ define([
                     this.switchToText();
                 },
 
+                onModelLiveUpdated: function () {
+                    if (!this.textElem) {
+                        this.textElem = this.$('.model-field.text');
+                    }
+
+                    var newEscapedText = _.escape(this.model.get('text'));
+                    this.textElem.html(newEscapedText);
+                },
+
                 switchToText: function () {
                     // revert the fields visibility
                     this.editableField.val('');
                     this.editableField.addClass('hidden');
-                    
+
                     var escapedText = _.escape(this.model.get('text'));
                     this.textElem.html(escapedText);
                     this.textElem.show();

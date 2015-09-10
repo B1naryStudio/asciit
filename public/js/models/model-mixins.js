@@ -84,6 +84,7 @@ define(['app', 'moment'], function(App, moment) {
             update: function (patch) {
                 if (patch) {
                     this.set.call(this, patch);
+                    this.trigger('live:updated');
                 }
             }
         };
