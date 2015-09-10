@@ -49,21 +49,6 @@ define(['app'], function(App) {
             }
         };
 
-        ViewsMixins.ServerValidation = {
-            onDataInvalid: function (errors) {
-                for (var field in errors) {
-                    if (!errors.hasOwnProperty(field)) {
-                        continue;
-                    }
-                    Backbone.Validation.callbacks.invalid(
-                        this,
-                        field,
-                        errors[field]
-                    );
-                }
-            }
-        };
-
         ViewsMixins.SelectText = {
             selectText: function(e) {
                 e.stopPropagation();

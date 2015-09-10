@@ -44,6 +44,22 @@ class CommentController extends Controller
         return Response::json($comment->toArray(), 201);
     }
 
+    public function update(CommentValidatedRequest $request, $entry_id, $comment_id)
+    {
+        try {
+            $comment = $this->questionService
+                ->updateComment($request->all(), $comment_id);
+        } catch (QuestionServiceException $e) {
+            return Response::json([
+                'error' => [
+                    'message' => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        return Response::json($comment->toArray(), 202, [], JSON_NUMERIC_CHECK);
+    }
+
     public function destroy($entry_id, $comment_id) {
         try {
             $this->questionService->removeComment($comment_id);

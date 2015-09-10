@@ -11,7 +11,8 @@ define([
     'stickit',
     'highlight',
     'ckeditor',
-    'ckeditor.adapter'
+    'ckeditor.adapter',
+    'jquery.elastic'
 ], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, ViewsMixins,
              HidingControls, DeleteButton, ContainsVotes,CodeHighlighter) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
@@ -33,8 +34,8 @@ define([
                     deleteButton:  '.actions .entry-controls .delete'
                 },
                 triggers: {
-                    'mouseover @ui.itemArea': 'show:controls',
-                    'mouseout @ui.itemArea':  'hide:controls',
+                    'mouseover @ui.itemArea': 'controls:show',
+                    'mouseout @ui.itemArea':  'controls:hide',
                     'click @ui.deleteButton': 'delete'
                 },
                 events: {
@@ -45,7 +46,7 @@ define([
                 behaviors: {
                     HidingControls: {
                         behaviorClass:     HidingControls,
-                        controlsContainer: '.actions .entry-controls'
+                        controlsContainer: '.question_view .actions .entry-controls'
                     },
                     DeleteButton: {
                         behaviorClass: DeleteButton,
@@ -74,7 +75,9 @@ define([
                         .find('section .comment-form');
                     el.toggle();
                     $(e.target).toggleClass('form-open');
-                    el.find('textarea').focus();
+                    el.find('textarea').elastic({
+                        compactOnBlur: false
+                    }).focus();
                 },
 
                 toAnswerForm: function () {

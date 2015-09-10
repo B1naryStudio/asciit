@@ -8,6 +8,7 @@ define([
                 {},
                 ModelMixins.RelativeTimestampsModel,
                 ModelMixins.Ownership,
+                ModelMixins.LiveModel,
                 {
                     defaults: {
                         'text': ''
@@ -22,6 +23,10 @@ define([
                         this.urlRoot = App.prefix + '/api/v1/questions/'
                             + options.q_and_a_id
                             + '/comments';
+                        if (this.id) {
+                            this.liveURI = 'comments/' + this.id;
+                            this.startLiveUpdating();
+                        }
 
                         this.attachLocalDates();
                         this.on('change', this.attachLocalDates);
@@ -51,6 +56,10 @@ define([
         var API = ModelMixins.API;
 
         App.reqres.setHandler('comment:add', function (model) {
+            return API.deferOperation('save', model);
+        });
+
+        App.reqres.setHandler('comment:update', function (model) {
             return API.deferOperation('save', model);
         });
 

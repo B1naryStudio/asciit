@@ -16,7 +16,7 @@ define([
                 },
                 ConfirmationPopup: {
                     behaviorClass: ConfirmationPopup,
-                    actionName:   "perform:delete"
+                    actionName:   "delete:perform"
                 }
             },
 
@@ -31,7 +31,7 @@ define([
                 }
             },
 
-            onPerformDelete: function () {
+            onDeletePerform: function () {
                 this.view.triggerMethod('waiting:start');
                 this.view.trigger('submit:delete', this.view.model);
             },

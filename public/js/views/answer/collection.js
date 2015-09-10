@@ -43,8 +43,8 @@ define([
                 },
 
                 triggers: {
-                    'mouseover @ui.itemArea': 'show:controls',
-                    'mouseout @ui.itemArea':  'hide:controls',
+                    'mouseover @ui.itemArea': 'controls:show',
+                    'mouseout @ui.itemArea':  'controls:hide',
                     'click @ui.deleteButton': 'delete',
                     'click @ui.editButton':   'edit:start',
                     'click @ui.saveButton':   'edit:save',
@@ -54,14 +54,16 @@ define([
                 behaviors: {
                     HidingControls: {
                         behaviorClass:     HidingControls,
-                        controlsContainer: '.answer-body .entry-controls'
+                        controlsContainer: ".answer-body .entry-controls"
+
                     },
                     DeleteButton: {
                         behaviorClass: DeleteButton,
                         itemArea: '.answer-body'
                     },
                     EditButton: {
-                        behaviorClass: EditButton
+                        behaviorClass: EditButton,
+                        controlsContainer: ".answer-body .entry-controls"
                     },
                     ContainsVotes: {
                         behaviorClass: ContainsVotes
@@ -74,16 +76,18 @@ define([
                     }
                 },
 
-                onEditStart: function (event) {
-                    var field = this.$el.find('.description');
-                    field.attr('contenteditable', true);
+                onEditStart: function () {
+                    Backbone.Validation.bind(this);
+
+                    this.editableField = this.$el.find('.description');
+                    this.editableField.attr('contenteditable', true);
                     EditorSettings.startupFocus = true;
-                    this.editor = field.ckeditor(EditorSettings).editor;
+                    this.editor = this.editableField
+                                      .ckeditor(EditorSettings)
+                                      .editor;
                 },
 
                 onEditSave: function () {
-                    Backbone.Validation.bind(this);
-
                     this.model.set({
                         description: this.editor.getData()
                     });
@@ -93,18 +97,16 @@ define([
 
                 onEditCancel: function () {
                     this.editor.destroy();
-                    var field = this.$el.find('.description');
-                    field.attr('contenteditable', false);
+                    this.editableField.attr('contenteditable', false);
 
-                    var previousDescription = this.model.previous('description')
+                    var previousDescription = this.model.previous('description');
                     this.model.set({description: previousDescription});
-                    field.html(previousDescription);
+                    this.editableField.html(previousDescription);
                 },
 
                 onModelUpdated: function () {
                     this.editor.destroy();
-                    var field = this.$el.find('.description');
-                    field.attr('contenteditable', false);
+                    this.editableField.attr('contenteditable', false);
                 },
 
                 onShow: function () {
@@ -152,12 +154,38 @@ define([
 
                     this.listenTo(
                         commentsView,
+                        'childview:submit:update',
+                        function (childview) {
+                            $.when(App.request(
+                                'comment:update',
+                                childview.model
+                            )).done(function (savedModel) {
+                                childview.triggerMethod(
+                                    'model:updated',
+                                    savedModel
+                                );
+                            }).fail(function (errors) {
+                                childview.triggerMethod(
+                                    'model:invalid',
+                                    errors
+                                );
+                            });
+                        }
+                    );
+
+                    this.listenTo(
+                        commentsView,
                         'childview:submit:delete',
                         function (childview) {
-                            App.request(
+                            $.when(App.request(
                                 'comment:delete',
                                 childview.model
-                            )
+                            )).fail(function (errors) {
+                                childview.triggerMethod(
+                                    'delete:error',
+                                    errors
+                                );
+                            });
                         }
                     );
                 },

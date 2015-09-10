@@ -5,27 +5,40 @@ define([
     'views/views-mixins',
     'views/view-behaviors/hiding-controls',
     'views/view-behaviors/delete-button',
+    'views/view-behaviors/edit-button',
     'views/view-behaviors/server-validation',
-    'stickit'
+    'stickit',
+    'jquery.elastic'
 ], function (App, CommentsTpl, SingleCommentTpl, ViewsMixins, HidingControls,
-             DeleteButton, ServerValidation) {
+             DeleteButton, EditButton, ServerValidation) {
     App.module('Comment.Views', function (View, App, Backbone, Marionette, $, _) {
         View.SingleCommentCompositeView = Marionette.CompositeView.extend(
             _.extend({}, ViewsMixins.SelectText, {
                 template: SingleCommentTpl,
                 ui: {
-                    itemArea:      '.single-comment',
-                    deleteButton:  '.entry-controls .delete'
+                    itemArea:     '.single-comment',
+                    deleteButton: '.entry-controls .delete',
+                    editButton:   '.entry-controls .edit',
+                    saveButton:   '.entry-controls .save',
+                    cancelButton: '.entry-controls .cancel'
                 },
 
                 events: {
-                    'mouseup p': 'selectText'
+                    'mouseup p': 'selectText',
+                    'model:live:updated': 'onModelLiveUpdated'
+                },
+
+                modelEvents: {
+                    'live:updated': 'onModelLiveUpdated'
                 },
 
                 triggers: {
-                    'mouseover @ui.itemArea': 'show:controls',
-                    'mouseout @ui.itemArea': 'hide:controls',
-                    'click @ui.deleteButton': 'delete'
+                    'mouseover @ui.itemArea': 'controls:show',
+                    'mouseout @ui.itemArea':  'controls:hide',
+                    'click @ui.deleteButton': 'delete',
+                    'click @ui.editButton':   'edit:start',
+                    'click @ui.saveButton':   'edit:save',
+                    'click @ui.cancelButton': 'edit:cancel'
                 },
 
                 behaviors: {
@@ -37,9 +50,89 @@ define([
                         behaviorClass: DeleteButton,
                         itemArea: '.single-comment'
                     },
+                    EditButton: {
+                        behaviorClass: EditButton
+                    },
                     ServerValidation: {
                         behaviorClass: ServerValidation
                     }
+                },
+
+                bindings: {
+                    '.single-comment .editing-form [name=text]': {
+                        observe: 'text',
+                        setOptions: {
+                            validate: true,     //printing-time validation
+                            events: ['blur', 'input', 'change']
+                        }
+                    }
+                },
+
+                onEditStart: function () {
+                    Backbone.Validation.bind(this);
+
+                    // stickit doesn't save the old values in 'previous'
+                    this.model.oldValues = this.model.toJSON();
+                    this.stickit();
+
+                    this.textElem = this.$('.model-field.text');
+                    this.editableField = this.$('[name=text]');
+
+                    this.textElem.hide();
+                    this.editableField
+                        .val(this.model.get('text'))
+                        .removeClass('hidden')
+                        .elastic({
+                            compactOnBlur: false,
+                            emptyLinesBelow: 0
+                        }).focus();
+                },
+
+                onEditSave: function () {
+                    if (!this.model.validationError) {
+                        this.triggerMethod('submit:update', this.model);
+                    }
+                },
+
+                onEditCancel: function () {
+                    this.model.set(this.model.oldValues);
+
+                    // hiding the error messages
+                    this.$(
+                        this.ui.itemArea.selector +
+                        ' .help-block, ' +             // validation errors
+                        this.ui.itemArea.selector +
+                        ' .error-block'                // server errors
+                    ).addClass('hidden');
+
+                    this.switchToText();
+                },
+
+                onModelUpdated: function () {
+                    this.switchToText();
+                },
+
+                onModelLiveUpdated: function () {
+                    if (!this.textElem) {
+                        this.textElem = this.$('.model-field.text');
+                    }
+
+                    var newEscapedText = _.escape(this.model.get('text'));
+                    this.textElem.html(newEscapedText);
+                },
+
+                switchToText: function () {
+                    // revert the fields visibility
+                    this.editableField.val('');
+                    this.editableField.addClass('hidden');
+
+                    var escapedText = _.escape(this.model.get('text'));
+                    this.textElem.html(escapedText);
+                    this.textElem.show();
+
+                    // unbind the bindings
+                    this.unstickit();
+                    Backbone.Validation.unbind(this);
                 }
             })
         );
@@ -60,11 +153,13 @@ define([
                 event.preventDefault();
                 event.stopPropagation();
                 // To event in controller
-                this.trigger('form:submit', this.model);
+                if (!this.model.validationError) {
+                    this.trigger('form:submit', this.model);
+                }
             },
 
             bindings: {
-                '[name=text]': {
+                '.comments-form [name=text]': {
                     observe: 'text',
                     setOptions: {
                         validate: true
@@ -92,17 +187,18 @@ define([
                 var button = el.parent()
                     .siblings('.row')
                     .find('.add-comment');
+
                 if(button.length==0) {
                     button = el.parent()
                         .siblings('.row')
                         .find('.show-form');
                 }
+
                 button.trigger("click");
             },
 
             onRender: function() {
                 this.stickit();
-                return this;
             },
 
             initialize: function () {

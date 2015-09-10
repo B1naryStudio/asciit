@@ -164,6 +164,27 @@ define([
 
                                 ControllerOptions.Single.listenTo(
                                     commentsView,
+                                    'childview:submit:update',
+                                    function (childview) {
+                                        $.when(App.request(
+                                            'comment:update',
+                                            childview.model
+                                        )).done(function (savedModel) {
+                                            childview.triggerMethod(
+                                                'model:updated',
+                                                savedModel
+                                            );
+                                        }).fail(function (errors) {
+                                            childview.triggerMethod(
+                                                'model:invalid',
+                                                errors
+                                            );
+                                        });
+                                    }
+                                );
+
+                                ControllerOptions.Single.listenTo(
+                                    commentsView,
                                     'childview:submit:delete',
                                     function (childview) {
                                         $.when(App.request(

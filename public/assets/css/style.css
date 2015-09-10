@@ -499,14 +499,6 @@ body.modal-open {
     bottom: 0;
 }
 
-.single-answer .single-comment .entry-controls {
-    right: -5px;
-}
-
-.question_view .single-comment .entry-controls {
-    right: 10px;
-}
-
 [contenteditable=true] {
     outline: dotted 1px orange;
     position: relative;
@@ -544,7 +536,7 @@ body.modal-open {
  */
 .error,
 .error-block {
-    color: red;
+    color: #a94442;
     font-weight: normal;
 }
 
@@ -908,6 +900,24 @@ blockquote .author {
 
 .comments-form textarea {
     resize: vertical;
+}
+
+.single-comment .content {
+    min-height: 80px;
+    padding-bottom: 20px;
+}
+
+.single-comment .editing-form .form-group {
+    margin-bottom: 5px;
+}
+
+.single-comment .editing-form textarea {
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100%;
+    outline: dotted 1px orange;
+    outline-offset: 0;
 }
 
 .form-open {
