@@ -24,6 +24,7 @@ use App\Events\AnswerWasAdded;
 use App\Events\AnswerWasUpdated;
 use App\Events\AnswerWasRemoved;
 use App\Events\CommentWasAdded;
+use App\Events\CommentWasUpdated;
 use App\Events\CommentWasRemoved;
 use App\Events\VoteWasAdded;
 use App\Events\VoteWasRemoved;
@@ -459,6 +460,22 @@ class QuestionService implements QuestionServiceInterface
 
         Event::fire(new CommentWasAdded($comment));
 
+        return $comment;
+    }
+
+    public function updateComment($data)
+    {
+        try {
+            $comment = $this->commentRepository->update($data, $data['id']);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new CommentWasUpdated($comment));
         return $comment;
     }
 

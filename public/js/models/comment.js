@@ -8,6 +8,7 @@ define([
                 {},
                 ModelMixins.RelativeTimestampsModel,
                 ModelMixins.Ownership,
+                ModelMixins.LiveModel,
                 {
                     defaults: {
                         'text': ''
@@ -22,6 +23,10 @@ define([
                         this.urlRoot = App.prefix + '/api/v1/questions/'
                             + options.q_and_a_id
                             + '/comments';
+                        if (this.id) {
+                            this.liveURI = 'comments/' + this.id;
+                            this.startLiveUpdating();
+                        }
 
                         this.attachLocalDates();
                         this.on('change', this.attachLocalDates);

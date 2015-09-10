@@ -71,10 +71,10 @@ Rbac::permission('answers.manage.own', [
 // comments
 Rbac::permission('comments.view');
 Rbac::permission('comments.create');
-//Rbac::permission('comments.edit');
-//Rbac::permission('comments.edit.own', ['comments.edit'], function ($params) {
-//    return Ownership::isCommentsOwner($params);
-//});
+Rbac::permission('comments.edit');
+Rbac::permission('comments.edit.own', ['comments.edit'], function ($params) {
+    return Ownership::isCommentsOwner($params);
+});
 Rbac::permission('comments.delete');
 Rbac::permission('comments.delete.own', ['comments.delete'], function ($params) {
     return Ownership::isCommentsOwner($params);
@@ -83,12 +83,12 @@ Rbac::permission('comments.delete.own', ['comments.delete'], function ($params) 
 Rbac::permission('comments.manage', [
     'comments.view',
     'comments.create',
-//    'comments.edit',
+    'comments.edit',
     'comments.delete'
 ]);
 Rbac::permission('comments.manage.own', [
     'comments.create',
-//    'comments.edit.own',
+    'comments.edit.own',
     'comments.delete.own'
 ]);
 
@@ -122,7 +122,6 @@ Rbac::permission('images.create');
 /*
  * Roles
  */
-
 Rbac::role('ADMIN', [
     'folders.manage',   // manage = view + create + edit + delete for all items
     'questions.manage',

@@ -33,6 +33,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentToBroadcasting',
             'App\Listeners\DeliveryHandlers\HttpHandlers\CommentToHttp',
         ],
+        'App\Events\CommentWasUpdated' => [
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentUpdatingToBroadcasting',
+        ],
         'App\Events\CommentWasRemoved' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentRemovingToBroadcasting',
         ],
