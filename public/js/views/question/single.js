@@ -12,7 +12,7 @@ define([
     'highlight',
     'ckeditor',
     'ckeditor.adapter',
-    'jquery.elastic',
+    'jquery.elastic'
 ], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, ViewsMixins,
              HidingControls, DeleteButton, ContainsVotes,CodeHighlighter) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
@@ -75,7 +75,9 @@ define([
                         .find('section .comment-form');
                     el.toggle();
                     $(e.target).toggleClass('form-open');
-                    el.find('textarea').elastic().focus();
+                    el.find('textarea').elastic({
+                        compactOnBlur: false
+                    }).focus();
                 },
 
                 toAnswerForm: function () {

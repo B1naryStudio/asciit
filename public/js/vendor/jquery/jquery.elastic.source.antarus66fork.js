@@ -17,6 +17,9 @@
             var compactOnBlur = (options.compactOnBlur !== undefined)
                 ? options.compactOnBlur
                 : true;
+            var emptyLinesBelow = (options.emptyLinesBelow !== undefined)
+                ? +options.emptyLinesBelow
+                : 1;
 
 			//	We will create a div clone of the textarea
 			//	by copying these attributes from the textarea to the div.
@@ -113,7 +116,7 @@
 						// Change textarea height if twin plus the height of one line differs more than 3 pixel from textarea height
 						if(Math.abs($twin.height() + lineHeight - $textarea.height()) > 3){
 							
-							var goalheight = $twin.height()+lineHeight;
+							var goalheight = $twin.height() + lineHeight * emptyLinesBelow;
 							if(goalheight >= maxheight) {
 								setHeightAndOverflow(maxheight,'auto');
 							} else if(goalheight <= minheight) {

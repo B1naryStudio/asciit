@@ -82,8 +82,10 @@ define([
                     this.editableField
                         .val(this.model.get('text'))
                         .removeClass('hidden')
-                        .elastic({compactOnBlur: false})
-                        .focus();
+                        .elastic({
+                            compactOnBlur: false,
+                            emptyLinesBelow: 0
+                        }).focus();
                 },
 
                 onEditSave: function () {
