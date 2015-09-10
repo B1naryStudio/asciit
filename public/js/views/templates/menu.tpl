@@ -21,8 +21,8 @@
     </ul>
 
     <ul class="lang-list invisible">
-        <li><span data-lang="en">EN</span></li>
-        <li><span data-lang="uk">UA</span></li>
-        <li><span data-lang="ru">RU</span></li>
+        <li><span data-lang="en-US">EN</span></li>
+        <li><span data-lang="uk-UA">UA</span></li>
+        <li><span data-lang="ru-RU">RU</span></li>
     </ul>
 </nav>
