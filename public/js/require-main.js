@@ -64,8 +64,9 @@ require(['app', 'i18next'], function (App) {
     // App in i18next context for inserting _t() helper inside the all templates
     var i18nOptions = {
         useCookie: true,
-        detectFromHeaders: true,
-        fallbackLang: 'en',
+        lngWhitelist: ['en-US', 'uk-UA', 'ru-RU'],
+        fallbackLang: 'en-US',
+        load: 'current',
         resGetPath: 'js/locales/__lng__.json'
     };
 
