@@ -73,23 +73,20 @@ define([
 
                     // stickit doesn't save the old values in 'previous'
                     this.model.oldValues = this.model.toJSON();
-                    this.stickit();
 
                     this.textElem = this.$('.model-field.text');
-                    this.editableField = this.$('[name=text]');
-
-                    this.textElem.hide();
-                    this.editableField
-                        .val(this.model.get('text'))
-                        .removeClass('hidden')
-                        .elastic({
-                            compactOnBlur: false,
-                            emptyLinesBelow: 0
-                        }).focus();
+                    this.textElem.attr('contenteditable', true)
+                                 .attr('spellcheck', false);
                 },
 
                 onEditSave: function () {
-                    if (!this.model.validationError) {
+                    this.model.set({
+                        text: this.textElem.text()
+                    });
+
+                    this.model.validate();
+
+                    if (this.model.isValid()) {
                         this.triggerMethod('submit:update', this.model);
                     }
                 },
@@ -122,16 +119,11 @@ define([
                 },
 
                 switchToText: function () {
-                    // revert the fields visibility
-                    this.editableField.val('');
-                    this.editableField.addClass('hidden');
-
                     var escapedText = _.escape(this.model.get('text'));
-                    this.textElem.html(escapedText);
-                    this.textElem.show();
+                    this.textElem.html(escapedText)
+                                 .attr('contenteditable', false);
 
                     // unbind the bindings
-                    this.unstickit();
                     Backbone.Validation.unbind(this);
                 }
             })

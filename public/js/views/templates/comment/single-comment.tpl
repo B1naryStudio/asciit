@@ -16,12 +16,12 @@
             </span>
             <form class="editing-form">
                 <div class="editing-form-group">
+                    <p class="model-field text"><%- text %></p>
                     <textarea class="hidden" name="text"></textarea>
                     <span class="help-block hidden"></span>
                     <span class="error-block hidden"></span>
                 </div>
             </form>
-            <p class="model-field text"><%- text %></p>
         </div>
 
         <div class="entry-controls">
