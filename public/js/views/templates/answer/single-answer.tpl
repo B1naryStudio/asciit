@@ -18,13 +18,14 @@
                     <%- created_relative %>
                 </time>
             </span>
-            <div class="editing-form-group">
-                <input class="hidden" name="description">
-                <div class="model-field description"><%= description %></div>
-                <span class="help-block hidden"></span>
-                <div class="error-block hidden"></div>
-            </div>
-
+            <form class="editing-form">
+                <div class="editing-form-group">
+                    <input class="hidden" name="description">
+                    <div class="model-field description"><%= description %></div>
+                    <span class="help-block hidden"></span>
+                    <div class="error-block hidden"></div>
+                </div>
+            </form>
 
             <!-- Comments -->
             <div class="comments">

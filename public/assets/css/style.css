@@ -504,6 +504,10 @@ body.modal-open {
     position: relative;
 }
 
+.editing-form .form-group {
+    margin-bottom: 5px;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Select2
@@ -905,10 +909,6 @@ blockquote .author {
 .single-comment .content {
     min-height: 80px;
     padding-bottom: 20px;
-}
-
-.single-comment .editing-form .form-group {
-    margin-bottom: 5px;
 }
 
 .single-comment .editing-form textarea {
