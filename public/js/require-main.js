@@ -59,7 +59,7 @@ requirejs.config({
     }
 });
 
-require(['app', 'i18next'], function (App) {
+require(['app', 'routes', 'i18next'], function (App) {
     // App in i18next context for inserting _t() helper inside the all templates
     var i18nOptions = {
         useCookie: true,

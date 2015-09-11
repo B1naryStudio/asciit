@@ -1,15 +1,15 @@
-define(['app', 'moment'], function(App, moment) {
-    App.module('ModelMixins', function(ModelMixins, App, Backbone, Marionette, $, _) {
-        ModelMixins.LiveUpdating = {
+define(['app', 'moment'], function (App, moment) {
+    App.ModelMixins = {
+        LiveUpdating: {
             startLiveUpdating: function () {
                 var self = this;
 
                 ab.connect(
                     // The WebSocket URI of the WAMP server
                     'ws://' + window.location.hostname
-                            + ':'
-                            + App.websocketPort
-                            + App.prefix,
+                    + ':'
+                    + App.websocketPort
+                    + App.prefix,
 
                     // The onConnect handler
                     function (session) {
@@ -61,9 +61,9 @@ define(['app', 'moment'], function(App, moment) {
                     }
                 }
             }
-        };
+        },
 
-        ModelMixins.LiveCollection = {
+        LiveCollection: {
             onLiveUpdate: function(topic, message) {
                 if (
                     (!this.searchQuery)
@@ -73,10 +73,8 @@ define(['app', 'moment'], function(App, moment) {
                 }
                 this.remove(message.delete);
             }
-        };
-        _.extend(ModelMixins.LiveCollection, ModelMixins.LiveUpdating);
-
-        ModelMixins.LiveModel = {
+        },
+        LiveModel: {
             onLiveUpdate: function(topic, message) {
                 this.update(message.patch);
                 this.calls(message.calls);
@@ -86,10 +84,8 @@ define(['app', 'moment'], function(App, moment) {
                     this.set.call(this, patch);
                 }
             }
-        };
-        _.extend(ModelMixins.LiveModel, ModelMixins.LiveUpdating);
-
-        ModelMixins.RelativeTimestampsModel = {
+        },
+        RelativeTimestampsModel: {
             attachLocalDates: function () {
                 if (i18n.lng) {
                     moment.locale(i18n.lng());
@@ -105,9 +101,9 @@ define(['app', 'moment'], function(App, moment) {
                 this.set('created_local_formatted', moment(createdLocal).toDate());
                 this.set('created_relative', moment(createdLocal).fromNow());
             }
-        };
+        },
 
-        ModelMixins.Votable = {
+        Votable: {
             voteAdd: function (vote) {
                 if (+vote.sign) {
                     this.set(
@@ -151,15 +147,13 @@ define(['app', 'moment'], function(App, moment) {
                     this.get('vote_likes') - this.get('vote_dislikes')
                 );
             }
-        };
-
-        ModelMixins.Ownership = {
+        },
+        Ownership: {
             isCurrentUserOwner: function () {
                 return (App.User.Current.get('id') === this.get('user_id'));
             }
-        };
-
-        ModelMixins.API = {
+        },
+        API: {
             deferOperation: function (operation, item, attrs, customOptions) {
                 var defer = $.Deferred();
 
@@ -211,8 +205,10 @@ define(['app', 'moment'], function(App, moment) {
 
                 return defer.promise();
             }
-        };
-    });
+        }
+    };
+    _.extend(App.ModelMixins.LiveCollection, App.ModelMixins.LiveUpdating);
+    _.extend(App.ModelMixins.LiveModel, App.ModelMixins.LiveUpdating);
 
     return App.ModelMixins;
 });

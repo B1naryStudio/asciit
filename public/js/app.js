@@ -1,8 +1,12 @@
 define([
     'marionette',
+    'backbone',
     'bootstrap',
-    'validation-model'
-], function (Marionette) {
+    'validation-model',
+    'jquery.scroll',
+    'paginator',
+    'updown'
+], function (Marionette, Backbone) {
     var App = new Marionette.Application();
     App.queryFlag = [];
     App.helper = {
@@ -130,7 +134,6 @@ define([
         overwriteRenderer();
     });
 
-
     function overwriteRenderer() {
         // Simply use a closure to close over the current render function
         var render = Marionette.Renderer.render;
@@ -153,13 +156,11 @@ define([
     };
 
     App.on('start', function () {
-        require(['routes'], function () {
-            if (Backbone.history) {
-                Backbone.history.start();
-            }
-            require(['controllers/user'], function (controller) {
-                controller.session();
-            });
+        if (Backbone.history) {
+            Backbone.history.start();
+        }
+        require(['controllers/user'], function (controller) {
+            controller.session();
         });
     });
 
@@ -206,6 +207,55 @@ define([
 
         return sync(method, model, options);
     };
+
+    _.extend(App, {
+        Question: {
+            Controllers: {},
+            Models: {},
+            Views: {}
+        },
+        Answer: {
+            Models: {},
+            Views: {}
+        },
+        Comment: {
+            Models: {},
+            Views: {}
+        },
+        Folder: {
+            Models: {},
+            Views: {}
+        },
+        Vote: {
+            Models: {},
+            Views: {}
+        },
+        Tag: {
+            Models: {},
+            Views: {}
+        },
+        User: {
+            Models: {},
+            Views: {}
+        },
+        Activity: {
+            Models: {},
+            Views: {}
+        },
+        Paginator: {
+            Models: {},
+            Views: {}
+        },
+        Main: {
+            Views: {}
+        },
+        Popup: {
+            Views: {}
+        },
+        Routes: {},
+        FormView: {},
+        ViewsMixins: {}
+    });
 
     return App;
 });

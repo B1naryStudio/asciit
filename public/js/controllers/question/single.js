@@ -6,6 +6,8 @@ define([
     'views/empty',
     'models/answer',
     'models/comment',
+    'marionette',
+    'backbone',
     'models/question',
     'models/folder',
     'models/tag'
@@ -16,166 +18,167 @@ define([
     CommentsView,
     EmptyView,
     Answer,
-    Comment
+    Comment,
+    Marionette,
+    Backbone
 ) {
-    App.module('Question.ControllerOptions', function (ControllerOptions, App, Backbone, Marionette, $, _) {
-        var Controller = Marionette.Controller.extend({
-            execute: function (id, answer_id) {
-                $.when(App.request('question:model', id))
-                    .done(function (question) {
-                        $.when(App.request('answer:collection', question.get('id')))
-                            .done(function (answers) {
-                                // New question layout
-                                var questionView = new SingleView({
-                                    model: question
-                                });
-
-                                App.Main.Layout
-                                    .getRegion('content')
-                                    .show(questionView);
-
-                                // New answer model for saving a new answer
-                                var model = new Answer.Model({
-                                    question_id: question.get('id'),
-                                    count: answers.length
-                                });
-
-                                // New answers view
-                                var answersView = new AnswersView({
-                                    model: model,
-                                    collection: answers,
-                                    answer_id: answer_id
-                                });
-                                ControllerOptions.Single.listenTo(
-                                    answersView,
-                                    'editor:created',
-                                    function (editor) {
-                                        questionView.newAnswerEditor = editor;
-                                    }
-                                );
-                                questionView.answersRegion.show(answersView);
-
-                                ControllerOptions.Single.listenTo(
-                                    answersView,
-                                    'form:submit',
-                                    function (model) {
-                                        $.when(App.request('answer:add', model))
-                                            .done(function (savedModel) {
-                                                answers.push(savedModel);
-
-                                                // Add model and form clearing
-                                                var freshModel = new Answer.Model({
-                                                    question_id: question.get('id'),
-                                                    count: answers.length
-                                                });
-
-                                                answersView.triggerMethod(
-                                                    'model:refresh',
-                                                    freshModel
-                                                );
-                                            }).fail(function (errors) {
-                                                answersView.triggerMethod(
-                                                    'model:invalid',
-                                                    errors
-                                                );
-                                            });
-                                    }
-                                );
-
-                                ControllerOptions.Single.listenTo(
-                                    answersView,
-                                    'childview:submit:delete',
-                                    function (childview) {
-                                        App.request(
-                                            'answer:delete',
-                                            childview.model
-                                        );
-                                    }
-                                );
-
-                                // New comments to question view
-                                var commentModel = new Comment.Model({
-                                    q_and_a_id: question.get('id')
-                                });
-
-                                var collectionComments = new Comment.Collection(
-                                    question.attributes.comments,
-                                    { q_and_a_id: question.get('id') }
-                                );
-                                var commentsView = new CommentsView({
-                                    model: commentModel,
-                                    collection: collectionComments,
-                                    id: question.get('id')
-                                });
-                                questionView.commentsRegion.show(commentsView);
-
-                                ControllerOptions.Single.listenTo(
-                                    commentsView,
-                                    'form:submit',
-                                    function (model) {
-                                        $.when(App.request('comment:add', model))
-                                            .done(function (savedModel) {
-                                                collectionComments.push(savedModel);
-                                                // Add model and form clearing
-                                                var newModel = new Comment.Model({
-                                                    q_and_a_id: question.get('id')
-                                                });
-
-                                                commentsView.triggerMethod(
-                                                    'model:refresh',
-                                                    newModel
-                                                );
-                                            }).fail(function (errors) {
-                                                commentsView.triggerMethod(
-                                                    'data:invalid',
-                                                    errors
-                                                );
-                                            }
-                                        );
-                                    }
-                                );
-
-                                ControllerOptions.Single.listenTo(
-                                    commentsView,
-                                    'childview:submit:delete',
-                                    function (childview) {
-                                        App.request(
-                                            'comment:delete',
-                                            childview.model
-                                        );
-                                    }
-                                );
-
-                                ControllerOptions.Single.listenTo(
-                                    questionView,
-                                    'submit:delete',
-                                    function (model) {
-                                        App.trigger('popup:close');
-
-                                        $.when(App.request(
-                                            'question:delete',
-                                            model
-                                        )).done(function () {
-                                                Backbone.history.navigate(
-                                                    '/questions',
-                                                    { trigger: true }
-                                                );
-                                            }
-                                        );
-                                    }
-                                );
+    var Controller = Marionette.Controller.extend({
+        execute: function (id, answer_id) {
+            $.when(App.request('question:model', id))
+                .done(function (question) {
+                    $.when(App.request('answer:collection', question.get('id')))
+                        .done(function (answers) {
+                            // New question layout
+                            var questionView = new SingleView({
+                                model: question
                             });
-                    }).fail(function (data) {
-                        if (data.status === 404) {
-                            var view = new EmptyView();
-                            App.Main.Layout
+
+                            App.Main.Views.Layout
                                 .getRegion('content')
-                                .show(view);
-                        }
-                    });
-            }
-        });
-        ControllerOptions.Single = new Controller();
+                                .show(questionView);
+
+                            // New answer model for saving a new answer
+                            var model = new Answer.Model({
+                                question_id: question.get('id'),
+                                count: answers.length
+                            });
+
+                            // New answers view
+                            var answersView = new AnswersView({
+                                model: model,
+                                collection: answers,
+                                answer_id: answer_id
+                            });
+                            App.Question.Controllers.Single.listenTo(
+                                answersView,
+                                'editor:created',
+                                function (editor) {
+                                    questionView.newAnswerEditor = editor;
+                                }
+                            );
+                            questionView.answersRegion.show(answersView);
+
+                            App.Question.Controllers.Single.listenTo(
+                                answersView,
+                                'form:submit',
+                                function (model) {
+                                    $.when(App.request('answer:add', model))
+                                        .done(function (savedModel) {
+                                            answers.push(savedModel);
+
+                                            // Add model and form clearing
+                                            var freshModel = new Answer.Model({
+                                                question_id: question.get('id'),
+                                                count: answers.length
+                                            });
+
+                                            answersView.triggerMethod(
+                                                'model:refresh',
+                                                freshModel
+                                            );
+                                        }).fail(function (errors) {
+                                            answersView.triggerMethod(
+                                                'model:invalid',
+                                                errors
+                                            );
+                                        });
+                                }
+                            );
+
+                            App.Question.Controllers.Single.listenTo(
+                                answersView,
+                                'childview:submit:delete',
+                                function (childview) {
+                                    App.request(
+                                        'answer:delete',
+                                        childview.model
+                                    );
+                                }
+                            );
+
+                            // New comments to question view
+                            var commentModel = new Comment.Model({
+                                q_and_a_id: question.get('id')
+                            });
+
+                            var collectionComments = new Comment.Collection(
+                                question.attributes.comments,
+                                { q_and_a_id: question.get('id') }
+                            );
+                            var commentsView = new CommentsView({
+                                model: commentModel,
+                                collection: collectionComments,
+                                id: question.get('id')
+                            });
+                            questionView.commentsRegion.show(commentsView);
+
+                            App.Question.Controllers.Single.listenTo(
+                                commentsView,
+                                'form:submit',
+                                function (model) {
+                                    $.when(App.request('comment:add', model))
+                                        .done(function (savedModel) {
+                                            collectionComments.push(savedModel);
+                                            // Add model and form clearing
+                                            var newModel = new Comment.Model({
+                                                q_and_a_id: question.get('id')
+                                            });
+
+                                            commentsView.triggerMethod(
+                                                'model:refresh',
+                                                newModel
+                                            );
+                                        }).fail(function (errors) {
+                                            commentsView.triggerMethod(
+                                                'data:invalid',
+                                                errors
+                                            );
+                                        }
+                                    );
+                                }
+                            );
+
+                            App.Question.Controllers.Single.listenTo(
+                                commentsView,
+                                'childview:submit:delete',
+                                function (childview) {
+                                    App.request(
+                                        'comment:delete',
+                                        childview.model
+                                    );
+                                }
+                            );
+
+                            App.Question.Controllers.Single.listenTo(
+                                questionView,
+                                'submit:delete',
+                                function (model) {
+                                    App.trigger('popup:close');
+
+                                    $.when(App.request(
+                                        'question:delete',
+                                        model
+                                    )).done(function () {
+                                            Backbone.history.navigate(
+                                                '/questions',
+                                                { trigger: true }
+                                            );
+                                        }
+                                    );
+                                }
+                            );
+                        });
+                }).fail(function (data) {
+                    if (data.status === 404) {
+                        var view = new EmptyView();
+                        App.Main.Views.Layout
+                            .getRegion('content')
+                            .show(view);
+                    }
+                });
+        }
     });
-    return App.Question.ControllerOptions.Single;
+    App.Question.Controllers.Single = new Controller();
+
+    return App.Question.Controllers.Single;
 });
