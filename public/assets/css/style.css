@@ -638,10 +638,10 @@ body.modal-open {
 
 /*
  |------------------------------------------------------------------------------
- | Add question popup
+ | Question popup
  |------------------------------------------------------------------------------
  */
-#popup-layout-view.question-add {
+#popup-layout-view.question-form {
     left: 10%;
     right: 10%;
     top: 10%;
@@ -649,15 +649,15 @@ body.modal-open {
 
 }
 
-#popup-layout-view.question-add .select2-container {
+#popup-layout-view.question-form .select2-container {
     width: 100% !important;
 }
 
-#popup-layout-view.question-add .description label {
+#popup-layout-view.question-form .description label {
     margin-bottom: 5px;
 }
 
-#question-add-layout .controls {
+#question-form-layout .controls {
     margin: 15px 0 0 0;
     text-align: center;
 }
@@ -981,7 +981,7 @@ blockquote .author {
 
 /*
  |------------------------------------------------------------------------------
- | My Answers list
+ | Answers list
  |------------------------------------------------------------------------------
  */
 .answer-row {
@@ -1025,6 +1025,15 @@ blockquote .author {
     margin-right: 15px;
 }
 
+.answers-list .cke {
+    border: none;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | My Answers list
+ |------------------------------------------------------------------------------
+ */
 .my-answers .votes {
     float: right;
     margin: 0 15px 0 15px;
@@ -1381,7 +1390,7 @@ div .fa-05 {
         font-size: 13px;
     }
 
-    #popup-layout-view.question-add {
+    #popup-layout-view.question-form {
         left: 5%;
         right: 5%;
         top: 5%;

@@ -30,8 +30,9 @@ define([
                 ui: {
                     itemArea: '.question_view *',
                     commentButton: '.add-comment',
-                    answerButton: '.add-answer',
-                    deleteButton:  '.actions .entry-controls .delete'
+                    answerButton:  '.add-answer',
+                    deleteButton:  '.actions .entry-controls .delete',
+                    editButton:    '.actions .entry-controls .edit'
                 },
                 triggers: {
                     'mouseover @ui.itemArea': 'controls:show',
@@ -41,6 +42,7 @@ define([
                 events: {
                     'click @ui.commentButton': 'showCommentForm',
                     'click @ui.answerButton': 'toAnswerForm',
+                    'click @ui.editButton':   'onEditStart',
                     'mouseup p': 'selectText'
                 },
                 behaviors: {
@@ -52,13 +54,6 @@ define([
                         behaviorClass: DeleteButton,
                         itemArea: '.question_view'
                     },
-                    //EditButton: {
-                    //    behaviorClass:     EditButton,
-                    //    controlsContainer: '.answer-body .entry-controls',
-                    //    editButton:        '.answer-body .entry-controls .edit',
-                    //    saveButton:        '.answer-body .entry-controls .save',
-                    //    cancelButton:      '.answer-body .entry-controls .cancel'
-                    //},
                     ContainsVotes: {
                         behaviorClass: ContainsVotes
                     },
@@ -85,6 +80,10 @@ define([
                         $('#new-answer-form').offset().top
                     );
                     this.newAnswerEditor.focus();
+                },
+
+                onEditStart: function () {
+                    this.trigger("question:edit", this.model);
                 },
 
                 onShow: function () {

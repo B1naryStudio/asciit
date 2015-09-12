@@ -22,11 +22,13 @@ define([
                 var lang = i18n.lng().substr(0, 2);
 
                 require(['vendor/select2/i18n/' + lang], function () {
-                    self.$el.attr('name', 'tag')
+                    var select = self.$el
+                        .attr('name', 'tag')
                         .attr('multiple', 'multiple')
                         .select2({
                             placeholder: i18n.t('tags.select'),
                             language: lang,
+                            multiple: true,
                             tags: true,
                             ajax: {
                                 url: App.prefix + '/api/v1/tags',
@@ -40,6 +42,7 @@ define([
                                 },
                                 processResults: function (data, params) {
                                     var tmp;
+
                                     for (var i = 0; i < data[1].length; i++ ) {
                                         tmp = App.helper.htmlspecialchars(
                                             data[i]['title']
@@ -47,6 +50,7 @@ define([
                                         data[1][i].text = tmp;
                                         data[1][i].id = tmp;
                                     }
+
                                     return {
                                         results: data
                                     };
@@ -74,6 +78,21 @@ define([
                                 );
                             }
                         }).val(null).trigger('change');
+
+                    // Setting the initial values according to
+                    // https://select2.github.io/announcements-4.0.html#removed-initselection
+                    if (self.options.selected) {
+                        $hiddenSelect = $('select.tag-select.select2-hidden-accessible')
+                            .select2();
+
+                        _.map(self.options.selected, function (selectedTag) {
+                            var option = new Option(selectedTag, selectedTag,
+                                                    true, true);
+                            $hiddenSelect.append(option);
+                        });
+
+                        $hiddenSelect.trigger('change');
+                    }
                 });
             }
         });

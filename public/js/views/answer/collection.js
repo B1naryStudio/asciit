@@ -81,6 +81,7 @@ define([
 
                     this.editableField = this.$el.find('.description');
                     this.editableField.attr('contenteditable', true);
+
                     EditorSettings.startupFocus = true;
                     this.editor = this.editableField
                                       .ckeditor(EditorSettings)

@@ -22,6 +22,12 @@ define(['app', 'models/question'], function (App) {
                 require(['controllers/question/add'], function (controller) {
                     controller.execute();
                 });
+            },
+
+            edit: function (model) {
+                require(['controllers/question/edit'], function (controller) {
+                    controller.execute(model);
+                });
             }
         });
         Question.Controller = new Controller();
