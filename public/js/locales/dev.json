@@ -8,6 +8,7 @@
         "add": "Ask",
         "my": "My questions",
         "add-title": "Add a new question",
+        "edit-title": "Edit the question",
         "title": "Title",
         "description": "Description",
         "empty": "There is no questions. You can be the first!",

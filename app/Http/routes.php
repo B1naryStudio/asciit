@@ -19,13 +19,19 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::resource(
         '/questions',
         'API\QuestionController',
-        ['only' => ['index', 'store', 'show', 'destroy']]
+        ['only' => ['index', 'store', 'show', 'update', 'destroy']]
     );
 
     Route::resource(
         '/questions/{id}/answers',
         'API\Question\AnswerController',
         ['only' => ['index', 'store', 'update', 'destroy']]
+    );
+
+    Route::resource(
+        '/questions/{id}/comments',
+        'API\Question\CommentController',
+        ['only' => ['store', 'update', 'destroy']]
     );
 
     Route::resource(
@@ -53,12 +59,6 @@ Route::group(['prefix' => 'api/v1'], function() {
         '/votes',
         'API\VoteController',
         ['only' => ['store', 'destroy']]
-    );
-
-    Route::resource(
-        '/questions/{id}/comments',
-        'API\Question\CommentController',
-        ['only' => ['store', 'update', 'destroy']]
     );
 
     Route::get('/questions-my', 'API\QuestionController@my');

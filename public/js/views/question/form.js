@@ -1,6 +1,6 @@
 define([
     'app',
-    'tpl!views/templates/question/add.tpl',
+    'tpl!views/templates/question/form.tpl',
     'ckeditor.custom.settings',
     'models/question',
     'views/view-behaviors/server-validation',
@@ -8,13 +8,15 @@ define([
     'syphon',
     'ckeditor',
     'ckeditor.adapter'
-], function (App, AddTpl, EditorSettings, Question, ServerValidation) {
+], function (App, FormTpl, EditorSettings, Question, ServerValidation) {
     App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.AddForm = Marionette.LayoutView.extend(
+        // Abstract view for the question form popups.
+        // Don't instantiate - only extend it.
+        View.EditForm = Marionette.LayoutView.extend(
             {
                 tagName: 'div',
-                id: 'question-add-layout',
-                template: AddTpl,
+                id: 'question-form-layout',
+                template:FormTpl,
                 regions: {
                     folder_select: '.folder-select-wrapper',
                     tag_select: '.tag-select-wrapper'
@@ -39,11 +41,6 @@ define([
                     this.trigger('form:submit', this.model);
                 },
 
-                initialize: function () {
-                    this.model = new Question.Model();
-                    Backbone.Validation.bind(this);
-                },
-
                 onShow: function () {
                     this.getRegion('folder_select').show(this.options.folder_view);
                     this.getRegion('tag_select').show(this.options.tag_view);
@@ -51,8 +48,11 @@ define([
                     EditorSettings.height = '400px';
                     EditorSettings.uiColor = '#f5f5f5';
                     try {
-                        this.editor = this.$el.find('[name=description]')
-                            .ckeditor(EditorSettings).editor;
+                        this.editableField = this.$('[name=description]');
+                        this.editableField.attr('contenteditable', true);
+
+                        this.editor = this.editableField.ckeditor(EditorSettings)
+                            .editor;
                     } catch (e) {
                         console.log('This environment officially is non-supported'
                         + ' with CKEditor');
@@ -62,10 +62,21 @@ define([
                 remove: function () {
                     Backbone.Validation.unbind(this);
                     return Backbone.View.prototype.remove.apply(this, arguments);
+                },
+
+                initialize: function (options) {
+                    if (!options.model) {
+                        this.model = new Question.Model({
+                            title: "",       // to display an empty model in tpl
+                            description: ""  // cause there is 1 tpl for add and upd
+                        });
+                    }
+
+                    Backbone.Validation.bind(this);
                 }
             }
         );
     });
-    return App.Question.Views.AddForm;
+    return App.Question.Views.EditForm;
 });
 

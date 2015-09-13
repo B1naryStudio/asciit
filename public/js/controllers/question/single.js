@@ -34,6 +34,42 @@ define([
                                     .getRegion('content')
                                     .show(questionView);
 
+                                ControllerOptions.Single.listenTo(
+                                    questionView,
+                                    'question:edit',
+                                    function (model) {
+                                        require(
+                                            ['controllers/question/init'],
+                                            function (controller) {
+                                                controller.edit(model);
+                                            }
+                                        );
+                                    }
+                                );
+
+                                ControllerOptions.Single.listenTo(
+                                    questionView,
+                                    'submit:delete',
+                                    function (model) {
+                                        $.when(App.request(
+                                            'question:delete',
+                                            model
+                                        )).done(function () {
+                                                Backbone.history.navigate(
+                                                    '/questions',
+                                                    { trigger: true }
+                                                );
+                                            }
+                                        ).fail(function (errors) {
+                                                questionView.triggerMethod(
+                                                    'delete:error',
+                                                    errors
+                                                );
+                                            }
+                                        );
+                                    }
+                                );
+
                                 // New answer model for saving a new answer
                                 var model = new Answer.Model({
                                     question_id: question.get('id'),
@@ -196,29 +232,6 @@ define([
                                                 errors
                                             );
                                         });
-                                    }
-                                );
-
-                                ControllerOptions.Single.listenTo(
-                                    questionView,
-                                    'submit:delete',
-                                    function (model) {
-                                        $.when(App.request(
-                                            'question:delete',
-                                            model
-                                        )).done(function () {
-                                                Backbone.history.navigate(
-                                                    '/questions',
-                                                    { trigger: true }
-                                                );
-                                            }
-                                        ).fail(function (errors) {
-                                                questionView.triggerMethod(
-                                                    'delete:error',
-                                                    errors
-                                                );
-                                            }
-                                        );
                                     }
                                 );
                             });

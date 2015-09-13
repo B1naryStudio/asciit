@@ -199,6 +199,10 @@ define([
             return API.deferOperation('save', model);
         });
 
+        App.reqres.setHandler('question:update', function (model) {
+            return API.deferOperation('save', model);
+        });
+
         App.reqres.setHandler('question:delete', function (model) {
             return API.deferOperation('destroy', model);
         });
