@@ -318,6 +318,14 @@ body.modal-open {
 .votes {
     color: #444444;
     cursor: default;
+    background: #fff;
+
+    /* For gracefully overlapping a border for the editing elements */
+    padding: 0 0 5px 10px;
+    padding-right: 1px;
+    right: -1px;
+    position: relative;
+    z-index: 2;
 }
 
 .question_view .votes {
@@ -445,7 +453,9 @@ body.modal-open {
  | Controls (edit, delete)
  |------------------------------------------------------------------------------
  */
-.entry-controls {
+.entry-controls,
+.entry-controls .save,
+.entry-controls .cancel {
     display: none;
 }
 
@@ -455,6 +465,21 @@ body.modal-open {
     margin-right: 3px;
     cursor: pointer;
     color: #555;
+    text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
+}
+
+.entry-controls .save .fa,
+.entry-controls .cancel .fa {
+    text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.6);
+}
+
+.entry-controls .delete .fa,
+.entry-controls .cancel .fa {
+    color: firebrick;
+}
+
+.entry-controls .save .fa {
+    color: #000060;
 }
 
 .question_view .entry-controls {
@@ -474,12 +499,9 @@ body.modal-open {
     bottom: 0;
 }
 
-.single-answer .single-comment .entry-controls {
-    right: -5px;
-}
-
-.question_view .single-comment .entry-controls {
-    right: 10px;
+[contenteditable=true] {
+    outline: dotted 1px orange;
+    position: relative;
 }
 
 /*
@@ -512,9 +534,14 @@ body.modal-open {
  | Errors
  |------------------------------------------------------------------------------
  */
-.error {
-    color: red;
+.error,
+.error-block {
+    color: #a94442;
     font-weight: normal;
+}
+
+.error-block {
+    margin: 15px 0;
 }
 
 .error.all {
@@ -525,7 +552,6 @@ body.modal-open {
 
 .has-error .control-label {
     color: #333;
-    font-weight: normal;
 }
 
 .has-error .help-block {
@@ -583,6 +609,12 @@ body.modal-open {
     font-weight: bold;
 }
 
+#popup-layout-view {
+    padding: 0 !important;
+    position: fixed;
+    overflow: hidden;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Confirmation form
@@ -605,12 +637,6 @@ body.modal-open {
  | Add question popup
  |------------------------------------------------------------------------------
  */
-#popup-layout-view {
-    padding: 0 !important;
-    position: absolute;
-    overflow: hidden;
-}
-
 #popup-layout-view.question-add {
     left: 10%;
     right: 10%;
@@ -874,6 +900,24 @@ blockquote .author {
 
 .comments-form textarea {
     resize: vertical;
+}
+
+.single-comment .content {
+    min-height: 80px;
+    padding-bottom: 20px;
+}
+
+.single-comment .editing-form .form-group {
+    margin-bottom: 5px;
+}
+
+.single-comment .editing-form textarea {
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100%;
+    outline: dotted 1px orange;
+    outline-offset: 0;
 }
 
 .form-open {

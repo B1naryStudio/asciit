@@ -18,7 +18,13 @@
                     <%- created_relative %>
                 </time>
             </span>
-            <div class="description"><%= description %></div>
+            <div class="editing-form-group">
+                <input class="hidden" name="description">
+                <div class="model-field description"><%= description %></div>
+                <span class="help-block hidden"></span>
+                <div class="error-block hidden"></div>
+            </div>
+
 
             <!-- Comments -->
             <div class="comments">
@@ -26,7 +32,19 @@
             </div>
         </div>
         <div class="entry-controls">
-            <span class="delete"
+            <span class="control edit"
+                  title="<%- _t('ui.edit') %>">
+                <i class="fa fa-pencil"></i>
+            </span>
+            <span class="control save"
+                  title="<%- _t('ui.save') %>">
+                <i class="fa fa-floppy-o "></i>
+            </span>
+            <span class="control cancel"
+                  title="<%- _t('ui.cancel') %>">
+                <i class="fa fa-ban"></i>
+            </span>
+            <span class="control delete"
                   title="<%- _t('ui.delete') %>">
                 <i class="fa fa-times"></i>
             </span>

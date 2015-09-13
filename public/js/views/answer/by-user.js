@@ -4,29 +4,30 @@ define([
     'views/empty',
     'views/views-mixins',
     'marionette',
+    'views/view-behaviors/code-highlighter',
     'models/tag'
-], function (App, AnswerTpl, EmptyView, ViewsMixins, Marionette) {
-    App.Answer.Views.AnswerCollectionByUserRow = Marionette.LayoutView.extend(
-        _.extend({}, ViewsMixins.ContainsVotes, {
-            tagName: 'div',
-            className: 'answer-row',
-            template: AnswerTpl,
-            regions: {
-                tag: '.tags'
+], function (App, AnswerTpl, EmptyView, ViewsMixins, Marionette, CodeHighlighter) {
+    App.Answer.Views.AnswerCollectionByUserRow = Marionette.LayoutView.extend({
+        tagName: 'div',
+        className: 'answer-row',
+        template: AnswerTpl,
+        regions: {
+            tag: '.tags'
+        },
+        behaviors: {
+            ContainsVotes: {
+                behaviorClass: ContainsVotes
             },
-            onShow: function () {
-                // Highligting code-snippets
-                $('pre code').each(function(i, block) {
-                    hljs.highlightBlock(block);
-                });
-            },
-            initialize: function () {
-                this.listenTo(this.model, 'change', function() {
-                    this.render();
-                });
+            CodeHighlighter: {
+                behaviorClass: CodeHighlighter
             }
-        })
-    );
+        },
+        initialize: function () {
+            this.listenTo(this.model, 'change', function() {
+                this.render();
+            });
+        }
+    });
 
     App.Answer.Views.Answers = Marionette.CollectionView.extend({
         tagName: 'div',
@@ -36,6 +37,6 @@ define([
         childView: App.Answer.Views.AnswerCollectionByUserRow,
         emptyView: EmptyView
     });
-
+    
     return App.Answer.Views.Answers;
 });

@@ -3,26 +3,14 @@ define([
     'tpl!views/templates/question/add.tpl',
     'ckeditor.custom.settings',
     'models/question',
-    'views/views-mixins',
-    'marionette',
-    'backbone',
+    'views/view-behaviors/server-validation',
     'select2',
     'syphon',
     'ckeditor',
     'ckeditor.adapter'
-], function (
-    App,
-    AddTpl,
-    EditorSettings,
-    Question,
-    ViewsMixins,
-    Marionette,
-    Backbone
-) {
-    App.Question.Views.AddForm = Marionette.LayoutView.extend(
-        _.extend(
-            {},
-            ViewsMixins.ServerValidation,
+], function (App, AddTpl, EditorSettings, Question, ServerValidation) {
+    App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
+        View.AddForm = Marionette.LayoutView.extend(
             {
                 tagName: 'div',
                 id: 'question-add-layout',
@@ -31,9 +19,17 @@ define([
                     folder_select: '.folder-select-wrapper',
                     tag_select: '.tag-select-wrapper'
                 },
+
                 events: {
                     'submit form': 'submit'
                 },
+
+                behaviors: {
+                    ServerValidation: {
+                        behaviorClass: ServerValidation
+                    }
+                },
+
                 submit: function (event) {
                     event.preventDefault();
                     var data = Backbone.Syphon.serialize(this);
@@ -42,10 +38,12 @@ define([
                     // To event in controller
                     this.trigger('form:submit', this.model);
                 },
+
                 initialize: function () {
                     this.model = new Question.Model();
                     Backbone.Validation.bind(this);
                 },
+
                 onShow: function () {
                     this.getRegion('folder_select').show(this.options.folder_view);
                     this.getRegion('tag_select').show(this.options.tag_view);
@@ -60,14 +58,14 @@ define([
                         + ' with CKEditor');
                     }
                 },
+
                 remove: function () {
                     Backbone.Validation.unbind(this);
                     return Backbone.View.prototype.remove.apply(this, arguments);
                 }
             }
-        )
-    );
-
+        );
+    });
     return App.Question.Views.AddForm;
 });
 

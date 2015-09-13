@@ -82,6 +82,7 @@ define(['app', 'moment'], function (App, moment) {
             update: function (patch) {
                 if (patch) {
                     this.set.call(this, patch);
+                    this.trigger('live:updated');
                 }
             }
         },
@@ -150,7 +151,7 @@ define(['app', 'moment'], function (App, moment) {
         },
         Ownership: {
             isCurrentUserOwner: function () {
-                return (App.User.Current.get('id') === this.get('user_id'));
+                return (App.User.Current.get('id') === +this.get('user_id'));
             }
         },
         API: {
@@ -162,8 +163,14 @@ define(['app', 'moment'], function (App, moment) {
                         defer.resolve(data);
                     },
                     error: function (model, xhr, options) {
-                        var errors = JSON.parse(xhr.responseText);
-                        defer.reject(errors);
+                        if (xhr.statusCode('500')) {
+                            defer.reject({
+                                "error": i18n.t('ui.server-error')
+                            });
+                        } else {
+                            var errors = JSON.parse(xhr.responseText);
+                            defer.reject(errors);
+                        }
                     }
                 };
 
@@ -181,7 +188,7 @@ define(['app', 'moment'], function (App, moment) {
                     }
 
                     if (customOptions.error) {
-                        var func = customOptions.error;
+                        func = customOptions.error;
 
                         options.error = function (data, response, options) {
                             options.defer = defer;

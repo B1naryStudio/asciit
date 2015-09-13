@@ -147,6 +147,7 @@ return [
         App\Providers\QuestionServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         App\Providers\WebSocketsServiceProvider::class,
+        App\Providers\RbacServiceProvider::class,
 
         /*
          * Third-party providers...
@@ -194,6 +195,7 @@ return [
         'Lang'      => Illuminate\Support\Facades\Lang::class,
         'Log'       => Illuminate\Support\Facades\Log::class,
         'Mail'      => Illuminate\Support\Facades\Mail::class,
+        'Ownership' => App\Rbac\Facades\Ownership::class,
         'Password'  => Illuminate\Support\Facades\Password::class,
         'Queue'     => Illuminate\Support\Facades\Queue::class,
         'Rbac'      => SmartCrowd\Rbac\Facades\Rbac::class,

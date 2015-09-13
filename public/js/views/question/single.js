@@ -4,26 +4,20 @@ define([
     'views/answer/collection',
     'views/tag/view',
     'views/views-mixins',
-    'views/popup/confirm',
-    'marionette',
+    'views/view-behaviors/hiding-controls',
+    'views/view-behaviors/delete-button',
+    'views/view-behaviors/contains-votes',
+    'views/view-behaviors/code-highlighter',
     'stickit',
     'highlight',
     'ckeditor',
-    'ckeditor.adapter'
-], function (
-    App,
-    QuestionLayoutTpl,
-    AnswersCompositeView,
-    TagView,
-    ViewsMixins,
-    ConfirmView,
-    Marionette
-) {
-    App.Question.Views.QuestionLayout = Marionette.LayoutView.extend(
-        _.extend({},
-            ViewsMixins.ContainsVotes,
-            ViewsMixins.Editable,
-            {
+    'ckeditor.adapter',
+    'jquery.elastic'
+], function (App, QuestionLayoutTpl, AnswersCompositeView, TagView, ViewsMixins,
+             HidingControls, DeleteButton, ContainsVotes,CodeHighlighter) {
+    App.module('Question.Views', function (View, App, Backbone, Marionette, $, _) {
+        View.QuestionLayout = Marionette.LayoutView.extend(
+            _.extend({}, ViewsMixins.SelectText, {
                 tagname: 'div',
                 id: 'question-view',
                 template: QuestionLayoutTpl,
@@ -37,36 +31,39 @@ define([
                     itemArea: '.question_view *',
                     commentButton: '.add-comment',
                     answerButton: '.add-answer',
-                    entryControls: '.actions .entry-controls',
                     deleteButton:  '.actions .entry-controls .delete'
+                },
+                triggers: {
+                    'mouseover @ui.itemArea': 'controls:show',
+                    'mouseout @ui.itemArea':  'controls:hide',
+                    'click @ui.deleteButton': 'delete'
                 },
                 events: {
                     'click @ui.commentButton': 'showCommentForm',
                     'click @ui.answerButton': 'toAnswerForm',
-                    'mouseup p': 'selectText',
-                    'mouseover @ui.itemArea': 'showControls',
-                    'mouseout @ui.itemArea': 'hideControls',
-                    'click @ui.deleteButton': 'onDelete'
+                    'mouseup p': 'selectText'
                 },
-
-                selectText: function() {
-                    var text = App.helper.getSelected();
-                    if (
-                        text && (
-                            text = new String(text).replace(/^\s+|\s+$/g,''))
-                    ) {
-                        text = '<blockquote><span class="author">' +
-                            '<time class="relative" data-abs-time="' +
-                            this.model.get('created_at') + '">' +
-                            this.model.get('created_relative') + '</time>' +
-                            ' by ' + this.model.attributes.user.first_name+
-                            ' ' + this.model.attributes.user.last_name +
-                            ':</span><br/>' + text + ' </blockquote>';
-                        this.newAnswerEditor.focus();
-                        App.helper.moveFocus(this.newAnswerEditor, text);
-                        $('html, body').scrollTop(
-                            $('#new-answer-form').offset().top
-                        );
+                behaviors: {
+                    HidingControls: {
+                        behaviorClass:     HidingControls,
+                        controlsContainer: '.question_view .actions .entry-controls'
+                    },
+                    DeleteButton: {
+                        behaviorClass: DeleteButton,
+                        itemArea: '.question_view'
+                    },
+                    //EditButton: {
+                    //    behaviorClass:     EditButton,
+                    //    controlsContainer: '.answer-body .entry-controls',
+                    //    editButton:        '.answer-body .entry-controls .edit',
+                    //    saveButton:        '.answer-body .entry-controls .save',
+                    //    cancelButton:      '.answer-body .entry-controls .cancel'
+                    //},
+                    ContainsVotes: {
+                        behaviorClass: ContainsVotes
+                    },
+                    CodeHighlighter: {
+                        behaviorClass: CodeHighlighter
                     }
                 },
 
@@ -78,7 +75,9 @@ define([
                         .find('section .comment-form');
                     el.toggle();
                     $(e.target).toggleClass('form-open');
-                    el.find('textarea').focus();
+                    el.find('textarea').elastic({
+                        compactOnBlur: false
+                    }).focus();
                 },
 
                 toAnswerForm: function () {
@@ -86,28 +85,6 @@ define([
                         $('#new-answer-form').offset().top
                     );
                     this.newAnswerEditor.focus();
-                },
-
-                onDelete: function () {
-                    var popupConfirm = new ConfirmView({
-                        message: i18n.t("questions.confirm-del-body")
-                    });
-
-                    App.trigger('popup:show', {
-                        header: {
-                            title: i18n.t('questions.confirm-del-title')
-                        },
-                        class: 'confirm-form',
-                        contentView: popupConfirm
-                    });
-
-                    this.listenTo(
-                        popupConfirm,
-                        'form:submit',
-                        function () {
-                            this.trigger('submit:delete', this.model);
-                        }
-                    )
                 },
 
                 onShow: function () {
@@ -119,24 +96,9 @@ define([
                                     collection: tags
                                 }));
                     });
-
-                    // Highligting code-snippets
-                    $('pre code').each(function (i, block) {
-                        hljs.highlightBlock(block);
-                    });
-
-                    this.showVotes();
-                },
-
-                initialize: function (options) {
-                    var self = this;
-                    this.listenTo(this.model, 'change:vote_value', function() {
-                        self.showVotes();
-                    });
                 }
-            }
-        )
-    );
-
+            })
+        );
+    });
     return App.Question.Views.QuestionLayout;
 });

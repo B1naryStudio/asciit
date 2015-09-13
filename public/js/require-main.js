@@ -12,6 +12,7 @@ requirejs.config({
         'backbone.syphon': 'vendor/backbone/backbone.syphon',
         jquery: 'vendor/jquery/jquery',
         'jquery.scroll': 'vendor/jquery/jquery.scrollTo',
+        'jquery.elastic': 'vendor/jquery/jquery.elastic.source.antarus66fork',
         marionette: 'vendor/backbone.marionette/backbone.marionette',
         underscore: 'vendor/backbone/underscore',
         bootstrap: 'vendor/bootstrap/bootstrap',
@@ -27,7 +28,6 @@ requirejs.config({
         'ckeditor.adapter': 'vendor/ckeditor/adapters/jquery',
         'highlight': 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack',
         'moment': 'vendor/moment/moment-with-locales',
-        'wampy': 'vendor/wampy/wampy-all',
         'progressbar': 'vendor/progressbar/progressbar',
         i18next: 'vendor/i18next/i18next-1.10.1',
         updown: 'vendor/updown/updown'
@@ -55,6 +55,7 @@ requirejs.config({
             exports: '$.fn.select2'
         },
         'jquery.scroll': ['jquery'],
+        'jquery.elastic': ['jquery'],
         updown: ['jquery.scroll']
     }
 });
@@ -63,8 +64,9 @@ require(['app', 'routes', 'i18next'], function (App) {
     // App in i18next context for inserting _t() helper inside the all templates
     var i18nOptions = {
         useCookie: true,
-        detectFromHeaders: true,
-        fallbackLang: 'en',
+        lngWhitelist: ['en-US', 'uk-UA', 'ru-RU'],
+        fallbackLang: 'en-US',
+        load: 'current',
         resGetPath: 'js/locales/__lng__.json'
     };
 

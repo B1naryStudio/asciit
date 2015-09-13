@@ -25,12 +25,12 @@ Rbac::action([
     'API\\Question\\AnswerController@my',
 ], 'answers.view');
 Rbac::action('API\\Question\\AnswerController@store', 'answers.create');
-//Rbac::action('API\\Question\\AnswerController@update', 'answers.edit');
+Rbac::action('API\\Question\\AnswerController@update', 'answers.edit');
 Rbac::action('API\\Question\\AnswerController@destroy', 'answers.delete');
 
 // comments
 Rbac::action('API\\Question\\CommentController@store', 'comments.create');
-//Rbac::action('API\\Question\\CommentController@update', 'comments.edit');
+Rbac::action('API\\Question\\CommentController@update', 'comments.edit');
 Rbac::action('API\\Question\\CommentController@destroy', 'comments.delete');
 
 // tags
