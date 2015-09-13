@@ -48,8 +48,11 @@ define([
                     EditorSettings.height = '400px';
                     EditorSettings.uiColor = '#f5f5f5';
                     try {
-                        this.editor = this.$el.find('[name=description]')
-                            .ckeditor(EditorSettings).editor;
+                        this.editableField = this.$('[name=description]');
+                        this.editableField.attr('contenteditable', true);
+
+                        this.editor = this.editableField.ckeditor(EditorSettings)
+                            .editor;
                     } catch (e) {
                         console.log('This environment officially is non-supported'
                         + ' with CKEditor');
@@ -59,15 +62,6 @@ define([
                 remove: function () {
                     Backbone.Validation.unbind(this);
                     return Backbone.View.prototype.remove.apply(this, arguments);
-                },
-
-                submit: function (event) {
-                    event.preventDefault();
-                    var data = Backbone.Syphon.serialize(this);
-                    this.model.set(data);
-
-                    // To event in controller
-                    this.trigger('form:submit', this.model);
                 },
 
                 initialize: function (options) {

@@ -81,11 +81,11 @@ class AnswerController extends Controller
         );
     }
 
-    public function update(AnswerValidatedRequest $request, $question_id)
+    public function update(AnswerValidatedRequest $request, $question_id, $answer_id)
     {
         try {
             $answer = $this->questionService
-                ->updateAnswer($request->all(), $question_id);
+                ->updateAnswer($request->all(), $answer_id);
         } catch (QuestionServiceException $e) {
             return Response::json([
                 'error' => [

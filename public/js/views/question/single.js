@@ -93,8 +93,18 @@ define([
                             self.getRegion('tag')
                                 .show(new TagView({
                                     collection: tags
-                                }));
-                    });
+                                })
+                            );
+                        }
+                    );
+                },
+
+                initialize: function () {
+                    this.listenTo(App, 'question:updated', function () {
+                        Backbone.history.loadUrl(
+                            Backbone.history.fragment
+                        );
+                    })
                 }
             })
         );

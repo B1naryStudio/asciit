@@ -54,11 +54,9 @@ define([
                             function (model) {
                                 $.when(App.request('question:update', model))
                                     .done(function () {
+                                        // Listened by QuestionLayout view
+                                        App.trigger('question:updated', model);
                                         App.trigger('popup:close');
-                                        Backbone.history.navigate(
-                                            '/questions/' + model.get('id'),
-                                            { trigger: true }
-                                        );
                                     }).fail(function (errors) {
                                         view.triggerMethod('model:invalid', errors);
                                     }

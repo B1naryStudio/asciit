@@ -3,21 +3,21 @@
 namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
-use App\Repositories\Entities\Folder;
+use App\Repositories\Entities\Question;
 
-class FolderWasAdded extends Event
+class QuestionWasUpdated extends Event
 {
     use SerializesModels;
 
-    public $folder;
+    public $question;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Folder $folder)
+    public function __construct(Question $question)
     {
-        $this->folder = $folder;
+        $this->question = $question;
     }
 }

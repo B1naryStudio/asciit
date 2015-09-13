@@ -2,9 +2,7 @@
 
 namespace App\Events;
 
-use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use App\Repositories\Entities\Vote;
 
 class VoteWasRemoved extends Event
@@ -21,15 +19,5 @@ class VoteWasRemoved extends Event
     public function __construct(Vote $vote)
     {
         $this->vote = $vote;
-    }
-
-    /**
-     * Get the channels the event should be broadcast on.
-     *
-     * @return array
-     */
-    public function broadcastOn()
-    {
-        return [];
     }
 }

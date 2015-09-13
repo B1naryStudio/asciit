@@ -28,7 +28,6 @@ define([
                         .select2({
                             placeholder: i18n.t('tags.select'),
                             language: lang,
-                            multiple: true,
                             tags: true,
                             ajax: {
                                 url: App.prefix + '/api/v1/tags',
@@ -77,21 +76,25 @@ define([
                                     repo.title || repo.text
                                 );
                             }
-                        }).val(null).trigger('change');
+                        }
+                    ).val(null).trigger('change');
 
                     // Setting the initial values according to
                     // https://select2.github.io/announcements-4.0.html#removed-initselection
                     if (self.options.selected) {
-                        $hiddenSelect = $('select.tag-select.select2-hidden-accessible')
-                            .select2();
-
                         _.map(self.options.selected, function (selectedTag) {
-                            var option = new Option(selectedTag, selectedTag,
-                                                    true, true);
-                            $hiddenSelect.append(option);
+                            var option = self.$('option[value=' + selectedTag + ']');
+
+                            if (option.length) {
+                                option.attr('selected', true);
+                            } else {
+                                var newOption = new Option(selectedTag, selectedTag,
+                                    true, true);
+                                select.append(newOption);
+                            }
                         });
 
-                        $hiddenSelect.trigger('change');
+                        select.trigger('change');
                     }
                 });
             }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Questions;
 
+use App\Events\QuestionWasUpdated;
 use App\Repositories\Criteria\CurrentUserCriteria;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ use App\Repositories\Exceptions\RepositoryException;
 use App\Repositories\Contracts\TagRepository;
 use App\Repositories\Contracts\VoteRepository;
 use App\Repositories\Criteria\InCriteria;
+use App\Repositories\Criteria\TagQuestionCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
 use App\Repositories\Contracts\CommentRepository;
 use Illuminate\Support\Facades\Event;
@@ -57,46 +59,15 @@ class QuestionService implements QuestionServiceInterface
         $this->voteRepository = $voteRepository;
         $this->commentRepository = $commentRepository;
     }
-    
+
     public function createQuestion($data)
     {
         try {
-            $folder = $this->folderRepository->firstWhere([
-                'title' => $data['folder']
-            ]);
-
-            $data['folder_id'] = $folder->id;
+            $this->attachFolderId($data);
             $question = $this->questionRepository->create($data);
 
             if (!empty($data['tag'])) {
-                $this->tagRepository->pushCriteria(
-                    new InCriteria('title', $data['tag'])
-                );
-                $tags = $this->tagRepository->all();
-                $tmp = [];
-                foreach ($tags as $tag) {
-                    $tmp[$tag->title] = $tag;
-                }
-                $tags = [];
-                $not_exist = [];
-                foreach ($data['tag'] as $title) {
-                    if (empty($tmp[$title])) {
-                        $not_exist[] = ['title' => $title];
-                    } else {
-                        $tags[] = $tmp[$title];
-                    }
-                }
-                if (!empty($not_exist)) {
-                    $result = $this->tagRepository->createSeveral($not_exist);
-                    $tags = array_merge($tags, $result);
-                    foreach ($result as $tag) {
-                        $tag->question_count = 1;
-                        Event::fire(new TagWasAdded($tag));
-                        unset ($tag->question_count);
-                    }
-                }
-                $this->questionRepository->relationsAdd($question, 'tags', $tags);
-
+                $this->attachTagsToQuestion($question, $data['tag']);
             }
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
@@ -112,7 +83,133 @@ class QuestionService implements QuestionServiceInterface
 
         return $question;
     }
-    
+
+    public function updateQuestion($data, $id)
+    {
+        try {
+            $this->attachFolderId($data);
+            $question = $this->questionRepository->update($data, $id);
+            $this->updateQuestionTags($question, $data['tag']);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        Event::fire(new QuestionWasUpdated(
+            $this->getQuestionById($question->id)
+        ));
+
+        return $question;
+    }
+
+    protected function attachFolderId(&$data) {
+        $folder = $this->folderRepository->firstWhere([
+            'title' => $data['folder']
+        ]);
+
+        $data['folder_id'] = $folder->id;
+    }
+
+    protected function attachTagsToQuestion($question, array $newTagsTitles) {
+        // Retreiving all tags with titles like in the list
+        $existantTags = $this->tagRepository->getByCriteria(
+            new InCriteria('title', $newTagsTitles)
+        );
+
+        /*
+         * Creating tags if nesessary
+         */
+        // Creating array ['tagTitle' => tag] for all tags to relate
+        $tagsByTitle = [];
+
+        foreach ($existantTags as $tag) {
+            $tagsByTitle[$tag->title] = $tag;
+        }
+
+        $tagsToCreate = [];
+
+        foreach ($newTagsTitles as $title) {
+            if (empty($tagsByTitle[$title])) {
+                $tagsToCreate[] = ['title' => $title];
+            }
+        }
+
+        // Creating tags if it not exist yet
+        $createdTags = [];
+
+        if (!empty($tagsToCreate)) {
+            $createdTags = $this->tagRepository->createSeveral($tagsToCreate);
+
+            // Firing events for creating every tag
+            foreach ($createdTags as $tag) {
+                $tag->question_count = 1;
+                Event::fire(new TagWasAdded($tag));
+                unset ($tag->question_count);
+            }
+        }
+
+        $tags = array_merge($existantTags->all(), $createdTags);
+
+        /*
+         * Bind all the tags with the question
+         */
+        if(!empty($tags)) {
+            $this->questionRepository->relationsAdd($question, 'tags', $tags);
+        }
+    }
+
+    public function updateQuestionTags($question, $tagTitlesTargetList)
+    {
+        // Retreive all already related with question tags
+        $questionTags = $this->tagRepository->getByCriteria(
+            new TagQuestionCriteria($question->id)
+        );
+
+        /*
+         * Detach if necessary
+         */
+        $tagsIdsToDetach = [];
+
+        // Remove all question relations with tags if there no tags anymore
+        if (empty($tagTitlesTargetList)) {
+            $tagsIdsToDetach = $questionTags->pluck('id')->all();
+            $this->tagRepository->relationsDestroy($question, 'tags', $tagsIdsToDetach);
+            return;
+        } else {
+            // If tag is related but isn't exist in target list - to detaching list
+            $questionTags->map(function ($item) use ($tagTitlesTargetList, &$tagsIdsToDetach) {
+                if (!in_array($item->title, $tagTitlesTargetList)) {
+                    $tagsIdsToDetach[] = $item->id;
+                }
+            });
+
+            // Detaching
+            if (!empty($tagsIdsToDetach)) {
+                $this->tagRepository->relationsDestroy($question, 'tags', $tagsIdsToDetach);
+            }
+        }
+
+        /*
+         * Attach if necessary
+         */
+        $titlesToAttach = [];
+
+        // If no attached tags with this title, add title to the array for attach
+        foreach ($tagTitlesTargetList as $title) {
+            if ($questionTags->where('title', $title)->isEmpty()) {
+                $titlesToAttach[] = $title;
+            }
+        }
+
+        // Attaching
+        if (!empty($titlesToAttach)) {
+            $this->attachTagsToQuestion($question, $titlesToAttach);
+        }
+    }
+
     /**
      * @param $id
      * @return \App\Repositories\Entities\Question
@@ -295,7 +392,7 @@ class QuestionService implements QuestionServiceInterface
 
         return $vote;
     }
-    
+
     public function createAnswer($data, $question_id)
     {
         $data['user_id'] = Auth::user()->id;
