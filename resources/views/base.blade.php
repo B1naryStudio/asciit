@@ -7,14 +7,21 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
     <link href="http://team.binary-studio.com/app/styles/css/style.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet">
-    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">-->
+    <link href="assets/css/all.css" rel="stylesheet">
 </head>
 <body>
-<input type="hidden" id="config-jspath" value="{{ env('JSPATH') }}">
+<input type="hidden" id="config-jspath" value="{{ env('JS_PATH') }}">
 </body>
-<script src="{{ env('JSPATH') }}/config.js"></script>
-<script src="{{ env('JSPATH') }}/vendor/autobahn/autobahn.js"></script>
-<script data-main="{{ env('JSPATH') }}/require-main" src="{{ env('JSPATH') }}/vendor/require/require.js"></script>
+<script src="{{ env('JS_PATH') }}/vendor/autobahn/autobahn.js"></script>
 <script src="http://team.binary-studio.com/app/javascripts/header.js"></script>
+
+@if (env('JS_IS_MIN', false))
+    <script src="{{ env('JS_PATH') }}/all.js"></script>
+@else
+    <script src="{{ env('JS_PATH') }}/config.js"></script>
+    <script data-main="{{ env('JS_PATH') }}/require-main" src="{{ env('JS_PATH') }}/vendor/require/require.js"></script>
+@endif
+
 </html>

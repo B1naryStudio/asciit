@@ -13,6 +13,12 @@ var gutil = require('gulp-util');
 var clean = require('gulp-clean');
 var File = gutil.File;
 
+// must be global because it using in require-main
+// file - mainConfigFile for requirejs
+jsPath = 'js/';
+var jsPathFull = './public/js/';
+var jsPathMinFull = './public/js/min/';
+
 var rjs = function (opts) {
     var filePath = opts.baseUrl.replace('.', '');
     return es.map(function (file, cb) {
@@ -43,21 +49,21 @@ var rjs = function (opts) {
 gulp.task('js-main', function () {
     jsPath = 'js';
     return gulp.src([
-        './public/js/config.js',
-        './public/js/require-main.js'
+        jsPathFull + 'config.js',
+        jsPathFull + 'require-main.js'
     ])
         .pipe(concat('all.js'))
-        .pipe(gulp.dest('./public/js/min/'))
+        .pipe(gulp.dest(jsPathMinFull))
         .pipe(rjs({
-            baseUrl: './public/js/',
-            mainConfigFile: './public/js/require-main.js',
+            baseUrl: jsPathFull,
+            mainConfigFile: jsPathFull + 'require-main.js',
             //optimize: 'none',
             paths: {
                 requireLib: 'vendor/require/require'
             },
             include: ['requireLib']
         }))
-        .pipe(gulp.dest('./public/js'));
+        .pipe(gulp.dest(jsPathFull));
 });
 
 var separate_files = [
@@ -93,15 +99,15 @@ gulp.task('js-require', function () {
     ];
 
     return gulp.src([
-        './public/js/controllers/**/*.js',
-        './public/js/models/*.js',
-        './public/js/views/main-layout.js',
-        './public/js/views/views-mixins.js',
-        './public/js/views/vote/single.js'
+        jsPathFull + 'controllers/**/*.js',
+        jsPathFull + 'models/*.js',
+        jsPathFull + 'views/main-layout.js',
+        jsPathFull + 'views/views-mixins.js',
+        jsPathFull + 'views/vote/single.js'
     ])
         .pipe(rjs({
-            baseUrl: './public/js/',
-            mainConfigFile: './public/js/require-main.js',
+            baseUrl: jsPathFull,
+            mainConfigFile: jsPathFull + 'require-main.js',
             //optimize: 'none',
             exclude: function (file) {
                 var result = assign([], staticExclude);
@@ -113,33 +119,39 @@ gulp.task('js-require', function () {
                 return assign(result);
             }
         }))
-        .pipe(gulp.dest('./public/js/min'));
+        .pipe(gulp.dest(jsPathMinFull));
 });
 
 gulp.task('js-concat', function () {
     var result = [
-        './public/js/min/all.js',
-        './public/js/min/controllers/user.js',
-        './public/js/min/views/main-layout.js'
+        jsPathMinFull + 'all.js',
+        jsPathMinFull + 'controllers/user.js',
+        jsPathMinFull + 'views/main-layout.js'
     ];
     for (var i = 0; i < separate_files.length; i++) {
-        result[result.length] = './public/js/min/' + separate_files[i] + '.js';
+        result[result.length] = jsPathMinFull + separate_files[i] + '.js';
     }
 
     return gulp.src(result)
         .pipe(concat('all.js'))
-        .pipe(gulp.dest('./public/js/min/'));
+        .pipe(gulp.dest(jsPathMinFull));
 });
 
 gulp.task('js-vendor', function () {
     gulp.src([
-        './public/js/vendor/select2/**/*.js'
+        jsPathFull + 'vendor/select2/**/*.js'
     ])
         .pipe(uglify())
-        .pipe(gulp.dest('./public/js/min/vendor/select2'));
+        .pipe(gulp.dest(jsPathMinFull + 'vendor/select2'));
 
-    return gulp.src('./public/js/vendor/ckeditor/**/*.*')
-        .pipe(gulp.dest('./public/js/min/vendor/ckeditor'));
+    gulp.src([
+        jsPathFull + 'vendor/autobahn/**/*.js'
+    ])
+        .pipe(uglify())
+        .pipe(gulp.dest(jsPathMinFull + 'vendor/autobahn'));
+
+    return gulp.src(jsPathFull + 'vendor/ckeditor/**/*.*')
+        .pipe(gulp.dest(jsPathMinFull + 'vendor/ckeditor'));
 });
 
 elixir(function (mix) {
