@@ -1,10 +1,17 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'views/form',
     'tpl!views/templates/user/login.tpl',
-    'marionette',
     'syphon'
-], function (App, FormView, Tpl) {
+], function (
+    App,
+    Marionette,
+    Backbone,
+    FormView,
+    Tpl
+) {
     App.User.Views.UserLoginForm = FormView.extend({
         tagName: 'div',
         template: Tpl,

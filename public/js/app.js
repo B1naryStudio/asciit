@@ -254,7 +254,8 @@ define([
         },
         Routes: {},
         FormView: {},
-        ViewsMixins: {}
+        ViewsMixins: {},
+        Behaviors: {}
     });
 
     return App;

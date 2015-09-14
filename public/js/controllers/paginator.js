@@ -1,10 +1,15 @@
 define([
     'app',
-    'views/paginator/paginator',
     'marionette',
     'backbone',
+    'views/paginator/paginator',
     'models/paginator'
-], function (App, PaginatorView, Marionette, Backbone) {
+], function (
+    App,
+    Marionette,
+    Backbone,
+    PaginatorView
+) {
     var Controller = Marionette.Controller.extend({
         paginator: function (options) {
             $.when(

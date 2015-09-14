@@ -1,4 +1,9 @@
-define(['backbone', 'validation'], function (Backbone) {
+define([
+    'backbone',
+    'validation'
+], function (
+    Backbone
+) {
     _.extend(Backbone.Model.prototype, Backbone.Validation.mixin);
 
     // Validation settings for bootstrap
@@ -20,7 +25,6 @@ define(['backbone', 'validation'], function (Backbone) {
                 setTimeout(function () {
                     messageBlock.html(error).addClass('hidden');
                 }, 3000)
-
             } else {
                 var el = view.$('[name=' + attr + ']');
                 var group = el.closest('.form-group');
@@ -28,9 +32,7 @@ define(['backbone', 'validation'], function (Backbone) {
                 group.addClass('has-error');
                 messageBlock = group.find('.help-block');
                 messageBlock.html(error).removeClass('hidden');
-
             }
-
         }
     });
 });

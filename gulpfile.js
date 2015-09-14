@@ -52,7 +52,7 @@ gulp.task('js-main', function () {
         jsPathFull + 'config.js',
         jsPathFull + 'require-main.js'
     ])
-        .pipe(concat('all.js'))
+        .pipe(concat('main.js'))
         .pipe(gulp.dest(jsPathMinFull))
         .pipe(rjs({
             baseUrl: jsPathFull,
@@ -73,7 +73,6 @@ var separate_files = [
     'models/folder',
     'models/question',
     'models/comment',
-    'models/model-mixins',
     'models/vote',
     'models/user',
     'models/paginator',
@@ -98,22 +97,35 @@ gulp.task('js-require', function () {
         'ckeditor.adapter'
     ];
 
+    gulp.src(jsPathFull + 'models/model-mixins.js')
+        .pipe(rjs({
+            baseUrl: jsPathFull,
+            mainConfigFile: jsPathFull + 'require-main.js',
+            //optimize: 'none',
+            exclude: function () {
+                return staticExclude;
+            }
+        }))
+        .pipe(gulp.dest(jsPathMinFull));
+
     return gulp.src([
         jsPathFull + 'controllers/**/*.js',
+        '!' + jsPathFull + 'models/model-mixins.js',
         jsPathFull + 'models/*.js',
         jsPathFull + 'views/main-layout.js',
         jsPathFull + 'views/views-mixins.js',
-        jsPathFull + 'views/vote/single.js'
+        jsPathFull + 'views/vote/single.js',
+        jsPathFull + 'models/model-mixins.js'
     ])
         .pipe(rjs({
             baseUrl: jsPathFull,
             mainConfigFile: jsPathFull + 'require-main.js',
             //optimize: 'none',
             exclude: function (file) {
-                var result = assign([], staticExclude);
+                var result = assign(['models/model-mixins'], staticExclude);
                 for (var i = 0; i < separate_files.length; i++) {
                     if (file !== separate_files[i]) {
-                        result[result.length] = separate_files[i];
+                        result.push(separate_files[i]);
                     }
                 }
                 return assign(result);
@@ -124,16 +136,18 @@ gulp.task('js-require', function () {
 
 gulp.task('js-concat', function () {
     var result = [
-        jsPathMinFull + 'all.js',
+        jsPathMinFull + 'main.js',
         jsPathMinFull + 'controllers/user.js',
-        jsPathMinFull + 'views/main-layout.js'
+        jsPathMinFull + 'views/main-layout.js',
+        jsPathMinFull + 'models/model-mixins.js',
+        jsPathMinFull + 'controllers/paginator.js'
     ];
     for (var i = 0; i < separate_files.length; i++) {
-        result[result.length] = jsPathMinFull + separate_files[i] + '.js';
+        result.push(jsPathMinFull + separate_files[i] + '.js');
     }
 
     return gulp.src(result)
-        .pipe(concat('all.js'))
+        .pipe(concat('main.js'))
         .pipe(gulp.dest(jsPathMinFull));
 });
 
@@ -149,6 +163,12 @@ gulp.task('js-vendor', function () {
     ])
         .pipe(uglify())
         .pipe(gulp.dest(jsPathMinFull + 'vendor/autobahn'));
+
+    gulp.src([
+        jsPathFull + 'vendor/jquery/jquery.elastic.*.js'
+    ])
+        .pipe(uglify())
+        .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery'));
 
     return gulp.src(jsPathFull + 'vendor/ckeditor/**/*.*')
         .pipe(gulp.dest(jsPathMinFull + 'vendor/ckeditor'));

@@ -1,12 +1,20 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'tpl!views/templates/question/row.tpl',
     'views/tag/view',
     'views/view-behaviors/code-highlighter',
-    'marionette',
     'models/tag',
     'syphon'
-], function (App, QuestionTpl, TagView, CodeHighlighter, Marionette) {
+], function (
+    App,
+    Marionette,
+    Backbone,
+    QuestionTpl,
+    TagView,
+    CodeHighlighter
+) {
     App.Question.Views.QuestionCollectionRow = Marionette.LayoutView.extend({
         tagName: 'div',
         className: 'question-row',

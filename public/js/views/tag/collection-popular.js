@@ -1,10 +1,18 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'tpl!views/templates/tag/collection-popular.tpl',
     'tpl!views/templates/tag/view-row-popular.tpl',
-    'views/empty',
-    'marionette'
-], function (App, TagsTpl, TagTpl, EmptyView, Marionette) {
+    'views/empty'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    TagsTpl,
+    TagTpl,
+    EmptyView
+) {
     App.Tag.Views.TagCollectionPopularRow = Marionette.ItemView.extend({
         tagName: 'li',
         template: TagTpl

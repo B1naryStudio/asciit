@@ -1,9 +1,16 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'tpl!views/templates/popup/main.tpl',
-    'views/popup/header',
-    'marionette'
-], function (App, Tpl, Header, Marionette) {
+    'views/popup/header'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    Tpl,
+    Header
+) {
     App.Popup.Layout = Marionette.LayoutView.extend({
         tagName: 'div',
         id: 'popup-layout-view',

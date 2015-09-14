@@ -1,9 +1,14 @@
 define([
     'app',
+    'backbone',
     'paginator',
-    'models/model-mixins',
-    'backbone'
-], function (App, PageableCollection, ModelMixins, Backbone) {
+    'models/model-mixins'
+], function (
+    App,
+    Backbone,
+    PageableCollection,
+    ModelMixins
+) {
     App.Tag.Models.Model = Backbone.Model.extend({
         urlRoot: App.prefix + '/api/v1/tags'
     });

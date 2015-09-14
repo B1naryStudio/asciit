@@ -1,11 +1,11 @@
 define([
     'app',
-    'models/model-mixins',
-    'backbone'
+    'backbone',
+    'models/model-mixins'
 ], function (
     App,
-    ModelMixins,
-    Backbone
+    Backbone,
+    ModelMixins
 ) {
     App.User.Models.Model = Backbone.Model.extend({
         defaults: {

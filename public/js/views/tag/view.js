@@ -1,9 +1,15 @@
 define([
     'app',
-    'tpl!views/templates/tag/view-row.tpl',
     'marionette',
+    'backbone',
+    'tpl!views/templates/tag/view-row.tpl',
     'syphon'
-], function (App, Tpl, Marionette) {
+], function (
+    App,
+    Marionette,
+    Backbone,
+    Tpl
+) {
     App.Tag.Views.TagViewCollectionRow = Marionette.ItemView.extend({
         tagName: 'li',
         template: Tpl,

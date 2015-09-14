@@ -1,8 +1,14 @@
 define([
     'app',
-    'tpl!views/templates/folder/layout.tpl',
-    'marionette'
-], function (App, LayoutTpl, Marionette) {
+    'marionette',
+    'backbone',
+    'tpl!views/templates/folder/layout.tpl'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    LayoutTpl
+) {
     App.Folder.Views.CollectionLayout = Marionette.LayoutView.extend({
         tagname: 'div',
         className: 'row',

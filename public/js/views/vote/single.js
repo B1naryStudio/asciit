@@ -1,9 +1,16 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'models/vote',
-    'tpl!views/templates/vote/votes.tpl',
-    'marionette'
-], function (App, Vote, VotesTpl, Marionette) {
+    'tpl!views/templates/vote/votes.tpl'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    Vote,
+    VotesTpl
+) {
     App.Vote.Views.Votes = Marionette.ItemView.extend({
         template: VotesTpl,
         ui: {

@@ -1,36 +1,40 @@
-define(['app', 'models/question'], function (App) {
-    App.module('Question', function (Question, App, Backbone, Marionette, $, _) {
-        var Controller = Marionette.Controller.extend({
-            questions: function (searchQuery, searchTag, searchFolder, page) {
-                require(['controllers/question/collection'], function (controller) {
-                    controller.execute(
-                        searchQuery,
-                        searchTag,
-                        searchFolder,
-                        page
-                    );
-                });
-            },
+define([
+    'app',
+    'marionette',
+    'backbone',
+    'models/question'
+], function (App, Marionette, Backbone) {
+    var Controller = Marionette.Controller.extend({
+        questions: function (searchQuery, searchTag, searchFolder, page) {
+            require(['controllers/question/collection'], function (controller) {
+                controller.execute(
+                    searchQuery,
+                    searchTag,
+                    searchFolder,
+                    page
+                );
+            });
+        },
 
-            question: function (id, answer_id) {
-                require(['controllers/question/single'], function (controller) {
-                    controller.execute(id, answer_id);
-                });
-            },
+        question: function (id, answer_id) {
+            require(['controllers/question/single'], function (controller) {
+                controller.execute(id, answer_id);
+            });
+        },
 
-            add: function () {
-                require(['controllers/question/add'], function (controller) {
-                    controller.execute();
-                });
-            },
+        add: function () {
+            require(['controllers/question/add'], function (controller) {
+                controller.execute();
+            });
+        },
 
-            edit: function (model) {
-                require(['controllers/question/edit'], function (controller) {
-                    controller.execute(model);
-                });
-            }
-        });
-        Question.Controller = new Controller();
+        edit: function (model) {
+            require(['controllers/question/edit'], function (controller) {
+                controller.execute(model);
+            });
+        }
     });
-    return App.Question.Controller;
+    App.Question.Controllers.Main = new Controller();
+
+    return App.Question.Controllers.Main;
 });

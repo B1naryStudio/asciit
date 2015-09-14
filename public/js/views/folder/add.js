@@ -1,8 +1,14 @@
 define([
     'app',
-    'tpl!views/templates/folder/add.tpl',
-    'marionette'
-], function (App, NewFolderTpl, Marionette) {
+    'marionette',
+    'backbone',
+    'tpl!views/templates/folder/add.tpl'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    NewFolderTpl
+) {
     App.Folder.Views.NewFolderView = Marionette.ItemView.extend({
         tagName: 'div',
         id: 'new-folder-form',

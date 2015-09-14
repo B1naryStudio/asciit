@@ -1,9 +1,16 @@
 define([
     'app',
-    'views/user/login',
     'marionette',
+    'backbone',
+    'views/user/login',
     'models/user'
-], function (App, View, Marionette, User) {
+], function (
+    App,
+    Marionette,
+    Backbone,
+    View,
+    User
+) {
     var Controller = Marionette.Controller.extend({
         login: function () {
             var view = new View();

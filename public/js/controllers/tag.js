@@ -1,18 +1,18 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'views/tag/collection',
     'views/tag/collection-layout',
     'views/empty',
-    'marionette',
-    'backbone',
     'models/tag'
 ], function (
     App,
+    Marionette,
+    Backbone,
     CollectionView,
     CollectionLayout,
-    EmptyView,
-    Marionette,
-    Backbone
+    EmptyView
 ) {
     var Controller = Marionette.Controller.extend({
         tags: function (searchQuery, page) {

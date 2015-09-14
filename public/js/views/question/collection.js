@@ -1,12 +1,18 @@
 define([
     'app',
-    'tpl!views/templates/question/collection.tpl',
-    'views/question/row',
     'marionette',
     'backbone',
+    'tpl!views/templates/question/collection.tpl',
+    'views/question/row',
     'models/tag',
     'syphon'
-], function (App, QuestionsTpl, QuestionView, Marionette, Backbone) {
+], function (
+    App,
+    Marionette,
+    Backbone,
+    QuestionsTpl,
+    QuestionView
+) {
     App.Question.Views.Questions = Marionette.CompositeView.extend({
         tagName: 'div',
         id: 'question-list',

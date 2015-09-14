@@ -1,19 +1,19 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'views/question/collection',
     'views/question/collection-layout',
     'views/tag/collection-popular',
-    'marionette',
-    'backbone',
     'models/question',
     'models/tag'
 ], function (
     App,
+    Marionette,
+    Backbone,
     CollectionView,
     CollectionLayout,
-    TagsView,
-    Marionette,
-    Backbone
+    TagsView
 ) {
     var Controller = Marionette.Controller.extend({
         execute: function (searchQuery, searchTag, searchFolder, page) {

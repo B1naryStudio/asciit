@@ -71,10 +71,9 @@ require(['app', 'routes', 'i18next'], function (App) {
     };
 
     i18n.init(i18nOptions, function (t) {
-            App.start({
-                codeSnippetTheme: 'github',
-                websocketPort: 9092
-            });
-        }
-    );
+        App.start({
+            codeSnippetTheme: 'github',
+            websocketPort: 9092
+        });
+    });
 });

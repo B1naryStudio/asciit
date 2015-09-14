@@ -1,4 +1,10 @@
-define(['app', 'backbone'], function (App, Backbone) {
+define([
+    'app',
+    'backbone'
+], function (
+    App,
+    Backbone
+) {
     App.Paginator.Models.Model = Backbone.Model.extend({
         defaults: {
             title: '',

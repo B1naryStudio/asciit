@@ -1,11 +1,18 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'tpl!views/templates/main-layout.tpl',
     'moment',
-    'marionette',
     'syphon',
     'updown'
-], function (App, Tpl, moment, Marionette) {
+], function (
+    App,
+    Marionette,
+    Backbone,
+    Tpl, 
+    Moment
+) {
     var Layout = Marionette.LayoutView.extend({
         tagName: 'div',
         id: 'app-layout-view',
@@ -20,13 +27,13 @@ define([
             setInterval(function () {
                 $('time.relative[data-abs-time]').html(
                     function () {
-                        var local = moment.utc($(this).data('abs-time'));
-                        return moment(local).fromNow();
+                        var local = Moment.utc($(this).data('abs-time'));
+                        return Moment(local).fromNow();
                     }
                 );
                 $('time.locale[data-abs-time]').html(
                     function () {
-                        return moment.utc($(this).data('abs-time')).toDate();
+                        return Moment.utc($(this).data('abs-time')).toDate();
                     }
                 );
             }, 15000);

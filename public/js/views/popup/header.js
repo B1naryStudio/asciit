@@ -1,9 +1,14 @@
 define([
     'app',
-    'tpl!views/templates/popup/header.tpl',
     'marionette',
-    'backbone'
-], function (App, Tpl, Marionette, Backbone) {
+    'backbone',
+    'tpl!views/templates/popup/header.tpl'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    Tpl
+) {
     App.Popup.View = Marionette.ItemView.extend({
         template: Tpl,
         onShow: function () {

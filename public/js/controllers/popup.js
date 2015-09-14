@@ -1,11 +1,13 @@
 define([
     'app',
-    'views/popup/layout',
-    'marionette'
+    'marionette',
+    'backbone',
+    'views/popup/layout'
 ], function (
     App,
-    View,
-    Marionette
+    Marionette,
+    Backbone,
+    View
 ) {
     var Controller = Marionette.Controller.extend({
         show: function (data) {

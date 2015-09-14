@@ -1,9 +1,16 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'views/question/row',
-    'views/empty',
-    'marionette'
-], function (App, QuestionView, EmptyView, Marionette) {
+    'views/empty'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    QuestionView,
+    EmptyView
+) {
     App.Question.Views.QuestionsByUser = Marionette.CollectionView.extend({
         tagName: 'div',
         id: 'question-list',

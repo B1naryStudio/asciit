@@ -1,10 +1,16 @@
 define([
     'app',
-    'tpl!views/templates/menu.tpl',
     'marionette',
+    'backbone',
+    'tpl!views/templates/menu.tpl',
     'models/user',
     'syphon'
-], function (App, MenuTpl, Marionette) {
+], function (
+    App,
+    Marionette,
+    Backbone,
+    MenuTpl
+) {
     App.Main.MenuView = Marionette.ItemView.extend({
         tagName: 'div',
         template: MenuTpl,

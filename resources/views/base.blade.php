@@ -21,7 +21,7 @@
 <script src="http://team.binary-studio.com/app/javascripts/header.js"></script>
 
 @if (env('JS_IS_MIN', false))
-    <script src="{{ env('JS_PATH') }}/all.js"></script>
+    <script src="{{ env('JS_PATH') }}/main.js"></script>
 @else
     <script src="{{ env('JS_PATH') }}/config.js"></script>
     <script data-main="{{ env('JS_PATH') }}/require-main" src="{{ env('JS_PATH') }}/vendor/require/require.js"></script>

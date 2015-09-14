@@ -1,4 +1,12 @@
-define(['app', 'models/model-mixins', 'backbone'], function (App, ModelMixins) {
+define([
+    'app',
+    'backbone',
+    'models/model-mixins'
+], function (
+    App,
+    Backbone,
+    ModelMixins
+) {
     App.Vote.Models.Model = Backbone.Model.extend({
         urlRoot: App.prefix + '/api/v1/votes',
         defaults: {

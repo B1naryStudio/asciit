@@ -1,18 +1,20 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'tpl!views/templates/answer/row-by-user.tpl',
     'views/empty',
     'views/views-mixins',
-    'marionette',
     'views/view-behaviors/contains-votes',
     'views/view-behaviors/code-highlighter',
     'models/tag'
 ], function (
     App,
+    Marionette,
+    Backbone,
     AnswerTpl,
     EmptyView,
     ViewsMixins,
-    Marionette,
     ContainsVotes,
     CodeHighlighter
 ) {

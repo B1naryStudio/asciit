@@ -1,19 +1,21 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'views/folder/layout',
     'views/folder/collection',
     'views/folder/add',
     'models/folder',
-    'views/empty',
-    'marionette'
+    'views/empty'
 ], function (
     App,
+    Marionette,
+    Backbone,
     Layout,
     FolderCollectionView,
     NewFolderView,
     Folder,
-    EmptyView,
-    Marionette
+    EmptyView
 ) {
     var Controller = Marionette.Controller.extend({
         current_page: 1,

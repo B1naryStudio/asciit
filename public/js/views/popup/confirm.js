@@ -1,8 +1,14 @@
 define([
     'app',
-    'tpl!views/templates/popup/confirm.tpl',
-    'marionette'
-], function (App, ConfirmTpl, Marionette) {
+    'marionette',
+    'backbone',
+    'tpl!views/templates/popup/confirm.tpl'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    ConfirmTpl
+) {
     App.Folder.Views.ConfirmView = Marionette.ItemView.extend({
         tagName: 'div',
         id: 'confirm',

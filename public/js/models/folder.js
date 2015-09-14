@@ -1,10 +1,15 @@
 define([
     'app',
+    'backbone',
     'paginator',
     'models/model-mixins',
-    'backbone',
     'stickit'
-], function (App, PageableCollection, ModelMixins, Backbone) {
+], function (
+    App,
+    Backbone,
+    PageableCollection,
+    ModelMixins
+) {
     App.Folder.Models.Model = Backbone.Model.extend(
         _.extend({}, ModelMixins.LiveModel, {
             urlRoot: App.prefix + '/api/v1/folders',

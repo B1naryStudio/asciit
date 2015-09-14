@@ -1,16 +1,16 @@
 define([
     'app',
-    'progressbar',
-    'views/menu',
     'marionette',
     'backbone',
+    'progressbar',
+    'views/menu',
     'stickit'
 ], function (
     App,
-    ProgressBar,
-    Menu,
     Marionette,
-    Backbone
+    Backbone,
+    ProgressBar,
+    Menu
 ) {
     // routes
     App.Routes.Router = Marionette.AppRouter.extend({

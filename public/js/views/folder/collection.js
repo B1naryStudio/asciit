@@ -1,11 +1,18 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'tpl!views/templates/folder/row.tpl',
     'views/popup/confirm',
-    'views/empty',
-    'marionette',
-    'backbone'
-], function (App, FolderRowTpl, confirmView, EmptyView, Marionette, Backbone) {
+    'views/empty'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    FolderRowTpl, 
+    ConfirmView, 
+    EmptyView
+) {
     App.Folder.Views.SingleFolder = Marionette.ItemView.extend({
         tagName: 'div',
         className: 'folder-row',
@@ -19,7 +26,7 @@ define([
         },
 
         deleteFolder: function() {
-            var popupConfirm = new confirmView({
+            var popupConfirm = new ConfirmView({
                 message: i18n.t('folders.confirm-body')
             });
 

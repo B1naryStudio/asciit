@@ -1,4 +1,10 @@
-define(['app', 'backbone'], function (App, Backbone) {
+define([
+    'app',
+    'backbone'
+], function (
+    App,
+    Backbone
+) {
     App.ViewsMixins.SelectText = {
         selectText: function (e) {
             e.stopPropagation();

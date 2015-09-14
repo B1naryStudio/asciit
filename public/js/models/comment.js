@@ -1,8 +1,12 @@
 define([
     'app',
-    'models/model-mixins',
-    'backbone'
-], function(App, ModelMixins, Backbone) {
+    'backbone',
+    'models/model-mixins'
+], function (
+    App,
+    Backbone,
+    ModelMixins
+) {
     App.Comment.Models.Model = Backbone.Model.extend(
         _.extend(
             {},

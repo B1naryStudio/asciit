@@ -1,12 +1,20 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'views/activity/layout',
     'views/question/by-user',
     'views/answer/by-user',
-    'marionette',
     'models/question',
     'models/answer'
-], function (App, Layout, QuestionView, AnswersView, Marionette) {
+], function (
+    App,
+    Marionette,
+    Backbone,
+    Layout,
+    QuestionView,
+    AnswersView
+) {
     var Controller = Marionette.Controller.extend({
         activity: function () {
             $.when(

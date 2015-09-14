@@ -1,8 +1,14 @@
 define([
     'app',
-    'tpl!views/templates/empty.tpl',
-    'marionette'
-], function (App, EmptyTpl, Marionette) {
+    'marionette',
+    'backbone',
+    'tpl!views/templates/empty.tpl'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    EmptyTpl
+) {
     App.Main.Views.Empty = Marionette.ItemView.extend({
         tagName: 'div',
         id: 'empty-view',

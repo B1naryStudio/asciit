@@ -1,4 +1,10 @@
-define(['app', 'moment'], function (App, moment) {
+define([
+    'app',
+    'moment'
+], function (
+    App,
+    Moment
+) {
     App.ModelMixins = {
         LiveUpdating: {
             startLiveUpdating: function () {
@@ -89,18 +95,18 @@ define(['app', 'moment'], function (App, moment) {
         RelativeTimestampsModel: {
             attachLocalDates: function () {
                 if (i18n.lng) {
-                    moment.locale(i18n.lng());
+                    Moment.locale(i18n.lng());
                 }
 
-                var updatedLocal = moment.utc(this.get('updated_at'));
+                var updatedLocal = Moment.utc(this.get('updated_at'));
                 this.set('updated_local', updatedLocal);
-                this.set('updated_local_formatted', moment(updatedLocal).toDate());
-                this.set('updated_relative', moment(updatedLocal).fromNow());
+                this.set('updated_local_formatted', Moment(updatedLocal).toDate());
+                this.set('updated_relative', Moment(updatedLocal).fromNow());
 
-                var createdLocal = moment.utc(this.get('created_at'));
+                var createdLocal = Moment.utc(this.get('created_at'));
                 this.set('created_local', createdLocal);
-                this.set('created_local_formatted', moment(createdLocal).toDate());
-                this.set('created_relative', moment(createdLocal).fromNow());
+                this.set('created_local_formatted', Moment(createdLocal).toDate());
+                this.set('created_relative', Moment(createdLocal).fromNow());
             }
         },
 

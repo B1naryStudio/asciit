@@ -1,10 +1,16 @@
 define([
     'app',
-    'tpl!views/templates/tag/collection.tpl',
-    'tpl!views/templates/tag/collection-row.tpl',
     'marionette',
-    'backbone'
-], function (App, CollectionTpl, TagTpl, Marionette, Backbone) {
+    'backbone',
+    'tpl!views/templates/tag/collection.tpl',
+    'tpl!views/templates/tag/collection-row.tpl'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    CollectionTpl,
+    TagTpl
+) {
     App.Tag.Views.TagCollectionRow = Marionette.ItemView.extend({
         tagName: 'div',
         className: 'tag-element',

@@ -1,10 +1,17 @@
 define([
     'app',
+    'marionette',
+    'backbone',
     'tpl!views/templates/paginator/collection.tpl',
     'tpl!views/templates/paginator/row.tpl',
-    'marionette',
-    'paginator'
-], function (App, PaginatorTpl, PaginatorRowTpl, Marionette) {
+    'marionette'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    PaginatorTpl,
+    PaginatorRowTpl
+) {
     App.Paginator.Views.PaginatorCollectionRow = Marionette.ItemView.extend({
         tagName: 'li',
         template: PaginatorRowTpl,
