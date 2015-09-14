@@ -15,7 +15,9 @@ class QuestionServiceTest extends TestCase
     protected $question;
     protected $answer;
     protected $folder;
-    protected $tag;
+    protected $tag1;
+    protected $tag2;
+    protected $tag3;
     protected $vote;
 
     protected $questionService;
@@ -46,7 +48,7 @@ class QuestionServiceTest extends TestCase
             'folder_id'   => 1,
             'user_id'     => 1,
             'user'        => ['id' => 1,],
-            'folder'      => ['title' => 'Eyebrows']
+            'folder'      => ['title' => 'Eyebrows'],
         ]);
 
         $this->answer = new Answer([
@@ -63,7 +65,9 @@ class QuestionServiceTest extends TestCase
             'id' => 1
         ]);
 
-        $this->tag = new Tag();
+        $this->tag1 = new Tag(['title' => 'fungus']);
+        $this->tag2 = new Tag(['title' => 'dolorem']);
+        $this->tag3 = new Tag(['title' => 'jsl']);
 
         $this->vote = new Vote([
             'id' => 1,
@@ -90,14 +94,17 @@ class QuestionServiceTest extends TestCase
         $this->tagRepo->shouldReceive('pushCriteria')
             ->andReturn($this->tagRepo);
 
+        $this->tagRepo->shouldReceive('getByCriteria')
+            ->andReturn(collect([$this->tag1, $this->tag2]));
+
         $this->tagRepo->shouldReceive('all')
-            ->andReturn([]);
+            ->andReturn([$this->tag1, $this->tag2,]);
 
         $this->tagRepo->shouldReceive('create')
-            ->andReturn($this->tag);
+            ->andReturn($this->tag1);
 
         $this->tagRepo->shouldReceive('createSeveral')
-            ->andReturn([$this->tag]);
+            ->andReturn([$this->tag1]);
 
         $this->questionRepo->shouldReceive('relationsAdd');
 
@@ -184,9 +191,14 @@ class QuestionServiceTest extends TestCase
     public function testCreateQuestionCreates()
     {
         $newQuestionData = [
-            'folder' => 'PHP',
-            'tag'    => ['tests'],
-            'folder_id' => $this->folder->id
+            'folder'    => 'PHP',
+            'tag'       => ['tests'],
+            'folder_id' => $this->folder->id,
+            'tag'      => [
+                $this->tag1->title,
+                $this->tag2->title,
+                $this->tag3->title,
+            ],
         ];
 
         $this->folderRepo->shouldReceive('firstWhere')
