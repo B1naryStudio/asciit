@@ -118,6 +118,11 @@ body.modal-open {
     cursor: pointer;
     margin-left: 10px;
     color: #fff;
+    transition: all .1s linear;
+}
+
+.custom-menu .button:active {
+    transform: translateY(3px);
 }
 
 .menu-list:before {
@@ -228,7 +233,7 @@ body.modal-open {
 }
 
 #logOutBox {
-    right: 185px;
+    right: 177px;
 }
 
 #userName {
