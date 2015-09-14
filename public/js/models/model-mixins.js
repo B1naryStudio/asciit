@@ -165,7 +165,7 @@ define(['app', 'moment'], function (App, moment) {
                     error: function (model, xhr, options) {
                         if (xhr.statusCode('500')) {
                             defer.reject({
-                                "error": i18n.t('ui.server-error')
+                                error: i18n.t('ui.server-error')
                             });
                         } else {
                             var errors = JSON.parse(xhr.responseText);
@@ -176,8 +176,9 @@ define(['app', 'moment'], function (App, moment) {
 
                 // defining a defer object for custom success and error callbacks
                 if (customOptions) {
+                    var func;
                     if (customOptions.success) {
-                        var func = customOptions.success;
+                        func = customOptions.success;
 
                         options.success = function (data, response, options) {
                             options.defer = defer;

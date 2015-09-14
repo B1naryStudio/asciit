@@ -4,9 +4,18 @@ define([
     'views/empty',
     'views/views-mixins',
     'marionette',
+    'views/view-behaviors/contains-votes',
     'views/view-behaviors/code-highlighter',
     'models/tag'
-], function (App, AnswerTpl, EmptyView, ViewsMixins, Marionette, CodeHighlighter) {
+], function (
+    App,
+    AnswerTpl,
+    EmptyView,
+    ViewsMixins,
+    Marionette,
+    ContainsVotes,
+    CodeHighlighter
+) {
     App.Answer.Views.AnswerCollectionByUserRow = Marionette.LayoutView.extend({
         tagName: 'div',
         className: 'answer-row',

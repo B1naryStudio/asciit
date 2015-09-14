@@ -5,8 +5,6 @@ define([
     'backbone',
     'stickit'
 ], function (App, PageableCollection, ModelMixins, Backbone) {
-    _.extend((App.Folder || {}), {});
-
     App.Folder.Models.Model = Backbone.Model.extend(
         _.extend({}, ModelMixins.LiveModel, {
             urlRoot: App.prefix + '/api/v1/folders',
@@ -86,10 +84,8 @@ define([
         })
     );
 
-    debugger;
-
     var API = _.extend({}, ModelMixins.API, {
-        folderCollection: function (page) {           // Why page?
+        folderCollection: function (page) {
             var folders = new App.Folder.Models.Collection();
             return this.deferOperation('fetch', folders);
         },

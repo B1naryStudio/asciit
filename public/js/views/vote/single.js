@@ -123,5 +123,5 @@ define([
         }
     });
 
-    return Vote.Views.Votes;
+    return App.Vote.Views.Votes;
 });

@@ -1,6 +1,4 @@
 define(['app', 'marionette', 'models/question'], function (App, Marionette) {
-    _.extend((App.Question || {}), {});
-
     var Controller = Marionette.Controller.extend({
         questions: function (searchQuery, searchTag, searchFolder, page) {
             require(['controllers/question/collection'], function (controller) {
