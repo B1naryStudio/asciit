@@ -143,9 +143,18 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         return $this->create($attrs);
     }
 
-    public function relationsAdd($model, $method, array $data)
+    public function relationsAdd($model, $relationName, $modelsToBind)
     {
-        $model->$method()->saveMany($data);
+        $model->$relationName()->saveMany($modelsToBind);
+    }
+
+    public function relationsDestroy($model, $relationName, $modelIds)
+    {
+        if (!is_array($modelIds)) {
+            $modelIds = [$modelIds];
+        }
+
+        $model->$relationName()->detach($modelIds);
     }
 
     public function getRelationRecordCount($relation, $relation_count, $use_main_table = true)

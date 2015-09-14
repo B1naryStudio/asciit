@@ -16,7 +16,7 @@ Rbac::action([
     'API\\QuestionController@show',
 ], 'questions.view');
 Rbac::action('API\\QuestionController@store', 'questions.create');
-//Rbac::action('API\\QuestionController@update', 'questions.edit');
+Rbac::action('API\\QuestionController@update', 'questions.edit');
 Rbac::action('API\\QuestionController@destroy', 'questions.delete');
 
 // answers

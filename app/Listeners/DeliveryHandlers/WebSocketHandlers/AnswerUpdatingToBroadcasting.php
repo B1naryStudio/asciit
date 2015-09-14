@@ -18,7 +18,7 @@ class AnswerUpdatingToBroadcasting extends WebSocketDeliveryHandler
         // to 'entries/{id}' topic
         $this->delivery->send([
             'data'  => ['patch' => $event->answer],
-            'topic' => 'entries/' . $event->answer->question_id
+            'topic' => 'entries/' . $event->answer->id
         ]);
     }
 }

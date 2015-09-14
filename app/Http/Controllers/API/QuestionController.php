@@ -98,6 +98,22 @@ class QuestionController extends Controller
         return Response::json($question->toArray(), 200, [], JSON_NUMERIC_CHECK);
     }
 
+    public function update(QuestionValidatedRequest $request, $question_id)
+    {
+        try {
+            $updatedQuestion = $this->questionService
+                ->updateQuestion($request->all(), $question_id);
+        } catch (QuestionServiceException $e) {
+            return Response::json([
+                'error' => [
+                    'message' => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        return Response::json($updatedQuestion->toArray(), 202, [], JSON_NUMERIC_CHECK);
+    }
+
     /**
      * Display the specified resource.
      *
