@@ -1,15 +1,21 @@
-define(['app', 'moment'], function(App, moment) {
-    App.module('ModelMixins', function(ModelMixins, App, Backbone, Marionette, $, _) {
-        ModelMixins.LiveUpdating = {
+define([
+    'app',
+    'moment'
+], function (
+    App,
+    Moment
+) {
+    App.ModelMixins = {
+        LiveUpdating: {
             startLiveUpdating: function () {
                 var self = this;
 
                 ab.connect(
                     // The WebSocket URI of the WAMP server
                     'ws://' + window.location.hostname
-                            + ':'
-                            + App.websocketPort
-                            + App.prefix,
+                    + ':'
+                    + App.websocketPort
+                    + App.prefix,
 
                     // The onConnect handler
                     function (session) {
@@ -61,9 +67,9 @@ define(['app', 'moment'], function(App, moment) {
                     }
                 }
             }
-        };
+        },
 
-        ModelMixins.LiveCollection = {
+        LiveCollection: {
             onLiveUpdate: function(topic, message) {
                 if (
                     (!this.searchQuery)
@@ -73,10 +79,8 @@ define(['app', 'moment'], function(App, moment) {
                 }
                 this.remove(message.delete);
             }
-        };
-        _.extend(ModelMixins.LiveCollection, ModelMixins.LiveUpdating);
-
-        ModelMixins.LiveModel = {
+        },
+        LiveModel: {
             onLiveUpdate: function(topic, message) {
                 this.update(message.patch);
                 this.calls(message.calls);
@@ -87,28 +91,26 @@ define(['app', 'moment'], function(App, moment) {
                     this.trigger('live:updated');
                 }
             }
-        };
-        _.extend(ModelMixins.LiveModel, ModelMixins.LiveUpdating);
-
-        ModelMixins.RelativeTimestampsModel = {
+        },
+        RelativeTimestampsModel: {
             attachLocalDates: function () {
                 if (i18n.lng) {
-                    moment.locale(i18n.lng());
+                    Moment.locale(i18n.lng());
                 }
 
-                var updatedLocal = moment.utc(this.get('updated_at'));
+                var updatedLocal = Moment.utc(this.get('updated_at'));
                 this.set('updated_local', updatedLocal);
-                this.set('updated_local_formatted', moment(updatedLocal).toDate());
-                this.set('updated_relative', moment(updatedLocal).fromNow());
+                this.set('updated_local_formatted', Moment(updatedLocal).toDate());
+                this.set('updated_relative', Moment(updatedLocal).fromNow());
 
-                var createdLocal = moment.utc(this.get('created_at'));
+                var createdLocal = Moment.utc(this.get('created_at'));
                 this.set('created_local', createdLocal);
-                this.set('created_local_formatted', moment(createdLocal).toDate());
-                this.set('created_relative', moment(createdLocal).fromNow());
+                this.set('created_local_formatted', Moment(createdLocal).toDate());
+                this.set('created_relative', Moment(createdLocal).fromNow());
             }
-        };
+        },
 
-        ModelMixins.Votable = {
+        Votable: {
             voteAdd: function (vote) {
                 if (+vote.sign) {
                     this.set(
@@ -152,15 +154,13 @@ define(['app', 'moment'], function(App, moment) {
                     this.get('vote_likes') - this.get('vote_dislikes')
                 );
             }
-        };
-
-        ModelMixins.Ownership = {
+        },
+        Ownership: {
             isCurrentUserOwner: function () {
                 return (App.User.Current.get('id') === +this.get('user_id'));
             }
-        };
-
-        ModelMixins.API = {
+        },
+        API: {
             deferOperation: function (operation, item, attrs, customOptions) {
                 var defer = $.Deferred();
 
@@ -171,7 +171,7 @@ define(['app', 'moment'], function(App, moment) {
                     error: function (model, xhr, options) {
                         if (xhr.statusCode('500')) {
                             defer.reject({
-                                "error": i18n.t('ui.server-error')
+                                error: i18n.t('ui.server-error')
                             });
                         } else {
                             var errors = JSON.parse(xhr.responseText);
@@ -182,8 +182,9 @@ define(['app', 'moment'], function(App, moment) {
 
                 // defining a defer object for custom success and error callbacks
                 if (customOptions) {
+                    var func;
                     if (customOptions.success) {
-                        var func = customOptions.success;
+                        func = customOptions.success;
 
                         options.success = function (data, response, options) {
                             options.defer = defer;
@@ -218,8 +219,10 @@ define(['app', 'moment'], function(App, moment) {
 
                 return defer.promise();
             }
-        };
-    });
+        }
+    };
+    _.extend(App.ModelMixins.LiveCollection, App.ModelMixins.LiveUpdating);
+    _.extend(App.ModelMixins.LiveModel, App.ModelMixins.LiveUpdating);
 
     return App.ModelMixins;
 });

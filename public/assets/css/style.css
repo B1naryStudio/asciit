@@ -1623,6 +1623,10 @@ div .fa-05 {
         right: 0;
         left: auto;
     }
+
+    #top-link {
+        display: none !important;
+    }
 }
 
 @media (min-width: 768px) {
@@ -1723,11 +1727,5 @@ div .fa-05 {
     .tag-element:nth-child(5n-1),
     .tag-element:nth-child(5n) {
         margin-left: 10%;
-    }
-}
-
-@media (max-width: 767px) {
-    #top-link{
-        display:none!important;
     }
 }

@@ -35,7 +35,7 @@ class AuthController extends Controller
      */
     public function auth(Request $request)
     {
-        $userData = $this->dev;
+        $userData = $this->admin;
 
         $payload = JWTFactory::make($userData);
         $data = JWTAuth::encode($payload);
