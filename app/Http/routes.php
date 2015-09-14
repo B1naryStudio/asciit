@@ -15,7 +15,7 @@ Route::get('/', function () {
     $prefix = env('SERVER_PREFIX', '');
     return view('base', [
         'js_is_min' => env('JS_IS_MIN', false),
-        'js_path' => ($prefix ? $prefix . '/' : '' ) . env('JS_PATH')
+        'js_path' => ($prefix ? '/' : '' ) . env('JS_PATH')
     ]);
 });
 
