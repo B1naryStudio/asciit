@@ -156,7 +156,7 @@ class QuestionService implements QuestionServiceInterface
         /*
          * Bind all the tags with the question
          */
-        if(!empty($tags)) {
+        if (!empty($tags)) {
             $this->questionRepository->relationsAdd($question, 'tags', $tags);
         }
     }
@@ -291,7 +291,18 @@ class QuestionService implements QuestionServiceInterface
     public function removeQuestion($id)
     {
         try {
+            $questionTags = $this->tagRepository->getByCriteria(
+                new TagQuestionCriteria($id)
+            );
+            $tagsIdsToDetach = $questionTags->pluck('id')->all();
             $question = $this->questionRepository->delete($id);
+            if (!empty($tagsIdsToDetach)) {
+                $this->tagRepository->relationsDestroy(
+                    $question,
+                    'tags',
+                    $tagsIdsToDetach
+                );
+            }
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
