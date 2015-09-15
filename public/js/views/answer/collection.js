@@ -15,7 +15,7 @@ define([
     'views/view-behaviors/contains-votes',
     'views/view-behaviors/code-highlighter',
     'views/view-behaviors/server-validation',
-    'views/view-behaviors/collapse',
+    'views/view-behaviors/fold-collection-items',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
@@ -83,7 +83,7 @@ define([
                     behaviorClass: EditButton,
                     controlsContainer: ".answer-body .entry-controls"
                 },
-                Collapse: {
+                ContainsVotes: {
                     behaviorClass: ContainsVotes
                 },
                 CodeHighlighter: {
