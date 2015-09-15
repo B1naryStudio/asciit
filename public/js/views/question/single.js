@@ -66,7 +66,7 @@ define([
                     behaviorClass: DeleteButton,
                     itemArea: '.question_view'
                 },
-                ContainsVotes: {
+                Collapse: {
                     behaviorClass: ContainsVotes
                 },
                 CodeHighlighter: {

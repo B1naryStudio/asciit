@@ -7,7 +7,7 @@ define([
     Marionette,
     VotesView
 ) {
-    App.Behaviors.ContainsVotes = Marionette.Behavior.extend({
+    App.Behaviors.Collapse = Marionette.Behavior.extend({
         defaults: {
             votesRegion: 'votes'
         },
@@ -36,5 +36,5 @@ define([
         }
     });
 
-    return App.Behaviors.ContainsVotes;
+    return App.Behaviors.Collapse;
 });

@@ -52,7 +52,7 @@ define([
             selected_ranges = s.getRanges();
             //  false collapses the range to the end of the selected node,
             // true before the node.
-            selected_ranges[0].collapse(false);
+            selected_ranges[0].collapseAllPrevious(false);
             s.selectRanges(selected_ranges);
         },
 

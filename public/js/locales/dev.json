@@ -52,6 +52,8 @@
         "save": "Save",
         "create": "Create",
         "readMore": "Read more",
+        "showMore": "Show another __num__",
+        "fold": "Fold",
         "login": "Login",
         "logout": "Logout",
         "login-title": "Please, login",

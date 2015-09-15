@@ -47,7 +47,7 @@
                 </span>
             </div>
             <!-- Comments -->
-            <div class="comments">
+            <div class="related-controls">
                 <button class="btn btn-default btn-xs add-comment"><%- _t("comment.add") %></button>
                 <button class="btn btn-default btn-xs add-answer"><%- _t("answers.add") %></button>
             </div>
