@@ -69,6 +69,7 @@ var CKBUILDER_CONFIG = {
 		'imageresize' : 1,
 		'indentlist' : 1,
 		'justify' : 1,
+        'jsfiddle': 1,
 		'list' : 1,
 		'magicline' : 1,
 		'maximize' : 1,

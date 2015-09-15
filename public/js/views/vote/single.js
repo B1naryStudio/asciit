@@ -103,7 +103,7 @@ define([
         },
         onShow: function () {
             if (this.model.has('id')) {
-                if (this.model.get('sign') === 0) {
+                if (this.model.get('sign') == 0) {
                     this.$el.find(this.ui.likeButton)
                         .toggleClass('like cancel like-vote');
                     this.$el.find(this.ui.dislikeButton)

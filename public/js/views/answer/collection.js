@@ -223,8 +223,8 @@ define([
         childViewContainer: '#answers',
 
         ui: {
-            foldButton: '.fold',
-            unfoldButton: '.unfold'
+            foldButton: '.folding-controls .fold',
+            unfoldButton: '.folding-controls .unfold'
         },
 
         triggers: {
