@@ -2,7 +2,7 @@ define([
     'app',
     'marionette',
     'backbone',
-    'tpl!views/templates/menu.tpl',
+    'tpl!views/templates/menu/menu.tpl',
     'models/user',
     'syphon'
 ], function (

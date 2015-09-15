@@ -15,7 +15,7 @@ class HeaderController extends Controller
      */
     public function menu()
     {
-        return view('menu-mockup');
+        return view('mocks.menu');
     }
 
     public function config()
