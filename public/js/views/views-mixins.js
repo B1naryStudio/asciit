@@ -15,30 +15,33 @@ define([
             }
 
             var editor = App.helper.editor;
-            var text = App.helper.getSelected();
+            var selection = App.helper.getSelected();
 
-            if (text) {
-                text = new String(text).replace(/^\s+|\s+$/g,'');
-                text = '<blockquote><span class="author">' +
-                    '<time class="relative" data-abs-time="' +
-                    this.model.get('created_at') +
-                    '">' +
-                    this.model.get('created_relative') +
-                    '</time>' +
-                    ' by ' +
-                    this.model.attributes.user.first_name +
-                    ' ' +
-                    this.model.attributes.user.last_name +
-                    ':</span><br/>' +
-                    text +
-                    ' </blockquote>';
+            if (selection) {
+                var text = new String(selection).replace(/^\s+|\s+$/g,'');
 
-                editor.focus();
-                App.helper.moveFocus(editor, text);
+                if (text) {
+                    var quote = '<blockquote><span class="author">' +
+                        '<time class="relative" data-abs-time="' +
+                        this.model.get('created_at') +
+                        '">' +
+                        this.model.get('created_relative') +
+                        '</time>' +
+                        ' by ' +
+                        this.model.attributes.user.first_name +
+                        ' ' +
+                        this.model.attributes.user.last_name +
+                        ':</span><br/>' +
+                        text +
+                        ' </blockquote>';
 
-                $('html, body').scrollTop(
-                    $('#new-answer-form').offset().top
-                );
+                    editor.focus();
+                    App.helper.moveFocus(editor, quote);
+
+                    $('html, body').scrollTop(
+                        $('#new-answer-form').offset().top
+                    );
+                }
             }
         }
     };
