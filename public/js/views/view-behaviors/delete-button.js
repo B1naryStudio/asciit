@@ -39,6 +39,7 @@ define([
         onDeletePerform: function () {
             this.view.triggerMethod('waiting:start');
             this.view.trigger('submit:delete', this.view.model);
+            this.view.$el.addClass('removing');
         },
 
         onDeleteError: function (errors) {

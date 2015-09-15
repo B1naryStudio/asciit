@@ -9,6 +9,7 @@ define([
     'views/view-behaviors/delete-button',
     'views/view-behaviors/edit-button',
     'views/view-behaviors/server-validation',
+    'views/view-behaviors/collapse',
     'stickit',
     'jquery.elastic'
 ], function (
@@ -21,7 +22,8 @@ define([
     HidingControls,
     DeleteButton,
     EditButton,
-    ServerValidation
+    ServerValidation,
+    Collapse
 ) {
     App.Comment.Views.SingleCommentCompositeView = Marionette.CompositeView.extend(
         _.extend({}, ViewsMixins.SelectText, {
@@ -147,17 +149,28 @@ define([
         childView: App.Comment.Views.SingleCommentCompositeView,
         childViewContainer: '.comments-region',
 
+        ui: {
+            foldButton: '.fold',
+            unfoldButton: '.unfold'
+        },
+
+        triggers: {
+            'click @ui.foldButton': 'list:fold',
+            'click @ui.unfoldButton': 'list:unfold'
+        },
+
         events: {
             'submit .comments-form': 'submit',
             'mouseup p': 'selectText'
         },
 
-        submit: function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            // To event in controller
-            if (!this.model.validationError) {
-                this.trigger('form:submit', this.model);
+        behaviors: {
+            ServerValidation: {
+                behaviorClass: ServerValidation
+            },
+            Collapse: {
+                behaviorClass: Collapse,
+                maxEntries: 3
             }
         },
 
@@ -170,9 +183,12 @@ define([
             }
         },
 
-        behaviors: {
-            ServerValidation: {
-                behaviorClass: ServerValidation
+        submit: function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            // To event in controller
+            if (!this.model.validationError) {
+                this.trigger('form:submit', this.model);
             }
         },
 

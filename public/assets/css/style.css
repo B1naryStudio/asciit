@@ -387,7 +387,7 @@ body.modal-open {
 
 /*
  |------------------------------------------------------------------------------
- | Single question header
+ | Single question
  |------------------------------------------------------------------------------
  */
 .time {
@@ -424,15 +424,11 @@ body.modal-open {
     color: #aaa;
     border-bottom: 1px solid #ccc;
     padding-left: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .section-header button {
     margin-bottom: 5px;
-}
-
-.single-answer {
-    margin: 10px 0;
 }
 
 .list-group-item .limited {
@@ -521,6 +517,29 @@ body.modal-open {
     margin-bottom: 5px;
 }
 
+.folding-controls .control {
+    background-color: #F5FAFC;
+    color: #666;
+    text-align: center;
+    line-height: 30px;
+    font-size: 0.9em;
+    width: 100%;
+    cursor: pointer;
+    display: none;
+    /*border: 1px solid #dfdfef;*/
+    margin: 10px 0;
+}
+
+.comment-list .folding-controls .control {
+    line-height: 25px;
+    font-size: 0.8em;
+    margin: 0 0 5px 0;
+}
+
+.related-controls {
+    margin-bottom: 10px;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Select2
@@ -604,6 +623,10 @@ body.modal-open {
 .new-answer-controls {
     text-align: center;
     margin: 15px auto 50px;
+}
+
+#answers .single-answer {
+    margin-bottom: 10px;
 }
 
 /*
@@ -1726,7 +1749,9 @@ div .fa-05 {
         width: 1170px;
     }
 
-    .comments-region, .comment-form {
+    .comments-region,
+    .comment-form,
+    .comment-list .folding-controls .control {
         width: 88%;
         margin-left: 12%;
     }

@@ -3,6 +3,10 @@
         <%= _t("answers.answers") %>:
         <span class="counter answers"><%- count %></span>
     </header>
+    <div class="folding-controls">
+        <div class="control unfold"><%= _t("ui.showMore", {num: ""}) %></div>
+        <div class="control fold"><%= _t("ui.fold") %></div>
+    </div>
     <ul id="answers" class="list-group"></ul>
 
     <!-- Adding form -->

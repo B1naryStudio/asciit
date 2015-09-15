@@ -27,8 +27,7 @@
                 </div>
             </form>
 
-            <!-- Comments -->
-            <div class="comments">
+            <div class="related-controls">
                 <button class="btn btn-default btn-xs show-form"><%= _t("comment.add") %></button>
             </div>
         </div>
@@ -51,5 +50,6 @@
             </span>
         </div>
     </div>
+    <!-- Comments -->
     <div class="answers-comments-region"></div>
 </div>

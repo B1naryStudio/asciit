@@ -710,17 +710,17 @@ if (typeof jQuery === 'undefined') {
         })
     }
 
-    var old = $.fn.collapse
+    var old = $.fn.collapseAllPrevious
 
-    $.fn.collapse             = Plugin
-    $.fn.collapse.Constructor = Collapse
+    $.fn.collapseAllPrevious             = Plugin
+    $.fn.collapseAllPrevious.Constructor = Collapse
 
 
     // COLLAPSE NO CONFLICT
     // ====================
 
-    $.fn.collapse.noConflict = function () {
-        $.fn.collapse = old
+    $.fn.collapseAllPrevious.noConflict = function () {
+        $.fn.collapseAllPrevious = old
         return this
     }
 

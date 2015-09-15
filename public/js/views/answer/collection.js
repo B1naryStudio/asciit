@@ -15,6 +15,7 @@ define([
     'views/view-behaviors/contains-votes',
     'views/view-behaviors/code-highlighter',
     'views/view-behaviors/server-validation',
+    'views/view-behaviors/collapse',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
@@ -35,7 +36,8 @@ define([
     EditButton,
     ContainsVotes,
     CodeHighlighter,
-    ServerValidation
+    ServerValidation,
+    Collapse
 ) {
     App.Answer.Views.SingleAnswerLayoutView = Marionette.LayoutView.extend(
         _.extend({}, ViewsMixins.SelectText, {
@@ -81,7 +83,7 @@ define([
                     behaviorClass: EditButton,
                     controlsContainer: ".answer-body .entry-controls"
                 },
-                ContainsVotes: {
+                Collapse: {
                     behaviorClass: ContainsVotes
                 },
                 CodeHighlighter: {
@@ -220,18 +222,32 @@ define([
         childView: App.Answer.Views.SingleAnswerLayoutView,
         childViewContainer: '#answers',
 
+        ui: {
+            foldButton: '.fold',
+            unfoldButton: '.unfold'
+        },
+
+        triggers: {
+            'click @ui.foldButton': 'list:fold',
+            'click @ui.unfoldButton': 'list:unfold'
+        },
+
         events: {
             'submit form': 'onSubmit',
-            'click .show-form': 'showForm'
+            'click .show-form': 'showNewCommentForm'
         },
 
         behaviors: {
             ServerValidation: {
                 behaviorClass: ServerValidation
+            },
+            Collapse: {
+                behaviorClass: Collapse,
+                maxEntries: 2
             }
         },
 
-        showForm: function (e) {
+        showNewCommentForm: function (e) {
             e.stopPropagation();
             var el = $(e.target)
                 .parents('.row')
