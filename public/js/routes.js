@@ -3,7 +3,7 @@ define([
     'marionette',
     'backbone',
     'progressbar',
-    'views/menu',
+    'views/menu/menu',
     'stickit'
 ], function (
     App,

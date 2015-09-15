@@ -15,6 +15,9 @@
     @endif
 </head>
 <body>
+<div id="nav-wrapper">
+    @include('menu')
+</div>
 <input type="hidden" id="config-jspath" value="{{ $js_path }}">
 </body>
 <script src="{{ $js_path }}/vendor/autobahn/autobahn.js"></script>

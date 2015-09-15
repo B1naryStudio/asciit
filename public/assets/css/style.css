@@ -240,6 +240,10 @@ body.modal-open {
     white-space: nowrap;
 }
 
+#userProfile {
+    min-width: 122px;
+}
+
 /*
 |------------------------------------------------------------------------------
 | Questions list
@@ -594,6 +598,10 @@ body.modal-open {
     padding: 0.5em;
 }
 
+.model-field {
+    margin-bottom: 10px;
+}
+
 .new-answer .form-group {
     margin: 0;
 }
@@ -659,7 +667,7 @@ body.modal-open {
     right: 10%;
     top: 10%;
     bottom: auto;
-
+    position: absolute;
 }
 
 #popup-layout-view.question-form .select2-container {
@@ -1330,23 +1338,8 @@ div .fa-05 {
         width: 96%;
     }
 
-    .custom-menu {
-        right: initial;
-        left: 69%;
-    }
-
     #searchBar {
-        width: 48%;
-    }
-}
-
-@media (min-width: 351px) and (max-width: 380px) {
-    #searchBar {
-        width: 46%;
-    }
-
-    .custom-menu {
-        left: 67%;
+        width: 65%;
     }
 }
 
@@ -1375,6 +1368,10 @@ div .fa-05 {
 
     .header {
         height: 80px;
+    }
+
+    #notificationCounter {
+        top: 0;
     }
 }
 
@@ -1563,6 +1560,7 @@ div .fa-05 {
 
     #userProfile {
         padding-right: 0;
+        min-width: 0;
     }
 }
 
@@ -1709,11 +1707,11 @@ div .fa-05 {
     }
 }
 
-@media (min-width: 1000px) {
+/*@media (min-width: 1000px) {
     .container {
         width: 940px;
     }
-}
+}*/
 
 @media (min-width: 1250px) {
     .container {

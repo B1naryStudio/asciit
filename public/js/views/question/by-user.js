@@ -2,7 +2,7 @@ define([
     'app',
     'marionette',
     'backbone',
-    'views/question/row',
+    'views/question/row-by-user',
     'views/empty'
 ], function (
     App,

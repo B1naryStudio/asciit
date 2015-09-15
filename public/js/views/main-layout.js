@@ -2,6 +2,7 @@ define([
     'app',
     'marionette',
     'backbone',
+    'views/menu/mock',
     'tpl!views/templates/main-layout.tpl',
     'moment',
     'syphon',
@@ -10,6 +11,7 @@ define([
     App,
     Marionette,
     Backbone,
+    MenuView,
     Tpl, 
     Moment
 ) {
@@ -40,6 +42,9 @@ define([
         },
         onShow: function() {
             this.startRelativeTimeUpdating();
+        },
+        onRender: function () {
+            this.getRegion('header').show(new MenuView());
         }
     });
     App.Main.Views.Layout = new Layout();
