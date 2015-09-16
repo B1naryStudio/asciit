@@ -103,6 +103,11 @@ define([
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;');
+        },
+
+        loadCSS: function(href) {
+            var cssLink = $('<link rel="stylesheet" type="text/css" href="' + href + '">');
+            $('head').append(cssLink);
         }
     };
 
@@ -128,7 +133,7 @@ define([
                             options.websocketPort :
                             9090;
         // Loading css for codesnippets highlighting
-        loadCSS('js/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/' +
+        App.helper.loadCSS('js/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/' +
             App.codeSnippetTheme + '.css');
 
         overwriteRenderer();
@@ -149,11 +154,6 @@ define([
             return render(template, data);
         };
     }
-
-    var loadCSS = function(href) {
-        var cssLink = $('<link rel="stylesheet" type="text/css" href="' + href + '">');
-        $('head').append(cssLink);
-    };
 
     App.on('start', function () {
         if (Backbone.history) {

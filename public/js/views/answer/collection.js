@@ -16,6 +16,7 @@ define([
     'views/view-behaviors/code-highlighter',
     'views/view-behaviors/server-validation',
     'views/view-behaviors/fold-collection-items',
+    'views/view-behaviors/load-styles',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
@@ -37,7 +38,8 @@ define([
     ContainsVotes,
     CodeHighlighter,
     ServerValidation,
-    Collapse
+    FoldCollectionItems,
+    LoadStyles
 ) {
     App.Answer.Views.SingleAnswerLayoutView = Marionette.LayoutView.extend(
         _.extend({}, ViewsMixins.SelectText, {
@@ -73,7 +75,6 @@ define([
                 HidingControls: {
                     behaviorClass:     HidingControls,
                     controlsContainer: ".answer-body .entry-controls"
-
                 },
                 DeleteButton: {
                     behaviorClass: DeleteButton,
@@ -91,6 +92,9 @@ define([
                 },
                 ServerValidation: {
                     behaviorClass: ServerValidation
+                },
+                LoadStyles : {
+                    behaviorClass: LoadStyles
                 }
             },
 
@@ -241,8 +245,8 @@ define([
             ServerValidation: {
                 behaviorClass: ServerValidation
             },
-            Collapse: {
-                behaviorClass: Collapse,
+            FoldCollectionItems: {
+                behaviorClass: FoldCollectionItems,
                 maxEntries: 2
             }
         },

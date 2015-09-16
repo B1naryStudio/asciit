@@ -1,14 +1,16 @@
 define([
     'app',
     'marionette',
-    'jquery.ajax-gist'
 ], function (
     App,
     Marionette
 ) {
     App.Behaviors.LoadStyles = Marionette.Behavior.extend({
         onRender: function() {
-            this.$('div[data-style]').ajaxgist();
+            this.$('[data-style]').each(function (elem) {
+                var styleLink = elem.data('style');
+                App.helper.loadCSS(styleLink);
+            })
         }
     });
 
