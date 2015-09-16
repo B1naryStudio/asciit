@@ -6,11 +6,11 @@ define([
     App,
     Marionette
 ) {
-    App.Behaviors.GistSnippet = Marionette.Behavior.extend({
+    App.Behaviors.LoadStyles = Marionette.Behavior.extend({
         onRender: function() {
-            this.$('div[data-gist]').ajaxgist();
+            this.$('div[data-style]').ajaxgist();
         }
     });
 
-    return App.Behaviors.GistSnippet;
+    return App.Behaviors.LoadStyles;
 });
