@@ -50,6 +50,7 @@ var CKBUILDER_CONFIG = {
 		'tests'
 	],
 	plugins : {
+        'ajax': 1,
 		'SimpleLink' : 1,
 		'basicstyles' : 1,
 		'blockquote' : 1,
@@ -86,7 +87,8 @@ var CKBUILDER_CONFIG = {
 		'undo' : 1,
 		'uploadimage' : 1,
         'uploadwidget' : 1,
-		'wysiwygarea' : 1
+		'wysiwygarea' : 1,
+        'xml': 1
 	},
 	languages : {
 		'en' : 1,
