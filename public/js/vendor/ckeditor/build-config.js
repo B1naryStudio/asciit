@@ -70,6 +70,7 @@ var CKBUILDER_CONFIG = {
 		'indentlist' : 1,
 		'justify' : 1,
 		'list' : 1,
+		'linkwithpreview': 1,
 		'magicline' : 1,
 		'maximize' : 1,
 		'removeformat' : 1,

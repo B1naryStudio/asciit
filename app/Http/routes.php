@@ -19,7 +19,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::group(['prefix' => 'api/v1'], function() {
+Route::group(['prefix' => 'api/v1'], function () {
     Route::resource(
         '/questions',
         'API\QuestionController',
@@ -69,7 +69,7 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::get('/answers-my', 'API\Question\AnswerController@my');
 });
 
-Route::group(['prefix' => 'api/v1/widget'], function() {
+Route::group(['prefix' => 'api/v1/widget'], function () {
     Route::get('/questions/recent', 'API\WidgetController@questionsRecent');
     Route::get('/questions/popular', 'API\WidgetController@questionsPopular');
     Route::get('/questions/upvoted', 'API\WidgetController@questionsUpvoted');
@@ -90,3 +90,5 @@ Route::resource(
     'Mockups\NotificationController',
     ['only' => ['store']]
 );
+
+Route::get('/link-preview', 'API\PreviewController@index');

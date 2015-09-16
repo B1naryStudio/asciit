@@ -1306,6 +1306,24 @@ div .fa-05 {
     display: none;
 }
 
+#link-preview-wrapper {
+
+}
+
+#link-preview-image {
+    width: 50px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#link-preview-result-wrapper {
+    width: 50px;
+}
+
+#link-preview-result-wrapper img {
+    width: 100%;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Media

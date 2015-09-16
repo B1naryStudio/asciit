@@ -25,7 +25,7 @@
             {
                 name: 'media',
                 items: [
-                    'Image', 'CodeSnippet', 'SimpleLink'
+                    'Image', 'CodeSnippet', 'SimpleLink', 'LinkWithPreview'
                 ]
             },
             {
@@ -33,7 +33,7 @@
                 items: [
                     'Maximize'
                 ]
-            },
+            }
         ];
 
         config.codeSnippet_languages = {
