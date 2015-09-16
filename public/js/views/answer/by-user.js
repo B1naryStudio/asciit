@@ -26,7 +26,7 @@ define([
             tag: '.tags'
         },
         behaviors: {
-            Collapse: {
+            ContainsVotesaa: {
                 behaviorClass: ContainsVotes
             },
             CodeHighlighter: {

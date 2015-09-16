@@ -11,7 +11,7 @@ define([
      * If entry added, hides an extra-elements. (if folded)
      * If entry removed, adds shown elems to <maxEntries> number (if folded)
      */
-    App.Behaviors.Collapse = Marionette.Behavior.extend({
+    App.Behaviors.FoldCollectionItems = Marionette.Behavior.extend({
         defaults: {
             maxEntries: 3
         },
@@ -130,5 +130,5 @@ define([
         }
     });
 
-    return App.Behaviors.Collapse;
+    return App.Behaviors.FoldCollectionItems;
 });

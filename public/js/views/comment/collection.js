@@ -9,7 +9,7 @@ define([
     'views/view-behaviors/delete-button',
     'views/view-behaviors/edit-button',
     'views/view-behaviors/server-validation',
-    'views/view-behaviors/collapse',
+    'views/view-behaviors/fold-collection-items',
     'stickit',
     'jquery.elastic'
 ], function (
