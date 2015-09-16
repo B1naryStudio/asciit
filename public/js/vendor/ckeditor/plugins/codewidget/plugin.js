@@ -1,7 +1,6 @@
 (function () {
-    CKEDITOR.plugins.add('jsfiddle', {
+    CKEDITOR.plugins.add('codewidget', {
         requires: 'ajax',
-        //icons: 'jsfiddle',
         lang: ['uk', 'en', 'ru'],
         init: function (editor) {
             editor.addCommand(
@@ -14,12 +13,12 @@
             );
 
             editor.ui.addButton('JSFiddle', {
-                label: editor.lang.jsfiddle.jsFiddleButtonTitle,
+                label: editor.lang.codewidget.jsFiddle.buttonTitle,
                 command: 'jsfiddle',
                 icon: this.path + 'icons/jsfiddle.png'
             });
             editor.ui.addButton('GitGist', {
-                label: editor.lang.jsfiddle.gistButtonTitle,
+                label: editor.lang.codewidget.gist.buttonTitle,
                 command: 'gitgist',
                 icon: this.path + 'icons/github.png'
             });
