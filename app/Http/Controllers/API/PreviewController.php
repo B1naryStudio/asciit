@@ -8,14 +8,13 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
-use Illuminate\Support\Facades\Redirect;
 
 class PreviewController extends Controller
 {
     public function __construct(QuestionServiceInterface $questionService)
     {
-        //$this->middleware('auth');
-        //$this->middleware('rbac');
+        $this->middleware('auth');
+        $this->middleware('rbac');
     }
 
     public function index(Request $request)
@@ -31,6 +30,8 @@ class PreviewController extends Controller
         } else {
             $url = 'http://javascript.ru/forum/images/ca_serenity/misc/logo.gif';
         }
-        return Redirect::to($url, 302)->header('Location', $url);
+        return Response::json([
+            'url' => $url
+        ], 200);
     }
 }

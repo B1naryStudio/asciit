@@ -30,7 +30,6 @@ Rbac::permission('questions.delete.own', ['questions.delete'], function ($params
     return Ownership::isQuestionsOwner($params);
 });
 
-
 Rbac::permission('questions.manage', [
     'questions.view',
     'questions.create',
@@ -119,6 +118,9 @@ Rbac::permission('votes.own', [
 Rbac::permission('images.view');
 Rbac::permission('images.create');
 
+// link preview
+Rbac::permission('preview.view');
+
 /*
  * Roles
  */
@@ -134,6 +136,7 @@ Rbac::role('ADMIN', [
 
     'images.view',
     'images.create',
+    'preview.view'
 ]);
 
 Rbac::role('USER', [
@@ -155,4 +158,5 @@ Rbac::role('USER', [
 
     'images.view',
     'images.create',
+    'preview.view'
 ]);

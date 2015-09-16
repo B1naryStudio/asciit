@@ -101,22 +101,30 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
 
             if (this.insertMode) {
                 var wrapper = editor.document.createElement('div');
-                wrapper.$.id = 'link-preview-result-wrapper';
-                wrapper.$.style.width = '100px';
-                wrapper.$.style.margin = '0 auto';
+                wrapper.setAttribute('id', 'link-preview-result-wrapper');
+                debugger;
+                wrapper.setAttribute('width', '100');
+                wrapper.setAttribute('margin', '0 auto');
                 var image = editor.document.createElement('img');
-                image.$.src = this.preview.$[0].src;
-                image.$.style.width = '100%';
+                image.setAttribute('src', this.preview.getAttribute('src'));
+                image.setAttribute('width', '100%');
                 wrapper.append(image);
                 wrapper.append(this.element);
                 editor.insertElement(wrapper);
             }
         },
         process: function (e) {
-            this.dialog.preview.$[0].src = '/link-preview?url=' +
-                encodeURIComponent(e.target.value);
+            var self = this;
+            var data = CKEDITOR.ajax.load('/link-preview?url=' +
+                encodeURIComponent(e.target.value), function (data) {
+                debugger;
+                data = JSON.parse(data);
+                self.preloadHide(data.url);
+            } );
+            debugger;
         },
         restart: function (e) {
+            this.preloadShow();
             if (this.timerId) {
                 clearTimeout(this.timerId);
             }
@@ -124,6 +132,15 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
             this.timerId = setTimeout(function () {
                 self.process(e);
             }, 1000);
+        },
+        preloadShow: function () {
+            this.dialog.preview.setAttribute(
+                'src',
+                this._.editor.plugins.linkwithpreview.path + 'icons/preload.gif'
+            );
+        },
+        preloadHide: function (image) {
+            this.dialog.preview.setAttribute('src', image);
         }
     };
 });
