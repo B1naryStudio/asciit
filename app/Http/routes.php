@@ -11,23 +11,31 @@
 |
 */
 
-use Illuminate\Http\Request;
-
 Route::get('/', function () {
-    return view('base');
+    $prefix = env('SERVER_PREFIX', '');
+    return view('base', [
+        'js_is_min' => env('JS_IS_MIN', false),
+        'js_path' => ($prefix ? '/' : '' ) . env('JS_PATH')
+    ]);
 });
 
 Route::group(['prefix' => 'api/v1'], function() {
     Route::resource(
         '/questions',
         'API\QuestionController',
-        ['only' => ['index', 'store', 'show', 'destroy']]
+        ['only' => ['index', 'store', 'show', 'update', 'destroy']]
     );
 
     Route::resource(
         '/questions/{id}/answers',
         'API\Question\AnswerController',
-        ['only' => ['index', 'store']]
+        ['only' => ['index', 'store', 'update', 'destroy']]
+    );
+
+    Route::resource(
+        '/questions/{id}/comments',
+        'API\Question\CommentController',
+        ['only' => ['store', 'update', 'destroy']]
     );
 
     Route::resource(
@@ -57,12 +65,6 @@ Route::group(['prefix' => 'api/v1'], function() {
         ['only' => ['store', 'destroy']]
     );
 
-    Route::resource(
-        '/questions/{id}/comments',
-        'API\Question\CommentController',
-        ['only' => ['store']]
-    );
-
     Route::get('/questions-my', 'API\QuestionController@my');
     Route::get('/answers-my', 'API\Question\AnswerController@my');
 });
@@ -79,7 +81,8 @@ Route::get('/auth/', 'Mockups\AuthController@auth');
 Route::get('/auth/logout', 'Mockups\AuthController@logout');
 
 // Header mockups
-Route::get('/app/header', 'Mockups\HeaderController@getMenu');
+Route::get('/app/header', 'Mockups\HeaderController@menu');
+Route::get('app/api/config', 'Mockups\HeaderController@config');
 
 // Notification mockup
 Route::resource(

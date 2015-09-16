@@ -90,20 +90,22 @@ body.modal-open {
 }
 
 .menu.navbar.navbar-inverse {
-    background: #000;
+    background: #333;
 }
 
 .main-menu {
-    margin-right: 85px;
+    margin-right: 76px;
+    z-index: 1;
 }
 
 .custom-menu {
     width: 85px;
     position: absolute;
-    right: 20px;
+    right: 10px;
     top: 25px;
     display: flex;
     align-self: center;
+    z-index: 3;
 }
 
 .custom-menu .button {
@@ -116,6 +118,11 @@ body.modal-open {
     cursor: pointer;
     margin-left: 10px;
     color: #fff;
+    transition: all .1s linear;
+}
+
+.custom-menu .button:active {
+    transform: translateY(3px);
 }
 
 .menu-list:before {
@@ -123,10 +130,10 @@ body.modal-open {
     height: 0;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
-    border-bottom: 20px solid #ffa800;
+    border-bottom: 20px solid #fff;
     content: '';
     margin-top: -25px;
-    margin-left: 120px;
+    margin-left: 128px;
     position: absolute;
 }
 
@@ -135,10 +142,10 @@ body.modal-open {
     height: 0;
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
-    border-bottom: 25px solid #ffa800;
+    border-bottom: 20px solid #fff;
     content: '';
     margin-top: -25px;
-    margin-left: 15px;
+    margin-left: 9px;
     position: absolute;
 }
 
@@ -157,12 +164,16 @@ body.modal-open {
 
 .menu-list,
 .lang-list {
-    padding: 10px;
-    z-index: 1;
-    background: #ffa800;
-    border-radius: 20px;
+    padding: 10px 10px 0 10px;
     right: 0;
     position: absolute;
+    z-index: 3;
+    background: #fff;
+    width: 265px;
+    border-radius: 3px;
+    border: 1px solid #e0ddda;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    transition: .2s;
 }
 
 .menu-list {
@@ -171,20 +182,22 @@ body.modal-open {
 
 .lang-list {
     width: 70px;
-    margin-right: 15px;
-    padding: 10px;
 }
 
 .menu-list li,
 .lang-list li {
     list-style: none;
-    border: 1px solid #808080;
+    border-bottom: 1px solid #d6dadc;
     text-align: center;
-    border-radius: 6px;
     margin-bottom: 3px;
     height: 30px;
     line-height: 2em;
     font-size: 14px;
+}
+
+.menu-list li:last-child,
+.lang-list li:last-child {
+    border-bottom: none;
 }
 
 .menu-list li a,
@@ -207,24 +220,28 @@ body.modal-open {
 .lang-list li:hover span,
 .lang-list li:focus span {
     cursor: pointer;
-    font-size: 20px;
+    font-size: 17px;
     transition: .2s;
 }
 
 #appsBlock:before {
-    margin-left: 85px;
+    margin-left: 93px;
 }
 
 #notificationBlock:before {
-    margin-left: 160px;
+    margin-left: 170px;
 }
 
 #logOutBox {
-    right: 185px;
+    right: 177px;
 }
 
 #userName {
     white-space: nowrap;
+}
+
+#userProfile {
+    min-width: 122px;
 }
 
 /*
@@ -318,6 +335,14 @@ body.modal-open {
 .votes {
     color: #444444;
     cursor: default;
+    background: #fff;
+
+    /* For gracefully overlapping a border for the editing elements */
+    padding: 0 0 5px 10px;
+    padding-right: 1px;
+    right: -1px;
+    position: relative;
+    z-index: 2;
 }
 
 .question_view .votes {
@@ -366,7 +391,7 @@ body.modal-open {
 
 /*
  |------------------------------------------------------------------------------
- | Single question header
+ | Single question
  |------------------------------------------------------------------------------
  */
 .time {
@@ -403,15 +428,11 @@ body.modal-open {
     color: #aaa;
     border-bottom: 1px solid #ccc;
     padding-left: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .section-header button {
     margin-bottom: 5px;
-}
-
-.single-answer {
-    margin: 10px 0;
 }
 
 .list-group-item .limited {
@@ -445,19 +466,141 @@ body.modal-open {
  | Controls (edit, delete)
  |------------------------------------------------------------------------------
  */
-.question_view .controls {
-    float: right;
+.entry-controls,
+.entry-controls .save,
+.entry-controls .cancel {
     display: none;
+}
+
+.entry-controls .fa {
+    font-size: 16px;
+    padding: 2px;
+    margin-right: 3px;
+    cursor: pointer;
+    color: #555;
+    text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
+}
+
+.entry-controls .save .fa,
+.entry-controls .cancel .fa {
+    text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.6);
+}
+
+.entry-controls .delete .fa,
+.entry-controls .cancel .fa {
+    color: firebrick;
+}
+
+.entry-controls .save .fa {
+    color: #000060;
+}
+
+.question_view .entry-controls {
+    float: right;
     margin-right: 20px;
 }
 
-    .question_view .controls .fa {
-        font-size: 1.2em;
-        padding: 2px;
-        margin-right: 3px;
-        cursor: pointer;
-        color: #555;
-    }
+.single-answer .row,
+.single-comment .row {
+    position: relative;
+}
+
+.single-answer .entry-controls,
+.single-comment .entry-controls {
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+}
+
+[contenteditable=true] {
+    outline: dotted 1px orange;
+    position: relative;
+}
+
+.editing-form .form-group {
+    margin-bottom: 5px;
+}
+
+.folding-controls .control {
+    background-color: #F5FAFC;
+    color: #666;
+    text-align: center;
+    line-height: 30px;
+    font-size: 0.9em;
+    width: 100%;
+    cursor: pointer;
+    display: none;
+    /*border: 1px solid #dfdfef;*/
+    margin: 10px 0;
+}
+
+.comment-list .folding-controls .control {
+    line-height: 25px;
+    font-size: 0.8em;
+    margin: 0 0 5px 0;
+}
+
+.related-controls {
+    margin-bottom: 10px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Select2
+ |------------------------------------------------------------------------------
+ */
+/* The same color for the select 2 border as from Bootstrap 3 */
+.select2-container--default .select2-selection {
+    border: 1px solid #ccc;
+    font-weight: normal;
+
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.select2-container .select2-selection--single {
+    height: 34px;
+}
+
+.select2-selection--single .select2-selection__rendered {
+    padding: 3px 20px 3px 6px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Errors
+ |------------------------------------------------------------------------------
+ */
+.error,
+.error-block {
+    color: #a94442;
+    font-weight: normal;
+}
+
+.error-block {
+    margin: 15px 0;
+}
+
+.error.all {
+    text-align: center;
+    margin-top: -10px;
+    margin-bottom: 5px;
+}
+
+.has-error .control-label {
+    color: #333;
+}
+
+.has-error .help-block {
+    font-weight: normal;
+}
+
+.has-error .select2-selection {
+    border-color: #a94442;
+}
 
 /*
  |------------------------------------------------------------------------------
@@ -474,6 +617,10 @@ body.modal-open {
     padding: 0.5em;
 }
 
+.model-field {
+    margin-bottom: 10px;
+}
+
 .new-answer .form-group {
     margin: 0;
 }
@@ -484,6 +631,10 @@ body.modal-open {
 .new-answer-controls {
     text-align: center;
     margin: 15px auto 50px;
+}
+
+#answers .single-answer {
+    margin-bottom: 10px;
 }
 
 /*
@@ -506,6 +657,12 @@ body.modal-open {
     font-weight: bold;
 }
 
+#popup-layout-view {
+    padding: 0 !important;
+    position: fixed;
+    overflow: hidden;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Confirmation form
@@ -525,49 +682,36 @@ body.modal-open {
 
 /*
  |------------------------------------------------------------------------------
- | Add question popup
+ | Question popup
  |------------------------------------------------------------------------------
  */
-#popup-layout-view {
-    padding: 0 !important;
-    position: absolute;
-    overflow: hidden;
-}
-
-#popup-layout-view.question-add {
+#popup-layout-view.question-form {
     left: 10%;
     right: 10%;
     top: 10%;
     bottom: auto;
-
+    position: absolute;
 }
 
-#popup-layout-view.question-add .select2-container {
+#popup-layout-view.question-form .select2-container {
     width: 100% !important;
 }
 
-#popup-layout-view.question-add .description label {
+#popup-layout-view.question-form .description label {
     margin-bottom: 5px;
 }
 
-.error {
-    color: red;
-    font-weight: normal;
-}
-
-.error.all {
-    text-align: center;
-    margin-top: -10px;
-    margin-bottom: 5px;
-}
-
-#question-add-layout .controls {
+#question-form-layout .controls {
     margin: 15px 0 0 0;
     text-align: center;
 }
 
 #nav-question-add {
     cursor: pointer;
+}
+
+#popup-layout-view .form-group.description {
+    margin: 0;
 }
 
 /*
@@ -766,6 +910,11 @@ body {
     min-width: 320px;
 }
 
+.code-snippet.jsfiddle {
+    width: 100%;
+    border: none;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Blockquotes
@@ -804,6 +953,20 @@ blockquote .author {
 
 .comments-form textarea {
     resize: vertical;
+}
+
+.single-comment .content {
+    min-height: 80px;
+    padding-bottom: 20px;
+}
+
+.single-comment .editing-form textarea {
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 100%;
+    outline: dotted 1px orange;
+    outline-offset: 0;
 }
 
 .form-open {
@@ -867,7 +1030,7 @@ blockquote .author {
 
 /*
  |------------------------------------------------------------------------------
- | My Answers list
+ | Answers list
  |------------------------------------------------------------------------------
  */
 .answer-row {
@@ -911,6 +1074,15 @@ blockquote .author {
     margin-right: 15px;
 }
 
+.answers-list .cke {
+    border: none;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | My Answers list
+ |------------------------------------------------------------------------------
+ */
 .my-answers .votes {
     float: right;
     margin: 0 15px 0 15px;
@@ -1194,23 +1366,8 @@ div .fa-05 {
         width: 96%;
     }
 
-    .custom-menu {
-        right: initial;
-        left: 69%;
-    }
-
     #searchBar {
-        width: 48%;
-    }
-}
-
-@media (min-width: 351px) and (max-width: 380px) {
-    #searchBar {
-        width: 46%;
-    }
-
-    .custom-menu {
-        left: 67%;
+        width: 65%;
     }
 }
 
@@ -1240,6 +1397,10 @@ div .fa-05 {
     .header {
         height: 80px;
     }
+
+    #notificationCounter {
+        top: 0;
+    }
 }
 
 @media (max-width: 650px) {
@@ -1267,7 +1428,7 @@ div .fa-05 {
         font-size: 13px;
     }
 
-    #popup-layout-view.question-add {
+    #popup-layout-view.question-form {
         left: 5%;
         right: 5%;
         top: 5%;
@@ -1427,6 +1588,7 @@ div .fa-05 {
 
     #userProfile {
         padding-right: 0;
+        min-width: 0;
     }
 }
 
@@ -1500,6 +1662,10 @@ div .fa-05 {
         right: 0;
         left: auto;
     }
+
+    #top-link {
+        display: none !important;
+    }
 }
 
 @media (min-width: 768px) {
@@ -1569,11 +1735,11 @@ div .fa-05 {
     }
 }
 
-@media (min-width: 1000px) {
+/*@media (min-width: 1000px) {
     .container {
         width: 940px;
     }
-}
+}*/
 
 @media (min-width: 1250px) {
     .container {
@@ -1586,7 +1752,9 @@ div .fa-05 {
         width: 1170px;
     }
 
-    .comments-region, .comment-form {
+    .comments-region,
+    .comment-form,
+    .comment-list .folding-controls .control {
         width: 88%;
         margin-left: 12%;
     }
@@ -1600,11 +1768,5 @@ div .fa-05 {
     .tag-element:nth-child(5n-1),
     .tag-element:nth-child(5n) {
         margin-left: 10%;
-    }
-}
-
-@media (max-width: 767px) {
-    #top-link{
-        display:none!important;
     }
 }

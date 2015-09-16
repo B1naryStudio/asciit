@@ -1,112 +1,228 @@
-define(['app',
+define([
+    'app',
+    'marionette',
+    'backbone',
     'tpl!views/templates/comment/comments.tpl',
     'tpl!views/templates/comment/single-comment.tpl',
-    'stickit'
-], function (App, CommentsTpl, SingleCommentTpl) {
-    App.module('Comment.Views', function (View, App, Backbone, Marionette, $, _) {
-        View.SingleCommentCompositeView = Marionette.CompositeView.extend({
+    'views/views-mixins',
+    'views/view-behaviors/hiding-controls',
+    'views/view-behaviors/delete-button',
+    'views/view-behaviors/edit-button',
+    'views/view-behaviors/server-validation',
+    'views/view-behaviors/fold-collection-items',
+    'stickit',
+    'jquery.elastic'
+], function (
+    App,
+    Marionette,
+    Backbone,
+    CommentsTpl,
+    SingleCommentTpl,
+    ViewsMixins,
+    HidingControls,
+    DeleteButton,
+    EditButton,
+    ServerValidation,
+    Collapse
+) {
+    App.Comment.Views.SingleCommentCompositeView = Marionette.CompositeView.extend(
+        _.extend({}, ViewsMixins.SelectText, {
             template: SingleCommentTpl,
+            ui: {
+                itemArea:     '.single-comment',
+                deleteButton: '.entry-controls .delete',
+                editButton:   '.entry-controls .edit',
+                saveButton:   '.entry-controls .save',
+                cancelButton: '.entry-controls .cancel'
+            },
 
             events: {
-                'mouseup p': 'selectText'
+                'mouseup p': 'selectText',
+                'model:live:updated': 'onModelLiveUpdated'
             },
 
-            selectText: function(e) {
-                e.stopPropagation();
-                var editor = App.helper.editor;
-                var text = App.helper.getSelected();
-                if (
-                    text &&
-                    ( text = new String(text).replace(/^\s+|\s+$/g,''))
-                ) {
-                    text = '<blockquote><strong>' +
-                        this.model.get('created_relative') +
-                        ' by ' + this.model.get('user').first_name +
-                        ' ' + this.model.get('user').last_name +
-                        '</strong><br/>' + text + '</blockquote>';
-                    editor.focus();
-                    App.helper.moveFocus(editor, text);
-                    $('html, body').scrollTop(
-                        $('#new-answer-form').offset().top
-                    );
+            modelEvents: {
+                'live:updated': 'onModelLiveUpdated'
+            },
+
+            triggers: {
+                'mouseover @ui.itemArea': 'controls:show',
+                'mouseout @ui.itemArea':  'controls:hide',
+                'click @ui.deleteButton': 'delete',
+                'click @ui.editButton':   'edit:start',
+                'click @ui.saveButton':   'edit:save',
+                'click @ui.cancelButton': 'edit:cancel'
+            },
+
+            behaviors: {
+                HidingControls: {
+                    behaviorClass: HidingControls,
+                    controlsContainer: '.single-comment .entry-controls'
+                },
+                DeleteButton: {
+                    behaviorClass: DeleteButton,
+                    itemArea: '.single-comment'
+                },
+                EditButton: {
+                    behaviorClass: EditButton
+                },
+                ServerValidation: {
+                    behaviorClass: ServerValidation
                 }
-            }
-        });
-
-        View.CommentsCompositeView = Marionette.CompositeView.extend({
-            tagName: 'section',
-            className: 'comment-list',
-            template: CommentsTpl,
-            childView: View.SingleCommentCompositeView,
-            childViewContainer: '.comments-region',
-
-            events: {
-                'submit .comments-form': 'submit',
-                'mouseup p': 'selectText'
             },
 
-
-            submit: function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-                if (this.model.isValid(true)) {
-                    // To event in controller
-                    this.trigger('form:submit', this.model);
-                }
-
-            },
             bindings: {
-                '[name=text]': {
+                '.single-comment .editing-form [name=text]': {
                     observe: 'text',
                     setOptions: {
-                        validate: true
+                        validate: true,     //printing-time validation
+                        events: ['blur', 'input', 'change']
                     }
                 }
             },
 
-            onDataInvalid: function (errors) {
-                for (var field in errors) {
-                    if (!errors.hasOwnProperty(field)) {
-                        continue;
-                    }
-                    Backbone.Validation.callbacks.invalid(
-                        this,
-                        field,
-                        errors[field]
-                    );
+            onEditStart: function () {
+                Backbone.Validation.bind(this);
+
+                // stickit doesn't save the old values in 'previous'
+                this.model.oldValues = this.model.toJSON();
+
+                this.textElem = this.$('.model-field.text');
+                this.textElem.attr('contenteditable', true)
+                             .attr('spellcheck', false);
+            },
+
+            onEditSave: function () {
+                this.model.set({
+                    text: this.textElem.text()
+                });
+
+                this.model.validate();
+
+                if (this.model.isValid()) {
+                    this.triggerMethod('submit:update', this.model);
                 }
             },
-            // Refresh model and form for the futher using without
-            // view rendering
-            onModelRefresh: function (newModel) {
-                this.unstickit();
-                this.model = newModel;
-                this.stickit();
-                Backbone.Validation.bind(this);
-                this.hideCommentForm(this.$el);
+
+            onEditCancel: function () {
+                this.model.set(this.model.oldValues);
+
+                // hiding the error messages
+                this.$(
+                    this.ui.itemArea.selector +
+                    ' .help-block, ' +             // validation errors
+                    this.ui.itemArea.selector +
+                    ' .error-block'                // server errors
+                ).addClass('hidden');
+
+                this.switchToText();
             },
 
-            hideCommentForm: function (el) {
-                var button = el.parent()
-                    .siblings('.row')
-                    .find('.add-comment');
-                if(button.length==0) {
-                    button = el.parent()
-                        .siblings('.row')
-                        .find('.show-form');
+            onModelUpdated: function () {
+                this.switchToText();
+            },
+
+            onModelLiveUpdated: function () {
+                if (!this.textElem) {
+                    this.textElem = this.$('.model-field.text');
                 }
-                button.trigger("click");
+
+                var newEscapedText = _.escape(this.model.get('text'));
+                this.textElem.html(newEscapedText);
             },
 
-            onRender: function() {
-                this.stickit();
-                return this;
-            },
+            switchToText: function () {
+                var escapedText = _.escape(this.model.get('text'));
+                this.textElem.html(escapedText)
+                             .attr('contenteditable', false);
 
-            initialize: function () {
-                Backbone.Validation.bind(this);
+                // unbind the bindings
+                Backbone.Validation.unbind(this);
             }
-        });
+        })
+    );
+
+    App.Comment.Views.CommentsCompositeView = Marionette.CompositeView.extend({
+        tagName: 'section',
+        className: 'comment-list',
+        template: CommentsTpl,
+        childView: App.Comment.Views.SingleCommentCompositeView,
+        childViewContainer: '.comments-region',
+
+        ui: {
+            foldButton: '.fold',
+            unfoldButton: '.unfold'
+        },
+
+        triggers: {
+            'click @ui.foldButton': 'list:fold',
+            'click @ui.unfoldButton': 'list:unfold'
+        },
+
+        events: {
+            'submit .comments-form': 'submit',
+            'mouseup p': 'selectText'
+        },
+
+        behaviors: {
+            ServerValidation: {
+                behaviorClass: ServerValidation
+            },
+            Collapse: {
+                behaviorClass: Collapse,
+                maxEntries: 3
+            }
+        },
+
+        bindings: {
+            '.comments-form [name=text]': {
+                observe: 'text',
+                setOptions: {
+                    validate: true
+                }
+            }
+        },
+
+        submit: function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            // To event in controller
+            if (!this.model.validationError) {
+                this.trigger('form:submit', this.model);
+            }
+        },
+
+        // Refresh model and form for the futher using without
+        // view rendering
+        onModelRefresh: function (newModel) {
+            this.unstickit();
+            this.model = newModel;
+            this.stickit();
+            Backbone.Validation.bind(this);
+            this.hideCommentForm(this.$el);
+        },
+
+        hideCommentForm: function (el) {
+            var button = el.parent()
+                .siblings('.row')
+                .find('.add-comment');
+
+            if(button.length==0) {
+                button = el.parent()
+                    .siblings('.row')
+                    .find('.show-form');
+            }
+
+            button.trigger("click");
+        },
+
+        onRender: function() {
+            this.stickit();
+        },
+
+        initialize: function () {
+            Backbone.Validation.bind(this);
+        }
     });
 
     return App.Comment.Views.CommentsCompositeView;

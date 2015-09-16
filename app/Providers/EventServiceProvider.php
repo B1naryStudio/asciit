@@ -16,16 +16,31 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\QuestionWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\QuestionToBroadcasting',
         ],
+        'App\Events\QuestionWasUpdated' => [
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\QuestionUpdatingToBroadcasting',
+        ],
         'App\Events\QuestionWasRemoved' => [
-            'App\Listeners\QuestionRemovingToBroadcasting',
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\QuestionRemovingToBroadcasting',
         ],
         'App\Events\AnswerWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\AnswerToBroadcasting',
             'App\Listeners\DeliveryHandlers\HttpHandlers\AnswerToHttp',
         ],
+        'App\Events\AnswerWasUpdated' => [
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\AnswerUpdatingToBroadcasting'
+        ],
+        'App\Events\AnswerWasRemoved' => [
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\AnswerRemovingToBroadcasting',
+        ],
         'App\Events\CommentWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentToBroadcasting',
             'App\Listeners\DeliveryHandlers\HttpHandlers\CommentToHttp',
+        ],
+        'App\Events\CommentWasUpdated' => [
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentUpdatingToBroadcasting',
+        ],
+        'App\Events\CommentWasRemoved' => [
+            'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentRemovingToBroadcasting',
         ],
         'App\Events\VoteWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\VoteToBroadcasting',

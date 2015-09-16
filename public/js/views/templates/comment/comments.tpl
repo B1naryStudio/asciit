@@ -1,3 +1,8 @@
+<div class="folding-controls">
+    <div class="control unfold"><%= _t("ui.showMore", {num: ""}) %></div>
+    <div class="control fold"><%= _t("ui.fold") %></div>
+</div>
+
 <ul class="list-group comments-region"></ul>
 
 <div class="panel panel-default comment-form" tabindex="-1">

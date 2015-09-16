@@ -1,10 +1,19 @@
 define([
     'app',
+    'backbone',
     'models/model-mixins'
-], function(App, ModelMixins) {
-    App.module('Comment', function(Comment, App, Backbone, Marionette, $, _) {
-        Comment.Model = Backbone.Model.extend(
-            _.extend({}, ModelMixins.RelativeTimestampsModel, {
+], function (
+    App,
+    Backbone,
+    ModelMixins
+) {
+    App.Comment.Models.Model = Backbone.Model.extend(
+        _.extend(
+            {},
+            ModelMixins.RelativeTimestampsModel,
+            ModelMixins.Ownership,
+            ModelMixins.LiveModel,
+            {
                 defaults: {
                     'text': ''
                 },
@@ -18,57 +27,51 @@ define([
                     this.urlRoot = App.prefix + '/api/v1/questions/'
                         + options.q_and_a_id
                         + '/comments';
+                    if (this.id) {
+                        this.liveURI = 'comments/' + this.id;
+                        this.startLiveUpdating();
+                    }
 
                     this.attachLocalDates();
                     this.on('change', this.attachLocalDates);
                 }
-            })
-        );
-
-        Comment.Collection = Backbone.Collection.extend(
-            _.extend({}, ModelMixins.LiveCollection, {
-                model: Comment.Model,
-
-                initialize: function (models, options) {
-                    this.liveURI = 'entries/'
-                        + options.q_and_a_id
-                        + '/comments';
-
-                    this.url = App.prefix + '/api/v1/questions/'
-                        + options.q_and_a_id
-                        + '/comments';
-
-                    this.startLiveUpdating();
-                }
-            })
-        );
-
-        var API = {
-            addComment: function (model) {
-                var defer = $.Deferred();
-
-                if (!model.save([], {
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })) {
-                    defer.reject({
-                        description: 'Server error, saving is impossible.'
-                    });
-                }
-
-                return defer.promise();
             }
-        };
+        )
+    );
 
-        App.reqres.setHandler('comment:add', function (data) {
-            return API.addComment(data);
+    App.Comment.Models.Collection = Backbone.Collection.extend(
+        _.extend({}, ModelMixins.LiveCollection, {
+            model: App.Comment.Models.Model,
+
+            initialize: function (models, options) {
+                this.liveURI = 'entries/'
+                    + options.q_and_a_id
+                    + '/comments';
+
+                this.url = App.prefix + '/api/v1/questions/'
+                    + options.q_and_a_id
+                    + '/comments';
+
+                this.startLiveUpdating();
+            }
         })
+    );
+
+    var API = ModelMixins.API;
+
+    App.reqres.setHandler('comment:add', function (model) {
+        return API.deferOperation('save', model);
     });
-    return App.Comment;
+
+    App.reqres.setHandler('comment:update', function (model) {
+        return API.deferOperation('save', model);
+    });
+
+    App.reqres.setHandler('comment:delete', function (model) {
+        return API.deferOperation('destroy', model, [], {
+            wait: true
+        });
+    });
+
+    return App.Comment.Models;
 });

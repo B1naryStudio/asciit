@@ -1,190 +1,132 @@
 define([
     'app',
+    'backbone',
     'paginator',
     'models/model-mixins',
     'stickit'
-], function(App, PageableCollection, ModelMixins) {
-    App.module('Folder', function(Folder, App, Backbone, Marionette, $, _) {
-        Folder.Model = Backbone.Model.extend(
-            _.extend({}, ModelMixins.LiveModel, {
-                urlRoot: App.prefix + '/api/v1/folders',
-                defaults: {
-                    'title': ''
-                },
-                validation: {
-                    title: {
-                        required: true,
-                        msg: i18n.t('validation.required-field')
-                    }
-                },
-                initialize: function (options) {
-                    if (this.id) {
-                        this.liveURI = 'folders/' + this.id;
-                        this.startLiveUpdating();
-                    }
+], function (
+    App,
+    Backbone,
+    PageableCollection,
+    ModelMixins
+) {
+    App.Folder.Models.Model = Backbone.Model.extend(
+        _.extend({}, ModelMixins.LiveModel, {
+            urlRoot: App.prefix + '/api/v1/folders',
+            defaults: {
+                'title': ''
+            },
+            validation: {
+                title: {
+                    required: true,
+                    msg: i18n.t('validation.required-field')
                 }
-            })
-        );
+            },
+            initialize: function (options) {
+                if (this.id) {
+                    this.liveURI = 'folders/' + this.id;
+                    this.startLiveUpdating();
+                }
+            }
+        })
+    );
 
-        Folder.Collection = Backbone.Collection.extend({
-            model: Folder.Model,
-            url: App.prefix + '/api/v1/folders',
+    App.Folder.Models.Collection = Backbone.Collection.extend({
+        model: App.Folder.Models.Model,
+        url: App.prefix + '/api/v1/folders',
+        sortKey: 'id',
+
+        comparator: function (model1, model2) {
+            var compareField = this.sortKey;
+
+            if (model1.get(compareField) > model2.get(compareField)) {
+                return -1; // before
+            } else if (model2.get(compareField) > model1.get(compareField)) {
+                return 1; // after
+            } else {
+                return 0; // equal
+            }
+        }
+    });
+
+    App.Folder.Models.Folders = PageableCollection.extend(
+        _.extend({}, ModelMixins.LiveCollection, {
+            model: App.Folder.Models.Model,
+            url: App.prefix + '/api/v1/crud-folders',
+            liveURI: 'folders',
             sortKey: 'id',
+            order: 'desc',
 
             comparator: function (model1, model2) {
                 var compareField = this.sortKey;
 
                 if (model1.get(compareField) > model2.get(compareField)) {
                     return -1; // before
-                } else if (model2.get(compareField) > model1.get(compareField)) {
+                } else if (
+                    model2.get(compareField) > model1.get(compareField)
+                ) {
                     return 1; // after
                 } else {
                     return 0; // equal
                 }
+            },
+            state: {
+                firstPage: 1,
+                pageSize: 10
+            },
+            queryParams: {
+                currentPage: 'page',
+                pageSize: 'page_size',
+                orderBy: function () {
+                    return this.sortKey;
+                },
+                sortedBy: 'desc'
+            },
+            initialize: function (options) {
+                this.sort();
+                this.startLiveUpdating();
             }
-        });
+        })
+    );
 
-        Folder.Folders = PageableCollection.extend(
-            _.extend({}, ModelMixins.LiveCollection, {
-                model: Folder.Model,
-                url: App.prefix + '/api/v1/crud-folders',
-                liveURI: 'folders',
-                sortKey: 'id',
-                order: 'desc',
+    var API = _.extend({}, ModelMixins.API, {
+        folderCollection: function (page) {
+            var folders = new App.Folder.Models.Collection();
+            return this.deferOperation('fetch', folders);
+        },
 
-                comparator: function (model1, model2) {
-                    var compareField = this.sortKey;
+        getFolders: function (data) {
+            var options = data.options ? data.options : {};
+            delete data.options;
+            var folders = new App.Folder.Models.Folders(data, options);
 
-                    if (model1.get(compareField) > model2.get(compareField)) {
-                        return -1; // before
-                    } else if (
-                        model2.get(compareField) > model1.get(compareField)
-                    ) {
-                        return 1; // after
-                    } else {
-                        return 0; // equal
-                    }
-                },
-                state: {
-                    firstPage: 1,
-                    pageSize: 10
-                },
-                queryParams: {
-                    currentPage: 'page',
-                    pageSize: 'page_size',
-                    orderBy: function () {
-                        return this.sortKey;
-                    },
-                    sortedBy: 'desc'
-                },
-                initialize: function (options) {
-                    this.sort();
-                    this.startLiveUpdating();
-                }
-            })
-        );
-
-        var API = {
-            folderCollection: function (page) {
-                var folders = new Folder.Collection();
-                return this.fetch(folders);
-            },
-
-            fetch: function (collection) {
-                var defer = $.Deferred();
-                if (!collection.fetch({
-                        success: function (data) {
-                            defer.resolve(data);
-                        },
-                        error: function (model, response) {
-                            defer.reject({
-                                status: response.status,
-                                error: model.validationError
-                            });
-                        }
-                    })
-                ) {
-                    defer.reject({
-                        error: 'Server error, saving is impossible.'
-                    });
-                }
-                return defer.promise();
-            },
-
-            addFolder: function (model) {
-                var defer = $.Deferred();
-
-                if (!model.save([], {
-                        wait: true,
-                        success: function (newModel, attributes, options) {
-                            defer.resolve(newModel);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })
-                ) {
-                    defer.reject({
-                        description: 'Server error, saving is impossible.'
-                    });
-                }
-                return defer.promise();
-            },
-
-            updateFolder: function (model) {
-                return this.addFolder(model);
-            },
-
-            getFolders: function (data) {
-                var options = data.options ? data.options : {};
-                delete data.options;
-                var questions = new Folder.Folders(data, options);
-                return this.fetch(questions);
-            },
-
-            deleteFolder: function (model) {
-                var defer = $.Deferred();
-                if (!model.destroy({
-                        wait: true,
-                        success: function () {
-                            defer.resolve(model);
-                        },
-                        error: function (model, xhr, options) {
-                            var errors = JSON.parse(xhr.responseText);
-                            defer.reject(errors);
-                        }
-                    })) {
-                    defer.reject({
-                        description: 'Server error, deleting is impossible.'
-                    });
-                }
-                return defer.promise();
-            }
-        };
-
-        App.reqres.setHandler('folders:fetch', function (collection) {
-            return API.fetch(collection);
-        });
-
-        App.reqres.setHandler('folder:collection', function () {
-            return API.folderCollection();
-        });
-
-        App.reqres.setHandler('folder:add', function (collection, model) {
-            return API.addFolder(collection, model);
-        });
-
-        App.reqres.setHandler('folders:get', function (data) {
-            return API.getFolders(data);
-        });
-
-        App.reqres.setHandler('folder:update', function (model) {
-            return API.updateFolder(model);
-        });
-
-        App.reqres.setHandler('folder:delete', function (model) {
-            return API.deleteFolder(model);
-        });
+            return this.deferOperation('fetch', folders);
+        }
     });
+
+    App.reqres.setHandler('folders:fetch', function (collection) {
+        return API.deferOperation('fetch', collection);
+    });
+
+    App.reqres.setHandler('folder:collection', function () {
+        return API.folderCollection();
+    });
+
+    App.reqres.setHandler('folder:add', function (model) {
+        return API.deferOperation('save', model);
+    });
+
+    App.reqres.setHandler('folders:get', function (data) {
+        return API.getFolders(data);
+    });
+
+    App.reqres.setHandler('folder:update', function (model) {
+        return API.deferOperation('save', model);
+    });
+
+    App.reqres.setHandler('folder:delete', function (model) {
+        return API.deferOperation('destroy', model);
+    });
+
+    return App.Folder.Models;
 });

@@ -19,7 +19,7 @@
                          <%- created_relative %>
                     </time>
                 </span>
-                <h2><%- title %></h2>
+                <h2 class="model-field"><%- title %></h2>
                 <div class="folder">
                     <span class="icon glyphicon glyphicon-folder-open"></span>
                     <a href="#folders/<%- folder.title %>"><%- folder.title %></a>
@@ -31,19 +31,23 @@
             </div>
         </div>
         <!-- Text -->
-        <p><%= description %></p>
+        <p class="model-field"><%= description %></p>
+        <div class="error-block hidden"></div>
         <!-- Actions -->
         <div class="actions">
             <!-- Controls -->
-            <div class="controls">
-                <!--span class="edit"><i class="fa fa-pencil"></i></span-->
+            <div class="entry-controls">
+                <span class="control edit"
+                      title="<%- _t('ui.edit') %>">
+                    <i class="fa fa-pencil"></i>
+                </span>
                 <span class="delete"
                       title="<%- _t('ui.delete') %>">
                     <i class="fa fa-times"></i>
                 </span>
             </div>
             <!-- Comments -->
-            <div class="comments">
+            <div class="related-controls">
                 <button class="btn btn-default btn-xs add-comment"><%- _t("comment.add") %></button>
                 <button class="btn btn-default btn-xs add-answer"><%- _t("answers.add") %></button>
             </div>

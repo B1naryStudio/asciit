@@ -12,6 +12,22 @@ use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
+    public function __construct() {
+        $this->admin = [
+            'id' =>  '55dc13391846c68a1ad56daa',
+            'email' =>  'admin@admin',
+            'role' => 'ADMIN',
+            'iat' => 1440615292
+        ];
+
+        $this->dev = [
+            'id' =>  '55dd8be1fd5d69885b0bc0c7',
+            'email' =>  'dev@asciit.local',
+            //'role' => 'ADMIN',
+            'iat' => 1441785864
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,20 +35,15 @@ class AuthController extends Controller
      */
     public function auth(Request $request)
     {
-        $customClaims = [
-            'id' =>  '55dc13391846c68a1ad56daa',
-            'email' =>  'admin@admin',
-            'role' => 'ADMIN',
-            'iat' => 1440615292
-        ];
+        $userData = $this->admin;
 
-        $payload = JWTFactory::make($customClaims);
+        $payload = JWTFactory::make($userData);
         $data = JWTAuth::encode($payload);
         $redirectPath = $request->cookie('referer');
 
         return Redirect::to($redirectPath, 303)
             ->withCookie('x-access-token', $data->get())
-            ->withCookie('serverUID', '55dc13391846c68a1ad56daa');
+            ->withCookie('serverUID', $userData['id']);
     }
 
     /**

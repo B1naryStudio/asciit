@@ -25,7 +25,13 @@
             {
                 name: 'media',
                 items: [
-                    'Image', 'CodeSnippet', 'SimpleLink'
+                    'Image', 'SimpleLink'
+                ]
+            },
+            {
+                name: 'code-snippets',
+                items: [
+                    'CodeSnippet', 'JSFiddle'
                 ]
             },
             {
@@ -87,6 +93,8 @@
 
         // Downloaded skins: icy_orange, minimalist, moono
         config.skin = 'icy_orange';
+
+        config.allowedContent = true;
 
         // Color of the toolbar (changes '-' placeholders color)
         //config.uiColor = '#f5f5f5';

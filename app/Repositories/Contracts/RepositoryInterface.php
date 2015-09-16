@@ -55,11 +55,13 @@ interface RepositoryInterface extends BaseRepositoryInterface
 
     /**
      * @param $model
-     * @param $method
-     * @param array $data
+     * @param $relationName
+     * @param array $modelsToBind
      * @return mixed
      */
-    public function relationsAdd($model, $method, array $data);
+    public function relationsAdd($model, $relationName, $modelsToBind);
+
+    public function relationsDestroy($model, $relationName, $modelIds);
 
     public function pushCriteria(CriteriaInterface $criteria);
 

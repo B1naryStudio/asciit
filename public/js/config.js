@@ -1,0 +1,1 @@
+var jsPath = document.getElementById('config-jspath').value;

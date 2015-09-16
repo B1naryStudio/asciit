@@ -1,0 +1,86 @@
+{
+    "app": {
+        "currentLanguage": "EN"
+    },
+    "questions": {
+        "all": "Questions",
+        "add": "Ask",
+        "my": "My questions",
+        "add-title": "Add a new question",
+        "edit-title": "Edit the question",
+        "title": "Title",
+        "description": "Description",
+        "empty": "There is no questions. You can be the first!",
+        "confirm-del-title": "Question deleting confirm",
+        "confirm-del-body": "Do you really want to delete this question?"
+    },
+    "folders" : {
+        "folders": "Folders",
+        "folder": "Folder",
+        "add": "Create a new folder",
+        "title": "Title",
+        "select": "Select a folder",
+        "confirm-title": "Folder deleting confirm",
+        "confirm-body": "All questions in this folder will be removed. Do you really want to delete this folder?"
+    },
+    "answers": {
+        "answers": "Answers",
+        "add": "Add answer",
+        "your": "Your answer",
+        "my": "My answers",
+        "for": "For question"
+    },
+    "comment": {
+        "add": "Add comment",
+        "your": "Your comment"
+    },
+    "tags": {
+        "tags": "Tags",
+        "popular": "Popular tags",
+        "select": "Select tags"
+    },
+    "search": {
+        "placeholder": "Search it...",
+        "tagInfo": "To search by tags enter: ",
+        "folderInfo": "To search by folders enter: ",
+        "tagInfoSpan": "\"tag:tag title\"",
+        "folderInfoSpan": "\"folder:folder title\"",
+        "searchInfo": "To search by tags enter: \"tag:tag title\". <br> To search by folders enter: \"folder:folder title\""
+    },
+    "ui": {
+        "save": "Save",
+        "create": "Create",
+        "readMore": "Read more",
+        "showMore": "Show another __num__",
+        "fold": "Fold",
+        "login": "Login",
+        "logout": "Logout",
+        "login-title": "Please, login",
+        "password": "Password",
+        "empty": "Nothing here",
+
+        "up": "Up",
+        "down": "Down",
+
+        "yes": "Yes",
+        "no": "No",
+
+        "like": "Like",
+        "dislike": "Dislike",
+
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+
+        "confirm-title": "Confirmation",
+        "confirm-body": "Do you really want to perform this action?",
+
+        "server-error": "Server error! Cannot perform the operation!"
+    },
+    "validation": {
+        "required-field": "This field is required.",
+        "invalid-value": "Please, insert a valid value for this field.",
+        "login-error": "Wrong login or password!"
+    }
+}
