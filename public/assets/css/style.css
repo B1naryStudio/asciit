@@ -910,6 +910,11 @@ body {
     min-width: 320px;
 }
 
+.code-snippet.jsfiddle {
+    width: 100%;
+    border: none;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Blockquotes
