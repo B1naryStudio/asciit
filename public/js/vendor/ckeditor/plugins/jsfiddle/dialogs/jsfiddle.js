@@ -16,13 +16,12 @@
                         label: "URL",
                         validate: CKEDITOR.dialog.validate.regex(
                             /(ftp|http|https):\/\/jsfiddle.net\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
-                            "Please enter a valid url of JSFiddle code-snippet."
+                            editor.lang.jsfiddle.urlValidation
                         )
                     },
-                    {          // Explanation
+                    {   // Explanation
                         type: "html",
-                        html: "<p>The Link will be used for downloading content " +
-                        "from your JSFiddle code-snippet.</p>"
+                        html: "<p>" + editor.lang.jsfiddle.urlDescription + "</p>"
                     }
                 ]
             }],
@@ -31,7 +30,6 @@
                     'embedded/';
 
                 var iframe = editor.document.createElement('iframe');
-
                 iframe.setAttribute('src', url);
                 iframe.setAttribute('class', 'code-snippet jsfiddle ');
 

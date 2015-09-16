@@ -912,6 +912,7 @@ body {
 
 .code-snippet.jsfiddle {
     width: 100%;
+    border: none;
 }
 
 /*
