@@ -125,11 +125,14 @@ define([
                 var previousDescription = this.model.previous('description');
                 this.model.set({description: previousDescription});
                 this.editableField.html(previousDescription);
+
+                this.triggerMethod('iframe:resize');
             },
 
             onModelUpdated: function () {
                 this.editor.destroy();
                 this.editableField.attr('contenteditable', false);
+                this.triggerMethod('iframe:resize');
             },
 
             onShow: function () {
