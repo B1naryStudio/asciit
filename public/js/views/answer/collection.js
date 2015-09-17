@@ -16,7 +16,7 @@ define([
     'views/view-behaviors/code-highlighter',
     'views/view-behaviors/server-validation',
     'views/view-behaviors/fold-collection-items',
-    'views/view-behaviors/load-styles',
+    'views/view-behaviors/iframes-height',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
@@ -39,7 +39,7 @@ define([
     CodeHighlighter,
     ServerValidation,
     FoldCollectionItems,
-    LoadStyles
+    IframesHeight
 ) {
     App.Answer.Views.SingleAnswerLayoutView = Marionette.LayoutView.extend(
         _.extend({}, ViewsMixins.SelectText, {
@@ -93,8 +93,8 @@ define([
                 ServerValidation: {
                     behaviorClass: ServerValidation
                 },
-                LoadStyles : {
-                    behaviorClass: LoadStyles
+                IframesHeight : {
+                    behaviorClass: IframesHeight
                 }
             },
 

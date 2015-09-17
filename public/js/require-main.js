@@ -13,6 +13,7 @@ requirejs.config({
         jquery: 'vendor/jquery/jquery',
         'jquery.scroll': 'vendor/jquery/jquery.scrollTo',
         'jquery.elastic': 'vendor/jquery/jquery.elastic.source.antarus66fork',
+        'jquery.iframeheight': 'vendor/jquery/jquery.iframeheight',
         marionette: 'vendor/backbone.marionette/backbone.marionette',
         underscore: 'vendor/backbone/underscore',
         bootstrap: 'vendor/bootstrap/bootstrap',
@@ -56,6 +57,7 @@ requirejs.config({
         },
         'jquery.scroll': ['jquery'],
         'jquery.elastic': ['jquery'],
+        'jquery.iframeheight': ['jquery'],
         updown: ['jquery.scroll']
     }
 });

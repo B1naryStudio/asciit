@@ -5,6 +5,7 @@ define([
     'tpl!views/templates/question/row-by-user.tpl',
     'views/tag/view',
     'views/view-behaviors/code-highlighter',
+    'views/view-behaviors/iframes-height',
     'models/tag',
     'syphon'
 ], function (
@@ -13,7 +14,8 @@ define([
     Backbone,
     QuestionTpl,
     TagView,
-    CodeHighlighter
+    CodeHighlighter,
+    IframesHeight
 ) {
     App.Question.Views.QuestionCollectionRow = Marionette.LayoutView.extend({
         tagName: 'div',
@@ -25,6 +27,9 @@ define([
         behaviors: {
             CodeHighlighter: {
                 behaviorClass: CodeHighlighter
+            },
+            IframesHeight : {
+                behaviorClass: IframesHeight
             }
         },
         onShow: function () {

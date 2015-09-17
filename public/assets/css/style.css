@@ -910,8 +910,9 @@ body {
     min-width: 320px;
 }
 
-.code-snippet.jsfiddle {
+.code-snippet {
     width: 100%;
+    height: 200px;
     border: none;
 }
 
