@@ -1,7 +1,7 @@
 define([
     'app',
     'marionette',
-    'jquery.iframeheight'
+    'jquery.iframe-resizer'
 ], function (
     App,
     Marionette
@@ -10,13 +10,16 @@ define([
         onShow: function() {
             var self = this;
 
-            this.$('iframe.full-height').each(function (i, elem) {
-                $elem = $(elem);
-                $elem.attr('id', 'code-snippet-' + self.view.cid + '-' + i);
-                $elem.iframeHeight({
-                    blockCrossDomain: true
-                });
-            });
+            // Cannot set 'this.el' in 'defaults'
+            var searchIn = this.options.searchIn || this.el;
+            $(searchIn)
+                .find('iframe.full-height')
+                .each(function (i, elem) {
+                    var $elem = $(elem);
+                    $elem.attr('id', 'code-snippet-' + self.view.cid + '-' + i);
+                    $elem.iFrameResize();
+                }
+            );
         }
     });
 

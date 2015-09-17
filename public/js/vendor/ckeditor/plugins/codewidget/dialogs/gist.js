@@ -30,8 +30,9 @@
             onOk: function () {
                 var iframe = editor.document.createElement('iframe');
                 var link = this.getValueOf('GitHubGist', 'gistURL');
-                var iframeSrc = editor.config.gistApi + '?link=' + link
-                iframe.setAttribute('src', iframeSrc);
+                var iframeSrcLink = editor.config.gistApi + '?link=' + link;
+                iframe.setAttribute('src', iframeSrcLink);
+                iframe.sandbox='allow-same-origin';
                 iframe.setAttribute('class', 'code-snippet gist full-height');
 
                 editor.insertElement(iframe);

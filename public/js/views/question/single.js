@@ -75,7 +75,8 @@ define([
                     behaviorClass: CodeHighlighter
                 },
                 IframesHeight : {
-                    behaviorClass: IframesHeight
+                    behaviorClass: IframesHeight,
+                    searchIn: '.question_view'
                 }
             },
 
