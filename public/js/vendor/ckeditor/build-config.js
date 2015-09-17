@@ -51,7 +51,7 @@ var CKBUILDER_CONFIG = {
 	],
 	plugins : {
         'ajax': 1,
-		'SimpleLink' : 1,
+		'SimpleLink' : 0,
 		'basicstyles' : 1,
 		'blockquote' : 1,
 		'codesnippet' : 1,

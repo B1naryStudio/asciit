@@ -1,5 +1,5 @@
 CKEDITOR.plugins.add( 'linkwithpreview', {
-    icons: 'link',
+    requires: 'ajax',
     init: function (editor) {
         editor.addCommand(
             'linkwithpreview',
@@ -7,7 +7,7 @@ CKEDITOR.plugins.add( 'linkwithpreview', {
         );
         editor.ui.addButton( 'LinkWithPreview', {
             label: 'Add a link with preview',
-            icons: 'link',
+            icon: this.path + 'icons/linkwithpreview.png',
             command: 'linkwithpreview'
         });
         CKEDITOR.dialog.add(

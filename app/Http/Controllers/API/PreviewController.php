@@ -11,24 +11,32 @@ use App\Services\Questions\Contracts\QuestionServiceInterface;
 
 class PreviewController extends Controller
 {
-    public function __construct(QuestionServiceInterface $questionService)
+    public function __construct (QuestionServiceInterface $questionService)
     {
         $this->middleware('auth');
         $this->middleware('rbac');
     }
 
-    public function index(Request $request)
+    private function openGraphPreview ($url)
     {
         $curl = curl_init();
         curl_setopt($curl,CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl,CURLOPT_URL, $request->query->get('url'));
+        curl_setopt($curl,CURLOPT_URL, $url);
         $result = curl_exec($curl);
         curl_close($curl);
-        $r = preg_replace("/(.*)meta\\sproperty=\"og:image\"\\scontent=\"(.+?)\"(.*)/s", '$2', $result);
-        if (strlen($r) !== strlen($result)) {
-            $url = $r;
-        } else {
-            $url = 'http://javascript.ru/forum/images/ca_serenity/misc/logo.gif';
+        $r = preg_replace(
+            "/(.*)meta\\s*property=\"og:image\"\\s*content=\"(.+?)\"(.*)/s",
+            '$2',
+            $result
+        );
+        return strlen($r) !== strlen($result) ? $r : '';
+    }
+
+    public function index (Request $request)
+    {
+        $url = $this->openGraphPreview($request->query->get('url'));
+        if (empty($url)) {
+            $url = env('LINK_PREVIEW_DEFAULT');
         }
         return Response::json([
             'url' => $url

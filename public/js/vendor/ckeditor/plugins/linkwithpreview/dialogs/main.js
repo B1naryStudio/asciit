@@ -28,11 +28,12 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                                 href = 'http://' + href;
                             }
                             this.setValue(href);
+                            this._.dialog.definition.restart(href);
                         }
 
                         document.getElementById(this.domId)
                             .addEventListener('keyup', function (e) {
-                                definition.restart(e);
+                                definition.restart(e.target.value);
                             });
                     },
                     commit: function (element) {
@@ -102,45 +103,42 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
             if (this.insertMode) {
                 var wrapper = editor.document.createElement('div');
                 wrapper.setAttribute('id', 'link-preview-result-wrapper');
-                debugger;
-                wrapper.setAttribute('width', '100');
-                wrapper.setAttribute('margin', '0 auto');
+                wrapper.setAttribute('style', 'width: 100px;margin: 0 auto;');
                 var image = editor.document.createElement('img');
-                image.setAttribute('src', this.preview.getAttribute('src'));
-                image.setAttribute('width', '100%');
+                image.setAttribute('src', this.preview.$[0].getAttribute('src'));
+                image.setAttribute('style', 'width:100%');
                 wrapper.append(image);
                 wrapper.append(this.element);
                 editor.insertElement(wrapper);
             }
         },
-        process: function (e) {
+        process: function (url) {
             var self = this;
-            var data = CKEDITOR.ajax.load('/link-preview?url=' +
-                encodeURIComponent(e.target.value), function (data) {
-                debugger;
+            CKEDITOR.ajax.load(editor.config.linkwithpreviewUrl +
+                encodeURIComponent(url), function (data) {
                 data = JSON.parse(data);
                 self.preloadHide(data.url);
             } );
-            debugger;
         },
-        restart: function (e) {
+        restart: function (url) {
             this.preloadShow();
             if (this.timerId) {
                 clearTimeout(this.timerId);
             }
             var self = this;
             this.timerId = setTimeout(function () {
-                self.process(e);
-            }, 1000);
+                self.process(url);
+            }, 2000);
         },
         preloadShow: function () {
-            this.dialog.preview.setAttribute(
+            this.dialog.preview.$[0].setAttribute(
                 'src',
-                this._.editor.plugins.linkwithpreview.path + 'icons/preload.gif'
+                editor.plugins.linkwithpreview.path + 'icons/loader.gif'
             );
+            this.dialog.preview.$[0].style.display = 'block';
         },
         preloadHide: function (image) {
-            this.dialog.preview.setAttribute('src', image);
+            this.dialog.preview.$[0].setAttribute('src', image);
         }
     };
 });

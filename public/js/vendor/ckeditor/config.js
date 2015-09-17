@@ -25,7 +25,7 @@
             {
                 name: 'media',
                 items: [
-                    'Image', 'SimpleLink', 'LinkWithPreview'
+                    'Image', 'LinkWithPreview'
                 ]
             },
             {
@@ -95,6 +95,7 @@
         config.skin = 'icy_orange';
 
         config.allowedContent = true;
+        config.linkwithpreviewUrl = '/link-preview?url=';
 
         // Color of the toolbar (changes '-' placeholders color)
         //config.uiColor = '#f5f5f5';
