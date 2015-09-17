@@ -14,10 +14,28 @@
                         type: "text",
                         id: "gistURL",
                         label: "URL",
-                        validate: CKEDITOR.dialog.validate.regex(
-                            /(ftp|http|https):\/\/gist.github.com\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
-                            editor.lang.codewidget.gist.urlValidation
-                        )
+                        validate: function () {
+                            // Check link by pattern
+                            var reg = new RegExp(
+                                /(ftp|http|https):\/\/gist.github.com\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+                            );
+                            var link = this.getValue();
+
+                            if (!reg.exec(link)) {
+                                return editor.lang.codewidget.gist.urlValidation;
+                            }
+
+                            // Check is this link returns a real gist
+                            var iframeSrcLink = editor.config.gistApi +
+                                                '?link=' +
+                                                link;
+                            var data = CKEDITOR.ajax.load(iframeSrcLink);
+
+                            if (!data) {
+                                return editor.lang.codewidget.gist
+                                    .urlReturnsGistValidation;
+                            }
+                        }
                     },
                     {   // Explanation
                         type: "html",
@@ -28,9 +46,12 @@
                 ]
             }],
             onOk: function () {
-                var iframe = editor.document.createElement('iframe');
                 var link = this.getValueOf('GitHubGist', 'gistURL');
-                var iframeSrcLink = editor.config.gistApi + '?link=' + link;
+                var iframeSrcLink = editor.config.gistApi +
+                    '?link=' +
+                    link;
+
+                var iframe = editor.document.createElement('iframe');
                 iframe.setAttribute('src', iframeSrcLink);
                 iframe.sandbox='allow-same-origin';
                 iframe.setAttribute('class', 'code-snippet gist full-height');

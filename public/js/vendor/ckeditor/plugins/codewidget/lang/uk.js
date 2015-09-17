@@ -10,6 +10,7 @@ CKEDITOR.plugins.setLang('codewidget', 'uk', {
         buttonTitle:    "Додати GitHub Gist",
         urlValidation:  "Пожалуйста, введите корректную URL-ссылку на " +
                         "GitHub Gist",
+        urlReturnsGistValidation:  "GitHub Gist не знайдено за цим URL.",
         urlDescription: "Посилання буде використано для створення віджету з " +
                         "GitHub Gist."
     }
