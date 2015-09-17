@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>GitHub Gist</title>
         <link rel="stylesheet" type="text/css" href="{{ $stylesheet_link }}">
+        <style>
+            body {
+                margin: 0;
+            }
+        </style>
     </head>
     <body>
     {!! $snippet !!}

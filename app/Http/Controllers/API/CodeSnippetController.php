@@ -19,13 +19,15 @@ class CodeSnippetController extends Controller
     public function getGistWidget(Request $request, DataGrabber $grabber)
     {
         $link = $request->get('link') . '.json';
+        $prefix = env('SERVER_PREFIX', '');
+
         try {
             $data = $grabber->getFromJson($link);
         } catch (\RuntimeException $e) {
-            return Response::json([$e->getMessage()], 400);
+            return Response::view('errors.404gist', [
+                'js_path' => ($prefix ? '/' : '' ) . env('JS_PATH'),
+            ],  404);
         }
-
-        $prefix = env('SERVER_PREFIX', '');
 
         return Response::view('widgets.gist', [
             'stylesheet_link' => $data->stylesheet,

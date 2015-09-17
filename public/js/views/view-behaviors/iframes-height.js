@@ -22,9 +22,7 @@ define([
                 .each(function (i, elem) {
                     var $elem = $(elem);
                     $elem.attr('id', 'code-snippet-' + self.view.cid + '-' + i);
-                    $elem.iFrameResize({
-                        bodyMargin: "0"
-                    });
+                    $elem.iFrameResize();
                 }
             );
         }
