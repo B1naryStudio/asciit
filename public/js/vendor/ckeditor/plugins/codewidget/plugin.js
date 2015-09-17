@@ -9,7 +9,7 @@
             );
             editor.addCommand(
                 'gitgist',
-                new CKEDITOR.dialogCommand('gitgistDialog')
+                new CKEDITOR.dialogCommand('gistDialog')
             );
 
             editor.ui.addButton('JSFiddle', {
@@ -26,6 +26,11 @@
             CKEDITOR.dialog.add(
                 'jsfiddleDialog',
                 this.path + 'dialogs/jsfiddle.js'
+            );
+
+            CKEDITOR.dialog.add(
+                'gistDialog',
+                this.path + 'dialogs/gist.js'
             );
         }
     });
