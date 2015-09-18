@@ -57,6 +57,8 @@
                 iframe.setAttribute('class', 'code-snippet gist full-height');
 
                 editor.insertElement(iframe);
+                var br = editor.document.createElement('br');
+                editor.insertElement(br);
             }
         }
     });
