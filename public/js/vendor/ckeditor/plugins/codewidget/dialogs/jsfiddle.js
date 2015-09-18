@@ -36,6 +36,8 @@
                 iframe.setAttribute('class', 'code-snippet jsfiddle ');
 
                 editor.insertElement(iframe);
+                var br = editor.document.createElement('br');
+                editor.insertElement(br);
             }
         }
     });

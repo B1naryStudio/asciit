@@ -914,6 +914,11 @@ body {
     width: 100%;
     min-height: 50px;
     border: none;
+    margin: 1em 0;
+}
+
+.code-snippet.jsfiddle {
+    height: 300px;
 }
 
 /*
