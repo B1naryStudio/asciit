@@ -27,5 +27,10 @@ class AuthServiceProvider extends ServiceProvider
             'App\Services\Auth\Contracts\AuthServiceInterface',
             'App\Services\Auth\AuthService'
         );
+
+        $this->app->bind(
+            'App\Services\Auth\Contracts\UserUpdater',
+            'App\Services\Auth\ProfileAPIUserUpdater'
+        );
     }
 }
