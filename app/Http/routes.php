@@ -67,6 +67,8 @@ Route::group(['prefix' => 'api/v1'], function() {
 
     Route::get('/questions-my', 'API\QuestionController@my');
     Route::get('/answers-my', 'API\Question\AnswerController@my');
+
+    Route::get('/gist-snippets', 'API\CodeSnippetController@getGistWidget');
 });
 
 Route::group(['prefix' => 'api/v1/widget'], function() {

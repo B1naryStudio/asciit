@@ -10,6 +10,7 @@ define([
     'views/view-behaviors/delete-button',
     'views/view-behaviors/contains-votes',
     'views/view-behaviors/code-highlighter',
+    'views/view-behaviors/iframes-height',
     'stickit',
     'highlight',
     'ckeditor',
@@ -26,7 +27,8 @@ define([
     HidingControls,
     DeleteButton,
     ContainsVotes,
-    CodeHighlighter
+    CodeHighlighter,
+    IframesHeight
 ) {
     App.Question.Views.QuestionLayout = Marionette.LayoutView.extend(
         _.extend({}, ViewsMixins.SelectText, {
@@ -71,6 +73,10 @@ define([
                 },
                 CodeHighlighter: {
                     behaviorClass: CodeHighlighter
+                },
+                IframesHeight : {
+                    behaviorClass: IframesHeight,
+                    searchIn: '.question_view'
                 }
             },
 
