@@ -21,14 +21,12 @@ class CodeSnippetController extends Controller
         $link = $request->get('link') . '.json';
         $prefix = env('SERVER_PREFIX', '');
         $jsPath = url(($prefix ? '/' : '' ) . env('JS_PATH'));
-        $cssPath = url(($prefix ? '/' : '' ) . 'assets/css');
 
         try {
             $data = $grabber->getFromJson($link);
         } catch (\RuntimeException $e) {
             return Response::view('errors.gist.404', [
                 'js_path'  => $jsPath,
-                'css_path' => $cssPath,
             ],  404);
         }
 
@@ -36,7 +34,6 @@ class CodeSnippetController extends Controller
             'stylesheet_link' => $data->stylesheet,
             'snippet'         => $data->div,
             'js_path' => $jsPath,
-            'css_path' => $cssPath,
         ]);
     }
 }
