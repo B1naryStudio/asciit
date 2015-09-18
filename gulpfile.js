@@ -165,6 +165,12 @@ gulp.task('js-vendor', function () {
         .pipe(gulp.dest(jsPathMinFull + 'vendor/autobahn'));
 
     gulp.src([
+        jsPathFull + 'vendor/snippet-iframe/**/*.js'
+    ])
+        .pipe(uglify())
+        .pipe(gulp.dest(jsPathMinFull + 'vendor/snippet-iframe'));
+
+    gulp.src([
         jsPathFull + 'vendor/jquery/jquery.elastic.*.js'
     ])
         .pipe(uglify())
