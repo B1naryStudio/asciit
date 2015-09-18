@@ -3,7 +3,7 @@
     <head>
         <title>GitHub Gist</title>
         <link rel="stylesheet" type="text/css" href="{{ $stylesheet_link }}">
-        <link href="{{ $css_path }}/widget/gist/style.css" rel="stylesheet">
+        <link href="assets/css/widget/gist/style.css" rel="stylesheet">
     </head>
     <body>
     {!! $snippet !!}

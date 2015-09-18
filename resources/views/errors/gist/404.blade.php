@@ -3,7 +3,7 @@
     <head>
         <title>GitHub Gist not found</title>
         <link href="//fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-        <link href="{{ $css_path }}/widget/gist/404.css" rel="stylesheet">
+        <link href="assets/css/widget/gist/404.css" rel="stylesheet">
     </head>
     <body>
         <div class="wrapper">
