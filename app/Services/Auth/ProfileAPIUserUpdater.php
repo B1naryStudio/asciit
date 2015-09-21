@@ -37,7 +37,7 @@ class ProfileAPIUserUpdater extends UserUpdater
         $preparedInfo = $this->prepareBaseInfo($userInfo);
 
         $user = $this->userRepository->updateFirstOrCreate(
-            ['email' => $preparedInfo['email']],
+            ['binary_id' => $preparedInfo['binary_id']],
             $preparedInfo
         );
 

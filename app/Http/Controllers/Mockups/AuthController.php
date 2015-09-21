@@ -19,7 +19,7 @@ class AuthController extends Controller
 
         $this->admin->payloadInfo = [
             'id' =>  '55dc13391846c68a1ad56daa',
-            'email' =>  'igor.oziyan@gmail.com',
+            'email' =>  'admin@admin',
             'role' => 'ADMIN',
             'iat' => 1440615292
         ];
