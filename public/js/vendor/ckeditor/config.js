@@ -95,7 +95,10 @@
         config.skin = 'icy_orange';
 
         config.allowedContent = true;
-        config.linkwithpreviewUrl = '/link-preview?url=';
+        config.linkwithpreview = {
+            url: '/link-preview?url=',
+            thumbnailWidth: 200 // px
+        };
 
         // Color of the toolbar (changes '-' placeholders color)
         //config.uiColor = '#f5f5f5';

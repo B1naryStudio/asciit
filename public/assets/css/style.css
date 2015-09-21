@@ -1311,22 +1311,22 @@ div .fa-05 {
     display: none;
 }
 
-#link-preview-wrapper {
-    width: 100px;
-    margin-left: auto;
-    margin-right: auto;
+.link-preview-wrapper {
+    width: 200px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
-#link-preview-image {
-    width: 100%;
+.link-preview-image {
+    width: 100% !important;
     display: none;
 }
 
-#link-preview-result-wrapper {
+.link-preview-result-wrapper {
     width: 50px;
 }
 
-#link-preview-result-wrapper img {
+.link-preview-result-wrapper img {
     width: 100%;
 }
 

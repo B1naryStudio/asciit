@@ -13,7 +13,7 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
             elements: [
                 {
                     type: 'html',
-                    html: '<div id="link-preview-wrapper"><img id="link-preview-image"></div>'
+                    html: '<div class="link-preview-wrapper"><img class="link-preview-image"></div>'
                 },
                 {
                     type: 'text',
@@ -21,6 +21,7 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                     id: 'edp-URL',
                     validate: CKEDITOR.dialog.validate.notEmpty('url cannot be empty.'),
                     setup: function (element, definition) {
+                        this._.dialog.preview.style.display = 'none';
                         var href = element.getAttribute('href');
                         var isExternalURL = /^(http|https):\/\//;
                         if (href) {
@@ -28,7 +29,11 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                                 href = 'http://' + href;
                             }
                             this.setValue(href);
-                            this._.dialog.definition.restart(href);
+                            this._.dialog.preview.setAttribute(
+                                'src',
+                                this._.dialog.previewOld.getAttribute('src')
+                            );
+                            this._.dialog.preview.style.display = 'block';
                         }
 
                         document.getElementById(this.domId)
@@ -44,6 +49,9 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                                 href = 'http://' + href;
                             }
                             element.setAttribute('href', href);
+                            element.setAttribute('data-cke-saved-href', href);
+                            element.setAttribute('src', href);
+                            element.setAttribute('data-cke-saved-src', href);
                             if (!element.getText()) {
                                 element.setText(this.getValue());
                             }
@@ -77,6 +85,10 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
 
             if (selector) {
                 element = selector.getAscendant('a', true);
+                var tmp = selector.getAscendant('div', true);
+                if (tmp) {
+                    this.previewOld = tmp.find('img.cke_widget_element').$[0];
+                }
             }
 
             if (!element || element.getName() !== 'a') {
@@ -90,7 +102,7 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                 this.insertMode = false;
             }
             this.element = element;
-            this.preview = this.parts.contents.getElementsByTag('img');
+            this.preview = this.parts.contents.getElementsByTag('img').$[0];
 
             this.setupContent(this.element, this.definition);
         },
@@ -103,18 +115,30 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
             if (this.insertMode) {
                 var wrapper = editor.document.createElement('div');
                 wrapper.setAttribute('id', 'link-preview-result-wrapper');
-                wrapper.setAttribute('style', 'width: 100px;margin: 0 auto;');
+                wrapper.setAttribute(
+                    'style',
+                    'width: ' +
+                        editor.config.linkwithpreview.thumbnailWidth +
+                        'px;margin: 0 auto;'
+                );
                 var image = editor.document.createElement('img');
-                image.setAttribute('src', this.preview.$[0].getAttribute('src'));
-                image.setAttribute('style', 'width:100%');
+                image.setAttribute('src', this.preview.getAttribute('src'));
+                image.setAttribute('style', 'width:100%;');
                 wrapper.append(image);
                 wrapper.append(this.element);
                 editor.insertElement(wrapper);
+            } else {
+                var tmp = this.wrapper.find('img.cke_widget_element').$[0];
+                tmp.setAttribute('src', this.preview.getAttribute('src'));
+                tmp.setAttribute(
+                    'data-cke-saved-src',
+                    this.preview.getAttribute('src')
+                );
             }
         },
         process: function (url) {
             var self = this;
-            CKEDITOR.ajax.load(editor.config.linkwithpreviewUrl +
+            CKEDITOR.ajax.load(editor.config.linkwithpreview.url +
                 encodeURIComponent(url), function (data) {
                 data = JSON.parse(data);
                 self.preloadHide(data.url);
@@ -131,14 +155,14 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
             }, 2000);
         },
         preloadShow: function () {
-            this.dialog.preview.$[0].setAttribute(
+            this.dialog.preview.setAttribute(
                 'src',
                 editor.plugins.linkwithpreview.path + 'icons/loader.gif'
             );
-            this.dialog.preview.$[0].style.display = 'block';
+            this.dialog.preview.style.display = 'block';
         },
         preloadHide: function (image) {
-            this.dialog.preview.$[0].setAttribute('src', image);
+            this.dialog.preview.setAttribute('src', image);
         }
     };
 });
