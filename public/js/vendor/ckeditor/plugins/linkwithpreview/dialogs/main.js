@@ -124,13 +124,13 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                 var image = editor.document.createElement('img');
                 image.setAttribute('src', this.preview.getAttribute('src'));
                 image.setAttribute('style', 'width:100%;');
+                image.setAttribute('class', 'cke_widget_element');
                 wrapper.append(image);
                 wrapper.append(this.element);
                 editor.insertElement(wrapper);
             } else {
-                var tmp = this.wrapper.find('img.cke_widget_element').$[0];
-                tmp.setAttribute('src', this.preview.getAttribute('src'));
-                tmp.setAttribute(
+                this.previewOld.setAttribute('src', this.preview.getAttribute('src'));
+                this.previewOld.setAttribute(
                     'data-cke-saved-src',
                     this.preview.getAttribute('src')
                 );
