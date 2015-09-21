@@ -9,11 +9,14 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
-use App\Repositories\Contracts\UserRepository;
-use App\Repositories\Contracts\RoleRepository;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Token;
+use App\Repositories\Contracts\UserRepository;
+use Prettus\Repository\Exceptions\RepositoryException;
+use App\Services\Auth\Contracts\UserUpdater;
+use App\Services\Auth\Exceptions\UpdatingFailureException;
+use Illuminate\Support\Facades\Log;
 
 class AuthService implements AuthServiceInterface
 {
@@ -21,15 +24,15 @@ class AuthService implements AuthServiceInterface
 
     protected $email;
     protected $password;
-    protected $roleRepository;
     protected $userRepository;
+    protected $userUpdater;
 
     public function __construct(
-        RoleRepository $roleRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        UserUpdater $userUpdater
     ) {
-        $this->roleRepository = $roleRepository;
         $this->userRepository = $userRepository;
+        $this->userUpdater = $userUpdater;
     }
 
     public function authenticate($data)
@@ -67,27 +70,37 @@ class AuthService implements AuthServiceInterface
 
     public function getUserFromCookie($cookie) {
         $tokenObject = new Token($cookie);
+
+        // Get a payload info from the token
         try {
             $payload = JWTAuth::decode($tokenObject);
         } catch (TokenExpiredException $e) {
-            throw new TokenInCookieExpiredException(
-                'Token in cookie was expired',
-                null,
-                $e
+            $message = 'Token in cookie was expired';
+            throw new TokenInCookieExpiredException($message, null, $e);
+        }
+
+        // Get user by the payload info
+        try {
+            $user = $this->userUpdater->updateBaseInfo($payload);
+        } catch (RepositoryException $e) {
+            throw new AuthException($e->getMessage(), null, $e);
+        }
+
+        // Attempt to update his profile by API or just log the error
+        try {
+            $user = $this->userUpdater
+                ->updateAdditionalInfo($cookie, $user);
+        } catch (UpdatingFailureException $e) {
+            Log::warning(
+                'An additional user information was\'nt updated. ' .
+                $e->getMessage()
             );
         }
 
-        $userInfo = $payload->toArray();
-        $preparedUserInfo = $this->prepareUserData($userInfo);
-
-        $user = $this->userRepository->updateFirstOrCreate(
-            ['email' => $preparedUserInfo['email']],
-            $preparedUserInfo
-        );
-
-        $this->attachAdditionUserInfo($cookie, $user);
+        // Login
         Auth::login($user, true);
 
+        // Return an actual user model if login passes
         if (Auth::check()) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
@@ -98,82 +111,13 @@ class AuthService implements AuthServiceInterface
         }
     }
 
-    /**
-     * Updates user according to the new information from server api
-     *
-     * @param $cookie
-     * @param $user
-     */
-    protected function attachAdditionUserInfo($cookie, &$user) {
-        $remoteInfo = (array)$this->getRemoteUserInfo($cookie);
-        $preparedUserInfo = $this->prepareUserData($remoteInfo);
-        $user = $this->userRepository->update($preparedUserInfo, $user->id);
-    }
 
-    /**
-     * Renames array $arr keys according to the $renamingMap
-     *
-     * @param array $arr
-     * @param array $renamingMap
-     */
-    protected function renameArrayKeys(array &$arr, array $renamingMap)
-    {
-        foreach ($renamingMap as $old => $new) {
-            if (array_key_exists($old, $arr)) {
-                $arr[$new] = $arr[$old];
-                unset($arr[$old]);
-            }
-        }
-    }
 
-    /**
-     * Renames the keys pfom payload to accessible in our application
-     * Attaches a role_id according to the role attribute in the array
-     *
-     * @param array $arr
-     * @return array
-     */
-    protected function prepareUserData(array $arr)
-    {
-        $this->renameArrayKeys($arr, [
-            'id'      => 'binary_id',
-            'name'    => 'first_name',
-            'surname' => 'last_name',
-        ]);
 
-        $this->attachRoleId($arr);
 
-        return $arr;
-    }
 
-    /**
-     * Attaches a role_id according to the role attribut in the array
-     *
-     * @param array $arr
-     */
-    protected function attachRoleId(array &$arr)
-    {
-        if (array_key_exists('role', $arr)) {
-            $role = $this->roleRepository->getByTitle($arr['role']);
-            $arr['role_id'] = $role->id;
-        }
-    }
 
-    /**
-     * @param $cookie
-     * @return mixed
-     */
-    protected function getRemoteUserInfo($cookie) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,            url(env('AUTH_ME')));
-        curl_setopt($ch, CURLOPT_HEADER,         1);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT,        30);
-        curl_setopt($ch, CURLOPT_COOKIE,         "x-access-token=".$cookie);
-        $response = curl_exec($ch);
-        $header_size = curl_getinfo($ch,CURLINFO_HEADER_SIZE);
-        $resultBody = substr($response, $header_size );
-        return json_decode($resultBody);
-    }
+
+
+
 }

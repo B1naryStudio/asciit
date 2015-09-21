@@ -30,8 +30,8 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      * @var array
      */
     protected $fillable = ['first_name', 'last_name', 'email', 'password',
-                           'avatar', 'country', 'city', 'gender', 'birthday',
-                           'role_id', 'binary_id'];
+                           'avatar', 'thumb_avatar', 'country', 'city',
+                           'gender', 'birthday', 'role_id', 'binary_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -56,6 +56,16 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
     }
 
     public function getAvatarAttribute($avatar)
+    {
+        return $this->getAvatarPlaceholder($avatar);
+    }
+
+    public function getThumbAvatarAttribute($avatar)
+    {
+        return $this->getAvatarPlaceholder($avatar);
+    }
+
+    private function getAvatarPlaceholder($avatar)
     {
         if (empty($avatar)) {
             try {

@@ -81,6 +81,7 @@ Route::group(['prefix' => 'api/v1/widget'], function () {
 // Auth mockups
 Route::get('/auth/', 'Mockups\AuthController@auth');
 Route::get('/auth/logout', 'Mockups\AuthController@logout');
+Route::get('/auth/me/{binary_id}', 'Mockups\AuthController@profile');
 
 // Header mockups
 Route::get('/app/header', 'Mockups\HeaderController@menu');

@@ -7,7 +7,7 @@
     </head>
     <body>
         <div class="wrapper">
-            <img src="/img/404-code.jpg" height="165" width="165">
+            <img src="{{ $prefix }}/img/404-code.jpg" height="165" width="165">
             <h1>GitHub Gist is not found</h1>
         </div>
 

@@ -3,29 +3,58 @@
 namespace App\Http\Controllers\Mockups;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Facades\JWTFactory;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 
 class AuthController extends Controller
 {
     public function __construct() {
-        $this->admin = [
+        $this->admin = new \stdClass();
+        $this->dev   = new \stdClass();
+
+        $this->admin->payloadInfo = [
             'id' =>  '55dc13391846c68a1ad56daa',
-            'email' =>  'admin@admin',
+            'email' =>  'igor.oziyan@gmail.com',
             'role' => 'ADMIN',
             'iat' => 1440615292
         ];
 
-        $this->dev = [
+        $this->dev->payloadInfo = [
             'id' =>  '55dd8be1fd5d69885b0bc0c7',
             'email' =>  'dev@asciit.local',
             //'role' => 'ADMIN',
             'iat' => 1441785864
         ];
+
+        $this->admin->additionalInfo = [
+            "userCV" => "55dcfb51fe77dc367b71d228",
+            "userPDP" => "55dcfbb4fe77dc367b71d230",
+            "email" => "igor.oziyan@gmail.com",
+            "password" => "123456789",
+            "name" => "Igor",
+            "surname" => "Oziyan",
+            "country" => "Ukraine",
+            "city" => "Kyiv",
+            "gender" => "male",
+            "birthday" => "1992-12-11T22:00:00.000Z",
+            "serverUserId" => "55dc13391846c68a1ad56daa",
+            "avatar" => [
+                "urlAva" => "/api/files/get/992bd47c-3279-4230-9aee-307e078dbf2d.jpg",
+                "thumbnailUrlAva" => "http://placehold.it/150/dff9f6"
+            ],
+            "workDate" => "2015-05-11T22:00:00.000Z",
+            "isDeleted" => false,
+            "changeAccept" => true,
+            "preModeration" => [],
+            "id" => "55dcfe8cfe77dc367b71d23c",
+        ];
+
+        $this->currentUser = $this->admin;
     }
 
     /**
@@ -35,8 +64,7 @@ class AuthController extends Controller
      */
     public function auth(Request $request)
     {
-        $userData = $this->admin;
-
+        $userData = $this->currentUser->payloadInfo;
         $payload = JWTFactory::make($userData);
         $data = JWTAuth::encode($payload);
         $redirectPath = $request->cookie('referer');
@@ -54,5 +82,12 @@ class AuthController extends Controller
     public function logout()
     {
         setcookie('x-access-token', '', -1, '/');
+    }
+
+    public function profile()
+    {
+        $data = $this->currentUser->additionalInfo;
+
+        return Response::json([$data], 200);
     }
 }

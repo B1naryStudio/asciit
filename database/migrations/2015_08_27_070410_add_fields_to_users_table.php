@@ -23,8 +23,6 @@ class AddFieldsToUsersTable extends Migration
             $table->string('city')->nullable();
             $table->string('gender')->nullable();
             $table->date('birthday')->nullable();
-
-
         });
     }
 

@@ -135,8 +135,10 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     public function updateFirstOrCreate(array $keyAttributes, array $attributes=[])
     {
         $attrs = array_merge($keyAttributes, $attributes);
+        $collection = $this->findWhere($keyAttributes);
 
-        if (!is_null($instance = $this->findWhere($keyAttributes)->first())) {
+        if (!$collection->isEmpty()) {
+            $instance = $collection->first();
             return $this->update($attrs, $instance->id);
         }
 

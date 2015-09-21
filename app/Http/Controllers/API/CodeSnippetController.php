@@ -22,11 +22,18 @@ class CodeSnippetController extends Controller
         $prefix = env('SERVER_PREFIX', '');
         $jsPath = url(($prefix ? '/' : '' ) . env('JS_PATH'));
 
+        if ($prefix) {
+            $prefixToPaste = $prefix . '/';
+        } else {
+            $prefixToPaste = '';
+        }
+
         try {
             $data = $grabber->getFromJson($link);
         } catch (\RuntimeException $e) {
             return Response::view('errors.gist.404', [
                 'js_path'  => $jsPath,
+                'prefix'  => $prefixToPaste,
             ],  404);
         }
 
