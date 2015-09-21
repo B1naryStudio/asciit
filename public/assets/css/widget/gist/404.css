@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    padding: 15px;
+    text-align: center;
+    -webkit-box-shadow: inset 0px 0px 20px 1px rgba(0,0,0,0.06);
+    -moz-box-shadow: inset 0px 0px 20px 1px rgba(0,0,0,0.06);
+    box-shadow: inset 0px 0px 20px 1px rgba(0,0,0,0.06);
+}
+
+h1,
+img {
+    float: left;
+}
+
+h1 {
+    font-family: 'Lato';
+    margin: 0 0 0 40px;
+}
+
+.wrapper {
+    line-height: 165px;
+    display: inline-block;
+}

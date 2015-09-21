@@ -69,6 +69,8 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::get('/answers-my', 'API\Question\AnswerController@my');
 });
 
+Route::get('/gist-snippets', 'API\CodeSnippetController@getGistWidget');
+
 Route::group(['prefix' => 'api/v1/widget'], function () {
     Route::get('/questions/recent', 'API\WidgetController@questionsRecent');
     Route::get('/questions/popular', 'API\WidgetController@questionsPopular');
@@ -91,4 +93,5 @@ Route::resource(
     ['only' => ['store']]
 );
 
+// Link preview
 Route::get('/link-preview', 'API\PreviewController@index');

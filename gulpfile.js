@@ -165,17 +165,30 @@ gulp.task('js-vendor', function () {
         .pipe(gulp.dest(jsPathMinFull + 'vendor/autobahn'));
 
     gulp.src([
+        jsPathFull + 'vendor/snippet-iframe/**/*.js'
+    ])
+        .pipe(uglify())
+        .pipe(gulp.dest(jsPathMinFull + 'vendor/snippet-iframe'));
+
+    gulp.src([
         jsPathFull + 'vendor/jquery/jquery.elastic.*.js'
     ])
         .pipe(uglify())
         .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery'));
+
+    gulp.src(jsPathFull + 'vendor/jquery/iframeResizer.contentWindow.min.js')
+        .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
 
     return gulp.src(jsPathFull + 'vendor/ckeditor/**/*.*')
         .pipe(gulp.dest(jsPathMinFull + 'vendor/ckeditor'));
 });
 
 elixir(function (mix) {
-    mix.stylesIn('./public/assets/css/', './public/assets/css/');
+    mix.styles(
+        './public/assets/css/*.css',
+        './public/assets/css/',
+        './public/assets/css/'
+    );
 });
 
 elixir(function (mix) {

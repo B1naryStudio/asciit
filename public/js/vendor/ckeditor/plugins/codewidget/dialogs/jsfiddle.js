@@ -16,12 +16,14 @@
                         label: "URL",
                         validate: CKEDITOR.dialog.validate.regex(
                             /(ftp|http|https):\/\/jsfiddle.net\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
-                            editor.lang.jsfiddle.urlValidation
+                            editor.lang.codewidget.jsFiddle.urlValidation
                         )
                     },
                     {   // Explanation
                         type: "html",
-                        html: "<p>" + editor.lang.jsfiddle.urlDescription + "</p>"
+                        html: "<p>" +
+                              editor.lang.codewidget.jsFiddle.urlDescription +
+                              "</p>"
                     }
                 ]
             }],
@@ -34,6 +36,8 @@
                 iframe.setAttribute('class', 'code-snippet jsfiddle ');
 
                 editor.insertElement(iframe);
+                var br = editor.document.createElement('br');
+                editor.insertElement(br);
             }
         }
     });

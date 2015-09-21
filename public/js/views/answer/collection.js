@@ -16,6 +16,7 @@ define([
     'views/view-behaviors/code-highlighter',
     'views/view-behaviors/server-validation',
     'views/view-behaviors/fold-collection-items',
+    'views/view-behaviors/iframes-height',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
@@ -37,7 +38,8 @@ define([
     ContainsVotes,
     CodeHighlighter,
     ServerValidation,
-    Collapse
+    FoldCollectionItems,
+    IframesHeight
 ) {
     App.Answer.Views.SingleAnswerLayoutView = Marionette.LayoutView.extend(
         _.extend({}, ViewsMixins.SelectText, {
@@ -73,7 +75,6 @@ define([
                 HidingControls: {
                     behaviorClass:     HidingControls,
                     controlsContainer: ".answer-body .entry-controls"
-
                 },
                 DeleteButton: {
                     behaviorClass: DeleteButton,
@@ -91,6 +92,9 @@ define([
                 },
                 ServerValidation: {
                     behaviorClass: ServerValidation
+                },
+                IframesHeight : {
+                    behaviorClass: IframesHeight
                 }
             },
 
@@ -121,11 +125,14 @@ define([
                 var previousDescription = this.model.previous('description');
                 this.model.set({description: previousDescription});
                 this.editableField.html(previousDescription);
+
+                this.triggerMethod('iframe:resize');
             },
 
             onModelUpdated: function () {
                 this.editor.destroy();
                 this.editableField.attr('contenteditable', false);
+                this.triggerMethod('iframe:resize');
             },
 
             onShow: function () {
@@ -241,8 +248,8 @@ define([
             ServerValidation: {
                 behaviorClass: ServerValidation
             },
-            Collapse: {
-                behaviorClass: Collapse,
+            FoldCollectionItems: {
+                behaviorClass: FoldCollectionItems,
                 maxEntries: 2
             }
         },

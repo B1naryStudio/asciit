@@ -910,9 +910,15 @@ body {
     min-width: 320px;
 }
 
-.code-snippet.jsfiddle {
+.code-snippet {
     width: 100%;
+    min-height: 50px;
     border: none;
+    margin: 1em 0;
+}
+
+.code-snippet.jsfiddle {
+    height: 300px;
 }
 
 /*

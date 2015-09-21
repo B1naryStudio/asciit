@@ -31,7 +31,7 @@
             {
                 name: 'code-snippets',
                 items: [
-                    'CodeSnippet', 'JSFiddle'
+                    'CodeSnippet', 'JSFiddle', 'GitGist'
                 ]
             },
             {
