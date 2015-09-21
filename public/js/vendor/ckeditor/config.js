@@ -94,9 +94,13 @@
         // Downloaded skins: icy_orange, minimalist, moono
         config.skin = 'icy_orange';
 
+        var prefix = window.location.pathname.replace(/(\/.*)(\/)/, '$1');
+        if (prefix === '/') {
+            prefix = '';
+        }
         config.allowedContent = true;
         config.linkwithpreview = {
-            url: '/link-preview?url=',
+            url: prefix + '/link-preview?url=',
             thumbnailWidth: 200 // px
         };
 
