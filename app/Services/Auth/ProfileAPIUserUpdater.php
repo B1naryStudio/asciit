@@ -66,6 +66,11 @@ class ProfileAPIUserUpdater extends UserUpdater
             throw new UpdatingFailureException($message, null, $e);
         }
 
+        if (empty($remoteInfo)) {
+            $message = 'An additional user information is empty.';
+            throw new UpdatingFailureException($message);
+        }
+
         $remoteInfoArray = (array)$remoteInfo[0];
         $preparedUserInfo = $this->prepareAdditionalInfo($remoteInfoArray);
         $user = $this->userRepository->update($preparedUserInfo, $user->id);
@@ -124,7 +129,7 @@ class ProfileAPIUserUpdater extends UserUpdater
 
             $this->renameArrayKeys($avatarLinks, [
                 'urlAva'       => 'avatar',
-                'thumbnailAva' => 'thumb_avatar',
+                'thumbnailUrlAva' => 'thumb_avatar',
             ]);
 
             $arr = array_merge($arr, $avatarLinks);
