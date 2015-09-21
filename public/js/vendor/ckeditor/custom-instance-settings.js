@@ -4,6 +4,7 @@ define(['app'], function (App){
         filebrowserImageUploadUrl: App.prefix + '/api/v1/images',
         imageUploadUrl: App.prefix + '/api/v1/images?responceType=json',
         codeSnippet_theme: App.codeSnippetTheme,
+        gistApi: App.prefix + '/gist-snippets',
         language: i18n.lng()
     };
 
