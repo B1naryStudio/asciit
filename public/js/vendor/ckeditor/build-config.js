@@ -51,7 +51,7 @@ var CKBUILDER_CONFIG = {
 	],
 	plugins : {
         'ajax': 1,
-		'SimpleLink' : 1,
+		'SimpleLink' : 0,
 		'basicstyles' : 1,
 		'blockquote' : 1,
 		'codesnippet' : 1,
@@ -72,6 +72,7 @@ var CKBUILDER_CONFIG = {
 		'indentlist' : 1,
 		'justify' : 1,
 		'list' : 1,
+		'linkwithpreview': 1,
 		'magicline' : 1,
 		'maximize' : 1,
 		'removeformat' : 1,

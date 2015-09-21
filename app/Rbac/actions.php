@@ -45,3 +45,6 @@ Rbac::action('API\\VoteController@destroy', 'votes.delete.own');
 //images
 Rbac::action('API\\ImageController@show', 'images.view');
 Rbac::action('API\\ImageController@store', 'images.create');
+
+//link preview
+Rbac::action('API\\PreviewController@index', 'preview.view');
