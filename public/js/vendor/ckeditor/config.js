@@ -25,7 +25,7 @@
             {
                 name: 'media',
                 items: [
-                    'Image', 'SimpleLink'
+                    'Image', 'LinkWithPreview'
                 ]
             },
             {
@@ -39,7 +39,7 @@
                 items: [
                     'Maximize'
                 ]
-            },
+            }
         ];
 
         config.codeSnippet_languages = {
@@ -94,7 +94,15 @@
         // Downloaded skins: icy_orange, minimalist, moono
         config.skin = 'icy_orange';
 
+        var prefix = window.location.pathname.replace(/(\/.*)(\/)/, '$1');
+        if (prefix === '/') {
+            prefix = '';
+        }
         config.allowedContent = true;
+        config.linkwithpreview = {
+            url: prefix + '/link-preview?url=',
+            thumbnailWidth: 200 // px
+        };
 
         // Color of the toolbar (changes '-' placeholders color)
         //config.uiColor = '#f5f5f5';
