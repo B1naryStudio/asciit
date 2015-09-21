@@ -37,7 +37,7 @@ class ProfileAPIUserUpdater extends UserUpdater
         $preparedInfo = $this->prepareBaseInfo($userInfo);
 
         $user = $this->userRepository->updateFirstOrCreate(
-            ['email' => $preparedInfo['email']],
+            ['binary_id' => $preparedInfo['binary_id']],
             $preparedInfo
         );
 
@@ -64,6 +64,11 @@ class ProfileAPIUserUpdater extends UserUpdater
             $message = 'Cannot receive an additional user information. '
                      . $e->getMessage();
             throw new UpdatingFailureException($message, null, $e);
+        }
+
+        if (empty($remoteInfo)) {
+            $message = 'An additional user information is empty.';
+            throw new UpdatingFailureException($message);
         }
 
         $remoteInfoArray = (array)$remoteInfo[0];
@@ -124,7 +129,7 @@ class ProfileAPIUserUpdater extends UserUpdater
 
             $this->renameArrayKeys($avatarLinks, [
                 'urlAva'       => 'avatar',
-                'thumbnailAva' => 'thumb_avatar',
+                'thumbnailUrlAva' => 'thumb_avatar',
             ]);
 
             $arr = array_merge($arr, $avatarLinks);
