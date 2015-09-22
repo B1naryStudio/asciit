@@ -76,7 +76,7 @@ var separate_files = [
     'models/vote',
     'models/user',
     'models/paginator',
-    'views/views-mixins'
+    'views/views-mixins',
 ];
 
 gulp.task('js-require', function () {
@@ -94,7 +94,8 @@ gulp.task('js-require', function () {
         'updown',
         'paginator',
         'ckeditor',
-        'ckeditor.adapter'
+        'ckeditor.adapter',
+        'jquery.iframe-resizer',
     ];
 
     gulp.src(jsPathFull + 'models/model-mixins.js')
@@ -177,6 +178,9 @@ gulp.task('js-vendor', function () {
         .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery'));
 
     gulp.src(jsPathFull + 'vendor/jquery/iframeResizer.contentWindow.min.js')
+        .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
+
+    gulp.src(jsPathFull + 'vendor/jquery/iframeResizer.min.js')
         .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
 
     return gulp.src(jsPathFull + 'vendor/ckeditor/**/*.*')

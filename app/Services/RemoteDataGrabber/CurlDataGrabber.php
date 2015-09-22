@@ -3,7 +3,9 @@
 namespace App\Services\RemoteDataGrabber;
 
 use App\Services\RemoteDataGrabber\Contracts\DataGrabber;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use App\Services\RemoteDataGrabber\Exceptions\RemoteServerException;
+use App\Services\RemoteDataGrabber\Exceptions\JsonDecodingException;
+use RuntimeException;
 
 class CurlDataGrabber implements DataGrabber
 {
@@ -11,7 +13,6 @@ class CurlDataGrabber implements DataGrabber
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,            $link);
-        curl_setopt($ch, CURLOPT_HEADER,         1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FAILONERROR,    1);
@@ -23,23 +24,27 @@ class CurlDataGrabber implements DataGrabber
 
         $response = curl_exec($ch);
         $errno = curl_errno($ch);
-        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-        $resultBody = substr($response, $header_size );
 
         if ($errno) {
             $errorMessage = curl_strerror($errno);
             $exeptionMessage = "cURL error ({$errno}):\n {$errorMessage}";
-            throw new \RuntimeException($exeptionMessage);
+            throw new RemoteServerException($exeptionMessage);
         } else if (curl_error($ch) !== "") {
-            throw new \RuntimeException('Cannot get an information');
+            throw new RemoteServerException('Cannot get an information');
         }
 
-        return $resultBody;
+        return $response;
     }
 
     public function getFromJson($link, $curlOptions = [])
     {
         $resultBody = $this->getRaw($link, $curlOptions);
-        return json_decode($resultBody);
+        $result = @json_decode($resultBody);
+
+        if ($result === null && json_last_error() !== JSON_ERROR_NONE) {
+            throw new JsonDecodingException('Cannot get an information');
+        };
+
+        return $result;
     }
 }
