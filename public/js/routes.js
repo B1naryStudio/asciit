@@ -44,7 +44,7 @@ define([
                 });
 
                 App.Routes.spinner.animate(0.8, {
-                    duration: 2000,
+                    duration: 4000,
                     easing: 'easeOut'
                 }, function () {            // Callback on animation finish
                     setTimeout(function () { // Waiting for downloading finish

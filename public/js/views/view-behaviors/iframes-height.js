@@ -24,7 +24,11 @@ define([
                     $elem.attr('id', 'code-snippet-' + self.view.cid + '-' + i);
 
                     $elem.load(function () {
-                        $elem.iFrameResize();
+                        $elem.iFrameResize({
+                            maxHeight: 600,
+                            scrolling: true,
+                            heightCalculationMethod: "documentElementScroll"
+                        });
                     })
                 }
             );
