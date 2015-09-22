@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Services\RemoteDataGrabber\Contracts\DataGrabber;
+use App\Services\RemoteDataGrabber\Exceptions\RemoteDataGrabberException;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
@@ -30,7 +30,7 @@ class CodeSnippetController extends Controller
 
         try {
             $data = $grabber->getFromJson($link);
-        } catch (\RuntimeException $e) {
+        } catch (RemoteDataGrabberException $e) {
             return Response::view('errors.gist.404', [
                 'js_path'  => $jsPath,
                 'prefix'  => $prefixToPaste,
@@ -41,6 +41,6 @@ class CodeSnippetController extends Controller
             'stylesheet_link' => $data->stylesheet,
             'snippet'         => $data->div,
             'js_path' => $jsPath,
-        ]);
+        ], 200);
     }
 }

@@ -8,6 +8,7 @@ use App\Services\RemoteDataGrabber\Contracts\DataGrabber;
 use App\Services\Auth\Contracts\UserUpdater;
 use App\Services\Auth\Exceptions\UpdatingFailureException;
 use App\Repositories\Entities\User;
+use App\Services\RemoteDataGrabber\Exceptions\RemoteDataGrabberException;
 
 class ProfileAPIUserUpdater extends UserUpdater
 {
@@ -60,7 +61,7 @@ class ProfileAPIUserUpdater extends UserUpdater
                 $url,
                 $curlOptions
             );
-        } catch (\RuntimeException $e) {
+        } catch (RemoteDataGrabberException $e) {
             $message = 'Cannot receive an additional user information. '
                      . $e->getMessage();
             throw new UpdatingFailureException($message, null, $e);
