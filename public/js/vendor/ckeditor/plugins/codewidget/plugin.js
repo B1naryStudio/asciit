@@ -17,7 +17,7 @@
             );
             editor.addCommand(
                 'pastebin',
-                new CKEDITOR.dialogCommand('codepenDialog')
+                new CKEDITOR.dialogCommand('pastebinDialog')
             );
 
             editor.ui.addButton('JSFiddle', {
@@ -31,12 +31,12 @@
                 icon: this.path + 'icons/github.png'
             });
             editor.ui.addButton('CodePen', {
-                label: editor.lang.codewidget.gist.buttonTitle,
+                label: editor.lang.codewidget.codePen.buttonTitle,
                 command: 'codepen',
                 icon: this.path + 'icons/codepen.png'
             });
             editor.ui.addButton('Pastebin', {
-                label: editor.lang.codewidget.gist.buttonTitle,
+                label: editor.lang.codewidget.Pastebin.buttonTitle,
                 command: 'pastebin',
                 icon: this.path + 'icons/pastebin.png'
             });

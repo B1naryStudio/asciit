@@ -20,5 +20,12 @@ CKEDITOR.plugins.setLang('codewidget', 'uk', {
                         "з CodePen.",
         urlDescription: "Посилання буде використано для створення віджету з " +
                         "фрагментом кодом на CodePen."
+    },
+    Pastebin: {
+        buttonTitle:    "Додати фрагмент коду з Pastebin",
+        urlValidation:  "Будь-ласка, введіть вірне URL-посилання на фрагмент коду " +
+                        "з Pastebin.",
+        urlDescription: "Посилання буде використано для створення віджету з " +
+                        "фрагментом кодом на Pastebin."
     }
 });

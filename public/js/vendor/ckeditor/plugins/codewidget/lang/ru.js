@@ -18,8 +18,14 @@ CKEDITOR.plugins.setLang( 'codewidget', 'ru', {
         buttonTitle:    "Добавить фрагмент кода с CodePen",
         urlValidation:  "Пожалуйста, введите корректную URL-ссылку на " +
                         "фрагмент кода CodePen",
-        urlReturnsGistValidation:  "GitHub Gist не найден по этому URL.",
         urlDescription: "Ссылка будет использована для создания виджета с " +
                         "фрагментом кода CodePen."
+    },
+    Pastebin: {
+        buttonTitle:    "Добавить фрагмент кода с Pastebin",
+        urlValidation:  "Пожалуйста, введите корректную URL-ссылку на " +
+                        "фрагмент кода Pastebin",
+        urlDescription: "Ссылка будет использована для создания виджета с " +
+                        "фрагментом кода Pastebin."
     }
 });
