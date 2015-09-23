@@ -7,7 +7,7 @@
     </head>
     <body>
         <div class="wrapper">
-            <img src="{{ $prefix }}/img/404-code.jpg" height="165" width="165">
+            <img src="{{ url("img/404-code.jpg") }}" height="165" width="165">
             <h1>{{ $description }}</h1>
         </div>
 
