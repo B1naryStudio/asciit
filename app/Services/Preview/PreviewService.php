@@ -4,8 +4,8 @@ namespace App\Services\Preview;
 use App\Services\Preview\Contracts\PreviewServiceInterface;
 use App\Services\Preview\Contracts\OpenGraphPreviewInterface;
 use App\Services\Preview\Contracts\OEmbedPreviewInterface;
-use App\Services\Preview\Contracts\ScreenshotPreviewInterface;
 use App\Services\Preview\Contracts\PlaceholderPreviewInterface;
+use App\Services\Preview\Exceptions\PreviewException;
 
 class PreviewService implements PreviewServiceInterface
 {
@@ -36,10 +36,10 @@ class PreviewService implements PreviewServiceInterface
         $preview = '';
         foreach ($this->services as $service) {
             /* @var $service PreviewServiceInterface */
-            $preview = $service->get($url);
-            if (!empty($preview)) {
+            try {
+                $preview = $service->get($url);
                 break;
-            }
+            } catch (PreviewException $e) {}
         }
         return $preview;
     }

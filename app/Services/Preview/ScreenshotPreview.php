@@ -3,6 +3,7 @@
 namespace App\Services\Preview;
 
 use App\Services\Preview\Contracts\ScreenshotPreviewInterface;
+use App\Services\Preview\Exceptions\PreviewNotExecutableException;
 
 class ScreenshotPreview implements ScreenshotPreviewInterface
 {
@@ -37,18 +38,28 @@ class ScreenshotPreview implements ScreenshotPreviewInterface
 
     public function get($url)
     {
-        $fileName = time() . '.png';
-        $path = $this->folder . $fileName;
-        $result = url('/api/v1' . $path);
-        shell_exec(str_replace(
-            ['%url', '%file'],
-            [$url, storage_path('app') . $path],
-            env('LINK_PREVIEW_SCREENSHOT')
-        ));
-        $this->resize(
-            storage_path('app') . $path,
-            env('LINK_PREVIEW_SCREENSHOT_WIDTH')
-        );
+        $config = env('LINK_PREVIEW_SCREENSHOT');
+        if ($config) {
+            $fileName = time() . '.png';
+            $path = $this->folder . $fileName;
+            $result = url('/api/v1' . $path);
+            shell_exec(str_replace(
+                ['%url', '%file'],
+                [$url, storage_path('app') . $path],
+                $config
+            ));
+        } else {
+            throw new PreviewNotExecutableException();
+        }
+
+        $screenshot_width = env('LINK_PREVIEW_SCREENSHOT_WIDTH');
+        if ($screenshot_width) {
+            $this->resize(
+                storage_path('app') . $path,
+                $screenshot_width
+            );
+        }
+
         return $result;
     }
 }
