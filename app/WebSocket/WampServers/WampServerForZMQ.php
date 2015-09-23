@@ -35,7 +35,11 @@ class WampServerForZMQ extends RatchetWampServer
         $pull = $context->getSocket(ZMQ::SOCKET_PULL);
 
         // Binding to 127.0.0.1 means the only client that can connect is itself
-        $pull->bind('tcp://127.0.0.1:9091');
+        $pull->bind('tcp://127.0.0.1:' . env('ZMQ_PORT', 9091));
         $pull->on('message', array($this->pusher, 'onNewItem'));
+
+        echo "Socket pull binded to the tcp connection on port "
+            . env('ZMQ_PORT', 9091)
+            . "\n";
     }
 }
