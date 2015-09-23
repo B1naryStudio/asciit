@@ -47,9 +47,10 @@
             }],
             onOk: function () {
                 var link = this.getValueOf('GitHubGist', 'gistURL');
+                var encodedLink = encodeURIComponent(link);
                 var iframeSrcLink = editor.config.gistApi +
                     '?link=' +
-                    link;
+                    encodedLink;
 
                 var iframe = editor.document.createElement('iframe');
                 iframe.setAttribute('src', iframeSrcLink);
