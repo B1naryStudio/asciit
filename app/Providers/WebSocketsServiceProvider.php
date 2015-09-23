@@ -25,7 +25,7 @@ class WebSocketsServiceProvider extends ServiceProvider
     {
         $this->app->singleton(
             'App\WebSocket\Contracts\AbstractWebSocketFactory',
-            'App\WebSocket\Factories\GosWebSocketFactory'
+            'App\WebSocket\Factories\ZeroMQWebSocketFactory'
         );
     }
 }

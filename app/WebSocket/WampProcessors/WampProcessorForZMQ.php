@@ -1,10 +1,11 @@
 <?php
 
 namespace App\WebSocket\WampProcessors;
+use App\WebSocket\Contracts\WampProcessor;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
 
-class WampProcessorForZMQ implements WampServerInterface {
+class WampProcessorForZMQ extends WampProcessor implements WampServerInterface {
     /**
      * A lookup of all the topics clients have subscribed to
      */
@@ -15,9 +16,7 @@ class WampProcessorForZMQ implements WampServerInterface {
      */
     public function onNewItem($data) {
         $decodedData = json_decode($data, true);
-
         echo "Got a message on topic:\n" . $decodedData['topic'] . "\n";
-        echo var_dump($decodedData);
 
         // If the lookup topic object isn't set there is no one to publish to
         if (!array_key_exists($decodedData['topic'], $this->subscribedTopics)) {
@@ -33,33 +32,18 @@ class WampProcessorForZMQ implements WampServerInterface {
     public function onSubscribe(ConnectionInterface $conn, $topic)
     {
         $this->subscribedTopics[$topic->getId()] = $topic;
+        parent::onSubscribe($conn, $topic); // Message output
     }
 
-    public function onUnSubscribe(ConnectionInterface $conn, $topic)
-    {}
-
-    public function onOpen(ConnectionInterface $conn)
+    public function onUnsubscribe(ConnectionInterface $conn, $topic)
     {
-        echo "New connection! ({$conn->resourceId})\n";
-    }
-
-    public function onClose(ConnectionInterface $conn)
-    {
-        echo "Connection {$conn->resourceId} has disconnected\n";
-    }
-
-    public function onCall(ConnectionInterface $conn, $id, $topic, array $params)
-    {
-        // In this application if clients send data it's because the user hacked around in console
-        $conn->callError($id, $topic, 'You are not allowed to make calls')->close();
+        unset($this->subscribedTopics[$topic->getId()]);
+        parent::onSubscribe($conn, $topic); // Message output
     }
 
     public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible)
     {
         // In this application if clients send data it's because the user hacked around in console
-        $conn->close();
+        $this->kickIllegalPublisher($conn);
     }
-
-    public function onError(ConnectionInterface $conn, \Exception $e)
-    {}
 }
