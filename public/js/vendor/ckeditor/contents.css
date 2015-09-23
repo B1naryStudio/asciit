@@ -144,6 +144,7 @@ a > img {
     border: none;
 }
 
-.code-snippet.gist {
+.code-snippet.full-height {
     outline: dotted 1px #777;
+    height: 200px;
 }

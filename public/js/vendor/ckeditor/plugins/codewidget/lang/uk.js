@@ -25,6 +25,7 @@ CKEDITOR.plugins.setLang('codewidget', 'uk', {
         buttonTitle:    "Додати фрагмент коду з Pastebin",
         urlValidation:  "Будь-ласка, введіть вірне URL-посилання на фрагмент коду " +
                         "з Pastebin.",
+        urlReturnsValidation:  "За цим URL не знайдено Pastebin фрагментів.",
         urlDescription: "Посилання буде використано для створення віджету з " +
                         "фрагментом кодом на Pastebin."
     }

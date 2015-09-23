@@ -14,10 +14,35 @@
                         type: "text",
                         id: "snippetURL",
                         label: "URL",
-                        validate: CKEDITOR.dialog.validate.regex(
-                            /(ftp|http|https):\/\/pastebin.com\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
-                            editor.lang.codewidget.Pastebin.urlValidation
-                        )
+                        validate: function () {
+                            // Check link by pattern
+                            var reg = new RegExp(
+                                /(ftp|http|https):\/\/pastebin.com\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+                            );
+                            var link = this.getValue();
+
+                            if (!reg.exec(link)) {
+                                return editor.lang.codewidget.Pastebin.urlValidation;
+                            }
+
+                            // Check is this link returns a real gist
+                            var pastebinId = this.getValue()
+                                .slice(-9)
+                                .replace('\/', '');
+                            var link = 'http://pastebin.com/embed_iframe.php?i=' +
+                                pastebinId;
+                            var encodedLink = encodeURIComponent(link);
+                            var iframeSrcLink = editor.config.pastebinApi +
+                                '?link=' +
+                                encodedLink;
+
+                            var data = CKEDITOR.ajax.load(iframeSrcLink);
+
+                            if (!data) {
+                                return editor.lang.codewidget.Pastebin
+                                    .urlReturnsValidation;
+                            }
+                        }
                     },
                     {   // Explanation
                         type: "html",
@@ -31,12 +56,20 @@
                 var pastebinId = this.getValueOf('Pastebin', 'snippetURL')
                     .slice(-9)
                     .replace('\/', '');
-                var url = 'http://pastebin.com/embed_iframe.php?i=' +
-                          pastebinId;
+
+                var link = 'http://pastebin.com/embed_iframe.php?i=' +
+                    pastebinId;
+                var encodedLink = encodeURIComponent(link);
+                var iframeSrcLink = editor.config.pastebinApi +
+                    '?link=' +
+                    encodedLink;
 
                 var iframe = editor.document.createElement('iframe');
-                iframe.setAttribute('src', url);
-                iframe.setAttribute('class', 'code-snippet pastebin ');
+                iframe.setAttribute('src', iframeSrcLink);
+                iframe.setAttribute(
+                    'class',
+                    'code-snippet pastebin full-height'
+                );
 
                 editor.insertElement(iframe);
                 var br = editor.document.createElement('br');
