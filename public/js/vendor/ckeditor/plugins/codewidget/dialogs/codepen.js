@@ -14,17 +14,10 @@
                         type: "text",
                         id: "snippetURL",
                         label: "URL",
-                        validate: function () {
-                            // Check link by pattern
-                            var reg = new RegExp(
-                                /(ftp|http|https):\/\/codepen.io\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-                            );
-                            var link = this.getValue();
-
-                            if (!reg.exec(link)) {
-                                return editor.lang.codewidget.codePen.urlValidation;
-                            }
-                        }
+                        validate: CKEDITOR.dialog.validate.regex(
+                            /(ftp|http|https):\/\/codepen.io\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/,
+                            editor.lang.codewidget.codePen.urlValidation
+                        )
                     },
                     {   // Explanation
                         type: "html",

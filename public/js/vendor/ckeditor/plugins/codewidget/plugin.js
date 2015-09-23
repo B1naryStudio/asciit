@@ -15,6 +15,10 @@
                 'codepen',
                 new CKEDITOR.dialogCommand('codepenDialog')
             );
+            editor.addCommand(
+                'pastebin',
+                new CKEDITOR.dialogCommand('codepenDialog')
+            );
 
             editor.ui.addButton('JSFiddle', {
                 label: editor.lang.codewidget.jsFiddle.buttonTitle,
@@ -31,6 +35,11 @@
                 command: 'codepen',
                 icon: this.path + 'icons/codepen.png'
             });
+            editor.ui.addButton('Pastebin', {
+                label: editor.lang.codewidget.gist.buttonTitle,
+                command: 'pastebin',
+                icon: this.path + 'icons/pastebin.png'
+            });
 
             CKEDITOR.dialog.add(
                 'jsfiddleDialog',
@@ -43,6 +52,10 @@
             CKEDITOR.dialog.add(
                 'codepenDialog',
                 this.path + 'dialogs/codepen.js'
+            );
+            CKEDITOR.dialog.add(
+                'pastebinDialog',
+                this.path + 'dialogs/pastebin.js'
             );
         }
     });
