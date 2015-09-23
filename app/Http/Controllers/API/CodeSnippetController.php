@@ -41,15 +41,11 @@ class CodeSnippetController extends Controller
             return $this->returnWidgetError('GitHub Gist is not found');
         }
 
-        // Getting a prefix and jsPath
-        $prefix = env('SERVER_PREFIX', '');
-        $jsPath = url(($prefix ? '/' : '' ) . env('JS_PATH'));
-
         // Successfull answer with gist
         return Response::view('widgets.gist', [
             'stylesheet_link' => $data->stylesheet,
             'snippet'         => $data->div,
-            'js_path'         => $jsPath,
+            'js_path'         => $this->getJsPath(),
         ], 200);
     }
 
@@ -75,10 +71,6 @@ class CodeSnippetController extends Controller
             return $this->returnWidgetError('Pastebin snippet is not found');
         }
 
-        // Getting a prefix and jsPath
-        $prefix = env('SERVER_PREFIX', '');
-        $jsPath = url(($prefix ? '/' : '' ) . env('JS_PATH'));
-
         // Attaching a script for resize
         $doc = new DOMDocument('1.0');
         $doc->loadHTML($data);
@@ -86,7 +78,8 @@ class CodeSnippetController extends Controller
 
         $script = $doc->createElement ( 'script', '' );
         $scriptUrl = url(
-            $jsPath . '/vendor/jquery/iframeResizer.contentWindow.min.js'
+            $this->getJsPath()
+                . '/vendor/jquery/iframeResizer.contentWindow.min.js'
         );
         $script->setAttribute ('src', $scriptUrl);
         $body->appendChild ( $script );
@@ -115,4 +108,13 @@ class CodeSnippetController extends Controller
             'description' => $message
         ],  404);
     }
+
+    protected function getJsPath()
+    {
+        $prefix = env('SERVER_PREFIX', '');
+        $jsPath = url(($prefix ? '/' : '' ) . env('JS_PATH'));
+
+        return $jsPath;
+    }
+
 }
