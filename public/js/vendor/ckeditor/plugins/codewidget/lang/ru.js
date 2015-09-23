@@ -13,5 +13,13 @@ CKEDITOR.plugins.setLang( 'codewidget', 'ru', {
         urlReturnsGistValidation:  "GitHub Gist не найден по этому URL.",
         urlDescription: "Ссылка будет использована для создания виджета с " +
                         "фрагментом кода GitHub Gist."
+    },
+    codePen: {
+        buttonTitle:    "Добавить фрагмент кода с CodePen",
+        urlValidation:  "Пожалуйста, введите корректную URL-ссылку на " +
+                        "фрагмент кода CodePen",
+        urlReturnsGistValidation:  "GitHub Gist не найден по этому URL.",
+        urlDescription: "Ссылка будет использована для создания виджета с " +
+                        "фрагментом кода CodePen."
     }
 });

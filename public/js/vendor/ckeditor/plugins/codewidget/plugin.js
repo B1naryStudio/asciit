@@ -13,7 +13,7 @@
             );
             editor.addCommand(
                 'codepen',
-                new CKEDITOR.dialogCommand('gistDialog')
+                new CKEDITOR.dialogCommand('codepenDialog')
             );
 
             editor.ui.addButton('JSFiddle', {
@@ -36,10 +36,13 @@
                 'jsfiddleDialog',
                 this.path + 'dialogs/jsfiddle.js'
             );
-
             CKEDITOR.dialog.add(
                 'gistDialog',
                 this.path + 'dialogs/gist.js'
+            );
+            CKEDITOR.dialog.add(
+                'codepenDialog',
+                this.path + 'dialogs/codepen.js'
             );
         }
     });
