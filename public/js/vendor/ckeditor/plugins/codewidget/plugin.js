@@ -11,6 +11,10 @@
                 'gitgist',
                 new CKEDITOR.dialogCommand('gistDialog')
             );
+            editor.addCommand(
+                'codepen',
+                new CKEDITOR.dialogCommand('gistDialog')
+            );
 
             editor.ui.addButton('JSFiddle', {
                 label: editor.lang.codewidget.jsFiddle.buttonTitle,
@@ -21,6 +25,11 @@
                 label: editor.lang.codewidget.gist.buttonTitle,
                 command: 'gitgist',
                 icon: this.path + 'icons/github.png'
+            });
+            editor.ui.addButton('CodePen', {
+                label: editor.lang.codewidget.gist.buttonTitle,
+                command: 'codepen',
+                icon: this.path + 'icons/codepen.png'
             });
 
             CKEDITOR.dialog.add(

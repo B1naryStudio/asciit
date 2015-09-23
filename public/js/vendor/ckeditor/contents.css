@@ -143,3 +143,7 @@ a > img {
     width: 100%;
     border: none;
 }
+
+.code-snippet.gist {
+    outline: dotted 1px #777;
+}
