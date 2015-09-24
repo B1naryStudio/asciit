@@ -244,6 +244,10 @@ body.modal-open {
     min-width: 122px;
 }
 
+.hdr-specialNotifBtn:hover {
+    text-decoration: none;
+}
+
 /*
 |------------------------------------------------------------------------------
 | Questions list
