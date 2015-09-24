@@ -353,7 +353,7 @@ body.modal-open {
 
 .single-answer .votes {
     float: right;
-    margin: 5px 0 0 15px;
+    margin: 0 0 0 15px;
     font-size: 20px;
 }
 
@@ -503,6 +503,14 @@ body.modal-open {
 .single-answer .row,
 .single-comment .row {
     position: relative;
+}
+
+.single-answer .closed-controls {
+    float: left;
+}
+
+.closed-controls .closed {
+    color: #119C23;
 }
 
 .single-answer .entry-controls,
@@ -1054,10 +1062,6 @@ blockquote .author {
     padding-right: 0;
 }
 
-.answers-list .votes {
-    margin-top: 10px;
-}
-
 .answers-list .question-info {
     color: dimgray;
     font-size: 0.9em;
@@ -1085,6 +1089,8 @@ blockquote .author {
 .answers-list .cke {
     border: none;
 }
+
+
 
 /*
  |------------------------------------------------------------------------------
@@ -1140,6 +1146,10 @@ div .fa-3 {
 
 div .fa-2 {
     font-size: 2em;
+}
+
+div .fa-1-5 {
+    font-size: 1.5em;
 }
 
 div .fa-1 {

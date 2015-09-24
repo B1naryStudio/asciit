@@ -1,7 +1,17 @@
 <div class="list-group-item single-answer">
     <div class="row answer-body">
-        <!-- User info -->
+
+
+
         <div class="col-md-2 col-lg-2 col-sm-2">
+            <!-- Closed indication -->
+            <div class="closed-controls">
+                <span class="control closed" title="<%- _t('ui.save') %>">
+                    <i class="fa fa-1-5 fa-check-circle-o "></i>
+                </span>
+            </div>
+
+            <!-- User info -->
             <figure class="user-info text-center">
                 <img src="<%- user.thumb_avatar %>" alt="100x100" class="img-thumbnail big">
                 <h5><%= user.first_name + ' ' + user.last_name %></h5>
