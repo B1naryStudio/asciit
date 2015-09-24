@@ -13,5 +13,20 @@ CKEDITOR.plugins.setLang('codewidget', 'uk', {
         urlReturnsGistValidation:  "GitHub Gist не знайдено за цим URL.",
         urlDescription: "Посилання буде використано для створення віджету з " +
                         "GitHub Gist."
+    },
+    codePen: {
+        buttonTitle:    "Додати фрагмент коду з CodePen",
+        urlValidation:  "Будь-ласка, введіть вірне URL-посилання на фрагмент коду " +
+                        "з CodePen.",
+        urlDescription: "Посилання буде використано для створення віджету з " +
+                        "фрагментом кодом на CodePen."
+    },
+    Pastebin: {
+        buttonTitle:    "Додати фрагмент коду з Pastebin",
+        urlValidation:  "Будь-ласка, введіть вірне URL-посилання на фрагмент коду " +
+                        "з Pastebin.",
+        urlReturnsValidation:  "За цим URL не знайдено Pastebin фрагментів.",
+        urlDescription: "Посилання буде використано для створення віджету з " +
+                        "фрагментом кодом на Pastebin."
     }
 });

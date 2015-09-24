@@ -143,3 +143,8 @@ a > img {
     width: 100%;
     border: none;
 }
+
+.code-snippet.full-height {
+    outline: dotted 1px #777;
+    height: 200px;
+}
