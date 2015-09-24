@@ -37,5 +37,15 @@ class PreviewProvider extends ServiceProvider
             'App\Services\Preview\Contracts\PreviewServiceInterface',
             'App\Services\Preview\PreviewService'
         );
+
+        $configPath = __DIR__ . '/../../config/preview.php';
+        $this->mergeConfigFrom($configPath, 'preview');
+    }
+
+    public function boot ()
+    {
+        $this->publishes([
+            __DIR__ . '/../../config/preview.php' => config_path('preview.php'),
+        ]);
     }
 }
