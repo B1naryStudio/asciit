@@ -149,6 +149,7 @@ return [
         App\Providers\WebSocketsServiceProvider::class,
         App\Providers\RbacServiceProvider::class,
         App\Providers\RemoteDataGrabberProvider::class,
+        App\Providers\PreviewProvider::class,
 
         /*
          * Third-party providers...

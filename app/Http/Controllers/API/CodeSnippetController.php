@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Services\RemoteDataGrabber\Contracts\DataGrabber;
+use App\Services\RemoteDataGrabber\Contracts\DataGrabberInterface;
 use App\Services\RemoteDataGrabber\Exceptions\RemoteDataGrabberException;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -16,7 +16,10 @@ class CodeSnippetController extends Controller
      *
      * @return Response
      */
-    public function getGistWidget(Request $request, DataGrabber $grabber)
+    public function getGistWidget(
+        Request $request,
+        DataGrabberInterface $grabber
+    )
     {
         $link = $request->get('link') . '.json';
         $prefix = env('SERVER_PREFIX', '');

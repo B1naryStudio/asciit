@@ -13,8 +13,8 @@ class RemoteDataGrabberProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(
-            'App\Services\RemoteDataGrabber\Contracts\DataGrabber',
+        $this->app->singleton(
+            'App\Services\RemoteDataGrabber\Contracts\DataGrabberInterface',
             'App\Services\RemoteDataGrabber\CurlDataGrabber'
         );
     }
