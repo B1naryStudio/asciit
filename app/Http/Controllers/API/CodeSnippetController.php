@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Services\RemoteDataGrabber\Contracts\DataGrabber;
+use App\Services\RemoteDataGrabber\Contracts\DataGrabberInterface;
 use App\Services\RemoteDataGrabber\Exceptions\RemoteDataGrabberException;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -18,8 +18,10 @@ class CodeSnippetController extends Controller
      *
      * @return Response
      */
-    public function getGistWidget(Request $request, DataGrabber $grabber)
-    {
+    public function getGistWidget(
+        Request $request,
+        DataGrabberInterface $grabber
+    ) {
         // Validating the input
         $validator = Validator::make(['link' => $request->get('link')], [
             'link' => [
@@ -49,8 +51,10 @@ class CodeSnippetController extends Controller
         ], 200);
     }
 
-    public function getPastebinWidget(Request $request, DataGrabber $grabber)
-    {
+    public function getPastebinWidget(
+        Request $request,
+        DataGrabberInterface $grabber
+    ) {
         $link = $request->get('link');
 
         // Validating the input
