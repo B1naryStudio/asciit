@@ -8,6 +8,6 @@ class PlaceholderPreview implements PlaceholderPreviewInterface
 {
     public function get($url)
     {
-        return env('LINK_PREVIEW_DEFAULT');
+        return config('preview.placeholder');
     }
 }

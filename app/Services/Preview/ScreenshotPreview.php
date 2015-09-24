@@ -52,7 +52,7 @@ class ScreenshotPreview implements ScreenshotPreviewInterface
             throw new PreviewNotExecutableException();
         }
 
-        $screenshot_width = env('LINK_PREVIEW_SCREENSHOT_WIDTH');
+        $screenshot_width = config('preview.screenshot_width');
         if ($screenshot_width) {
             $this->resize(
                 storage_path('app') . $path,
