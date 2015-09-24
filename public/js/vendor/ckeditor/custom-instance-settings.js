@@ -5,6 +5,7 @@ define(['app'], function (App){
         imageUploadUrl: App.prefix + '/api/v1/images?responceType=json',
         codeSnippet_theme: App.codeSnippetTheme,
         gistApi: App.prefix + '/gist-snippets',
+        pastebinApi: App.prefix + '/pastebin-snippets',
         linkwithpreview: {
             url: App.prefix + '/link-preview?url=',
             thumbnailWidth: 200 // px

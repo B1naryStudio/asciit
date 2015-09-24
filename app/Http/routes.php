@@ -70,6 +70,7 @@ Route::group(['prefix' => 'api/v1'], function () {
 });
 
 Route::get('/gist-snippets', 'API\CodeSnippetController@getGistWidget');
+Route::get('/pastebin-snippets', 'API\CodeSnippetController@getPastebinWidget');
 
 Route::group(['prefix' => 'api/v1/widget'], function () {
     Route::get('/questions/recent', 'API\WidgetController@questionsRecent');
