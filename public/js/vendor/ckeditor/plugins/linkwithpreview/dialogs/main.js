@@ -35,10 +35,15 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                             );
                             this._.dialog.preview.style.display = 'block';
                         }
+                        this._.dialog.definition.oldLink = href;
 
                         document.getElementById(this.domId)
                             .addEventListener('keyup', function (e) {
-                                definition.restart(e.target.value);
+                                if (e.target.value.length > 10 &&
+                                    definition.oldLink !== e.target.value
+                                ) {
+                                    definition.restart(e.target.value);
+                                }
                             });
                     },
                     commit: function (element) {
@@ -145,11 +150,12 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
             } );
         },
         restart: function (url) {
-            this.preloadShow();
             if (this.timerId) {
                 clearTimeout(this.timerId);
             }
             var self = this;
+            this.oldLink = url;
+            this.preloadShow();
             this.timerId = setTimeout(function () {
                 self.process(url);
             }, 2000);

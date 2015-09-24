@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Services\Auth\Exceptions\AuthException;
-use App\Services\RemoteDataGrabber\Contracts\DataGrabber;
+use App\Services\RemoteDataGrabber\Contracts\DataGrabberInterface;
 use App\Services\RemoteDataGrabber\Exceptions\RemoteDataGrabberException;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -37,7 +37,11 @@ class UserController extends Controller
 
     }
 
-    public function logout(Request $request, DataGrabber $dataGrabber, $id)
+    public function logout(
+        Request $request,
+        DataGrabberInterface $dataGrabber,
+        $id
+    )
     {
         $cookie = $request->cookie('x-access-token');
 
