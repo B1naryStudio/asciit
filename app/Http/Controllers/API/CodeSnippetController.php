@@ -78,7 +78,7 @@ class CodeSnippetController extends Controller
         // Attaching a script for resize
         $doc = new DOMDocument('1.0');
         $doc->loadHTML($data);
-        $body = $doc->getElementsByTagName('body')[0];
+        $body = $doc->getElementsByTagName('body')->item(0);
 
         $script = $doc->createElement ( 'script', '' );
         $scriptUrl = url(
