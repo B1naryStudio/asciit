@@ -17,6 +17,7 @@ define([
     'views/view-behaviors/server-validation',
     'views/view-behaviors/fold-collection-items',
     'views/view-behaviors/iframes-height',
+    'views/view-behaviors/best-answer-controls',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
@@ -39,7 +40,8 @@ define([
     CodeHighlighter,
     ServerValidation,
     FoldCollectionItems,
-    IframesHeight
+    IframesHeight,
+    BestAnswersControl
 ) {
     App.Answer.Views.SingleAnswerLayoutView = Marionette.LayoutView.extend(
         _.extend({}, ViewsMixins.SelectText, {
@@ -52,10 +54,16 @@ define([
 
             ui: {
                 itemArea:     '.answer-body',
+
                 deleteButton: '.answer-body .entry-controls .delete',
                 editButton:   '.answer-body .entry-controls .edit',
                 saveButton:   '.answer-body .entry-controls .save',
-                cancelButton: '.answer-body .entry-controls .cancel'
+                cancelButton: '.answer-body .entry-controls .cancel',
+
+                bestControls:           '.best-controls',
+                indicatorOfBest:        '.answer-body .best-controls .indicator',
+                cancelBestStatusButton: '.answer-body .best-controls .cancel',
+                selectAsBestButton:     '.answer-body .best-controls .select'
             },
 
             events: {
@@ -63,17 +71,25 @@ define([
             },
 
             triggers: {
-                'mouseover @ui.itemArea': 'controls:show',
-                'mouseout @ui.itemArea':  'controls:hide',
+                'mouseover @ui.itemArea': 'over:entry',
+                'mouseout @ui.itemArea':  'out:entry',
+
+                // entry-controls
                 'click @ui.deleteButton': 'delete',
                 'click @ui.editButton':   'edit:start',
                 'click @ui.saveButton':   'edit:save',
-                'click @ui.cancelButton': 'edit:cancel'
+                'click @ui.cancelButton': 'edit:cancel',
+
+                // closed controls
+                'mouseover @ui.indicatorOfBest':       'best:cancel:button:show',
+                'mouseout @ui.cancelBestStatusButton': 'status:best:show',
+                'click @ui.selectAsBestButton':        'best:select',
+                'click @ui.cancelBestStatusButton':    'best:cancel'
             },
 
             behaviors: {
                 HidingControls: {
-                    behaviorClass:     HidingControls,
+                    behaviorClass: HidingControls,
                     controlsContainer: ".answer-body .entry-controls"
                 },
                 DeleteButton: {
@@ -95,6 +111,9 @@ define([
                 },
                 IframesHeight : {
                     behaviorClass: IframesHeight
+                },
+                BestAnswersControl : {
+                    behaviorClass: BestAnswersControl
                 }
             },
 

@@ -1,13 +1,18 @@
 <div class="list-group-item single-answer">
     <div class="row answer-body">
-
-
-
         <div class="col-md-2 col-lg-2 col-sm-2">
             <!-- Closed indication -->
-            <div class="closed-controls">
-                <span class="control closed" title="<%- _t('ui.save') %>">
+            <div class="best-controls">
+                <span class="control indicator" title="<%- _t('closed.answerFits') %>">
                     <i class="fa fa-1-5 fa-check-circle-o "></i>
+                </span>
+
+                <span class="control select" title="<%- _t('closed.pick') %>">
+                    <i class="fa fa-1-5 fa-check-circle-o "></i>
+                </span>
+
+                <span class="control cancel" title="<%- _t('closed.cancel') %>">
+                    <i class="fa fa-1-5 fa-ban"></i>
                 </span>
             </div>
 

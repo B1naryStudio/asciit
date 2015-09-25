@@ -33,7 +33,6 @@ define([
         onModelUpdated: function () {
             this.hideEditingControls();
             this.view.triggerMethod('waiting:stop');
-
         },
 
         onModelInvalid: function () {
@@ -53,7 +52,6 @@ define([
             this.ui.saveButton.hide();
             this.ui.cancelButton.hide();
             this.$('.editing-form-group').toggleClass('form-group');
-
         }
     });
 

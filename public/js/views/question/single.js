@@ -49,8 +49,8 @@ define([
                 editButton:    '.actions .entry-controls .edit'
             },
             triggers: {
-                'mouseover @ui.itemArea': 'controls:show',
-                'mouseout @ui.itemArea':  'controls:hide',
+                'mouseover @ui.itemArea': 'over:entry',
+                'mouseout @ui.itemArea':  'out:entry',
                 'click @ui.deleteButton': 'delete'
             },
             events: {

@@ -10,7 +10,7 @@ define([
             controlsContainer: '.entry-controls'
         },
 
-        onControlsShow: function () {
+        onOverEntry: function () {
             if (
                 this.view.model.isCurrentUserOwner()
                 || App.User.Current.isAdmin()
@@ -19,7 +19,7 @@ define([
             }
         },
 
-        onControlsHide: function () {
+        onOutEntry: function () {
             this.$(this.options.controlsContainer).hide();
         }
     });
