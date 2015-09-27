@@ -70,4 +70,20 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
         $this->pushCriteria(app(RequestCriteria::class));
         $this->pushCriteria(new QuestionCriteria());
     }
+
+    public function setClosed($model, $value)
+    {
+        $model->closed = $value;
+        $model->save();
+
+        return $model;
+    }
+
+    public function setClosedById($id, $value)
+    {
+        $this->with_relation_count = false;
+
+        $model = $this->find($id);
+        return $this->setClosed($model, $value);
+    }
 }

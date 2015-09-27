@@ -164,6 +164,30 @@ define([
                                 }
                             );
 
+                            App.Question.Controllers.Single.listenTo(
+                                answersView,
+                                'childview:best:change',
+                                function (childview, isBest) {
+                                    $.when(App.request(
+                                        'answer:best:change',
+                                        childview.model,
+                                        isBest
+                                    )).done(function (model) {
+                                        childview.triggerMethod(
+                                            'best:changed',
+                                            model
+                                        );
+                                    })
+
+                                    /*.fail(function (errors) {
+                                        childview.triggerMethod(
+                                            'delete:error',
+                                            errors
+                                        );
+                                    })*/;
+                                }
+                            );
+
                             // New comments to question view
                             var commentModel = new Comment.Model({
                                 q_and_a_id: question.get('id')

@@ -8,5 +8,6 @@ namespace App\Repositories\Contracts;
  */
 interface AnswerRepository extends RepositoryInterface
 {
-    //
+    public function setClosed($model, $value);
+    public function setClosedById($id, $value);
 }

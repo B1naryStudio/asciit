@@ -23,7 +23,11 @@ Rbac::permission('questions.view');
 Rbac::permission('questions.create');
 Rbac::permission('questions.edit');
 Rbac::permission('questions.edit.own', ['questions.edit'], function ($params) {
-return Ownership::isQuestionsOwner($params);
+    return Ownership::isQuestionsOwner($params);
+});
+Rbac::permission('questions.close');
+Rbac::permission('questions.close.own', ['questions.close'], function ($params) {
+    return Ownership::isQuestionsOwner($params);
 });
 Rbac::permission('questions.delete');
 Rbac::permission('questions.delete.own', ['questions.delete'], function ($params) {
@@ -34,12 +38,14 @@ Rbac::permission('questions.manage', [
     'questions.view',
     'questions.create',
     'questions.edit',
+    'questions.close',
     'questions.delete'
 ]);
 
 Rbac::permission('questions.manage.own', [
     'questions.create',
     'questions.edit.own',
+    'questions.close.own',
     'questions.delete.own'
 ]);
 

@@ -26,11 +26,19 @@ define([
         },
 
         onBestSelect: function () {
+            this.view.trigger('best:change', true);
             console.log('Picked as the best');
         },
 
         onBestCancel: function () {
+            this.view.trigger('best:change', false);
             console.log('Canceled a selection as the best');
+        },
+
+        onBestChanged: function (newModel) {
+            this.view.model.set('closed', newModel.get('closed'));
+            this.view.render();
+            this.onShow();
         },
 
         // shows the button to cancel a selection
