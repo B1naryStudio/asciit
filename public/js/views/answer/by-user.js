@@ -4,7 +4,6 @@ define([
     'backbone',
     'tpl!views/templates/answer/row-by-user.tpl',
     'views/empty',
-    'views/views-mixins',
     'views/view-behaviors/contains-votes',
     'views/view-behaviors/code-highlighter',
     'views/view-behaviors/iframes-height',
@@ -15,7 +14,6 @@ define([
     Backbone,
     AnswerTpl,
     EmptyView,
-    ViewsMixins,
     ContainsVotes,
     CodeHighlighter,
     IframesHeight

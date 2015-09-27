@@ -28,7 +28,7 @@ define([
         moveFocus: function(editor, data) {
             var checkData = editor.getData();
             var el = $(editor.getSelection().document.$).find('body');
-            if(checkData!='') {
+            if(checkData !== '') {
                 el.append('<p></p>');
                 el.find('p:last').append(data);
             } else {
@@ -43,7 +43,7 @@ define([
             node = parents[parents.length - 2].getFirst();
             while (true) {
                 var x = node.getNext();
-                if (x == null) {
+                if (x === null) {
                     break;
                 }
                 node = x;
@@ -106,8 +106,17 @@ define([
         },
 
         loadCSS: function(href) {
-            var cssLink = $('<link rel="stylesheet" type="text/css" href="' + href + '">');
+            var cssLink = $('<link rel="stylesheet" type="text/css" href="' +
+                href + '">');
             $('head').append(cssLink);
+        },
+
+        saveSelectedInfo: function (data) {
+            this.selected = data;
+        },
+
+        getSelectedInfo: function () {
+            return this.selected;
         }
     };
 
@@ -254,7 +263,6 @@ define([
         },
         Routes: {},
         FormView: {},
-        ViewsMixins: {},
         Behaviors: {}
     });
 
