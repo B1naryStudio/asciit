@@ -71,8 +71,8 @@ define([
             },
 
             triggers: {
-                'mouseover @ui.itemArea': 'over:entry',
-                'mouseout @ui.itemArea':  'out:entry',
+                'mouseenter @ui.itemArea': 'over:entry',
+                'mouseleave @ui.itemArea':  'out:entry',
 
                 // entry-controls
                 'click @ui.deleteButton': 'delete',

@@ -83,7 +83,12 @@ define([
                             var answersView = new AnswersView({
                                 model: model,
                                 collection: answers,
-                                answer_id: answer_id
+                                answer_id: answer_id,
+                                childViewOptions: {
+                                    // For defining owner while selecting of the
+                                    // best answer
+                                    questionOwnerId: question.get('user_id')
+                                }
                             });
                             App.Question.Controllers.Single.listenTo(
                                 answersView,

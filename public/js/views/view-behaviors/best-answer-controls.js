@@ -12,7 +12,7 @@ define([
 
         onShow: function () {
             // selecting clause with preventing a type collision
-            if (this.isQuestionBest()) {
+            if (this.isAnswerBest()) {
                 this.onStatusBestShow();
             }
         },
@@ -36,7 +36,7 @@ define([
         // shows the button to cancel a selection
         onBestCancelButtonShow: function () {
             // question ownership clause
-            if (this.isQuestionOwner()) {
+            if (this.isOwnerOfQuestion()) {
                 this.ui.indicatorOfBest.hide();
                 this.ui.cancelBestStatusButton.show();
             }
@@ -44,7 +44,7 @@ define([
 
         // shows the button to pick the best
         onBestSelectButtonShow: function () {
-            if (this.isQuestionOwner() && !this.isQuestionBest()) {
+            if (!this.isAnswerBest() && this.isOwnerOfQuestion()) {
                 this.ui.selectAsBestButton.show();
             }
         },
@@ -59,13 +59,13 @@ define([
             this.ui.cancelBestStatusButton.hide();
         },
 
-        isQuestionOwner: function () {
-            return true;
+        isOwnerOfQuestion: function () {
+            return this.view.options.questionOwnerId ==
+                App.User.Current.get('id');
         },
 
-        isQuestionBest: function () {
-            return false;
-            return this.view.model.get('closed').toString == 'true';
+        isAnswerBest: function () {
+            return (+this.view.model.get('closed') == true);
         }
     });
 
