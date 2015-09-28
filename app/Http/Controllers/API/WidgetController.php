@@ -47,7 +47,7 @@ class WidgetController extends Controller
 
         $questions = $this->addLinks($request, $questions);
 
-        return Response::json($questions->items(), 200);
+        return Response::json($questions->items(), 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -76,7 +76,7 @@ class WidgetController extends Controller
 
         $questions = $this->addLinks($request, $questions);
 
-        return Response::json($questions, 200);
+        return Response::json($questions, 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -105,7 +105,7 @@ class WidgetController extends Controller
 
         $questions = $this->addLinks($request, $questions);
 
-        return Response::json($questions, 200);
+        return Response::json($questions, 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -134,7 +134,7 @@ class WidgetController extends Controller
 
         $questions = $this->addLinks($request, $questions);
 
-        return Response::json($questions, 200);
+        return Response::json($questions, 200, [], JSON_NUMERIC_CHECK);
     }
 
     private function addLinks(Request $request, $data)

@@ -57,7 +57,7 @@ gulp.task('js-main', function () {
         .pipe(rjs({
             baseUrl: jsPathFull,
             mainConfigFile: jsPathFull + 'require-main.js',
-            //optimize: 'none',
+            optimize: 'none',
             paths: {
                 requireLib: 'vendor/require/require'
             },
@@ -76,6 +76,7 @@ var separate_files = [
     'models/vote',
     'models/user',
     'models/paginator',
+    'views/quote-control'
 ];
 
 gulp.task('js-require', function () {
@@ -94,14 +95,14 @@ gulp.task('js-require', function () {
         'paginator',
         'ckeditor',
         'ckeditor.adapter',
-        'jquery.iframe-resizer',
+        'jquery.iframe-resizer'
     ];
 
     gulp.src(jsPathFull + 'models/model-mixins.js')
         .pipe(rjs({
             baseUrl: jsPathFull,
             mainConfigFile: jsPathFull + 'require-main.js',
-            //optimize: 'none',
+            optimize: 'none',
             exclude: function () {
                 return staticExclude;
             }
@@ -115,12 +116,13 @@ gulp.task('js-require', function () {
         jsPathFull + 'views/main-layout.js',
         jsPathFull + 'views/views-mixins.js',
         jsPathFull + 'views/vote/single.js',
-        jsPathFull + 'models/model-mixins.js'
+        jsPathFull + 'models/model-mixins.js',
+        jsPathFull + 'views/quote-control.js'
     ])
         .pipe(rjs({
             baseUrl: jsPathFull,
             mainConfigFile: jsPathFull + 'require-main.js',
-            //optimize: 'none',
+            optimize: 'none',
             exclude: function (file) {
                 var result = assign(['models/model-mixins'], staticExclude);
                 for (var i = 0; i < separate_files.length; i++) {

@@ -14,7 +14,7 @@ class ScreenshotPreview implements ScreenshotPreviewInterface
 
     private function resize($path, $desired_width)
     {
-        $source_image = imagecreatefrompng($path);
+        $source_image = imagecreatefromjpeg($path);
         $width = imagesx($source_image);
         $height = imagesy($source_image);
         $desired_height = floor($height * ($desired_width / $width));
@@ -33,16 +33,16 @@ class ScreenshotPreview implements ScreenshotPreviewInterface
             $width,
             $height
         );
-        imagepng($virtual_image, $path);
+        imagejpeg($virtual_image, $path);
     }
 
     public function get($url)
     {
         $config = env('LINK_PREVIEW_SCREENSHOT');
         if ($config) {
-            $fileName = time() . '.png';
-            $path = $this->folder . $fileName;
-            $result = url('/api/v1' . $path);
+            $fileName = time();
+            $path = $this->folder . $fileName . '.jpg';
+            $result = url(env('SERVER_PREFIX') . '/api/v1' . $this->folder . $fileName);
             shell_exec(str_replace(
                 ['%url', '%file'],
                 [$url, storage_path('app') . $path],
