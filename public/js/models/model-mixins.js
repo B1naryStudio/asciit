@@ -88,7 +88,7 @@ define([
             update: function (patch) {
                 if (patch) {
                     this.set.call(this, patch);
-                    this.trigger('live:updated');
+                    this.trigger.call(this, 'live:updated');
                 }
             }
         },

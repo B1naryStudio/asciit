@@ -173,39 +173,48 @@ define([
                                         childview.model,
                                         isBest
                                     )).done(function (model) {
-                                        // Change question status
-                                        questionView.triggerMethod(
-                                            'best:answer:changed',
-                                            model
-                                        );
-
                                         // Show a mark on the answer
                                         childview.triggerMethod(
                                             'best:changed',
                                             model
                                         );
-
-                                        // Cancel an old choise if a new
-                                        // best is picked
-                                        if (!model.get('closed')) return;
-
-                                        // An old and new picked
-                                        var allBest = answersView
-                                            .collection
-                                            .where({'closed': 1});
-
-                                        for (var i = 0; i < allBest.length; i++) {
-                                            var previousBest = allBest[i];
-
-                                            // Change a model different of
-                                            // already changed
-                                            if(previousBest.cid === model.cid) {
-                                                continue;
-                                            }
-
-                                            previousBest.set('closed', 0);
-                                        }
                                     });
+                                }
+                            );
+
+                            // A new data about the best question was showed but
+                            // wasn't cleared to the state of persistance yet.
+                            App.Question.Controllers.Single.listenTo(
+                                answersView,
+                                'childview:best:showed',
+                                function (childview, model) {
+                                    // Change question status
+                                    questionView.triggerMethod(
+                                        'best:answer:changed',
+                                        model
+                                    );
+
+                                    // Cancel an old choise if a new best
+                                    // is picked
+                                    if (!model.get('closed')) return;
+
+                                    // An old and new picked
+                                    var allBest = answersView
+                                        .collection
+                                        .where({'closed': 1});
+
+                                    for (var i = 0; i < allBest.length; i++) {
+                                        var previousBest = allBest[i];
+
+                                        // Change a model different of
+                                        // already changed
+                                        if(previousBest.id === model.id) {
+                                            continue;
+                                        }
+
+                                        previousBest.set('closed', 0);
+                                        previousBest.trigger('best:cleared')
+                                    }
                                 }
                             );
 

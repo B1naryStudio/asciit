@@ -21,9 +21,11 @@ use App\Services\Questions\Exceptions\QuestionServiceException;
 use App\Repositories\Contracts\CommentRepository;
 use Illuminate\Support\Facades\Event;
 use App\Events\QuestionWasAdded;
+use App\Events\QuestionWasClosed;
 use App\Events\QuestionWasRemoved;
 use App\Events\AnswerWasAdded;
 use App\Events\AnswerWasUpdated;
+use App\Events\AnswerClosedQuestion;
 use App\Events\AnswerWasRemoved;
 use App\Events\CommentWasAdded;
 use App\Events\CommentWasUpdated;
@@ -455,18 +457,22 @@ class QuestionService implements QuestionServiceInterface
 
                 if ($previous) {
                     // Cancel a previous choise if it exists
-                    $this->answerRepository->setClosed($previous, false);
+                    $answer = $this->answerRepository
+                        ->setClosed($previous, false);
                 } else {
                     // If there wasn't a best answer yet, mark question as closed
-                    $this->questionRepository->setClosedById($question_id, true);
+                    $question = $this->questionRepository
+                        ->setClosedById($question_id, true);
                 }
             } else {
                 // If we are removing a mark of the best answer, a question has
-                $this->questionRepository->setClosedById($question_id, false);
+                $question = $this->questionRepository
+                    ->setClosedById($question_id, false);
             }
 
             // Update an answer closed value
-            $this->answerRepository->setClosedById($answer_id, $closing_value);
+            $answer = $this->answerRepository
+                ->setClosedById($answer_id, $closing_value);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -474,6 +480,13 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        // If something changed in question
+//        if ($question) {
+//            //Event::fire(new QuestionWasClosed($question));
+//        }
+
+        Event::fire(new AnswerWasUpdated($answer));
 
         return $closing_value;
     }
