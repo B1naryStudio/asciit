@@ -44,8 +44,8 @@ define([
         },
 
         triggers: {
-            'mouseover @ui.itemArea': 'controls:show',
-            'mouseout @ui.itemArea':  'controls:hide',
+            'mouseenter @ui.itemArea': 'over:entry',
+            'mouseleave @ui.itemArea':  'out:entry',
             'click @ui.deleteButton': 'delete',
             'click @ui.editButton':   'edit:start',
             'click @ui.saveButton':   'edit:save',

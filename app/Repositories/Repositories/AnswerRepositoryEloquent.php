@@ -41,4 +41,18 @@ class AnswerRepositoryEloquent extends Repository implements AnswerRepository
         $this->pushCriteria(app(RequestCriteria::class));
         $this->pushCriteria(new AnswerCriteria());
     }
+
+    public function setClosed($model, $value)
+    {
+        $model->closed = $value;
+        $model->save();
+
+        return $model;
+    }
+
+    public function setClosedById($id, $value)
+    {
+        $model = $this->find($id);
+        return $this->setClosed($model, $value);
+    }
 }

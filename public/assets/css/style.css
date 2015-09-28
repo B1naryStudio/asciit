@@ -357,7 +357,7 @@ body.modal-open {
 
 .single-answer .votes {
     float: right;
-    margin: 5px 0 0 15px;
+    margin: 0 0 0 15px;
     font-size: 20px;
 }
 
@@ -470,32 +470,62 @@ body.modal-open {
  | Controls (edit, delete)
  |------------------------------------------------------------------------------
  */
+.control {
+    display: inline-block;
+}
+
 .entry-controls,
 .entry-controls .save,
-.entry-controls .cancel {
+.entry-controls .cancel,
+.best-controls .control {
     display: none;
 }
 
-.entry-controls .fa {
-    font-size: 16px;
+.control .fa {
     padding: 2px;
-    margin-right: 3px;
     cursor: pointer;
-    color: #555;
     text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
 }
 
-.entry-controls .save .fa,
-.entry-controls .cancel .fa {
+.entry-controls .control .fa {
+    color: #555;
+    font-size: 16px;
+    margin-right: 3px;
+}
+
+.control.save .fa,
+.control.save .fa,
+.control.cancel .fa {
     text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.6);
 }
 
-.entry-controls .delete .fa,
-.entry-controls .cancel .fa {
+.control.delete .fa,
+.best-controls .control.cancel .fa,
+.entry-controls .control.cancel .fa {
     color: firebrick;
 }
 
-.entry-controls .save .fa {
+.single-answer .best-controls {
+    position: absolute;
+    left: 16px;
+    top: 0;
+}
+
+.questions-list .best-controls {
+    float: right;
+}
+
+.best-controls .indicator .fa,
+.best-controls .select .fa {
+    text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.4);
+    color: #119C23;
+}
+
+.best-controls .select {
+    opacity: 0.5;
+}
+
+.control.save .fa {
     color: #000060;
 }
 
@@ -504,16 +534,31 @@ body.modal-open {
     margin-right: 20px;
 }
 
-.single-answer .row,
-.single-comment .row {
+.answer-body,
+.single-answer .user-info,
+.single-comment .row, {
     position: relative;
 }
 
-.single-answer .entry-controls,
-.single-comment .entry-controls {
+.answer-body {
+    position: relative;
+}
+
+.entry-controls {
     position: absolute;
     right: 10px;
+}
+
+.single-comment .entry-controls {
     bottom: 0;
+}
+
+.single-answer .entry-controls {
+    bottom: 10px;
+}
+
+.related-controls {
+    margin-bottom: 10px;
 }
 
 [contenteditable=true] {
@@ -542,10 +587,6 @@ body.modal-open {
     line-height: 25px;
     font-size: 0.8em;
     margin: 0 0 5px 0;
-}
-
-.related-controls {
-    margin-bottom: 10px;
 }
 
 /*
@@ -604,41 +645,6 @@ body.modal-open {
 
 .has-error .select2-selection {
     border-color: #a94442;
-}
-
-/*
- |------------------------------------------------------------------------------
- | Answers list
- |------------------------------------------------------------------------------
- */
-.new-answer .panel-body {
-    padding: 0;
-}
-
-.new-answer textarea {
-    width: 100%;
-    border: none;
-    padding: 0.5em;
-}
-
-.model-field {
-    margin-bottom: 10px;
-}
-
-.new-answer .form-group {
-    margin: 0;
-}
-.new-answer .help-block {
-    margin-left: 10px;
-}
-
-.new-answer-controls {
-    text-align: center;
-    margin: 15px auto 50px;
-}
-
-#answers .single-answer {
-    margin-bottom: 10px;
 }
 
 /*
@@ -1054,7 +1060,7 @@ blockquote .author {
 
 .my-questions .votes {
     float: right;
-    margin: 0 15px 0 15px;
+    margin: 0;
 }
 
 .my-questions .title-wrapper {
@@ -1063,6 +1069,37 @@ blockquote .author {
 
 .my-questions .question-preview {
     font-size: 18px;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | New answer
+ |------------------------------------------------------------------------------
+ */
+.new-answer .panel-body {
+    padding: 0;
+}
+
+.new-answer textarea {
+    width: 100%;
+    border: none;
+    padding: 0.5em;
+}
+
+.model-field {
+    margin-bottom: 10px;
+}
+
+.new-answer .form-group {
+    margin: 0;
+}
+.new-answer .help-block {
+    margin-left: 10px;
+}
+
+.new-answer-controls {
+    text-align: center;
+    margin: 15px auto 50px;
 }
 
 /*
@@ -1081,10 +1118,6 @@ blockquote .author {
 .answer-preview {
     font-size: 22px;
     padding-right: 0;
-}
-
-.answers-list .votes {
-    margin-top: 10px;
 }
 
 .answers-list .question-info {
@@ -1113,6 +1146,21 @@ blockquote .author {
 
 .answers-list .cke {
     border: none;
+}
+
+
+
+/*
+ |------------------------------------------------------------------------------
+ | Single answer
+ |------------------------------------------------------------------------------
+ */
+#answers .single-answer {
+    margin-bottom: 10px;
+}
+
+.single-answer .user-info {
+    padding-left: 20px;
 }
 
 /*
@@ -1169,6 +1217,10 @@ div .fa-3 {
 
 div .fa-2 {
     font-size: 2em;
+}
+
+div .fa-1-5 {
+    font-size: 1.5em;
 }
 
 div .fa-1 {

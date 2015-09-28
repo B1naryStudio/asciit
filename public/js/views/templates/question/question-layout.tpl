@@ -19,7 +19,14 @@
                          <%- created_relative %>
                     </time>
                 </span>
-                <h2 class="model-field"><%- title %></h2>
+                <h2 class="model-field">
+                    <span class="best-controls">
+                        <span class="control indicator" title="<%- _t('closed.questionClosed') %>">
+                            <i class="fa fa-check-circle-o "></i>
+                        </span>
+                    </span>
+                    <%- title %>
+                </h2>
                 <div class="folder">
                     <span class="icon glyphicon glyphicon-folder-open"></span>
                     <a href="#folders/<%- folder.title %>"><%- folder.title %></a>

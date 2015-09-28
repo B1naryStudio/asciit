@@ -9,4 +9,7 @@ use App\Repositories\Entities\Question;
  * @package namespace App\RepositoriesRepositories;
  */
 interface QuestionRepository extends RepositoryInterface
-{}
+{
+    public function setClosed($model, $value);
+    public function setClosedById($id, $value);
+}
