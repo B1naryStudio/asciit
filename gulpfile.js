@@ -76,7 +76,6 @@ var separate_files = [
     'models/vote',
     'models/user',
     'models/paginator',
-    'views/views-mixins',
 ];
 
 gulp.task('js-require', function () {

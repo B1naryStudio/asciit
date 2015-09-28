@@ -2,6 +2,10 @@
 
 namespace App\Services\Preview;
 use App\Services\Preview\Contracts\PreviewServiceInterface;
+use App\Services\Preview\Contracts\OpenGraphPreviewInterface;
+use App\Services\Preview\Contracts\OEmbedPreviewInterface;
+use App\Services\Preview\Contracts\PlaceholderPreviewInterface;
+use App\Services\Preview\Contracts\ScreenshotPreviewInterface;
 use App\Services\Preview\Exceptions\PreviewException;
 use \Illuminate\Contracts\Foundation\Application;
 
