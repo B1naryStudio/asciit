@@ -10,24 +10,28 @@ define([
             controlsContainer: '.closed-controls'
         },
 
-        //onRender: function () {
-        //    this.view.model.on('change:closed', this.onShow, this);
-        //},
+        onRender: function () {
+            this.view.model.on('change:closed', this.onShow, this);
+        },
 
         onShow: function () {
             // selecting clause with preventing a type collision
             if (this.isAnswerBest()) {
                 this.onStatusBestShow();
+                this.ui.selectAsBestButton.hide();
             } else {
-                this.onStatusBestHide();
+                this.ui.indicatorOfBest.hide();
+                this.ui.cancelBestStatusButton.hide();
             }
         },
 
         onOverEntry: function () {
-            this.showBestSelectButton();
+            if (!this.isAnswerBest() && this.isOwnerOfQuestion()) {
+                this.ui.selectAsBestButton.show();
+            }
         },
         onOutEntry: function () {
-            this.hideBestSelectButton();
+            this.ui.selectAsBestButton.hide();
         },
 
         onBestSelect: function () {
@@ -41,37 +45,24 @@ define([
 
         onBestChanged: function (newModel) {
             this.view.model.set('closed', newModel.get('closed'));
-            this.view.render();
             this.onShow();
         },
 
-        // shows the button to cancel a selection
+        // switches to the cancel button on mouse hover the status
         onBestCancelButtonShow: function () {
             // question ownership clause
-            if (this.isOwnerOfQuestion()) {
+            if (this.isAnswerBest() && this.isOwnerOfQuestion()) {
                 this.ui.indicatorOfBest.hide();
                 this.ui.cancelBestStatusButton.show();
             }
         },
 
-        // shows the button to pick the best
-        showBestSelectButton: function () {
-            if (!this.isAnswerBest() && this.isOwnerOfQuestion()) {
-                this.ui.selectAsBestButton.show();
-            }
-        },
-
-        hideBestSelectButton: function () {
-            this.ui.selectAsBestButton.hide();
-        },
-
-        // Shows the status of the best answer
+        // Shows the status of the best answer (on show or on mouse out of cancel)
         onStatusBestShow: function () {
-            this.ui.indicatorOfBest.show();
-            this.ui.cancelBestStatusButton.hide();
-        },
-        onStatusBestHide: function () {
-            this.ui.indicatorOfBest.hide();
+            if (this.isAnswerBest()) {
+                this.ui.indicatorOfBest.show();
+                this.ui.cancelBestStatusButton.hide();
+            }
         },
 
         isOwnerOfQuestion: function () {

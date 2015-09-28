@@ -173,7 +173,7 @@ define([
                                         childview.model,
                                         isBest
                                     )).done(function (model) {
-                                        // Cancelling an old choise
+                                        //Cancelling an old choise
                                         //if (model.get('closed')) {
                                         //    var oldChoise = answersView
                                         //        .collection
