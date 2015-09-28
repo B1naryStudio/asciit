@@ -57,7 +57,7 @@ gulp.task('js-main', function () {
         .pipe(rjs({
             baseUrl: jsPathFull,
             mainConfigFile: jsPathFull + 'require-main.js',
-            optimize: 'none',
+            //optimize: 'none',
             paths: {
                 requireLib: 'vendor/require/require'
             },
@@ -102,7 +102,7 @@ gulp.task('js-require', function () {
         .pipe(rjs({
             baseUrl: jsPathFull,
             mainConfigFile: jsPathFull + 'require-main.js',
-            optimize: 'none',
+            //optimize: 'none',
             exclude: function () {
                 return staticExclude;
             }
@@ -122,7 +122,7 @@ gulp.task('js-require', function () {
         .pipe(rjs({
             baseUrl: jsPathFull,
             mainConfigFile: jsPathFull + 'require-main.js',
-            optimize: 'none',
+            //optimize: 'none',
             exclude: function (file) {
                 var result = assign(['models/model-mixins'], staticExclude);
                 for (var i = 0; i < separate_files.length; i++) {
