@@ -2,30 +2,22 @@
 
 namespace App\Services\Preview;
 use App\Services\Preview\Contracts\PreviewServiceInterface;
-use App\Services\Preview\Contracts\OpenGraphPreviewInterface;
-use App\Services\Preview\Contracts\OEmbedPreviewInterface;
-use App\Services\Preview\Contracts\PlaceholderPreviewInterface;
-use App\Services\Preview\Contracts\ScreenshotPreviewInterface;
 use App\Services\Preview\Exceptions\PreviewException;
+use \Illuminate\Contracts\Foundation\Application;
 
 class PreviewService implements PreviewServiceInterface
 {
     /**
      * @var array
      */
-    private $services;
+    private $providers;
 
-    public function __construct(
-        OpenGraphPreviewInterface $openGraph,
-        OEmbedPreviewInterface $oembed,
-        //ScreenshotPreviewInterface $screenshot,
-        PlaceholderPreviewInterface $placeholder
-    )
+    public function __construct(Application $app)
     {
-        $this->services[] = $oembed;
-        $this->services[] = $openGraph;
-        //$this->services[] = $screenshot;
-        $this->services[] = $placeholder;
+        $providers_classes = config('preview.screenshot_providers');
+        foreach ($providers_classes as $class) {
+            $this->providers[] = $app->make($class);
+        }
     }
 
     /**
@@ -35,10 +27,10 @@ class PreviewService implements PreviewServiceInterface
     public function get($url)
     {
         $preview = '';
-        foreach ($this->services as $service) {
-            /* @var $service PreviewServiceInterface */
+        foreach ($this->providers as $provider) {
+            /* @var $provider PreviewServiceInterface */
             try {
-                $preview = $service->get($url);
+                $preview = $provider->get($url);
                 break;
             } catch (PreviewException $e) {}
         }

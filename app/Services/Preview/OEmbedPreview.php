@@ -16,11 +16,6 @@ class OEmbedPreview implements OEmbedPreviewInterface
     private $dataGrabber;
 
     /**
-     * @var string
-     */
-    private $configFile = '../.oembed-providers';
-
-    /**
      * @var array
      */
     private $providers;
@@ -28,21 +23,7 @@ class OEmbedPreview implements OEmbedPreviewInterface
     public function __construct(DataGrabberInterface $dataGrabberService)
     {
         $this->dataGrabber = $dataGrabberService;
-        $this->loadProviders();
-    }
-
-    private function loadProviders()
-    {
-        $this->providers = [];
-        $handle = fopen($this->configFile, 'r');
-        while (!feof($handle)) {
-            $tmp = trim(fgets($handle));
-            $config = explode('=', $tmp);
-            if (!empty($config[1])) {
-                $this->providers[$config[0]] = $config[1];
-            }
-        }
-        fclose($handle);
+        $this->providers = config('preview.oembed_providers');
     }
 
     public function get($url)
