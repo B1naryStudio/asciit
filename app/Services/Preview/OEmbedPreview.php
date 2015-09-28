@@ -18,7 +18,7 @@ class OEmbedPreview implements OEmbedPreviewInterface
     /**
      * @var string
      */
-    private $configFile = '../.oembed-providers';
+    private $configFile = '/../.oembed-providers';
 
     /**
      * @var array
@@ -34,7 +34,7 @@ class OEmbedPreview implements OEmbedPreviewInterface
     private function loadProviders()
     {
         $this->providers = [];
-        $handle = fopen($this->configFile, 'r');
+        $handle = fopen(app_path() . $this->configFile, 'r');
         while (!feof($handle)) {
             $tmp = trim(fgets($handle));
             $config = explode('=', $tmp);

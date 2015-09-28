@@ -18,13 +18,13 @@ class PreviewService implements PreviewServiceInterface
     public function __construct(
         OpenGraphPreviewInterface $openGraph,
         OEmbedPreviewInterface $oembed,
-        //ScreenshotPreviewInterface $screenshot,
+        ScreenshotPreviewInterface $screenshot,
         PlaceholderPreviewInterface $placeholder
     )
     {
         $this->services[] = $oembed;
         $this->services[] = $openGraph;
-        //$this->services[] = $screenshot;
+        $this->services[] = $screenshot;
         $this->services[] = $placeholder;
     }
 
