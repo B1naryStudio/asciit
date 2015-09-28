@@ -85,6 +85,7 @@
     },
     "closed": {
         "answerFits": "Accepted by the question owner as the best",
+        "questionClosed": "Question is closed",
         "pick": "Pick up this answer as the best",
         "cancel": "Cancel an assignment of this question as the best"
     }

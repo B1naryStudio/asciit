@@ -11,6 +11,7 @@ define([
     'views/view-behaviors/contains-votes',
     'views/view-behaviors/code-highlighter',
     'views/view-behaviors/iframes-height',
+    'views/view-behaviors/closed-question-indicator',
     'stickit',
     'highlight',
     'ckeditor',
@@ -28,7 +29,8 @@ define([
     DeleteButton,
     ContainsVotes,
     CodeHighlighter,
-    IframesHeight
+    IframesHeight,
+    ClosedQuestionIndicator
 ) {
     App.Question.Views.QuestionLayout = Marionette.LayoutView.extend(
         _.extend({}, ViewsMixins.SelectText, {
@@ -46,7 +48,8 @@ define([
                 commentButton: '.add-comment',
                 answerButton:  '.add-answer',
                 deleteButton:  '.actions .entry-controls .delete',
-                editButton:    '.actions .entry-controls .edit'
+                editButton:    '.actions .entry-controls .edit',
+                closedIndicator: '.question_view .best-controls .indicator'
             },
             triggers: {
                 'mouseenter @ui.itemArea': 'over:entry',
@@ -77,6 +80,9 @@ define([
                 IframesHeight : {
                     behaviorClass: IframesHeight,
                     searchIn: '.question_view'
+                },
+                ClosedQuestionIndicator: {
+                    behaviorClass: ClosedQuestionIndicator
                 }
             },
 
