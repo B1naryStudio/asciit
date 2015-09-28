@@ -2,7 +2,7 @@
 
 return [
     'placeholder' => 'http://dummyimage.com/200x200/ffa800&text=No+Preview',
-    'screenshot_width' =>  200, //px
+    'screenshot_width' =>  700, //px
     'screenshot_providers' => [
         App\Services\Preview\Contracts\OEmbedPreviewInterface::class,
         App\Services\Preview\Contracts\OpenGraphPreviewInterface::class,

@@ -15,9 +15,9 @@ define([
             );
             this.$el
                 .css({
-                    left: e.pageX,
+                    left: e.pageX + 3,
                     top: (current_line - 1) * line_height +
-                        container_offset.top - 2
+                        container_offset.top
                 });
             $(document).bind('click', function () {
                 App.trigger('select:cancel');
