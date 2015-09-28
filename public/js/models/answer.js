@@ -136,6 +136,10 @@ define([
         });
     });
 
+    App.reqres.setHandler('answer:best:change', function (model, isBest) {
+        return API.deferOperation('save', model, {'closed': isBest}, {patch: true});
+    });
+
     App.reqres.setHandler('answer:my', function () {
         return API.answerCollectionByUser();
     });

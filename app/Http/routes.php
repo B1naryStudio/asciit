@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
     $prefix = env('SERVER_PREFIX', '');
     return view('base', [
@@ -29,8 +31,29 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::resource(
         '/questions/{id}/answers',
         'API\Question\AnswerController',
-        ['only' => ['index', 'store', 'update', 'destroy']]
+        ['only' => ['index', 'store', 'destroy']]
     );
+
+    Route::put(
+        '/questions/{questions}/answers/{answers}',
+        'API\Question\AnswerController@update'
+    );
+
+    // Patch uses on answers for closed status update only
+    Route::patch(
+        '/questions/{questions}/answers/{answers}',
+        'API\Question\AnswerController@setClosed'
+    );
+
+//    Route::patch('/questions/{question_id}/answers/{answer_id}', function (Request $request, $question_id, $answer_id) {
+//        $controller = App::make('App\Http\Controllers\API\Question\AnswerController');
+//
+//        if ($request->has('closed')) {
+//            return $controller->setClosed($request, $question_id, $answer_id);
+//        } else {
+//            return $controller->updateFields($request, $question_id, $answer_id);
+//        }
+//    });
 
     Route::resource(
         '/questions/{id}/comments',

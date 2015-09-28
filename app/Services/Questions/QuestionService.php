@@ -425,10 +425,10 @@ class QuestionService implements QuestionServiceInterface
         return $answer;
     }
 
-    public function updateAnswer($data)
+    public function updateAnswer($data, $answer_id)
     {
         try {
-            $answer = $this->answerRepository->update($data, $data['id']);
+            $answer = $this->answerRepository->update($data, $answer_id);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -439,6 +439,43 @@ class QuestionService implements QuestionServiceInterface
 
         Event::fire(new AnswerWasUpdated($answer));
         return $answer;
+    }
+
+    public function handleQuestionClosing(
+        $question_id,
+        $answer_id,
+        $closing_value
+    ) {
+        try {
+            if ($closing_value == true) {
+                $previous = $this->answerRepository->firstWhere([
+                    'question_id' => $question_id,
+                    'closed'      => true
+                ]);
+
+                if ($previous) {
+                    // Cancel a previous choise if it exists
+                    $this->answerRepository->setClosed($previous, false);
+                } else {
+                    // If there wasn't a best answer yet, mark question as closed
+                    $this->questionRepository->setClosedById($question_id, true);
+                }
+            } else {
+                // If we are removing a mark of the best answer, a question has
+                $this->questionRepository->setClosedById($question_id, false);
+            }
+
+            // Update an answer closed value
+            $this->answerRepository->setClosedById($answer_id, $closing_value);
+        } catch (RepositoryException $e) {
+            throw new QuestionServiceException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        return $closing_value;
     }
 
     public function removeAnswer($id)

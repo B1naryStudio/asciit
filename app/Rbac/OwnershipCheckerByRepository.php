@@ -11,9 +11,9 @@ class OwnershipCheckerByRepository implements OwnershipChecker
     {
         $item_id = $params[$idParamName];
         $repository = app($repo_name);
-        $answer = $repository->find($item_id);
+        $item = $repository->find($item_id);
 
-        $owner = $answer->user_id;
+        $owner = $item->user_id;
         $current_user = Auth::id();
 
         return $owner == $current_user;

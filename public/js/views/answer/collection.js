@@ -17,6 +17,7 @@ define([
     'views/view-behaviors/fold-collection-items',
     'views/view-behaviors/iframes-height',
     'views/view-behaviors/text-select',
+    'views/view-behaviors/best-answer',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
@@ -39,6 +40,7 @@ define([
     ServerValidation,
     FoldCollectionItems,
     IframesHeight,
+    BestAnswer,
     TextSelect
 ) {
     App.Answer.Views.SingleAnswerLayoutView = Marionette.LayoutView.extend({
@@ -51,26 +53,41 @@ define([
 
         ui: {
             itemArea:     '.answer-body',
+
             deleteButton: '.answer-body .entry-controls .delete',
             editButton:   '.answer-body .entry-controls .edit',
             saveButton:   '.answer-body .entry-controls .save',
-            cancelButton: '.answer-body .entry-controls .cancel'
+            cancelButton: '.answer-body .entry-controls .cancel',
+
+            bestControls:           '.best-controls',
+            indicatorOfBest:        '.answer-body .best-controls .indicator',
+            cancelBestStatusButton: '.answer-body .best-controls .cancel',
+            selectAsBestButton:     '.answer-body .best-controls .select'
         },
 
         triggers: {
-            'mouseover @ui.itemArea': 'controls:show',
-            'mouseout @ui.itemArea':  'controls:hide',
+            'mouseenter @ui.itemArea': 'over:entry',
+            'mouseleave @ui.itemArea':  'out:entry',
+
+            // entry-controls
             'click @ui.deleteButton': 'delete',
             'click @ui.editButton':   'edit:start',
             'click @ui.saveButton':   'edit:save',
             'click @ui.cancelButton': 'edit:cancel',
+
+            // closed controls
+            'mouseover @ui.indicatorOfBest':       'best:cancel:button:show',
+            'mouseout @ui.cancelBestStatusButton': 'status:best:show',
+            'click @ui.selectAsBestButton':        'best:select',
+            'click @ui.cancelBestStatusButton':    'best:cancel',
+
             'mouseup p': 'text:select'
         },
 
         behaviors: {
             HidingControls: {
                 behaviorClass: HidingControls,
-                controlsContainer: '.answer-body .entry-controls'
+                controlsContainer: ".answer-body .entry-controls"
             },
             DeleteButton: {
                 behaviorClass: DeleteButton,
@@ -78,7 +95,7 @@ define([
             },
             EditButton: {
                 behaviorClass: EditButton,
-                controlsContainer: '.answer-body .entry-controls'
+                controlsContainer: ".answer-body .entry-controls"
             },
             ContainsVotes: {
                 behaviorClass: ContainsVotes
@@ -89,8 +106,11 @@ define([
             ServerValidation: {
                 behaviorClass: ServerValidation
             },
-            IframesHeight: {
+            IframesHeight : {
                 behaviorClass: IframesHeight
+            },
+            BestAnswer : {
+                behaviorClass: BestAnswer
             },
             TextSelect: {
                 behaviorClass: TextSelect

@@ -83,7 +83,12 @@ define([
                             var answersView = new AnswersView({
                                 model: model,
                                 collection: answers,
-                                answer_id: answer_id
+                                answer_id: answer_id,
+                                childViewOptions: {
+                                    // For defining owner while selecting of the
+                                    // best answer
+                                    questionOwnerId: question.get('user_id')
+                                }
                             });
                             App.Question.Controllers.Single.listenTo(
                                 answersView,
@@ -155,6 +160,51 @@ define([
                                             'delete:error',
                                             errors
                                         );
+                                    });
+                                }
+                            );
+
+                            App.Question.Controllers.Single.listenTo(
+                                answersView,
+                                'childview:best:change',
+                                function (childview, isBest) {
+                                    $.when(App.request(
+                                        'answer:best:change',
+                                        childview.model,
+                                        isBest
+                                    )).done(function (model) {
+                                        // Change question status
+                                        questionView.triggerMethod(
+                                            'best:answer:changed',
+                                            model
+                                        );
+
+                                        // Show a mark on the answer
+                                        childview.triggerMethod(
+                                            'best:changed',
+                                            model
+                                        );
+
+                                        // Cancel an old choise if a new
+                                        // best is picked
+                                        if (!model.get('closed')) return;
+
+                                        // An old and new picked
+                                        var allBest = answersView
+                                            .collection
+                                            .where({'closed': 1});
+
+                                        for (var i = 0; i < allBest.length; i++) {
+                                            var previousBest = allBest[i];
+
+                                            // Change a model different of
+                                            // already changed
+                                            if(previousBest.cid === model.cid) {
+                                                continue;
+                                            }
+
+                                            previousBest.set('closed', 0);
+                                        }
                                     });
                                 }
                             );
@@ -245,7 +295,8 @@ define([
                             .getRegion('content')
                             .show(view);
                     }
-                });
+                }
+            );
         }
     });
     App.Question.Controllers.Single = new Controller();

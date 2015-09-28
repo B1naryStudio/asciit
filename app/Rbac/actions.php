@@ -26,6 +26,7 @@ Rbac::action([
 ], 'answers.view');
 Rbac::action('API\\Question\\AnswerController@store', 'answers.create');
 Rbac::action('API\\Question\\AnswerController@update', 'answers.edit');
+Rbac::action('API\\Question\\AnswerController@setClosed', 'questions.close');
 Rbac::action('API\\Question\\AnswerController@destroy', 'answers.delete');
 
 // comments
