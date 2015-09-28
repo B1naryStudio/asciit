@@ -35,11 +35,11 @@ define([
         },
 
         onBestSelect: function () {
-            this.view.trigger('best:change', true);
+            this.view.trigger('best:change', 1);
             console.log('Picked as the best');
         },
         onBestCancel: function () {
-            this.view.trigger('best:change', false);
+            this.view.trigger('best:change', 0);
             console.log('Canceled a selection as the best');
         },
 
@@ -70,7 +70,7 @@ define([
                 App.User.Current.get('id');
         },
         isAnswerBest: function () {
-            return (+this.view.model.get('closed') == true);
+            return (+this.view.model.get('closed') == 1);
         }
     });
 

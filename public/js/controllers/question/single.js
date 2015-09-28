@@ -173,31 +173,39 @@ define([
                                         childview.model,
                                         isBest
                                     )).done(function (model) {
-                                        //Cancelling an old choise
-                                        //if (model.get('closed')) {
-                                        //    var oldChoise = answersView
-                                        //        .collection
-                                        //        .findWhere({'closed': true})
-                                        //        .set('closed', false);
-                                        //}
+                                        // Change question status
+                                        questionView.triggerMethod(
+                                            'best:answer:changed',
+                                            model
+                                        );
 
+                                        // Show a mark on the answer
                                         childview.triggerMethod(
                                             'best:changed',
                                             model
                                         );
 
-                                        questionView.triggerMethod(
-                                            'best:answer:changed',
-                                            model
-                                        );
-                                    })
+                                        // Cancel an old choise if a new
+                                        // best is picked
+                                        if (!model.get('closed')) return;
 
-                                    /*.fail(function (errors) {
-                                        childview.triggerMethod(
-                                            'delete:error',
-                                            errors
-                                        );
-                                    })*/;
+                                        // An old and new picked
+                                        var allBest = answersView
+                                            .collection
+                                            .where({'closed': 1});
+
+                                        for (var i = 0; i < allBest.length; i++) {
+                                            var previousBest = allBest[i];
+
+                                            // Change a model different of
+                                            // already changed
+                                            if(previousBest.cid === model.cid) {
+                                                continue;
+                                            }
+
+                                            previousBest.set('closed', 0);
+                                        }
+                                    });
                                 }
                             );
 
@@ -287,7 +295,8 @@ define([
                             .getRegion('content')
                             .show(view);
                     }
-                });
+                }
+            );
         }
     });
     App.Question.Controllers.Single = new Controller();

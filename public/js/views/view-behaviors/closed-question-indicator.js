@@ -21,7 +21,7 @@ define([
         },
 
         isQuestionClosed: function () {
-            return (+this.view.model.get('closed') == true);
+            return (+this.view.model.get('closed') == 1);
         }
     });
 
