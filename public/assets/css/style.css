@@ -383,6 +383,7 @@ body.modal-open {
 
 .votes i {
     text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
+    -webkit-text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
 }
 
 .votes .voted {
@@ -485,6 +486,7 @@ body.modal-open {
     padding: 2px;
     cursor: pointer;
     text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
+    -webkit-text-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
 }
 
 .entry-controls .control .fa {
@@ -497,6 +499,7 @@ body.modal-open {
 .control.save .fa,
 .control.cancel .fa {
     text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.6);
+    -webkit-text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.6);
 }
 
 .control.delete .fa,
@@ -518,6 +521,7 @@ body.modal-open {
 .best-controls .indicator .fa,
 .best-controls .select .fa {
     text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.4);
+    -webkit-text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.4);
     color: #119C23;
 }
 
@@ -972,6 +976,10 @@ blockquote .author {
     height: 30px;
     background-color: #66CDAA;
     cursor: pointer;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    -webkit-text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    box-shadow: 1px 1px 4px rgba(105, 105, 105, 0.9);
+    -webkit-box-shadow: 1px 1px 4px rgba(155, 155, 155, 0.9);
 }
 
 .quote-add {
