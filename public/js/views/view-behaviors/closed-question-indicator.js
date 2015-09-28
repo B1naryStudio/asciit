@@ -6,6 +6,10 @@ define([
     Marionette
 ) {
     App.Behaviors.ClosedQuestionIndicator = Marionette.Behavior.extend({
+        onRender: function () {
+            this.view.model.on('live:updated', this.onShow, this);
+        },
+
         onShow: function () {
             // selecting clause with preventing a type collision
             if (this.isQuestionClosed()) {
