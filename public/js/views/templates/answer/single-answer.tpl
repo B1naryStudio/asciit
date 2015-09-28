@@ -28,7 +28,6 @@
 
             <!-- Text -->
             <span class="time asked_time">
-
                 <time class="relative" data-abs-time="<%- created_at %>">
                     <%- created_relative %>
                 </time>

@@ -4,12 +4,12 @@ define([
     'backbone',
     'tpl!views/templates/comment/comments.tpl',
     'tpl!views/templates/comment/single-comment.tpl',
-    'views/views-mixins',
     'views/view-behaviors/hiding-controls',
     'views/view-behaviors/delete-button',
     'views/view-behaviors/edit-button',
     'views/view-behaviors/server-validation',
     'views/view-behaviors/fold-collection-items',
+    'views/view-behaviors/text-select',
     'stickit',
     'jquery.elastic'
 ], function (
@@ -18,129 +18,130 @@ define([
     Backbone,
     CommentsTpl,
     SingleCommentTpl,
-    ViewsMixins,
     HidingControls,
     DeleteButton,
     EditButton,
     ServerValidation,
-    Collapse
+    Collapse,
+    TextSelect
 ) {
-    App.Comment.Views.SingleCommentCompositeView = Marionette.CompositeView.extend(
-        _.extend({}, ViewsMixins.SelectText, {
-            template: SingleCommentTpl,
-            ui: {
-                itemArea:     '.single-comment',
-                deleteButton: '.entry-controls .delete',
-                editButton:   '.entry-controls .edit',
-                saveButton:   '.entry-controls .save',
-                cancelButton: '.entry-controls .cancel'
+    App.Comment.Views.SingleCommentCompositeView = Marionette.CompositeView.extend({
+        template: SingleCommentTpl,
+        ui: {
+            itemArea:     '.single-comment',
+            deleteButton: '.entry-controls .delete',
+            editButton:   '.entry-controls .edit',
+            saveButton:   '.entry-controls .save',
+            cancelButton: '.entry-controls .cancel'
+        },
+
+        events: {
+            'model:live:updated': 'onModelLiveUpdated'
+        },
+
+        modelEvents: {
+            'live:updated': 'onModelLiveUpdated'
+        },
+
+        triggers: {
+            'mouseenter @ui.itemArea': 'over:entry',
+            'mouseleave @ui.itemArea':  'out:entry',
+            'click @ui.deleteButton': 'delete',
+            'click @ui.editButton':   'edit:start',
+            'click @ui.saveButton':   'edit:save',
+            'click @ui.cancelButton': 'edit:cancel',
+            'mouseup p': 'text:select'
+        },
+
+        behaviors: {
+            HidingControls: {
+                behaviorClass: HidingControls,
+                controlsContainer: '.single-comment .entry-controls'
             },
-
-            events: {
-                'mouseup p': 'selectText',
-                'model:live:updated': 'onModelLiveUpdated'
+            DeleteButton: {
+                behaviorClass: DeleteButton,
+                itemArea: '.single-comment'
             },
-
-            modelEvents: {
-                'live:updated': 'onModelLiveUpdated'
+            EditButton: {
+                behaviorClass: EditButton
             },
-
-            triggers: {
-                'mouseenter @ui.itemArea': 'over:entry',
-                'mouseleave @ui.itemArea':  'out:entry',
-                'click @ui.deleteButton': 'delete',
-                'click @ui.editButton':   'edit:start',
-                'click @ui.saveButton':   'edit:save',
-                'click @ui.cancelButton': 'edit:cancel'
+            ServerValidation: {
+                behaviorClass: ServerValidation
             },
-
-            behaviors: {
-                HidingControls: {
-                    behaviorClass: HidingControls,
-                    controlsContainer: '.single-comment .entry-controls'
-                },
-                DeleteButton: {
-                    behaviorClass: DeleteButton,
-                    itemArea: '.single-comment'
-                },
-                EditButton: {
-                    behaviorClass: EditButton
-                },
-                ServerValidation: {
-                    behaviorClass: ServerValidation
-                }
-            },
-
-            bindings: {
-                '.single-comment .editing-form [name=text]': {
-                    observe: 'text',
-                    setOptions: {
-                        validate: true,     //printing-time validation
-                        events: ['blur', 'input', 'change']
-                    }
-                }
-            },
-
-            onEditStart: function () {
-                Backbone.Validation.bind(this);
-
-                // stickit doesn't save the old values in 'previous'
-                this.model.oldValues = this.model.toJSON();
-
-                this.textElem = this.$('.model-field.text');
-                this.textElem.attr('contenteditable', true)
-                             .attr('spellcheck', false);
-            },
-
-            onEditSave: function () {
-                this.model.set({
-                    text: this.textElem.text()
-                });
-
-                this.model.validate();
-
-                if (this.model.isValid()) {
-                    this.triggerMethod('submit:update', this.model);
-                }
-            },
-
-            onEditCancel: function () {
-                this.model.set(this.model.oldValues);
-
-                // hiding the error messages
-                this.$(
-                    this.ui.itemArea.selector +
-                    ' .help-block, ' +             // validation errors
-                    this.ui.itemArea.selector +
-                    ' .error-block'                // server errors
-                ).addClass('hidden');
-
-                this.switchToText();
-            },
-
-            onModelUpdated: function () {
-                this.switchToText();
-            },
-
-            onModelLiveUpdated: function () {
-                if (!this.textElem) {
-                    this.textElem = this.$('.model-field.text');
-                }
-
-                var newEscapedText = _.escape(this.model.get('text'));
-                this.textElem.html(newEscapedText);
-            },
-
-            switchToText: function () {
-                var escapedText = _.escape(this.model.get('text'));
-                this.textElem.html(escapedText)
-                             .attr('contenteditable', false);
-
-                // unbind the bindings
-                Backbone.Validation.unbind(this);
+            TextSelect: {
+                behaviorClass: TextSelect
             }
-        })
-    );
+        },
+
+        bindings: {
+            '.single-comment .editing-form [name=text]': {
+                observe: 'text',
+                setOptions: {
+                    validate: true,     //printing-time validation
+                    events: ['blur', 'input', 'change']
+                }
+            }
+        },
+
+        onEditStart: function () {
+            Backbone.Validation.bind(this);
+
+            // stickit doesn't save the old values in 'previous'
+            this.model.oldValues = this.model.toJSON();
+
+            this.textElem = this.$('.model-field.text');
+            this.textElem.attr('contenteditable', true)
+                         .attr('spellcheck', false);
+        },
+
+        onEditSave: function () {
+            this.model.set({
+                text: this.textElem.text()
+            });
+
+            this.model.validate();
+
+            if (this.model.isValid()) {
+                this.triggerMethod('submit:update', this.model);
+            }
+        },
+
+        onEditCancel: function () {
+            this.model.set(this.model.oldValues);
+
+            // hiding the error messages
+            this.$(
+                this.ui.itemArea.selector +
+                ' .help-block, ' +             // validation errors
+                this.ui.itemArea.selector +
+                ' .error-block'                // server errors
+            ).addClass('hidden');
+
+            this.switchToText();
+        },
+
+        onModelUpdated: function () {
+            this.switchToText();
+        },
+
+        onModelLiveUpdated: function () {
+            if (!this.textElem) {
+                this.textElem = this.$('.model-field.text');
+            }
+
+            var newEscapedText = _.escape(this.model.get('text'));
+            this.textElem.html(newEscapedText);
+        },
+
+        switchToText: function () {
+            var escapedText = _.escape(this.model.get('text'));
+            this.textElem.html(escapedText)
+                         .attr('contenteditable', false);
+
+            // unbind the bindings
+            Backbone.Validation.unbind(this);
+        }
+    });
 
     App.Comment.Views.CommentsCompositeView = Marionette.CompositeView.extend({
         tagName: 'section',
@@ -156,12 +157,12 @@ define([
 
         triggers: {
             'click @ui.foldButton': 'list:fold',
-            'click @ui.unfoldButton': 'list:unfold'
+            'click @ui.unfoldButton': 'list:unfold',
+            'mouseup p': 'text:select'
         },
 
         events: {
-            'submit .comments-form': 'submit',
-            'mouseup p': 'selectText'
+            'submit .comments-form': 'submit'
         },
 
         behaviors: {
@@ -171,6 +172,9 @@ define([
             Collapse: {
                 behaviorClass: Collapse,
                 maxEntries: 3
+            },
+            TextSelect: {
+                behaviorClass: TextSelect
             }
         },
 
@@ -207,7 +211,7 @@ define([
                 .siblings('.row')
                 .find('.add-comment');
 
-            if(button.length==0) {
+            if(button.length === 0) {
                 button = el.parent()
                     .siblings('.row')
                     .find('.show-form');

@@ -244,6 +244,10 @@ body.modal-open {
     min-width: 122px;
 }
 
+.hdr-specialNotifBtn:hover {
+    text-decoration: none;
+}
+
 /*
 |------------------------------------------------------------------------------
 | Questions list
@@ -954,6 +958,32 @@ blockquote .author {
     font-weight: bold;
     margin-bottom: 0.7em;
     display: inline-block;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Quotes
+ |------------------------------------------------------------------------------
+ */
+#quote-add-wrapper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #093;
+    cursor: pointer;
+    padding: 0 5px;
+}
+
+.quote-add {
+    width: 100%;
+    height: 100%;
+}
+
+#quote-add-wrapper .fa-quote-right:before {
+    font-size: 0.7em;
+    color: #fff;
 }
 
 /*

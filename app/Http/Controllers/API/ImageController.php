@@ -10,6 +10,8 @@ use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class ImageController extends Controller
 {
@@ -29,17 +31,26 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
+        $response_type = $request->get('responseType');
         if (!$request->hasFile('upload'))
         {
-            return Response::json([
-                'description' => 'File not exists',
-            ], 422);
+            if ($response_type === 'json') {
+                return Response::json([
+                    'description' => 'File not exists',
+                ], 422);
+            }
+            throw new UnprocessableEntityHttpException();
         }
 
         $image = $request->file('upload');
-        $fileName = time() . '_' . $image->getClientOriginalName();
+        $time = time();
+        $fileName = $time . '_' . $image->getClientOriginalName();
         $path = $this->localImagePath . $fileName;
-        $url = url('/api/v1' . $path);
+        $url = url(
+            env('SERVER_PREFIX') . '/api/v1' .
+            $this->localImagePath . $time . '_' .
+            pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)
+        );
 
         // Saving
         Image::make($image->getRealPath())
@@ -49,45 +60,51 @@ class ImageController extends Controller
             })
             ->save(storage_path('app') .  $path);
 
-        if ($request->get('responceType') && $request->get('responceType') == 'json') {
+        if ($response_type === 'json') {
             return Response::json([
                 'fileName' => $fileName,
                 'uploaded' => 1,
                 'url'      => $url
             ], 200, [], JSON_NUMERIC_CHECK);
-        } else {
-            // For CKEditor API
-            // (http://docs.ckeditor.com/#!/guide/dev_file_browser_api)
-            $funcNum = $request->get('CKEditorFuncNum');
-            $message = 'Image was loading successfully';
-
-            return "<script type='text/javascript'>
-                        window.parent.CKEDITOR.tools.callFunction(
-                            $funcNum,
-                            '$url',
-                            '$message'
-                        );
-                    </script>";
         }
+
+        // For CKEditor API
+        // (http://docs.ckeditor.com/#!/guide/dev_file_browser_api)
+        $funcNum = $request->get('CKEditorFuncNum');
+        $message = 'Image was loading successfully';
+
+        return "<script type='text/javascript'>
+                    window.parent.CKEDITOR.tools.callFunction(
+                        $funcNum,
+                        '$url',
+                        '$message'
+                    );
+                </script>";
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource
      *
-     * @param  int  $id
-     * @return Response
+     * @param Request $request
+     * @param $filename string
+     * @return mixed
      */
-    public function show($filename)
+    public function show(Request $request, $filename)
     {
         $path = storage_path('app') . $this->localImagePath . $filename;
-        $exists = File::exists($path);
+        // search only jpg files
+        $exists = File::exists($path . '.jpg');
 
-        if(!$exists) {
-            return Response::json([
-                'error' => 'File not exists',
-            ], 422);
+        if (!$exists) {
+            if ($request->get('responceType') === 'json') {
+                return Response::json([
+                    'error' => 'File not exists',
+                ], 404);
+            }
+            throw new NotFoundHttpException();
         }
 
-        return Image::make($path)->response('jpg'); //will ensure a jpg is always returned
+        //will ensure a jpg is always returned
+        return Image::make($path . '.jpg')->response('jpg');
     }
 }
