@@ -5,7 +5,7 @@ define([
     App,
     Marionette
 ) {
-    App.Behaviors.BestAnswerControls = Marionette.Behavior.extend({
+    App.Behaviors.BestAnswer = Marionette.Behavior.extend({
         defaults: {
             controlsContainer: '.closed-controls'
         },
@@ -74,5 +74,5 @@ define([
         }
     });
 
-    return App.Behaviors.BestAnswerControls;
+    return App.Behaviors.BestAnswer;
 });

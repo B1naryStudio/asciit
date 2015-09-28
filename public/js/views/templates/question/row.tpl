@@ -13,6 +13,11 @@
                         <i class="fa fa-thumbs-up fa-1"></i>
                         <%- vote_value %>
                     </div>
+                    <span class="best-controls">
+                        <span class="control indicator" title="<%- _t('closed.questionClosed') %>">
+                            <i class="fa fa-1-5 fa-check-circle-o "></i>
+                        </span>
+                    </span>
                     <span class="time asked_time">
                         <time class="relative" data-abs-time="<%- created_at %>">
                              <%- created_relative %>

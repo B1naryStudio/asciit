@@ -17,7 +17,7 @@ define([
     'views/view-behaviors/server-validation',
     'views/view-behaviors/fold-collection-items',
     'views/view-behaviors/iframes-height',
-    'views/view-behaviors/best-answer-controls',
+    'views/view-behaviors/best-answer',
     'ckeditor',
     'ckeditor.adapter',
     'highlight',
@@ -41,7 +41,7 @@ define([
     ServerValidation,
     FoldCollectionItems,
     IframesHeight,
-    BestAnswersControl
+    BestAnswer
 ) {
     App.Answer.Views.SingleAnswerLayoutView = Marionette.LayoutView.extend(
         _.extend({}, ViewsMixins.SelectText, {
@@ -112,8 +112,8 @@ define([
                 IframesHeight : {
                     behaviorClass: IframesHeight
                 },
-                BestAnswersControl : {
-                    behaviorClass: BestAnswersControl
+                BestAnswer : {
+                    behaviorClass: BestAnswer
                 }
             },
 
