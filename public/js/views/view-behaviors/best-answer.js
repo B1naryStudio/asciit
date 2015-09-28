@@ -30,9 +30,11 @@ define([
         onShow: function () {
             // selecting clause with preventing a type collision
             if (this.isAnswerBest()) {
+                this.$el.addClass('best');
                 this.onStatusBestShow();
                 this.ui.selectAsBestButton.hide();
             } else {
+                this.$el.removeClass('best');
                 this.ui.indicatorOfBest.hide();
                 this.ui.cancelBestStatusButton.hide();
             }

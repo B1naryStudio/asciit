@@ -43,7 +43,7 @@ define([
             votes: '.question-votes'
         },
         ui: {
-            itemArea: '.question_view *',
+            itemArea: '.question_view',
             commentButton: '.add-comment',
             answerButton:  '.add-answer',
             deleteButton:  '.actions .entry-controls .delete',
@@ -51,8 +51,8 @@ define([
             closedIndicator: '.question_view .best-controls .indicator'
         },
         triggers: {
-            'mouseover @ui.itemArea': 'controls:show',
-            'mouseout @ui.itemArea':  'controls:hide',
+            'mouseenter @ui.itemArea': 'over:entry',
+            'mouseleave @ui.itemArea':  'out:entry',
             'click @ui.deleteButton': 'delete',
             'mouseup p': 'text:select'
         },

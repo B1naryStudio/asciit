@@ -494,7 +494,6 @@ body.modal-open {
 }
 
 .control.save .fa,
-.control.save .fa,
 .control.cancel .fa {
     text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.6);
 }
@@ -519,6 +518,10 @@ body.modal-open {
 .best-controls .select .fa {
     text-shadow: 1px 1px 2px rgba(155, 155, 155, 0.4);
     color: #119C23;
+}
+
+.questions-list .best-controls .indicator .fa {
+    color: #444444;
 }
 
 .best-controls .select {
@@ -555,6 +558,12 @@ body.modal-open {
 
 .single-answer .entry-controls {
     bottom: 10px;
+}
+
+.best .single-answer,
+.best .single-answer .votes,
+.best .single-answer .single-comment {
+    background: #f8fdf6;
 }
 
 .related-controls {

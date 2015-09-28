@@ -48,7 +48,7 @@
                       title="<%- _t('ui.edit') %>">
                     <i class="fa fa-pencil"></i>
                 </span>
-                <span class="delete"
+                <span class="control delete"
                       title="<%- _t('ui.delete') %>">
                     <i class="fa fa-times"></i>
                 </span>

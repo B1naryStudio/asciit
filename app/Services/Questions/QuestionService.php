@@ -21,11 +21,9 @@ use App\Services\Questions\Exceptions\QuestionServiceException;
 use App\Repositories\Contracts\CommentRepository;
 use Illuminate\Support\Facades\Event;
 use App\Events\QuestionWasAdded;
-use App\Events\QuestionWasClosed;
 use App\Events\QuestionWasRemoved;
 use App\Events\AnswerWasAdded;
 use App\Events\AnswerWasUpdated;
-use App\Events\AnswerClosedQuestion;
 use App\Events\AnswerWasRemoved;
 use App\Events\CommentWasAdded;
 use App\Events\CommentWasUpdated;
@@ -482,9 +480,9 @@ class QuestionService implements QuestionServiceInterface
         }
 
         // If something changed in question
-//        if ($question) {
-//            //Event::fire(new QuestionWasClosed($question));
-//        }
+        if (isset($question)) {
+            Event::fire(new QuestionWasUpdated($question));
+        }
 
         Event::fire(new AnswerWasUpdated($answer));
 
