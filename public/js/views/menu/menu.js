@@ -108,34 +108,34 @@ define([
         },
         menu: function () {
             this.globalMenuClose();
-            if (!this.ui.lang_list.hasClass('invisible')) {
-                this.ui.lang_list.addClass('invisible');
+            if (!this.ui.lang_list.hasClass('hdr-invisible')) {
+                this.ui.lang_list.addClass('hdr-invisible');
             }
-            this.ui.menu_list.toggleClass('invisible');
+            this.ui.menu_list.toggleClass('hdr-invisible');
         },
         lang: function () {
             this.globalMenuClose();
-            if (!this.ui.menu_list.hasClass('invisible')) {
-                this.ui.menu_list.addClass('invisible');
+            if (!this.ui.menu_list.hasClass('hdr-invisible')) {
+                this.ui.menu_list.addClass('hdr-invisible');
             }
-            this.ui.lang_list.toggleClass('invisible');
+            this.ui.lang_list.toggleClass('hdr-invisible');
         },
         customMenuClose: function () {
-            if (!this.ui.lang_list.hasClass('invisible')) {
-                this.ui.lang_list.addClass('invisible');
+            if (!this.ui.lang_list.hasClass('hdr-invisible')) {
+                this.ui.lang_list.addClass('hdr-invisible');
             }
-            if (!this.ui.menu_list.hasClass('invisible')) {
-                this.ui.menu_list.addClass('invisible');
+            if (!this.ui.menu_list.hasClass('hdr-invisible')) {
+                this.ui.menu_list.addClass('hdr-invisible');
             }
         },
         globalMenuClose: function () {
             var element = this.$el.find('#notificationBlock');
-            if (!element.hasClass('invisible')) {
-                element.addClass('invisible');
+            if (!element.hasClass('hdr-invisible')) {
+                element.addClass('hdr-invisible');
             }
             element = this.$el.find('#appsBlock');
-            if (!element.hasClass('invisible')) {
-                element.addClass('invisible');
+            if (!element.hasClass('hdr-invisible')) {
+                element.addClass('hdr-invisible');
             }
         }
     });

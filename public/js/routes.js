@@ -150,6 +150,19 @@ define([
                     App.Main.Menu = menu;
                 }
             });
+        },
+        quoteControlShow: function (e) {
+            require(['views/quote-control'], function (View) {
+                App.Main.Views.Quote = new View();
+                App.Main.Views.Layout
+                    .getRegion('quoteRegion')
+                    .show(App.Main.Views.Quote);
+                App.Main.Views.Quote.triggerMethod('control:show', e);
+            });
+        },
+        quoteControlHide: function (e) {
+            App.Main.Views.Quote.triggerMethod('control:close', e);
+            App.Main.Views.Layout.getRegion('quoteRegion').empty();
         }
     };
 
@@ -204,6 +217,14 @@ define([
 
     App.listenTo(App, 'user:authorized', function (user) {
         API.menuShow({ model: user });
+    });
+
+    App.listenTo(App, 'select:after', function (e) {
+        API.quoteControlShow(e);
+    });
+
+    App.listenTo(App, 'select:cancel', function (e) {
+        API.quoteControlHide(e);
     });
 
     $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {

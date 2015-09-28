@@ -23,6 +23,7 @@ define([
             header:  'header',
             content: '#page-content-wrapper',
             popup:   '#popup',
+            quoteRegion: '#quote',
             footer:  'footer'
         },
         startRelativeTimeUpdating: function () {

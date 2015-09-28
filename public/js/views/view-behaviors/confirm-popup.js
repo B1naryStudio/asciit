@@ -9,9 +9,9 @@ define([
 ) {
     App.Behaviors.ConfirmationPopup = Marionette.Behavior.extend({
         defaults: {
-            'title':        i18n.t("ui.confirm-title"),
-            'body':         i18n.t("ui.confirm-body"),
-            'actionName':   "submit"
+            title:        i18n.t('ui.confirm-title'),
+            body:         i18n.t('ui.confirm-body'),
+            actionName:   'submit'
         },
 
         onConfirmCreate: function (options) {
