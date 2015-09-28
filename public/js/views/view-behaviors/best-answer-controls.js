@@ -10,26 +10,30 @@ define([
             controlsContainer: '.closed-controls'
         },
 
+        //onRender: function () {
+        //    this.view.model.on('change:closed', this.onShow, this);
+        //},
+
         onShow: function () {
             // selecting clause with preventing a type collision
             if (this.isAnswerBest()) {
                 this.onStatusBestShow();
+            } else {
+                this.onStatusBestHide();
             }
         },
 
         onOverEntry: function () {
-            this.onBestSelectButtonShow();
+            this.showBestSelectButton();
         },
-
         onOutEntry: function () {
-            this.onBestSelectButtonHide();
+            this.hideBestSelectButton();
         },
 
         onBestSelect: function () {
             this.view.trigger('best:change', true);
             console.log('Picked as the best');
         },
-
         onBestCancel: function () {
             this.view.trigger('best:change', false);
             console.log('Canceled a selection as the best');
@@ -51,13 +55,13 @@ define([
         },
 
         // shows the button to pick the best
-        onBestSelectButtonShow: function () {
+        showBestSelectButton: function () {
             if (!this.isAnswerBest() && this.isOwnerOfQuestion()) {
                 this.ui.selectAsBestButton.show();
             }
         },
 
-        onBestSelectButtonHide: function () {
+        hideBestSelectButton: function () {
             this.ui.selectAsBestButton.hide();
         },
 
@@ -66,12 +70,14 @@ define([
             this.ui.indicatorOfBest.show();
             this.ui.cancelBestStatusButton.hide();
         },
+        onStatusBestHide: function () {
+            this.ui.indicatorOfBest.hide();
+        },
 
         isOwnerOfQuestion: function () {
             return this.view.options.questionOwnerId ==
                 App.User.Current.get('id');
         },
-
         isAnswerBest: function () {
             return (+this.view.model.get('closed') == true);
         }

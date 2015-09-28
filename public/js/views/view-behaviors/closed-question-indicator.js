@@ -6,23 +6,22 @@ define([
     Marionette
 ) {
     App.Behaviors.ClosedQuestionIndicator = Marionette.Behavior.extend({
-        defaults: {
-            controlsContainer: '.closed-controls'
-        },
-
         onShow: function () {
             // selecting clause with preventing a type collision
-            if (this.isQuestionBest()) {
-                this.showClosedStatus();
+            if (this.isQuestionClosed()) {
+                this.ui.closedIndicator.show();
+            } else {
+                this.ui.closedIndicator.hide();
             }
         },
 
-        isQuestionBest: function () {
-            return (+this.view.model.get('closed') == true);
+        onBestAnswerChanged: function (newModel) {
+            this.view.model.set('closed', newModel.get('closed'));
+            this.onShow();
         },
 
-        showClosedStatus: function () {
-            this.ui.closedIndicator.show();
+        isQuestionClosed: function () {
+            return (+this.view.model.get('closed') == true);
         }
     });
 

@@ -173,8 +173,21 @@ define([
                                         childview.model,
                                         isBest
                                     )).done(function (model) {
+                                        // Cancelling an old choise
+                                        //if (model.get('closed')) {
+                                        //    var oldChoise = answersView
+                                        //        .collection
+                                        //        .findWhere({'closed': true})
+                                        //        .set('closed', false);
+                                        //}
+
                                         childview.triggerMethod(
                                             'best:changed',
+                                            model
+                                        );
+
+                                        questionView.triggerMethod(
+                                            'best:answer:changed',
                                             model
                                         );
                                     })
