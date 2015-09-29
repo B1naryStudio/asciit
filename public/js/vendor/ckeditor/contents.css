@@ -148,3 +148,12 @@ a > img {
     outline: dotted 1px #777;
     height: 200px;
 }
+
+.link-preview-result-wrapper {
+	margin: 0 auto;
+	width: 70%;
+}
+
+.link-preview-result-wrapper img {
+	width: 100%;
+}
