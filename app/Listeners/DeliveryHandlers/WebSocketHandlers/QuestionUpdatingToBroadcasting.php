@@ -3,21 +3,10 @@
 namespace App\Listeners\DeliveryHandlers\WebSocketHandlers;
 
 use App\Events\QuestionWasUpdated;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Listeners\Contracts\WebSocketDeliveryHandler;
 
-class QuestionUpdatingToBroadcasting
+class QuestionUpdatingToBroadcasting extends WebSocketDeliveryHandler
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Handle the event.
      *
@@ -26,6 +15,10 @@ class QuestionUpdatingToBroadcasting
      */
     public function handle(QuestionWasUpdated $event)
     {
-        //
+        // to 'entries/{id}' topic
+        $this->delivery->send([
+            'data'  => ['patch' => $event->question],
+            'topic' => 'entries/' . $event->question->id
+        ]);
     }
 }

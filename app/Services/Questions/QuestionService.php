@@ -455,18 +455,22 @@ class QuestionService implements QuestionServiceInterface
 
                 if ($previous) {
                     // Cancel a previous choise if it exists
-                    $this->answerRepository->setClosed($previous, false);
+                    $answer = $this->answerRepository
+                        ->setClosed($previous, false);
                 } else {
                     // If there wasn't a best answer yet, mark question as closed
-                    $this->questionRepository->setClosedById($question_id, true);
+                    $question = $this->questionRepository
+                        ->setClosedById($question_id, true);
                 }
             } else {
                 // If we are removing a mark of the best answer, a question has
-                $this->questionRepository->setClosedById($question_id, false);
+                $question = $this->questionRepository
+                    ->setClosedById($question_id, false);
             }
 
             // Update an answer closed value
-            $this->answerRepository->setClosedById($answer_id, $closing_value);
+            $answer = $this->answerRepository
+                ->setClosedById($answer_id, $closing_value);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -474,6 +478,13 @@ class QuestionService implements QuestionServiceInterface
                 $e
             );
         }
+
+        // If something changed in question
+        if (isset($question)) {
+            Event::fire(new QuestionWasUpdated($question));
+        }
+
+        Event::fire(new AnswerWasUpdated($answer));
 
         return $closing_value;
     }
