@@ -38,7 +38,7 @@
             </div>
         </div>
         <!-- Text -->
-        <p class="model-field"><%= description %></p>
+        <p class="model-field description"><%= description %></p>
         <div class="error-block hidden"></div>
         <!-- Actions -->
         <div class="actions">

@@ -7,6 +7,12 @@ body.modal-open {
     padding-right: 0 !important;
 }
 
+.model-field.description img {
+    width: 100%;
+    height: auto;
+    margin: 5px 0;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Main menu
