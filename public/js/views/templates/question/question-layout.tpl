@@ -38,7 +38,7 @@
             </div>
         </div>
         <!-- Text -->
-        <p class="model-field"><%= description %></p>
+        <p class="model-field description"><%= description %></p>
         <div class="error-block hidden"></div>
         <!-- Actions -->
         <div class="actions">
@@ -48,7 +48,7 @@
                       title="<%- _t('ui.edit') %>">
                     <i class="fa fa-pencil"></i>
                 </span>
-                <span class="delete"
+                <span class="control delete"
                       title="<%- _t('ui.delete') %>">
                     <i class="fa fa-times"></i>
                 </span>

@@ -11,15 +11,30 @@ define([
         },
 
         onRender: function () {
-            this.view.model.on('change:closed', this.onShow, this);
+            var self = this;
+
+            // live:updated - model was changed via websockets
+            this.view.model.on('live:updated', function () {
+                self.onShow();
+
+                // best:showed - A new data was showed. Needs a handling for
+                //               persistance.
+                self.view.trigger('best:showed', self.view.model);
+            });
+
+            // best:cleared - model had an old best-value which was corrected
+            //                for the data persistency.
+            this.view.model.on('best:cleared', this.onShow, this);
         },
 
         onShow: function () {
             // selecting clause with preventing a type collision
             if (this.isAnswerBest()) {
+                this.$el.addClass('best');
                 this.onStatusBestShow();
                 this.ui.selectAsBestButton.hide();
             } else {
+                this.$el.removeClass('best');
                 this.ui.indicatorOfBest.hide();
                 this.ui.cancelBestStatusButton.hide();
             }
@@ -36,16 +51,19 @@ define([
 
         onBestSelect: function () {
             this.view.trigger('best:change', 1);
-            console.log('Picked as the best');
         },
         onBestCancel: function () {
             this.view.trigger('best:change', 0);
-            console.log('Canceled a selection as the best');
         },
 
+        // best:changed - model has been updated by query. Data of UI is not
+        //                persistent yet.
         onBestChanged: function (newModel) {
             this.view.model.set('closed', newModel.get('closed'));
             this.onShow();
+            // best:showed - A new data was showed. Needs a handling for
+            //               persistance.
+            this.view.trigger('best:showed', this.view.model);
         },
 
         // switches to the cancel button on mouse hover the status
