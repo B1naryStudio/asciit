@@ -31,6 +31,7 @@ define([
                 $.when(App.request('user:login', data.email, data.password))
                     .done(function (model) {
                         App.User.Current = model;
+                        model.setAdminFlag();
                         App.trigger('popup:close');
                         App.trigger('init:openRoutes', App.prefix + '/');
                         App.triggerMethod(
@@ -63,10 +64,13 @@ define([
 
             $.when(App.request('user:session')).done(function (user) {
                 App.User.Current = user;
+                user.setAdminFlag();
+
                 App.triggerMethod(
                     'user:authorized',
                     App.User.Current
                 );
+
                 App.trigger(
                     'init:openRoutes',
                     Backbone.history.fragment
