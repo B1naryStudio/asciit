@@ -1,4 +1,4 @@
-require(['app', 'jquery', 'jquery.scroll'], function (App) {
+define(['jquery', 'jquery.scroll'], function (App) {
     jQuery.extend(jQuery.fn, {
         toplinkwidth: function () {
             var totalContentWidth = jQuery('#page-content-wrapper').outerWidth();

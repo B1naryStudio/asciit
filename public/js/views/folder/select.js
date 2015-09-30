@@ -25,7 +25,7 @@ define([
         className: 'folder-select',
         template: SelectTpl,
         childView: App.Folder.Views.FolderSelectRow,
-        childViewContainer: "#folder-options",
+        childViewContainer: '#folder-options',
 
         onShow: function () {
             var lang = i18n.lng().substr(0, 2);

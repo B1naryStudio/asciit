@@ -9,7 +9,6 @@ requirejs.config({
     },
     paths: {
         backbone: 'vendor/backbone/backbone',
-        'backbone.syphon': 'vendor/backbone/backbone.syphon',
         jquery: 'vendor/jquery/jquery',
         'jquery.scroll': 'vendor/jquery/jquery.scrollTo',
         'jquery.elastic': 'vendor/jquery/jquery.elastic.source.antarus66fork',
@@ -27,42 +26,20 @@ requirejs.config({
         ckeditor: 'vendor/ckeditor/ckeditor',
         'ckeditor.custom.settings': 'vendor/ckeditor/custom-instance-settings',
         'ckeditor.adapter': 'vendor/ckeditor/adapters/jquery',
-        'highlight': 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack',
-        'moment': 'vendor/moment/moment-with-locales',
-        'progressbar': 'vendor/progressbar/progressbar',
+        highlight: 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack',
+        moment: 'vendor/moment/moment-with-locales',
+        progressbar: 'vendor/progressbar/progressbar',
         i18next: 'vendor/i18next/i18next-1.10.1',
         updown: 'vendor/updown/updown'
     },
     shim: {
-        underscore: {
-            exports: '_'
-        },
-        backbone: {
-            deps: ['jquery', 'underscore'],
-            exports: 'Backbone'
-        },
-        'backbone.syphon': ['backbone'],
-        marionette: {
-            deps: ['backbone'],
-            exports: 'Marionette'
-        },
-        bootstrap: ['jquery'],
-        validation: ['backbone'],
-        tpl: ['text'],
-        syphon: ['backbone'],
         'ckeditor.adapter': ['ckeditor'],
-        select2: {
-            deps: ['jquery'],
-            exports: '$.fn.select2'
-        },
-        'jquery.scroll': ['jquery'],
-        'jquery.elastic': ['jquery'],
-        'jquery.iframe-resizer': ['jquery'],
-        updown: ['jquery.scroll']
+        i18next: ['jquery'],
+        'jquery.elastic': ['jquery']
     }
 });
 
-require(['app', 'routes', 'i18next'], function (App) {
+require(['i18next', 'app', 'routes'], function (Lang, App) {
     // App in i18next context for inserting _t() helper inside the all templates
     var i18nOptions = {
         useCookie: true,

@@ -2,10 +2,11 @@ define([
     'marionette',
     'backbone',
     'bootstrap',
+    'underscore',
+    'tpl',
     'validation-model',
     'jquery.scroll',
-    'paginator',
-    'updown'
+    'paginator'
 ], function (Marionette, Backbone) {
     var App = new Marionette.Application();
     App.queryFlag = [];
