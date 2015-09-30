@@ -4,17 +4,24 @@ define([
     'backbone',
     'tpl!views/templates/paginator/collection.tpl',
     'tpl!views/templates/paginator/row.tpl',
+    'tpl!views/templates/paginator/more.tpl',
     'marionette'
 ], function (
     App,
     Marionette,
     Backbone,
     PaginatorTpl,
-    PaginatorRowTpl
+    PaginatorRowTpl,
+    PaginatorMoreTpl
 ) {
     App.Paginator.Views.PaginatorCollectionRow = Marionette.ItemView.extend({
         tagName: 'li',
-        template: PaginatorRowTpl,
+        getTemplate: function () {
+            if (this.model.type === 'more') {
+                return PaginatorMoreTpl;
+            }
+            return PaginatorRowTpl;
+        },
         initialize: function (options) {
             this.$el.addClass(this.model.get('type'));
             if (this.model.get('is_disabled')) {

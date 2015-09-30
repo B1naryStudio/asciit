@@ -5,8 +5,7 @@ define([
     'views/menu/mock',
     'tpl!views/templates/main-layout.tpl',
     'moment',
-    'syphon',
-    'updown'
+    'syphon'
 ], function (
     App,
     Marionette,
