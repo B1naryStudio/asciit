@@ -36,7 +36,6 @@ define([
         },
         initialize: function () {
             this.urlRoot = App.prefix + '/api/v1/user/login';
-            this.on('sync', this.setAdminFlag);
         }
     });
 
