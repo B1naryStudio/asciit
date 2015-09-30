@@ -532,6 +532,7 @@ body.modal-open {
 
 .questions-list .best-controls .indicator .fa {
     color: #444444;
+    font-size: 1.3em;
 }
 
 .best-controls .select {
@@ -573,7 +574,7 @@ body.modal-open {
 .best .single-answer,
 .best .single-answer .votes,
 .best .single-answer .single-comment {
-    background: #f8fdf6;
+    background: #e8f7df;
 }
 
 .related-controls {

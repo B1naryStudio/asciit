@@ -15,7 +15,7 @@
                     </div>
                     <span class="best-controls">
                         <span class="control indicator" title="<%- _t('closed.questionClosed') %>">
-                            <i class="fa fa-1-5 fa-check-circle-o "></i>
+                            <i class="fa fa-check-circle-o "></i>
                         </span>
                     </span>
                     <span class="time asked_time">
