@@ -19,7 +19,12 @@ define([
             var messageBlock;
 
             if (attr === 'error') {
-                messageBlock = view.$('.error-block');
+                if (view.ui.errorBlock) {
+                    messageBlock = view.ui.errorBlock;
+                } else {
+                    messageBlock = view.$el.find('.error-block');
+                }
+
                 messageBlock.html(error).removeClass('hidden');
 
                 setTimeout(function () {
@@ -28,7 +33,7 @@ define([
             } else {
                 var el = view.$('[name=' + attr + ']');
                 var group = el.closest('.form-group');
-                
+
                 group.addClass('has-error');
                 messageBlock = group.find('.help-block');
                 messageBlock.html(error).removeClass('hidden');
