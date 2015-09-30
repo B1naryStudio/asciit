@@ -170,8 +170,11 @@ define([
                     },
                     error: function (model, xhr, options) {
                         if (xhr.statusCode('500')) {
+                            var error = JSON.parse(xhr.responseText);
+                            var errorMessage = error.description ||
+                                               i18n.t('ui.server-error');
                             defer.reject({
-                                error: i18n.t('ui.server-error')
+                                error: errorMessage
                             });
                         } else {
                             var errors = JSON.parse(xhr.responseText);

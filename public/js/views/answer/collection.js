@@ -249,7 +249,8 @@ define([
 
         ui: {
             foldButton: '.folding-controls .fold',
-            unfoldButton: '.folding-controls .unfold'
+            unfoldButton: '.folding-controls .unfold',
+            errorBlock: '.answers-error-block'
         },
 
         triggers: {
