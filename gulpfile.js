@@ -257,33 +257,23 @@ gulp.task('js-concat-other', function () {
 gulp.task('js-vendor', function () {
     gulp.src([
         jsPathFull + 'vendor/select2/**/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/select2'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/select2'));
 
     gulp.src([
         jsPathFull + 'vendor/autobahn/**/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/autobahn'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/autobahn'));
 
     gulp.src([
         jsPathFull + 'vendor/snippet-iframe/**/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/snippet-iframe'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/snippet-iframe'));
 
     gulp.src([
         jsPathFull + 'vendor/jquery/jquery.elastic.*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/jquery'));
 
     gulp.src([
         jsPathFull + 'vendor/require/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/require'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/require'));
 
     gulp.src([
         jsPathFull + 'vendor/moment/*.js'

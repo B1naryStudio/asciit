@@ -9,6 +9,6 @@
         {!! $snippet !!}
 
         <script src="{{ $js_path }}/vendor/jquery/iframeResizer.contentWindow.min.js"></script>
-        <script src="{{ $js_path }}/vendor/snippet-iframe/new-tab-redirector.js"></script>
+        <script src="{{ $js_path }}/vendor/snippet-iframe/new-tab-redirector.min.js"></script>
     </body>
 </html>

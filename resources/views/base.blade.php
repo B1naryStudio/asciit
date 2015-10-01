@@ -20,13 +20,13 @@
 </div>
 <input type="hidden" id="config-jspath" value="{{ $js_path }}">
 </body>
-<script src="{{ $js_path }}/vendor/autobahn/autobahn.js"></script>
+<script src="{{ $js_path }}/vendor/autobahn/autobahn.min.js"></script>
 <script src="http://team.binary-studio.com/app/javascripts/header.js"></script>
 
 @if ($js_is_min)
     <script src="{{ $js_path }}/main.js"></script>
 @else
     <script src="{{ $js_path }}/config.js"></script>
-    <script data-main="{{ $js_path }}/require-main" src="{{ $js_path }}/vendor/require/require.js"></script>
+    <script data-main="{{ $js_path }}/require-main" src="{{ $js_path }}/vendor/require/require.min.js"></script>
 @endif
 </html>
