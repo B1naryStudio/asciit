@@ -21,13 +21,13 @@
 <input type="hidden" id="config-js-path" value="{{ $js_path }}">
 <input type="hidden" id="config-use-common-header" value="{{ $use_common_header }}">
 </body>
-<script src="{{ $js_path }}/vendor/autobahn/autobahn.js"></script>
+<script src="{{ $js_path }}/vendor/autobahn/autobahn.min.js"></script>
 <script src="http://team.binary-studio.com/app/javascripts/header.js"></script>
 
 @if ($is_min)
     <script src="{{ $js_path }}/main.js"></script>
 @else
     <script src="{{ $js_path }}/config.js"></script>
-    <script data-main="{{ $js_path }}/require-main" src="{{ $js_path }}/vendor/require/require.js"></script>
+    <script data-main="{{ $js_path }}/require-main" src="{{ $js_path }}/vendor/require/require.min.js"></script>
 @endif
 </html>
