@@ -33,7 +33,6 @@ define([
                         App.User.Current = model;
                         model.setAdminFlag();
                         App.trigger('popup:close');
-                        App.trigger('init:openRoutes', App.prefix + '/');
                         App.triggerMethod(
                             'user:authorized',
                             App.User.Current
@@ -70,12 +69,6 @@ define([
                     'user:authorized',
                     App.User.Current
                 );
-
-                App.trigger(
-                    'init:openRoutes',
-                    Backbone.history.fragment
-                );
-
             });
         }
     });
