@@ -217,6 +217,12 @@ define([
 
     App.listenTo(App, 'user:authorized', function (user) {
         API.menuShow({ model: user });
+
+        var path = (Backbone.history.fragment === "login") ?
+                    App.prefix + '/' :
+                    Backbone.history.fragment;
+
+        App.trigger('init:openRoutes', path);
     });
 
     App.listenTo(App, 'select:after', function (e) {
