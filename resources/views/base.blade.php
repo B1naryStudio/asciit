@@ -7,7 +7,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
     <link href="http://team.binary-studio.com/app/styles/css/style.css" rel="stylesheet" />
-    @if ($js_is_min)
+    @if ($is_min)
         <link href="assets/css/all.css" rel="stylesheet">
     @else
         <link href="assets/css/style.css" rel="stylesheet">
@@ -18,12 +18,13 @@
 <div id="nav-wrapper">
     @include('menu')
 </div>
-<input type="hidden" id="config-jspath" value="{{ $js_path }}">
+<input type="hidden" id="config-js-path" value="{{ $js_path }}">
+<input type="hidden" id="config-use-common-header" value="{{ $use_common_header }}">
 </body>
 <script src="{{ $js_path }}/vendor/autobahn/autobahn.min.js"></script>
 <script src="http://team.binary-studio.com/app/javascripts/header.js"></script>
 
-@if ($js_is_min)
+@if ($is_min)
     <script src="{{ $js_path }}/main.js"></script>
 @else
     <script src="{{ $js_path }}/config.js"></script>

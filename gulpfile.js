@@ -36,7 +36,7 @@ var staticExclude = [
     'tpl',
     'text',
     'backbone.syphon',
-    'moment-with-locales',
+    'moment-with-locales.min',
     'backbone.stickit',
     'jquery.scrollTo',
     'updown',
@@ -44,9 +44,9 @@ var staticExclude = [
     'ckeditor',
     'adapters/jquery',
     'iframeResizer.min',
-    'select2',
+    'select2.min',
     'custom-instance-settings',
-    'jquery.elastic.source.antarus66fork',
+    'jquery.elastic.source.antarus66fork.min',
     'plugins/codesnippet/lib/highlight/highlight'
 ];
 
@@ -102,7 +102,7 @@ var concatSettings = {
         jsPathMinFull + 'views/templates/user/login.tpl.js'
     ],
     main: [
-        jsPathMinFull + 'vendor/require/require.js',
+        jsPathMinFull + 'vendor/require/require.min.js',
         jsPathFull + 'config.js',
         jsPathMinFull + 'require-main.js',
         jsPathMinFull + 'models/**/*.js',
@@ -277,18 +277,19 @@ gulp.task('js-vendor', function () {
 
     gulp.src([
         jsPathFull + 'vendor/moment/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/moment'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/moment'));
 
-    gulp.src(jsPathFull + 'vendor/jquery/iframeResizer.contentWindow.min.js')
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
+    gulp.src(
+        jsPathFull + 'vendor/jquery/iframeResizer.contentWindow.min.js'
+    ).pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
 
-    gulp.src(jsPathFull + 'vendor/jquery/iframeResizer.min.js')
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
+    gulp.src(
+        jsPathFull + 'vendor/jquery/iframeResizer.min.js'
+    ).pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
 
-    return gulp.src(jsPathFull + 'vendor/ckeditor/**/*.*')
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/ckeditor'));
+    return gulp.src(
+        jsPathFull + 'vendor/ckeditor/**/*.*'
+    ).pipe(gulp.dest(jsPathMinFull + 'vendor/ckeditor'));
 });
 
 gulp.task('js-clean', function () {

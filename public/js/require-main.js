@@ -27,7 +27,7 @@ requirejs.config({
         'ckeditor.custom.settings': 'vendor/ckeditor/custom-instance-settings',
         'ckeditor.adapter': 'vendor/ckeditor/adapters/jquery',
         highlight: 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack',
-        moment: 'vendor/moment/moment-with-locales',
+        moment: 'vendor/moment/moment-with-locales.min',
         progressbar: 'vendor/progressbar/progressbar',
         i18next: 'vendor/i18next/i18next-1.10.1',
         updown: 'vendor/updown/updown'
