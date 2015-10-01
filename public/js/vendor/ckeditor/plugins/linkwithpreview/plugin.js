@@ -1,5 +1,6 @@
 CKEDITOR.plugins.add( 'linkwithpreview', {
     requires: 'ajax',
+    lang: ['uk', 'en', 'ru'],
     init: function (editor) {
         editor.addCommand(
             'linkwithpreview',

@@ -13,13 +13,13 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
             elements: [
                 {
                     type: 'html',
-                    html: '<div class="link-preview-wrapper"><img class="link-preview-image"></div>'
+                    html: '<div class="link-preview-wrapper"><div class="wrapper"><img class="link-preview-image"></div></div>'
                 },
                 {
                     type: 'text',
-                    label: 'URL',
+                    label: editor.lang.linkwithpreview.labelUrl,
                     id: 'edp-URL',
-                    validate: CKEDITOR.dialog.validate.notEmpty('url cannot be empty.'),
+                    validate: CKEDITOR.dialog.validate.notEmpty(editor.lang.linkwithpreview.messageEmptyUrl),
                     setup: function (element, definition) {
                         this._.dialog.preview.style.display = 'none';
                         var href = element.getAttribute('href');
@@ -71,7 +71,7 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                 },
                 {
                     type: 'text',
-                    label: 'Text to display',
+                    label: editor.lang.linkwithpreview.labelTitle,
                     id: 'edp-text-display',
                     setup: function (element, definition) {
                         this.setValue(element.getText());
@@ -86,7 +86,7 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                 }, 
                 {
                     type: 'html',
-                    html: '<p>The Link will be opened in another tab.</p>'
+                    html: '<p>' + editor.lang.linkwithpreview.description + '</p>'
                 }
             ]
         }],
@@ -148,11 +148,13 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
         },
         process: function (url) {
             var self = this;
-            CKEDITOR.ajax.load(editor.config.linkwithpreview.url +
-                encodeURIComponent(url), function (data) {
-                data = JSON.parse(data);
-                self.preloadHide(data.url);
-            } );
+            CKEDITOR.ajax.load(
+                editor.config.linkwithpreview.url + encodeURIComponent(url),
+                function (data) {
+                    data = JSON.parse(data);
+                    self.preloadHide(data.url);
+                }
+            );
         },
         restart: function (url) {
             if (this.timerId) {
@@ -171,9 +173,11 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                 editor.plugins.linkwithpreview.path + 'icons/loader.gif'
             );
             this.dialog.preview.style.display = 'block';
+            this.dialog.preview.classList.add('preload');
         },
         preloadHide: function (image) {
             this.dialog.preview.setAttribute('src', image);
+            this.dialog.preview.classList.remove('preload');
         }
     };
 });

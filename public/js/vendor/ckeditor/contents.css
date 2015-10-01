@@ -157,3 +157,9 @@ a > img {
 .link-preview-result-wrapper img {
 	width: 100%;
 }
+
+.link-preview-result-wrapper a:first-child {
+	height: 300px;
+	overflow: hidden;
+	display: block;
+}
