@@ -22,34 +22,6 @@ jsPath = 'js';
 var jsPathFull = './public/' + jsPath + '/';
 var jsPathMinFull = './public/' + jsPath + '/min/';
 
-// Warning: it's array of file names from vendor/*
-var staticExclude = [
-    'jquery',
-    'bootstrap',
-    'backbone',
-    'backbone.validation',
-    'backbone.marionette',
-    'validation-model',
-    'app',
-    'underscore.tpl',
-    'underscore',
-    'tpl',
-    'text',
-    'backbone.syphon',
-    'moment-with-locales',
-    'backbone.stickit',
-    'jquery.scrollTo',
-    'updown',
-    'backbone.paginator',
-    'ckeditor',
-    'adapters/jquery',
-    'iframeResizer.min',
-    'select2',
-    'custom-instance-settings',
-    'jquery.elastic.source.antarus66fork',
-    'plugins/codesnippet/lib/highlight/highlight'
-];
-
 var concatSettings = {
     'controllers/question/collection': [
         jsPathMinFull + 'controllers/question/collection.js',
@@ -102,7 +74,7 @@ var concatSettings = {
         jsPathMinFull + 'views/templates/user/login.tpl.js'
     ],
     main: [
-        jsPathMinFull + 'vendor/require/require.js',
+        jsPathMinFull + 'vendor/require/require.min.js',
         jsPathFull + 'config.js',
         jsPathMinFull + 'require-main.js',
         jsPathMinFull + 'models/**/*.js',
@@ -133,20 +105,14 @@ var concatSettings = {
     ]
 };
 
+var staticExclude = [];
 var separateFiles = [];
 
 var getRealModuleName = function (file) {
     var filePath = jsPathFull.replace('.', '');
-    var name = file.path
+    return file.path
         .substr(file.path.indexOf(filePath) + filePath.length)
         .replace(path.extname(file.path), '');
-
-    // delete vendor/*/ from name
-    if (name.indexOf('vendor') > -1) {
-        name = name.replace(/(vendor\/.+\/)(.+)/, '$2');
-    }
-
-    return name;
 };
 
 // Warning: using in eval, so it necessary
@@ -168,6 +134,13 @@ var filterDependencies = function (fileName) {
     });
 };
 
+var addPhantomExtension = function () {
+    return es.map(function (file, callback) {
+        file.path = file.path + '.tpl';
+        callback(null, file);
+    });
+};
+
 var loadSeparateFiles = function () {
     separateFiles = [];
     return es.map(function (file, callback) {
@@ -177,12 +150,25 @@ var loadSeparateFiles = function () {
     });
 };
 
-var addPhantomExtension = function () {
+var loadStaticExclude = function () {
+    staticExclude = [];
     return es.map(function (file, callback) {
-        file.path = file.path + '.tpl';
+        var name = getRealModuleName(file);
+        staticExclude.push(name);
         callback(null, file);
     });
 };
+
+gulp.task('js-prepare-static', function () {
+    return gulp.src([
+        jsPathFull + 'vendor/*/*.js',
+        jsPathFull + 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js',
+        jsPathFull + 'vendor/ckeditor/adapters/jquery.js',
+        jsPathFull + 'app.js',
+        jsPathFull + 'validation-model.js'
+    ])
+        .pipe(loadStaticExclude());
+});
 
 gulp.task('js-prepare', function () {
     return gulp.src([
@@ -257,48 +243,39 @@ gulp.task('js-concat-other', function () {
 gulp.task('js-vendor', function () {
     gulp.src([
         jsPathFull + 'vendor/select2/**/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/select2'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/select2'));
 
     gulp.src([
         jsPathFull + 'vendor/autobahn/**/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/autobahn'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/autobahn'));
 
     gulp.src([
         jsPathFull + 'vendor/snippet-iframe/**/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/snippet-iframe'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/snippet-iframe'));
 
     gulp.src([
         jsPathFull + 'vendor/jquery/jquery.elastic.*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/jquery'));
 
     gulp.src([
         jsPathFull + 'vendor/require/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/require'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/require'));
 
     gulp.src([
         jsPathFull + 'vendor/moment/*.js'
-    ])
-        .pipe(uglify())
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/moment'));
+    ]).pipe(gulp.dest(jsPathMinFull + 'vendor/moment'));
 
-    gulp.src(jsPathFull + 'vendor/jquery/iframeResizer.contentWindow.min.js')
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
+    gulp.src(
+        jsPathFull + 'vendor/jquery/iframeResizer.contentWindow.min.js'
+    ).pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
 
-    gulp.src(jsPathFull + 'vendor/jquery/iframeResizer.min.js')
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
+    gulp.src(
+        jsPathFull + 'vendor/jquery/iframeResizer.min.js'
+    ).pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
 
-    return gulp.src(jsPathFull + 'vendor/ckeditor/**/*.*')
-        .pipe(gulp.dest(jsPathMinFull + 'vendor/ckeditor'));
+    return gulp.src(
+        jsPathFull + 'vendor/ckeditor/**/*.*'
+    ).pipe(gulp.dest(jsPathMinFull + 'vendor/ckeditor'));
 });
 
 gulp.task('js-clean', function () {
@@ -330,6 +307,7 @@ gulp.task('js', function (callback) {
         'clean',
         [
             'js-prepare',
+            'js-prepare-static',
             'js-vendor',
             'js-templates'
         ],

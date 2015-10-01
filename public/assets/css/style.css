@@ -1425,9 +1425,19 @@ div .fa-05 {
 }
 
 .link-preview-wrapper {
-    width: 200px !important;
+    width: 300px !important;
     margin-left: auto !important;
     margin-right: auto !important;
+}
+
+.link-preview-wrapper .wrapper {
+    max-height: 130px;
+    overflow: hidden;
+}
+
+.link-preview-wrapper .link-preview-image.preload {
+    width: 100px !important;
+    margin: auto;
 }
 
 .link-preview-image {
@@ -1442,6 +1452,12 @@ div .fa-05 {
 
 .link-preview-result-wrapper img {
     width: 100%;
+}
+
+.link-preview-result-wrapper a:first-child {
+    height: 300px;
+    overflow: hidden;
+    display: block;
 }
 
 /*

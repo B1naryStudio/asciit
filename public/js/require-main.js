@@ -35,7 +35,8 @@ requirejs.config({
     shim: {
         'ckeditor.adapter': ['ckeditor'],
         i18next: ['jquery'],
-        'jquery.elastic': ['jquery']
+        'jquery.elastic': ['jquery'],
+        bootstrap: ['jquery']
     }
 });
 
