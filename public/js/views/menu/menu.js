@@ -3,7 +3,6 @@ define([
     'marionette',
     'backbone',
     'tpl!views/templates/menu/menu.tpl',
-    'models/user',
     'syphon'
 ], function (
     App,

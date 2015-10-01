@@ -32,6 +32,7 @@ var staticExclude = [
     'validation-model',
     'app',
     'underscore.tpl',
+    'underscore',
     'tpl',
     'text',
     'backbone.syphon',
@@ -109,11 +110,14 @@ var concatSettings = {
         jsPathMinFull + 'controllers/paginator.js',
         jsPathMinFull + 'controllers/popup.js',
         jsPathMinFull + 'controllers/user.js',
+        jsPathMinFull + 'controllers/**/init.js',
         jsPathMinFull + 'views/empty.js',
+        jsPathMinFull + 'views/main-layout.js',
         jsPathMinFull + 'views/question/form.js',
         jsPathMinFull + 'views/folder/select.js',
         jsPathMinFull + 'views/tag/select.js',
         jsPathMinFull + 'views/tag/view.js',
+        jsPathMinFull + 'views/vote/single.js',
         jsPathMinFull + 'views/popup/confirm.js',
         jsPathMinFull + 'views/templates/menu/menu.tpl.js',
         jsPathMinFull + 'views/templates/main-layout.tpl.js',
@@ -124,7 +128,8 @@ var concatSettings = {
         jsPathMinFull + 'views/templates/folder/select.tpl.js',
         jsPathMinFull + 'views/templates/folder/select-row.tpl.js',
         jsPathMinFull + 'views/templates/question/form.tpl.js',
-        jsPathMinFull + 'views/templates/popup/confirm.tpl.js'
+        jsPathMinFull + 'views/templates/popup/confirm.tpl.js',
+        jsPathMinFull + 'views/templates/vote/votes.tpl.js'
     ]
 };
 
@@ -182,7 +187,6 @@ var addPhantomExtension = function () {
 gulp.task('js-prepare', function () {
     return gulp.src([
         jsPathFull + 'require-main.js',
-        '!' + jsPathFull + 'models/user.js',
         jsPathFull + 'models/**/*.js',
         jsPathFull + 'controllers/**/*.js',
         jsPathFull + 'views/view-behaviors/**/*.js',
@@ -192,7 +196,8 @@ gulp.task('js-prepare', function () {
         jsPathFull + 'views/folder/select.js',
         jsPathFull + 'views/tag/select.js',
         jsPathFull + 'views/tag/view.js',
-        jsPathFull + 'views/popup/confirm.js'
+        jsPathFull + 'views/popup/confirm.js',
+        jsPathFull + 'views/vote/single.js'
     ])
         .pipe(loadSeparateFiles());
 });
@@ -228,7 +233,7 @@ gulp.task('js-templates', function () {
 gulp.task('js-concat-main', function () {
     return gulp.src(concatSettings['main'])
         .pipe(concat('main.js'))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest(jsPathMinFull));
 });
 
@@ -241,7 +246,7 @@ gulp.task('js-concat-other', function () {
         if (module !== 'main') {
             result = gulp.src(concatSettings[module])
                 .pipe(concat(module + '.js'))
-                //.pipe(uglify())
+                .pipe(uglify())
                 .pipe(gulp.dest(jsPathMinFull));
         }
     }
@@ -279,6 +284,12 @@ gulp.task('js-vendor', function () {
     ])
         .pipe(uglify())
         .pipe(gulp.dest(jsPathMinFull + 'vendor/require'));
+
+    gulp.src([
+        jsPathFull + 'vendor/moment/*.js'
+    ])
+        .pipe(uglify())
+        .pipe(gulp.dest(jsPathMinFull + 'vendor/moment'));
 
     gulp.src(jsPathFull + 'vendor/jquery/iframeResizer.contentWindow.min.js')
         .pipe(gulp.dest(jsPathMinFull + 'vendor/jquery/'));
