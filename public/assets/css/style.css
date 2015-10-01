@@ -1502,6 +1502,14 @@ div .fa-05 {
     #searchBar {
         width: 65%;
     }
+
+    .votes.question-votes {
+        padding: 20px 0 0 0;
+    }
+
+    .votes.question-votes .counter.divided {
+        margin: 0;
+    }
 }
 
 @media (max-width: 400px) {
@@ -1581,7 +1589,7 @@ div .fa-05 {
     }
 
     .votes-wrapper {
-        width: 19%;
+        width: 25%;
     }
 
     .votes > div {
@@ -1592,6 +1600,11 @@ div .fa-05 {
         margin: 0;
         width: 100%;
         display: block;
+        text-align: center;
+    }
+
+    .votes .counter.divided {
+        margin: 0;
     }
 
     .question_view .votes {
@@ -1616,14 +1629,18 @@ div .fa-05 {
 
     #answers .votes .dislike,
     #answers .votes .dislike-vote {
-        left: 0;
+        left: 25%;
         top: 75%;
     }
 
     #answers .votes .like,
     #answers .votes .like-vote {
-        left: 0;
+        left: 25%;
         top: -75%;
+    }
+
+    .single-answer .votes .counter {
+        min-width: 40px;
     }
 
     #popup-layout-view.login {
@@ -1633,7 +1650,7 @@ div .fa-05 {
     }
 
     .answers-list .votes {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 
     .question-row .wrapper-avatar,
