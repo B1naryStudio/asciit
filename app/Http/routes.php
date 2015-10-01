@@ -16,7 +16,8 @@ use Illuminate\Http\Request;
 Route::get('/', function () {
     $prefix = env('SERVER_PREFIX', '');
     return view('base', [
-        'js_is_min' => env('JS_IS_MIN', false),
+        'is_min' => env('JS_IS_MIN', false),
+        'use_common_header' => env('USE_COMMON_HEADER', false),
         'js_path' => ($prefix ? '/' : '' ) . env('JS_PATH')
     ]);
 });

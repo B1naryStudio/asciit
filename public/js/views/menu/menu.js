@@ -83,8 +83,10 @@ define([
             this.ui.questions.closest('li').addClass('active');
         },
         onShow: function () {
-            //this.$el.find('.main-menu').html(this.body);
-            //headerFunction();
+            if (useCommonHeader) {
+                this.$el.find('.main-menu').html(this.body);
+                headerFunction();
+            }
             return this;
         },
         initialize: function (options) {
