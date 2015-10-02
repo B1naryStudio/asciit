@@ -219,7 +219,7 @@ gulp.task('js-templates', function () {
 gulp.task('js-concat-main', function () {
     return gulp.src(concatSettings['main'])
         .pipe(concat('main.js'))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest(jsPathMinFull));
 });
 
@@ -232,7 +232,7 @@ gulp.task('js-concat-other', function () {
         if (module !== 'main') {
             result = gulp.src(concatSettings[module])
                 .pipe(concat(module + '.js'))
-                //.pipe(uglify())
+                .pipe(uglify())
                 .pipe(gulp.dest(jsPathMinFull));
         }
     }
