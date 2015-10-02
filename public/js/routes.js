@@ -33,27 +33,33 @@ define([
                 callback || name === 'login' && callback
             ) {
                 callback.apply(this, args);
-                if (App.Routes.spinner) {
-                    App.Routes.spinner.destroy();
+
+                var duration;
+
+                if (!App.Routes.spinner) {
+                    App.Routes.spinner = new ProgressBar.Line('#spinner', {
+                        color: '#FCB03C',
+                        svgStyle: {
+                            height: '3px'
+                        }
+                    });
+
+                    duration = 2000;
+                } else {
+                    duration = 4000;
                 }
-                App.Routes.spinner = new ProgressBar.Line('#spinner', {
-                    color: '#FCB03C',
-                    svgStyle: {
-                        height: '3px'
-                    }
-                });
 
                 App.Routes.spinner.animate(0.8, {
-                    duration: 4000,
+                    duration: duration,
                     easing: 'easeOut'
                 }, function () {            // Callback on animation finish
                     setTimeout(function () { // Waiting for downloading finish
                         if (App.Routes.spinner) {
                             App.Routes.spinner.destroy();
                         }
+
                         App.Routes.spinner = null;
                     }, 3000)
-
                 });
             }
         },
@@ -173,6 +179,20 @@ define([
         }
     });
 
+    App.listenTo(App, 'spinner:login', function () {
+        App.Routes.spinner = new ProgressBar.Line('#spinner', {
+            color: '#FCB03C',
+            svgStyle: {
+                height: '3px'
+            }
+        });
+
+        App.Routes.spinner.animate(0.3, {
+            duration: 2000,
+            easing: 'easeOut'
+        }, 2000);
+    });
+
     App.addInitializer(function() {
         new App.Routes.Router({
             controller: API
@@ -217,12 +237,6 @@ define([
 
     App.listenTo(App, 'user:authorized', function (user) {
         API.menuShow({ model: user });
-
-        var path = (Backbone.history.fragment === "login") ?
-                    App.prefix + '/' :
-                    Backbone.history.fragment;
-
-        App.trigger('init:openRoutes', path);
     });
 
     App.listenTo(App, 'select:after', function (e) {
