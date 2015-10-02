@@ -33,10 +33,7 @@ define([
                         App.User.Current = model;
                         model.setAdminFlag();
                         App.trigger('popup:close');
-                        App.triggerMethod(
-                            'user:authorized',
-                            App.User.Current
-                        );
+                        App.trigger('init:openRoutes', App.prefix + '/');
                 }).fail(function (errors) {
                     view.triggerMethod('data:invalid', errors);
                 });
@@ -60,7 +57,7 @@ define([
         },
         session: function () {
             var user = new User.Model();
-            App.triggerMethod('spinner:imitate');
+            App.triggerMethod('spinner:login');
 
             $.when(App.request('user:session')).done(function (user) {
                 App.User.Current = user;
@@ -70,6 +67,8 @@ define([
                     'user:authorized',
                     App.User.Current
                 );
+
+                App.trigger('init:openRoutes', Backbone.history.fragment);
             });
         }
     });

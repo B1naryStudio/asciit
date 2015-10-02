@@ -1062,29 +1062,6 @@ blockquote .author {
     position: relative;
 }
 
-#spinner::after {
-    position: absolute;
-    content: ".";
-    display: block;
-    width: 0;
-    height: 3px;
-    background: #FCB03C;
-    top: 0;
-    left: 0;
-    -webkit-transition: width 0s;
-    -moz-transition: width 0s;
-    -o-transition: width 0s;
-    transition: width 0s;
-}
-
-#spinner.imitation::after {
-    width: 200px;
-    -webkit-transition: width 2s ease-out 0s;
-    -moz-transition: width 2s ease-out 0s;
-    -o-transition: width 2s ease-out 0s;
-    transition: width 2s ease-out 0s;
-}
-
 @keyframes move {
     0% {
         background-position: 0 0;
