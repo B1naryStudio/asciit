@@ -60,6 +60,7 @@ define([
         },
         session: function () {
             var user = new User.Model();
+            App.triggerMethod('spinner:imitate');
 
             $.when(App.request('user:session')).done(function (user) {
                 App.User.Current = user;

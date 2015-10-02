@@ -33,9 +33,11 @@ define([
                 callback || name === 'login' && callback
             ) {
                 callback.apply(this, args);
+
                 if (App.Routes.spinner) {
                     App.Routes.spinner.destroy();
                 }
+
                 App.Routes.spinner = new ProgressBar.Line('#spinner', {
                     color: '#FCB03C',
                     svgStyle: {
@@ -51,6 +53,7 @@ define([
                         if (App.Routes.spinner) {
                             App.Routes.spinner.destroy();
                         }
+
                         App.Routes.spinner = null;
                     }, 3000)
 
@@ -173,6 +176,14 @@ define([
         }
     });
 
+    App.listenTo(App, 'spinner:imitate', function () {
+        $('#spinner').addClass('imitation');
+    });
+
+    App.listenTo(App, 'spinner:imitate:stop', function () {
+        $('#spinner').removeClass('imitation');
+    });
+
     App.addInitializer(function() {
         new App.Routes.Router({
             controller: API
@@ -188,6 +199,7 @@ define([
                 }, function () {            // Callback on animation finish
                     App.Routes.spinner.destroy();
                     App.Routes.spinner = null;
+                    App.triggerMethod('spinner:imitate:stop');
                 });
             }
         }
