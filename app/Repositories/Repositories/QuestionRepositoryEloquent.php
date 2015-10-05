@@ -71,19 +71,9 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
         $this->pushCriteria(new QuestionCriteria());
     }
 
-    public function setClosed($model, $value)
-    {
-        $model->closed = $value;
-        $model->save();
-
-        return $model;
-    }
-
-    public function setClosedById($id, $value)
+    public function setProtectedPropertyById($id, $prop, $value)
     {
         $this->with_relation_count = false;
-
-        $model = $this->find($id);
-        return $this->setClosed($model, $value);
+        return parent::setProtectedPropertyById($id, $prop, $value);
     }
 }

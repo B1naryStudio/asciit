@@ -10,6 +10,5 @@ use App\Repositories\Entities\Question;
  */
 interface QuestionRepository extends RepositoryInterface
 {
-    public function setClosed($model, $value);
-    public function setClosedById($id, $value);
+    public function setProtectedPropertyById($id, $prop, $value);
 }

@@ -131,4 +131,8 @@ interface RepositoryInterface extends BaseRepositoryInterface
     public function withoutRelationCount();
 
     public function setCountedFields($collection);
+
+    public function setProtectedProperty($model, $prop, $value);
+
+    public function setProtectedPropertyById($id, $prop, $value);
 }
