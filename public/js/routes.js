@@ -20,6 +20,7 @@ define([
             'questions/:id': 'question',
             'login': 'login',
             'logout': 'logout',
+            'edit-users': 'editUsers',
             'tags': 'tags',
             'tags/:tag': 'tagSearch',
             'activity': 'activity',
@@ -70,15 +71,20 @@ define([
 
     var API = {
         login: function () {
-            require(['controllers/user'], function (controller) {
+            require(['controllers/user/init'], function (controller) {
                 App.trigger('spinner:check');
                 controller.login();
             });
         },
         logout: function () {
-            require(['controllers/user'], function (controller) {
+            require(['controllers/user/init'], function (controller) {
                 App.trigger('spinner:check');
                 controller.logout();
+            });
+        },
+        editUsers: function () {
+            require(['controllers/user/init'], function (controller) {
+                controller.editUsers();
             });
         },
         questions: function (data) {

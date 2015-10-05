@@ -63,7 +63,7 @@
 
         <% if (admin) { %>
         <li><a id="nav-question" href="#folders"><%= _t("folders.folders") %></a></li>
-        <li><a id="nav-question" href="#users"><%= _t("users.users") %></a></li>
+        <li><a id="nav-question" href="#edit-users"><%= _t("users.users") %></a></li>
         <% } %>
     </ul>
 
