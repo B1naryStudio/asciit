@@ -42,7 +42,15 @@ class ProfileAPIUserUpdater extends UserUpdater
             $preparedInfo
         );
 
-        return $user;
+        // 'role_id' property is not allowed to the mass assignment for security
+        // reasons
+        $entitledUser = $this->userRepository->setProtectedProperty(
+            $user,
+            'role_id',
+            $preparedInfo['role_id']
+        );
+
+        return $entitledUser;
     }
 
     /**
