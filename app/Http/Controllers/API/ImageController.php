@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Services\Image\Contracts\ImageServiceInterface;
+use App\Services\Image\Exceptions\ImageException;
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
-use Illuminate\Support\Facades\File;
-use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
@@ -15,8 +14,6 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class ImageController extends Controller
 {
-    protected $localImagePath = '/images/';
-
     public function __construct(QuestionServiceInterface $questionService)
     {
         $this->middleware('auth');
@@ -29,11 +26,10 @@ class ImageController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request, ImageServiceInterface $imageService)
     {
         $response_type = $request->get('responseType');
-        if (!$request->hasFile('upload'))
-        {
+        if (!$request->hasFile('upload')) {
             if ($response_type === 'json') {
                 return Response::json([
                     'description' => 'File not exists',
@@ -42,23 +38,8 @@ class ImageController extends Controller
             throw new UnprocessableEntityHttpException();
         }
 
-        $image = $request->file('upload');
-        $time = time();
-        $fileName = $time . '_' . $image->getClientOriginalName();
-        $path = $this->localImagePath . $fileName;
-        $url = url(
-            env('SERVER_PREFIX') . '/api/v1' .
-            $this->localImagePath . $time . '_' .
-            pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)
-        );
-
-        // Saving
-        Image::make($image->getRealPath())
-            ->resize(600, null, function ($constraint) {
-                $constraint->upsize();
-                $constraint->aspectRatio();
-            })
-            ->save(storage_path('app') .  $path);
+        $fileName = $imageService->save($request->file('upload'));
+        $url = $imageService->url($fileName);
 
         if ($response_type === 'json') {
             return Response::json([
@@ -83,28 +64,22 @@ class ImageController extends Controller
     }
 
     /**
-     * Display the specified resource
+     * Display the image
      *
-     * @param Request $request
-     * @param $filename string
+     * @param ImageServiceInterface $imageService
+     * @param $filename
+     * @param $extension
      * @return mixed
      */
-    public function show(Request $request, $filename)
-    {
-        $path = storage_path('app') . $this->localImagePath . $filename;
-        // search only jpg files
-        $exists = File::exists($path . '.jpg');
-
-        if (!$exists) {
-            if ($request->get('responceType') === 'json') {
-                return Response::json([
-                    'error' => 'File not exists',
-                ], 404);
-            }
+    public function show(
+        ImageServiceInterface $imageService,
+        $filename,
+        $extension
+    ) {
+        try {
+            return $imageService->get($filename . '.' . $extension);
+        } catch (ImageException $e) {
             throw new NotFoundHttpException();
         }
-
-        //will ensure a jpg is always returned
-        return Image::make($path . '.jpg')->response('jpg');
     }
 }

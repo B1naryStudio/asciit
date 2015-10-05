@@ -150,6 +150,7 @@ return [
         App\Providers\RbacServiceProvider::class,
         App\Providers\RemoteDataGrabberProvider::class,
         App\Providers\PreviewProvider::class,
+        App\Providers\ImageProvider::class,
 
         /*
          * Third-party providers...
