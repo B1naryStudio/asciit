@@ -1,8 +1,8 @@
 <td>
     <img src="<%- avatar %>"
          title="avatar"
-         width="40"
-         height="40"
+         width="50"
+         height="50"
          class="avatar">
 </td>
 <td><%- first_name %></td>

@@ -30,6 +30,7 @@ define([
             var data = Backbone.Syphon.serialize(this);
             var searchQuery = data['search_query'];
             Backbone.Validation.callbacks.valid(this, 'search_query');
+            
             // return search query to controller
             this.trigger('form:submit', searchQuery);
         },
@@ -41,12 +42,14 @@ define([
                 i18n.t('ui.empty') + '...'
             );
         },
+
         onShow: function () {
             var query = this.options.searchQuery;
             if (query) {
                 this.$el.find('#search-query').val(query).focus();
             }
         },
+
         initialize: function (options) {
             var self = this;
             this.childViewOptions = {

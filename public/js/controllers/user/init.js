@@ -22,9 +22,9 @@ define([
             });
         },
 
-        users: function () {
+        users: function (searchQuery, page) {
             require(['controllers/user/edit-users'], function (controller) {
-                controller.execute();
+                controller.execute(searchQuery, page);
             });
         }
     });

@@ -24,7 +24,8 @@ define([
                 })
             ).done(function (users, roles) {
                     var usersView = new UsersView({
-                        collection: users
+                        collection: users,
+                        searchQuery: searchQuery
                     });
 
                     var collectionLayout = new UsersLayoutView();
@@ -50,10 +51,22 @@ define([
                     if (!users.length) {
                         usersView.triggerMethod('not:found');
                     }
+
+                    // Updating for search
+                    App.User.Controllers.editUsers.listenTo(
+                        usersView,
+                        'form:submit',
+                        function (searchQuery) {
+                            Backbone.history.navigate(
+                                '/edit-users?' + encodeURIComponent(
+                                    searchQuery
+                                ),
+                                { trigger: true }
+                            );
+                        }
+                    );
                 }
             );
-
-            console.log('editUsers');
         }
     });
     App.User.Controllers.editUsers = new Controller();
