@@ -10,7 +10,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
 use App\Services\Questions\Contracts\QuestionServiceInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class ImageController extends Controller
 {
@@ -29,30 +28,37 @@ class ImageController extends Controller
     public function store(Request $request, ImageServiceInterface $imageService)
     {
         $response_type = $request->get('responseType');
+        // For CKEditor API
+        // (http://docs.ckeditor.com/#!/guide/dev_file_browser_api)
+        $funcNum = $request->get('CKEditorFuncNum');
+
         if (!$request->hasFile('upload')) {
             if ($response_type === 'json') {
                 return Response::json([
                     'description' => 'File not exists',
                 ], 422);
             }
-            throw new UnprocessableEntityHttpException();
+            $url = '';
+            $message = 'File invalid. Please choose another file.';
+        } else {
+            try {
+                $fileName = $imageService->save($request->file('upload'));
+                $url = $imageService->url($fileName);
+
+                if ($response_type === 'json') {
+                    return Response::json([
+                        'fileName' => $fileName,
+                        'uploaded' => 1,
+                        'url'      => $url
+                    ], 200, [], JSON_NUMERIC_CHECK);
+                }
+
+                $message = 'Image was loading successfully';
+            } catch (\Exception $e) {
+                $url = '';
+                $message = 'File invalid. Please choose another file.';
+            }
         }
-
-        $fileName = $imageService->save($request->file('upload'));
-        $url = $imageService->url($fileName);
-
-        if ($response_type === 'json') {
-            return Response::json([
-                'fileName' => $fileName,
-                'uploaded' => 1,
-                'url'      => $url
-            ], 200, [], JSON_NUMERIC_CHECK);
-        }
-
-        // For CKEditor API
-        // (http://docs.ckeditor.com/#!/guide/dev_file_browser_api)
-        $funcNum = $request->get('CKEditorFuncNum');
-        $message = 'Image was loading successfully';
 
         return "<script type='text/javascript'>
                     window.parent.CKEDITOR.tools.callFunction(

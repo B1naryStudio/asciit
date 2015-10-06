@@ -15,4 +15,6 @@ interface ImageServiceInterface
     public function generateFilename($extension, $extraName = '');
 
     public function resize($file, $new_name, $width);
+
+    public function delete($filename, $isLocal = false);
 }

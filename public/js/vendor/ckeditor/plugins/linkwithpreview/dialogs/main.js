@@ -49,11 +49,7 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                     },
                     commit: function (element) {
                         var href = this.getValue();
-                        var isExternalURL = /^(http|https):\/\//;
                         if (href) {
-                            if (!isExternalURL.test(href)) {
-                                href = 'http://' + href;
-                            }
                             element.setAttribute('href', href);
                             element.setAttribute('data-cke-saved-href', href);
                             element.setAttribute('src', href);
@@ -161,8 +157,13 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
                 clearTimeout(this.timerId);
             }
             var self = this;
-            this.oldLink = url;
             this.preloadShow();
+            var isExternalURL = /^(http|https):\/\//;
+            if (!isExternalURL.test(url)) {
+                url = 'http://' + url;
+                this.dialog.elements[0].setValue(url);
+            }
+            this.oldLink = url;
             this.timerId = setTimeout(function () {
                 self.process(url);
             }, 2000);
