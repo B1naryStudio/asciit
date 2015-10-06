@@ -39,6 +39,13 @@
         "popular": "Popular tags",
         "select": "Select tags"
     },
+    "person": {
+        "avatar": "Avatar",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "E-mail",
+        "role": "Role"
+    },
     "search": {
         "placeholder": "Search it...",
         "tagInfo": "To search by tags enter: ",

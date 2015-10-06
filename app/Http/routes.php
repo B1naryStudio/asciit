@@ -11,8 +11,6 @@
 |
 */
 
-use Illuminate\Http\Request;
-
 Route::get('/', function () {
     $prefix = env('SERVER_PREFIX', '');
     return view('base', [
@@ -46,16 +44,6 @@ Route::group(['prefix' => 'api/v1'], function () {
         'API\Question\AnswerController@setClosed'
     );
 
-//    Route::patch('/questions/{question_id}/answers/{answer_id}', function (Request $request, $question_id, $answer_id) {
-//        $controller = App::make('App\Http\Controllers\API\Question\AnswerController');
-//
-//        if ($request->has('closed')) {
-//            return $controller->setClosed($request, $question_id, $answer_id);
-//        } else {
-//            return $controller->updateFields($request, $question_id, $answer_id);
-//        }
-//    });
-
     Route::resource(
         '/questions/{id}/comments',
         'API\Question\CommentController',
@@ -73,6 +61,12 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::post('/user/login', 'API\UserController@login');
     Route::delete('/user/login/{id}', 'API\UserController@logout');
     Route::get('/user/login', 'API\UserController@session');
+
+    Route::resource(
+        '/users',
+        'API\UserController',
+        ['only' => ['index']]
+    );
 
     Route::resource(
         '/tags',

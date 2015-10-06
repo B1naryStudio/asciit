@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AuthValidatedRequest;
 use Illuminate\Support\Facades\Redirect;
 use App\Services\Auth\Exceptions\TokenInCookieExpiredException;
+use Illuminate\Pagination\Paginator;
 
 class UserController extends Controller
 {
@@ -22,6 +23,43 @@ class UserController extends Controller
         $this->authService = $authService;
 
         $this->middleware('auth', ['only' => ['logout']]);
+    }
+
+    public function index(Request $request)
+    {
+        $pageSize = $request->get('page_size');
+
+        try {
+            $users = $this->authService->getAllUsers($pageSize);
+        } catch (AuthException $e) {
+            return Response::json([
+                'error' => [
+                    'message' => $e->getMessage(),
+                ],
+            ], 404);
+        }
+
+        $page = (int) Paginator::resolveCurrentPage();
+
+        if (empty($page)) {
+            $page = 1;
+        }
+
+        if ($page !== $users->currentPage()) {
+            return Response::json([
+                'error' => 'not found'
+            ], 404, [], JSON_NUMERIC_CHECK);
+        }
+
+        return Response::json(
+            [
+                [
+                    'total_entries' => $users->total(),
+                    'currentPage' => $users->currentPage()
+                ],
+                $users->items()
+            ], 200, [], JSON_NUMERIC_CHECK
+        );
     }
 
     public function login(AuthValidatedRequest $request)
@@ -34,15 +72,13 @@ class UserController extends Controller
             ], 500);
         }
         return $auth;
-
     }
 
     public function logout(
         Request $request,
         DataGrabberInterface $dataGrabber,
         $id
-    )
-    {
+    ) {
         $cookie = $request->cookie('x-access-token');
 
         try {

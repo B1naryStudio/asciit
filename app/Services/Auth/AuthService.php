@@ -111,13 +111,18 @@ class AuthService implements AuthServiceInterface
         }
     }
 
+    public function getAllUsers($pageSize = null)
+    {
+        try {
+            $users = $this->userRepository->with('role')->paginate($pageSize);
+        } catch (RepositoryException $e) {
+            throw new AuthException(
+                $e->getMessage() . ' Cannot return the users list.',
+                null,
+                $e
+            );
+        }
 
-
-
-
-
-
-
-
-
+        return $users;
+    }
 }

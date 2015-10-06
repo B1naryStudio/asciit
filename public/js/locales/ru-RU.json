@@ -39,6 +39,13 @@
         "popular": "Популярные теги",
         "select": "Выберите теги"
     },
+    "person": {
+        "avatar": "Аватар",
+        "firstName": "Имя",
+        "lastName": "Фамилия",
+        "email": "E-mail",
+        "role": "Роль"
+    },
     "search": {
         "placeholder": "Ищи, ищи",
         "tagInfo": "Для поиска по тегам введите: ",

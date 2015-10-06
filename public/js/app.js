@@ -249,6 +249,10 @@ define([
             Models: {},
             Views: {}
         },
+        Role: {
+            Models: {},
+            Views: {}
+        },
         Activity: {
             Models: {},
             Views: {}

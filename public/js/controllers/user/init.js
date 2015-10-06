@@ -22,7 +22,7 @@ define([
             });
         },
 
-        editUsers: function () {
+        users: function () {
             require(['controllers/user/edit-users'], function (controller) {
                 controller.execute();
             });
