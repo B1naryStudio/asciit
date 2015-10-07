@@ -137,4 +137,13 @@ class UserController extends Controller
 
         return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
     }
+
+    public function updateUsersRole(Request $request, $user_id)
+    {
+        return Response::json([
+            'role' => [
+                'title' => 'Odmen'
+            ]
+        ], 200, [], JSON_NUMERIC_CHECK);
+    }
 }

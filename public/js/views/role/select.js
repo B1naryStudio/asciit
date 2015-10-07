@@ -26,6 +26,19 @@ define([
         childView: App.Role.Views.RoleSelectRow,
         childViewContainer: '.role-options',
 
+        events: {
+            'change': 'onChange'
+        },
+
+        onChange: function () {
+            var value = this.getCurrentValue();
+            this.triggerMethod('role:switched', value);
+        },
+
+        getCurrentValue: function () {
+            return this.$el.val();
+        },
+
         onShow: function () {
             this.$('option[value=' + this.options.currentRole + ']')
                 .attr('selected', true);

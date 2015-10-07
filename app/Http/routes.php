@@ -62,11 +62,8 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::delete('/user/login/{id}', 'API\UserController@logout');
     Route::get('/user/login', 'API\UserController@session');
 
-    Route::resource(
-        '/users',
-        'API\UserController',
-        ['only' => ['index']]
-    );
+    Route::get('/users', 'API\UserController@index');
+    Route::post('/users/{users}/role', 'API\UserController@updateUsersRole');
 
     Route::get('/roles', 'API\RoleController@index');
 

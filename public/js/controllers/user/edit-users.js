@@ -4,13 +4,15 @@ define([
     'backbone',
     'views/user/collection-layout',
     'views/user/collection',
+    'models/user',
     'models/role'
 ], function (
     App,
     Marionette,
     Backbone,
     UsersLayoutView,
-    UsersView
+    UsersView,
+    User
 ) {
     var Controller = Marionette.Controller.extend({
         execute: function (searchQuery, page) {
@@ -68,6 +70,29 @@ define([
                                 ),
                                 { trigger: true }
                             );
+                        }
+                    );
+
+                    App.User.Controllers.editUsers.listenTo(
+                        usersView,
+                        'childview:role:switched',
+                        function (childview) {
+                            $.when(App.request(
+                                'user:update:role',
+                                childview.model
+                            )).done(function (saved) {
+                                var updatedModel = new User.Model(saved);
+
+                                childview.triggerMethod(
+                                    'role:updated',
+                                    updatedModel
+                                );
+                            }).fail(function (errors) {
+                                childview.triggerMethod(
+                                    'role:update:error',
+                                    errors
+                                );
+                            });
                         }
                     );
                 }

@@ -190,8 +190,8 @@ define([
                         func = customOptions.success;
 
                         options.success = function (data, response, options) {
-                            options.defer = defer;
-                            func(data, response, options);
+                            this.defer = defer;
+                            func.apply(this, [data, response, options]);
                         };
 
                         delete customOptions.success;
@@ -201,8 +201,8 @@ define([
                         func = customOptions.error;
 
                         options.error = function (data, response, options) {
-                            options.defer = defer;
-                            func(data, response, options);
+                            this.defer = defer;
+                            func.apply(this, [data, response, options]);
                         };
 
                         delete customOptions.error;
@@ -212,12 +212,11 @@ define([
                 }
 
                 attrs = attrs || [];
-                var res;
 
                 if (operation == 'save') {
-                    res = item[operation](attrs, options);
+                    item[operation](attrs, options);
                 } else {
-                    res = item[operation](options);
+                    item[operation](options);
                 }
 
                 return defer.promise();

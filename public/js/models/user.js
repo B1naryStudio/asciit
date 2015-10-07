@@ -40,6 +40,20 @@ define([
             }
         },
 
+        getRoleUrl: function () {
+            return App.prefix + '/api/v1/users/' + this.id + '/role';
+        },
+
+        updateRole: function (options) {
+            var url = this.getRoleUrl();
+            var roleId = this.get('role_id');
+
+            options.data = {role_id: roleId};
+            options.method = 'post';
+
+            $.ajax(url, options);
+        },
+
         initialize: function () {
             this.urlRoot = App.prefix + '/api/v1/user/login';
         }
@@ -102,6 +116,26 @@ define([
             }, options);
 
             return this.deferOperation('fetch', users);
+        },
+
+        updateUserRole: function (model) {
+            var customOptions = {
+                error: function (jqXHR) {
+                    var errors =  jqXHR.responseJSON;
+
+                    if (jqXHR.status == 500) {
+                        var errorMessage = errors.description ||
+                            i18n.t('ui.server-error');
+                        this.defer.reject({
+                            error: errorMessage
+                        });
+                    } else {
+                        this.defer.reject(errors);
+                    }
+                }
+            };
+
+            return this.deferOperation('updateRole', model, [], customOptions);
         }
     });
 
@@ -115,6 +149,10 @@ define([
 
     App.reqres.setHandler('user:collection', function (data) {
         return API.userCollection(data);
+    });
+
+    App.reqres.setHandler('user:update:role', function (model) {
+        return API.updateUserRole(model);
     });
 
     return App.User.Models;
