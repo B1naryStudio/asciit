@@ -4,6 +4,7 @@ define([
     'backbone',
     'views/user/collection-layout',
     'views/user/collection',
+    'models/role'
 ], function (
     App,
     Marionette,
@@ -21,11 +22,15 @@ define([
                             currentPage: page
                         }
                     }
-                })
+                }),
+                App.request('role:collection')
             ).done(function (users, roles) {
                     var usersView = new UsersView({
                         collection: users,
-                        searchQuery: searchQuery
+                        searchQuery: searchQuery,
+                        childViewOptions: {
+                            roles: roles
+                        }
                     });
 
                     var collectionLayout = new UsersLayoutView();

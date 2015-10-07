@@ -1,9 +1,11 @@
 define([
     'app',
     'backbone',
+    'models/model-mixins',
 ], function (
     App,
-    Backbone
+    Backbone,
+    ModelMixins
 ) {
     App.Role.Models.Model = Backbone.Model.extend({
         defaults: {
@@ -13,13 +15,7 @@ define([
 
     App.Role.Models.Collection = Backbone.Collection.extend({
         model: App.Role.Models.Model,
-        url: App.prefix + '/api/v1/roles',
-        sortKey: 'title',
-        order: 'desc',
-
-        initialize: function (options) {
-            this.sort();
-        }
+        url: App.prefix + '/api/v1/roles'
     });
 
     var API = _.extend({}, ModelMixins.API, {

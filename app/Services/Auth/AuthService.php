@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Repositories\Contracts\RoleRepository;
 use App\Services\Auth\Contracts\AuthServiceInterface;
 use App\Services\Auth\Exceptions\AuthException;
 use App\Services\Auth\Exceptions\TokenInCookieExpiredException;
@@ -25,13 +26,16 @@ class AuthService implements AuthServiceInterface
     protected $email;
     protected $password;
     protected $userRepository;
+    protected $roleRepository;
     protected $userUpdater;
 
     public function __construct(
         UserRepository $userRepository,
+        RoleRepository $roleRepository,
         UserUpdater $userUpdater
     ) {
         $this->userRepository = $userRepository;
+        $this->roleRepository = $roleRepository;
         $this->userUpdater = $userUpdater;
     }
 
@@ -124,5 +128,20 @@ class AuthService implements AuthServiceInterface
         }
 
         return $users;
+    }
+
+    public function getAllRoles()
+    {
+        try {
+            $roles = $this->roleRepository->all();
+        } catch (RepositoryException $e) {
+            throw new AuthException(
+                $e->getMessage() . ' Cannot return the roles list.',
+                null,
+                $e
+            );
+        }
+
+        return $roles;
     }
 }

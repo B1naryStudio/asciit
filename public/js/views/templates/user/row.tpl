@@ -8,4 +8,7 @@
 <td><%- first_name %></td>
 <td><%- last_name %></td>
 <td><%- email %></td>
-<td><%- role.title %></td>
+<td class="col-md-2">
+    <span class="role-value"><%- role.title %></span>
+    <span class="role-select-wrapper"></span>
+</td>

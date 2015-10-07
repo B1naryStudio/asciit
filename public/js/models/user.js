@@ -15,6 +15,7 @@ define([
             password: '',
             avatar: ''
         },
+
         validation: {
             email: {
                 required: true,
@@ -26,9 +27,11 @@ define([
                 msg: i18n.t('validation.required-field')
             }
         },
+
         isAdmin: function () {
             return this.has('role') && this.get('role').title === 'ADMIN';
         },
+
         setAdminFlag: function () {
             if (this.isAdmin()) {
                 this.set('admin', true);
@@ -36,6 +39,7 @@ define([
                 this.set('admin', false);
             }
         },
+
         initialize: function () {
             this.urlRoot = App.prefix + '/api/v1/user/login';
         }

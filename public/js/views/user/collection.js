@@ -5,18 +5,48 @@ define([
     'views/view-behaviors/search-form',
     'tpl!views/templates/user/collection.tpl',
     'tpl!views/templates/user/row.tpl',
+    'views/role/select',
 ], function (
     App,
     Marionette,
     Backbone,
     SearchForm,
     UsersCollectionTpl,
-    UserRowTpl
+    UserRowTpl,
+    RolesSelectView
 ) {
-    App.User.Views.UserRowView = Marionette.ItemView.extend({
+    App.User.Views.UserRowView = Marionette.LayoutView.extend({
         template: UserRowTpl,
         tagName: 'tr',
-        className: 'user-element'
+        className: 'user-element',
+
+        regions: {
+            roleSelect: '.role-select-wrapper'
+        },
+
+        events: {
+            'mouseenter': 'onOverEntry',
+            'mouseleave':  'onOutEntry'
+        },
+
+        onOverEntry: function () {
+            this.$('.role-value').hide();
+            this.$('.role-select').show();
+        },
+
+        onOutEntry: function () {
+            this.$('.role-value').show();
+            this.$('.role-select').hide();
+        },
+
+        onShow: function () {
+            var selectView = new RolesSelectView({
+                collection: this.options.roles,
+                currentRole: this.model.get('role').id
+            });
+
+            this.getRegion('roleSelect').show(selectView);
+        }
     });
 
     App.User.Views.UsersView = Marionette.CompositeView.extend({

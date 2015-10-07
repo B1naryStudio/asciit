@@ -25,22 +25,22 @@ define([
                     page_size: 10
                 })
             ).done(function (folders, tags) {
-                var folder_view = new SelectFolderView({
+                var folderView = new SelectFolderView({
                     collection: folders,
                     selected: model.get('folder').title
                 });
 
                 var selectedTags = _.pluck(model.get('tags'), 'title');
 
-                var tag_view = new SelectTagView({
+                var tagView = new SelectTagView({
                     collection: tags,
                     selected: selectedTags
                 });
 
                 var view = new QuestionFormView({
                     model: model,
-                    folder_view: folder_view,
-                    tag_view: tag_view
+                    folder_view: folderView,
+                    tag_view: tagView
                 });
 
                 App.trigger('popup:show', {

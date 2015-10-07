@@ -68,6 +68,8 @@ Route::group(['prefix' => 'api/v1'], function () {
         ['only' => ['index']]
     );
 
+    Route::get('/roles', 'API\RoleController@index');
+
     Route::resource(
         '/tags',
         'API\TagController',
