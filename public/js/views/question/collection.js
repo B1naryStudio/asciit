@@ -4,6 +4,7 @@ define([
     'backbone',
     'tpl!views/templates/question/collection.tpl',
     'views/question/row',
+    'views/view-behaviors/search-form',
     'models/tag',
     'syphon'
 ], function (
@@ -11,7 +12,8 @@ define([
     Marionette,
     Backbone,
     QuestionsTpl,
-    QuestionView
+    QuestionView,
+    SearchForm
 ) {
     App.Question.Views.Questions = Marionette.CompositeView.extend({
         tagName: 'div',
@@ -20,33 +22,9 @@ define([
         childView: QuestionView,
         childViewContainer: '.list',
 
-        events: {
-            'submit form': 'submit'
-        },
-
-        submit: function (event) {
-            event.preventDefault();
-
-            var data = Backbone.Syphon.serialize(this);
-            var searchQuery = data['search_query'];
-            Backbone.Validation.callbacks.valid(this, 'search_query');
-            
-            // return search query to controller
-            this.trigger('form:submit', searchQuery);
-        },
-
-        onNotFound: function () {
-            Backbone.Validation.callbacks.invalid(
-                this,
-                'search_query',
-                i18n.t('ui.empty') + '...'
-            );
-        },
-
-        onShow: function () {
-            var query = this.options.searchQuery;
-            if (query) {
-                this.$el.find('#search-query').val(query).focus();
+        behaviors: {
+            SearchForm: {
+                behaviorClass: SearchForm
             }
         },
 
