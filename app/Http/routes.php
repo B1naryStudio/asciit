@@ -81,7 +81,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     );
 
     Route::post('/images', 'API\ImageController@store');
-    Route::get('/images/{filename}/{extension}', 'API\ImageController@show');
+    Route::get('/images/{filename}_{extension}', 'API\ImageController@show');
 
     Route::resource(
         '/votes',

@@ -16,8 +16,7 @@ class ImageService implements ImageServiceInterface
     public function save(UploadedFile $file)
     {
         $info = $this->generateFilename(
-            $file->getClientOriginalExtension(),
-            pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)
+            $file->getClientOriginalExtension()
         );
         $this->resize(
             $file->getRealPath(),
@@ -37,7 +36,7 @@ class ImageService implements ImageServiceInterface
     {
         return url(
             config('images.url') .
-            pathinfo($filename, PATHINFO_FILENAME) . '/' .
+            pathinfo($filename, PATHINFO_FILENAME) . '_' .
             pathinfo($filename, PATHINFO_EXTENSION)
         );
     }
@@ -61,12 +60,14 @@ class ImageService implements ImageServiceInterface
     public function generateFilename($extension, $extraName = '')
     {
         $fileName = time() . ($extraName ? ('_' . $extraName) : '');
+        $fileName .= '.' . $extension;
+
         return [
-            'filename' => $fileName . '.' . $extension,
-            'path' => config('images.path') . $fileName . '.' . $extension,
+            'filename' => $fileName,
+            'path' => config('images.path') . $fileName,
             'local_path' => storage_path('app') . '/' . config('images.path') .
-                $fileName . '.' . $extension,
-            'url' => config('images.url') . $fileName . '/' . $extension
+                $fileName,
+            'url' => $this->url($fileName)
         ];
     }
 
