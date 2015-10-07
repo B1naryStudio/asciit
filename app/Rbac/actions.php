@@ -1,5 +1,9 @@
 <?php
 
+// users
+Rbac::action('API\\UserController@index', 'users.view');
+Rbac::action('API\\RoleController@index', 'users.roles.view');
+
 // folders
 Rbac::action([
     'API\\FolderController@index',

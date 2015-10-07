@@ -23,6 +23,7 @@ class UserController extends Controller
         $this->authService = $authService;
 
         $this->middleware('auth', ['only' => ['logout']]);
+        $this->middleware('rbac', ['only' => ['index']]);
     }
 
     public function index(Request $request)

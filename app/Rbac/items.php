@@ -5,6 +5,15 @@ use App\Rbac\Facades\Ownership;
 /*
  * Permissions
  */
+//Users + roles
+Rbac::permission('users.view');
+Rbac::permission('users.roles.view');
+
+Rbac::permission('users.manage', [
+    'users.view',
+    'users.roles.view',
+]);
+
 // folders
 Rbac::permission('folders.view');
 Rbac::permission('folders.create');
@@ -131,7 +140,8 @@ Rbac::permission('preview.view');
  * Roles
  */
 Rbac::role('ADMIN', [
-    'folders.manage',   // manage = view + create + edit + delete for all items
+    'users.manage',     // view + edit roles
+    'folders.manage',   // manage below = view + create + edit + delete for all items
     'questions.manage',
     'answers.manage',
     'comments.manage',

@@ -16,6 +16,8 @@ class RoleController extends Controller
     public function __construct(AuthServiceInterface $authService)
     {
         $this->authService = $authService;
+
+        $this->middleware('rbac');
     }
     /**
      * Display a listing of the resource.
