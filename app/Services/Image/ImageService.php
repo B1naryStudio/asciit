@@ -44,7 +44,7 @@ class ImageService implements ImageServiceInterface
 
     public function get($filename)
     {
-        $path = config('images.localPath') . $filename;
+        $path = config('images.path') . $filename;
 
         if (!Storage::exists($path)) {
             throw new ImageNotFoundHttpException();
@@ -63,8 +63,8 @@ class ImageService implements ImageServiceInterface
         $fileName = time() . ($extraName ? ('_' . $extraName) : '');
         return [
             'filename' => $fileName . '.' . $extension,
-            'path' => config('images.localPath') . $fileName . '.' . $extension,
-            'local_path' => storage_path('app') . config('images.localPath') .
+            'path' => config('images.path') . $fileName . '.' . $extension,
+            'local_path' => storage_path('app') . '/' . config('images.path') .
                 $fileName . '.' . $extension,
             'url' => config('images.url') . $fileName . '/' . $extension
         ];
@@ -81,7 +81,7 @@ class ImageService implements ImageServiceInterface
         $data = $image->encode(pathinfo($newName, PATHINFO_EXTENSION));
 
         $saved = Storage::put(
-            config('images.localPath') . $newName,
+            config('images.path') . $newName,
             $data->getEncoded()
         );
 
@@ -96,10 +96,10 @@ class ImageService implements ImageServiceInterface
     {
         if ($isLocal) {
             File::delete(
-                storage_path('app') . config('images.localPath') . $filename
+                storage_path('app') . '/' . config('images.path') . $filename
             );
         } else {
-            Storage::delete(config('images.localPath') . $filename);
+            Storage::delete(config('images.path') . $filename);
         }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'localPath' => 'images/',
+    'path' => 'images/',
     'url' => env('SERVER_PREFIX') . '/api/v1/images/',
     'width' => 600
 );

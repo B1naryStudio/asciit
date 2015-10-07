@@ -25,22 +25,21 @@ class ScreenshotPreview implements ScreenshotPreviewInterface
             $info = $this->imageService->generateFilename('jpg');
             shell_exec(str_replace(
                 ['%url', '%file'],
-                [$url, $info['full_path']],
+                [$url, $info['local_path']],
                 $config
             ));
         } else {
             throw new PreviewNotExecutableException();
         }
+        $newFile = $this->imageService->generateFilename('jpg');
 
-        $screenshot_width = config('preview.screenshot_width');
-        if ($screenshot_width) {
-            $this->imageService->resize(
-                $info['full_path'],
-                $info['filename'],
-                $screenshot_width
-            );
-        }
+        $this->imageService->resize(
+            $info['local_path'],
+            $newFile['filename'],
+            config('preview.screenshot_width')
+        );
+        $this->imageService->delete($info['filename'], true);
 
-        return $info['url'];
+        return $newFile['url'];
     }
 }
