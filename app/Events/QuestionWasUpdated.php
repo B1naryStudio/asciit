@@ -12,9 +12,7 @@ class QuestionWasUpdated extends Event
     public $question;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * @param Question $question
      */
     public function __construct(Question $question)
     {

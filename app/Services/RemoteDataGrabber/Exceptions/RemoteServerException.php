@@ -2,6 +2,7 @@
 
 namespace App\Services\RemoteDataGrabber\Exceptions;
 
-class RemoteServerException extends RemoteDataGrabberException {
+class RemoteServerException extends RemoteDataGrabberException
+{
     //
 }

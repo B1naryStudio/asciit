@@ -14,7 +14,7 @@ class VoteWasAdded extends Event
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param Vote $vote
      */
     public function __construct(Vote $vote)
     {

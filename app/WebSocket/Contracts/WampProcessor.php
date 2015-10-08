@@ -4,7 +4,8 @@ namespace App\WebSocket\Contracts;
 
 use Ratchet\ConnectionInterface;
 
-abstract class WampProcessor {
+abstract class WampProcessor
+{
     public function onSubscribe(ConnectionInterface $conn, $topic)
     {
         echo "Connection {$conn->resourceId} subscribed on {$topic}\n";

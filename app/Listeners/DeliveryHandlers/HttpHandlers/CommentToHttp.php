@@ -7,7 +7,8 @@ use App\Listeners\Contracts\HttpDeliveryHandler;
 
 class CommentToHttp extends HttpDeliveryHandler
 {
-    public function handle(CommentWasAdded $event){
+    public function handle(CommentWasAdded $event)
+    {
         if ($event->comment->answer->question == null) {
             $url = url('/questions/'.$event->comment->question->slug);
             $text = 'You have a new comment to your question';

@@ -5,6 +5,7 @@ namespace App\Repositories\Repositories;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\Folder;
 use App\Repositories\Contracts\FolderRepository;
+
 /**
  * Class FolderRepositoryEloquent
  * @package namespace App\RepositoriesRepositories;

@@ -28,7 +28,7 @@ class GosWebSocketClientProvider extends ServiceProvider
         $this->app->bind(
             'Gos\Component\WebSocketClient\Wamp\Client',
             function () {
-                $client = new Client("127.0.0.1", env('WEBSOCKET_PORT', 9090));
+                $client = new Client('127.0.0.1', env('WEBSOCKET_PORT', 9090));
 
                 return $client;
             }

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Andriy
- * Date: 31.08.2015
- * Time: 18:41
- */
 
 namespace App\Listeners\DeliveryHandlers\HttpHandlers;
 
@@ -13,7 +7,8 @@ use App\Listeners\Contracts\HttpDeliveryHandler;
 
 class VoteRemovedToHttp extends HttpDeliveryHandler
 {
-    public function handle(VoteWasRemoved $event){
+    public function handle(VoteWasRemoved $event)
+    {
         if ($event->vote->answer->question == null) {
             $url = url('/questions/'.$event->vote->question->slug);
             $text = 'Vote was removed from your question';
