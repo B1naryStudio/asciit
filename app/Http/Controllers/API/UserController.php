@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Services\Auth\Contracts\AuthServiceInterface;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Http\Requests\AuthValidatedRequest;
 use Illuminate\Support\Facades\Redirect;
@@ -23,7 +24,7 @@ class UserController extends Controller
         $this->authService = $authService;
 
         $this->middleware('auth', ['only' => ['logout']]);
-        $this->middleware('rbac', ['only' => ['index']]);
+        $this->middleware('rbac', ['only' => ['index', 'update']]);
     }
 
     public function index(Request $request)
@@ -61,6 +62,36 @@ class UserController extends Controller
                 $users->items()
             ], 200, [], JSON_NUMERIC_CHECK
         );
+
+    }
+    public function update(Request $request, $user_id)
+    {
+        // Update user
+        try {
+            $user = $this->authService->updateUser($request->all(), $user_id);
+        } catch (AuthException $e) {
+            return Response::json([
+                'error' => [$e->getMessage()]
+            ], 500);
+        }
+
+        // Update role
+        if ($request->has('role_id')
+            && Auth::user()->allowed('users.edit.role')) {
+
+            try {
+                $user = $this->authService->updateUserRole(
+                    $request->input('role_id'),
+                    $user
+                );
+            } catch (AuthException $e) {
+                return Response::json([
+                    'error' => [$e->getMessage()]
+                ], 500);
+            }
+        }
+
+        return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
     }
 
     public function login(AuthValidatedRequest $request)
@@ -136,14 +167,5 @@ class UserController extends Controller
         }
 
         return Response::json($user, 200, [], JSON_NUMERIC_CHECK);
-    }
-
-    public function update(Request $request, $user_id)
-    {
-        return Response::json([
-            'role' => [
-                'title' => 'Odmen'
-            ]
-        ], 200, [], JSON_NUMERIC_CHECK);
     }
 }

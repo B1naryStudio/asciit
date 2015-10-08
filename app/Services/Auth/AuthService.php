@@ -115,6 +115,42 @@ class AuthService implements AuthServiceInterface
         }
     }
 
+    public function updateUser($data, $id)
+    {
+        try {
+            $user = $this->userRepository->update($data, $id);
+        } catch (RepositoryException $e) {
+            throw new AuthException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        return $user;
+    }
+
+    public function updateUserRole($newRoleId, $user)
+    {
+        try {
+            $entitledUser = $this->userRepository->setProtectedProperty(
+                $user,
+                'role_id',
+                $newRoleId
+            );
+            $role = $this->roleRepository->find($newRoleId);
+            $entitledUser->role = $role;
+        } catch (RepositoryException $e) {
+            throw new AuthException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
+
+        return $entitledUser;
+    }
+
     public function getAllUsers($pageSize = null)
     {
         try {

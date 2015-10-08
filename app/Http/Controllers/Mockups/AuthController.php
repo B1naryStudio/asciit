@@ -27,7 +27,7 @@ class AuthController extends Controller
         $this->dev->payloadInfo = [
             'id' =>  '55dd8be1fd5d69885b0bc0c7',
             'email' =>  'dev@asciit.local',
-            //'role' => 'ADMIN',
+            'role' => 'UNKNOWN',
             'iat' => 1441785864
         ];
 

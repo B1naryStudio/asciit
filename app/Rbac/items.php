@@ -7,10 +7,17 @@ use App\Rbac\Facades\Ownership;
  */
 //Users + roles
 Rbac::permission('users.view');
+Rbac::permission('users.edit');
+Rbac::permission('users.edit.role');
+Rbac::permission('users.edit.own', ['users.edit'], function ($params) {
+    return Ownership::isSelf($params);
+});
 Rbac::permission('users.roles.view');
 
 Rbac::permission('users.manage', [
     'users.view',
+    'users.edit',
+    'users.edit.role',
     'users.roles.view',
 ]);
 
@@ -156,6 +163,7 @@ Rbac::role('ADMIN', [
 ]);
 
 Rbac::role('USER', [
+    'users.edit.own',
     'folders.view',
 
     'questions.view',

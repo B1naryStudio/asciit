@@ -2,6 +2,7 @@
 
 // users
 Rbac::action('API\\UserController@index', 'users.view');
+Rbac::action('API\\UserController@update', 'users.edit');
 Rbac::action('API\\RoleController@index', 'users.roles.view');
 
 // folders

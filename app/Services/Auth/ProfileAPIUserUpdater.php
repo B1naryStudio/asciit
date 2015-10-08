@@ -124,10 +124,10 @@ class ProfileAPIUserUpdater extends UserUpdater
      */
     protected function attachRoleId(array &$arr)
     {
-        if (array_key_exists('role', $arr)) {
-            $role = $this->roleRepository->getByTitle($arr['role']);
-            $arr['role_id'] = $role->id;
-        }
+        if (!array_key_exists('role', $arr)) return;
+
+        $role = $this->roleRepository->getByTitle($arr['role']);
+        $arr['role_id'] = $role->id;
     }
 
     protected function attachAvatarInfo(array &$arr)
