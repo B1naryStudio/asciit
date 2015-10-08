@@ -58,12 +58,12 @@ Route::group(['prefix' => 'api/v1'], function () {
 
     Route::get('/crud-folders', 'API\FolderController@foldersForCrud');
 
-    Route::post('/user/login', 'API\UserController@login');
-    Route::delete('/user/login/{id}', 'API\UserController@logout');
-    Route::get('/user/login', 'API\UserController@session');
+    Route::post('/users/login', 'API\UserController@login');
+    Route::delete('/users/login/{id}', 'API\UserController@logout');
+    Route::get('/users/login', 'API\UserController@session');
 
     Route::get('/users', 'API\UserController@index');
-    Route::post('/users/{users}/role', 'API\UserController@updateUsersRole');
+    Route::put('/users/{users}', 'API\UserController@update');
 
     Route::get('/roles', 'API\RoleController@index');
 

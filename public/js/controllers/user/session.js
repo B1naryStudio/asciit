@@ -11,7 +11,7 @@ define([
 ) {
     var Controller = Marionette.Controller.extend({
         execute: function () {
-            var user = new User.Model();
+            var user = new User.CurrentUserModel();
             App.triggerMethod('spinner:login');
 
             $.when(App.request('user:session')).done(function (user) {

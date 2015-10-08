@@ -9,23 +9,13 @@ define([
     ModelMixins,
     PageableCollection
 ) {
-    App.User.Models.Model = Backbone.Model.extend({
+    App.User.Models.UserModel = Backbone.Model.extend({
+        urlRoot: App.prefix + '/api/v1/users',
+
         defaults: {
             email: '',
             password: '',
             avatar: ''
-        },
-
-        validation: {
-            email: {
-                required: true,
-                pattern: 'email',
-                msg: i18n.t('validation.invalid-value')
-            },
-            password: {
-                required: true,
-                msg: i18n.t('validation.required-field')
-            }
         },
 
         isAdmin: function () {
@@ -38,29 +28,29 @@ define([
             } else {
                 this.set('admin', false);
             }
-        },
+        }
+    });
 
-        getRoleUrl: function () {
-            return App.prefix + '/api/v1/users/' + this.id + '/role';
-        },
-
-        updateRole: function (options) {
-            var url = this.getRoleUrl();
-            var roleId = this.get('role_id');
-
-            options.data = {role_id: roleId};
-            options.method = 'post';
-
-            $.ajax(url, options);
+    App.User.Models.CurrentUserModel = App.User.Models.UserModel.extend({
+        validation: {
+            email: {
+                required: true,
+                pattern: 'email',
+                msg: i18n.t('validation.invalid-value')
+            },
+            password: {
+                required: true,
+                msg: i18n.t('validation.required-field')
+            }
         },
 
         initialize: function () {
-            this.urlRoot = App.prefix + '/api/v1/user/login';
+            this.urlRoot = App.prefix + '/api/v1/users/login';
         }
     });
 
     App.User.Models.Collection = PageableCollection.extend({
-        model: App.User.Models.Model,
+        model: App.User.Models.UserModel,
         url: App.prefix + '/api/v1/users',
         sortKey: 'first_name',
         order: 'asc',
@@ -89,7 +79,7 @@ define([
 
     var API = _.extend({}, ModelMixins.API, {
         login: function (email, password) {
-            var user = new App.User.Models.Model({
+            var user = new App.User.Models.CurrentUserModel({
                 email: email,
                 password: password
             });
@@ -100,7 +90,7 @@ define([
         },
 
         session: function () {
-            var user = new App.User.Models.Model();
+            var user = new App.User.Models.CurrentUserModel();
 
             return this.deferOperation('fetch', user, [], {
                 wait: true
@@ -116,26 +106,6 @@ define([
             }, options);
 
             return this.deferOperation('fetch', users);
-        },
-
-        updateUserRole: function (model) {
-            var customOptions = {
-                error: function (jqXHR) {
-                    var errors =  jqXHR.responseJSON;
-
-                    if (jqXHR.status == 500) {
-                        var errorMessage = errors.description ||
-                            i18n.t('ui.server-error');
-                        this.defer.reject({
-                            error: errorMessage
-                        });
-                    } else {
-                        this.defer.reject(errors);
-                    }
-                }
-            };
-
-            return this.deferOperation('updateRole', model, [], customOptions);
         }
     });
 
@@ -151,8 +121,8 @@ define([
         return API.userCollection(data);
     });
 
-    App.reqres.setHandler('user:update:role', function (model) {
-        return API.updateUserRole(model);
+    App.reqres.setHandler('user:update', function (model) {
+        return API.deferOperation('save', model);
     });
 
     return App.User.Models;

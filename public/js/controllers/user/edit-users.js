@@ -4,15 +4,13 @@ define([
     'backbone',
     'views/user/collection-layout',
     'views/user/collection',
-    'models/user',
     'models/role'
 ], function (
     App,
     Marionette,
     Backbone,
     UsersLayoutView,
-    UsersView,
-    User
+    UsersView
 ) {
     var Controller = Marionette.Controller.extend({
         execute: function (searchQuery, page) {
@@ -78,11 +76,9 @@ define([
                         'childview:role:switched',
                         function (childview) {
                             $.when(App.request(
-                                'user:update:role',
+                                'user:update',
                                 childview.model
-                            )).done(function (saved) {
-                                var updatedModel = new User.Model(saved);
-
+                            )).done(function (updatedModel) {
                                 childview.triggerMethod(
                                     'role:updated',
                                     updatedModel
