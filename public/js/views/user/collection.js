@@ -7,6 +7,7 @@ define([
     'tpl!views/templates/user/row.tpl',
     'views/role/select',
     'views/view-behaviors/waiting-state',
+    'views/view-behaviors/server-validation',
     'models/user'
 ], function (
     App,
@@ -16,7 +17,8 @@ define([
     UsersCollectionTpl,
     UserRowTpl,
     RolesSelectView,
-    WaitingState
+    WaitingState,
+    ServerValidation
 ) {
     App.User.Views.UserRowView = Marionette.LayoutView.extend({
         template: UserRowTpl,
@@ -25,6 +27,10 @@ define([
 
         regions: {
             roleSelect: '.role-select-wrapper'
+        },
+
+        ui: {
+            errorBlock: '.error-block'
         },
 
         events: {
@@ -39,6 +45,9 @@ define([
         behaviors: {
             WaitingState: {
                 behaviorClass: WaitingState
+            },
+            ServerValidation: {
+                behaviorClass: ServerValidation
             }
         },
 
@@ -63,11 +72,12 @@ define([
             this.triggerMethod('waiting:stop');
         },
 
-        onRoleUpdateError: function () {
+        onModelInvalid: function () {
+            this.triggerMethod('waiting:stop');
+
             this.model.set('role_id', this.model.get('role').id);
             this.getRegion('roleSelect').reset();
             this.onShow();
-            this.triggerMethod('waiting:stop');
         },
 
         onShow: function () {

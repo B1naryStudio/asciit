@@ -85,7 +85,7 @@ define([
                                 );
                             }).fail(function (errors) {
                                 childview.triggerMethod(
-                                    'role:update:error',
+                                    'model:invalid',
                                     errors
                                 );
                             });

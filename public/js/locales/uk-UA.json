@@ -47,7 +47,7 @@
         "role": "Роль"
     },
     "search": {
-        "placeholder": "Пошук",
+        "placeholder": "Шукай, шукай",
         "tagInfo": "Для пошуку по тегам введіть: ",
         "folderInfo": "Для пошуку по розділам введіть: ",
         "tagInfoSpan": "\"tag:назва тега\"",

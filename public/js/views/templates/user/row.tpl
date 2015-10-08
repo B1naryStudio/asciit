@@ -11,4 +11,6 @@
 <td class="col-md-2">
     <span class="role-value"><%- role.title %></span>
     <span class="role-select-wrapper"></span>
+    <div class="error-block hidden">Алярм.</div>
 </td>
+

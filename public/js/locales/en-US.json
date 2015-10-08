@@ -47,7 +47,7 @@
         "role": "Role"
     },
     "search": {
-        "placeholder": "Search it...",
+        "placeholder": "Search it",
         "tagInfo": "To search by tags enter: ",
         "folderInfo": "To search by folders enter: ",
         "tagInfoSpan": "\"tag:tag title\"",
