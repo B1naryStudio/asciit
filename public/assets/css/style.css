@@ -18,7 +18,6 @@ body.modal-open {
  | Main menu
  |------------------------------------------------------------------------------
  */
-
 .menu .user-panel {
     float: right;
     margin-right: 15px;
@@ -611,6 +610,7 @@ body.modal-open {
 
 .role-select {
     display: none;
+    margin-left: -17px;
 }
 
 /*

@@ -21,7 +21,7 @@ define([
 
     App.Role.Views.RoleSelect = Marionette.CompositeView.extend({
         tagName: 'select',
-        className: 'role-select',
+        className: 'role-select form-control',
         template: SelectTpl,
         childView: App.Role.Views.RoleSelectRow,
         childViewContainer: '.role-options',
@@ -32,7 +32,7 @@ define([
 
         onChange: function () {
             var value = this.getCurrentValue();
-            this.triggerMethod('role:switched', value);
+            this.triggerMethod('select:switched', value);
         },
 
         getCurrentValue: function () {

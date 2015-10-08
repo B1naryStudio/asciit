@@ -6,6 +6,7 @@ define([
     'tpl!views/templates/user/collection.tpl',
     'tpl!views/templates/user/row.tpl',
     'views/role/select',
+    'views/view-behaviors/waiting-state',
     'models/user'
 ], function (
     App,
@@ -14,7 +15,8 @@ define([
     SearchForm,
     UsersCollectionTpl,
     UserRowTpl,
-    RolesSelectView
+    RolesSelectView,
+    WaitingState
 ) {
     App.User.Views.UserRowView = Marionette.LayoutView.extend({
         template: UserRowTpl,
@@ -31,9 +33,12 @@ define([
         },
 
         childEvents: {
-            'role:switched': function (childview, roleId) {
-                this.model.set('role_id', +roleId);
-                this.triggerMethod('role:switched');
+            'select:switched': 'onRoleSelectSwitched'
+        },
+
+        behaviors: {
+            WaitingState: {
+                behaviorClass: WaitingState
             }
         },
 
@@ -47,6 +52,24 @@ define([
             this.$('.role-select').hide();
         },
 
+        onRoleSelectSwitched: function (childview, roleId) {
+            this.triggerMethod('waiting:start');
+            this.model.set('role_id', +roleId);
+            this.triggerMethod('role:switched');
+        },
+
+        onRoleUpdated: function (updatedModel) {
+            this.$('.role-value').text(updatedModel.get('role').title);
+            this.triggerMethod('waiting:stop');
+        },
+
+        onRoleUpdateError: function () {
+            this.model.set('role_id', this.model.get('role').id);
+            this.getRegion('roleSelect').reset();
+            this.onShow();
+            this.triggerMethod('waiting:stop');
+        },
+
         onShow: function () {
             var selectView = new RolesSelectView({
                 collection: this.options.roles,
@@ -54,16 +77,6 @@ define([
             });
 
             this.getRegion('roleSelect').show(selectView);
-        },
-
-        onRoleUpdated: function (updatedModel) {
-            this.$('.role-value').text(updatedModel.get('role').title);
-        },
-
-        onRoleUpdateError: function () {
-            this.model.set('role_id', this.model.get('role').id);
-            this.getRegion('roleSelect').reset();
-            this.onShow();
         }
     });
 
