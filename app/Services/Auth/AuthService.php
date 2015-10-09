@@ -18,6 +18,7 @@ use Prettus\Repository\Exceptions\RepositoryException;
 use App\Services\Auth\Contracts\UserUpdater;
 use App\Services\Auth\Exceptions\UpdatingFailureException;
 use Illuminate\Support\Facades\Log;
+use App\Repositories\Criteria\LocalRoleCriteria;
 
 class AuthService implements AuthServiceInterface
 {
@@ -169,7 +170,9 @@ class AuthService implements AuthServiceInterface
     public function getAllRoles()
     {
         try {
-            $roles = $this->roleRepository->all();
+            $roles = $this->roleRepository->getByCriteria(
+                new LocalRoleCriteria()
+            );
         } catch (RepositoryException $e) {
             throw new AuthException(
                 $e->getMessage() . ' Cannot return the roles list.',
