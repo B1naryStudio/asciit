@@ -2,7 +2,8 @@
 
 namespace App\Services\Auth;
 
-use App\Repositories\Contracts\RoleRepository;
+use App\Repositories\Contracts\RoleLocalRepository;
+use App\Repositories\Contracts\RoleGlobalRepository;
 use App\Services\Auth\Contracts\AuthServiceInterface;
 use App\Services\Auth\Exceptions\AuthException;
 use App\Services\Auth\Exceptions\TokenInCookieExpiredException;
@@ -18,6 +19,7 @@ use Prettus\Repository\Exceptions\RepositoryException;
 use App\Services\Auth\Contracts\UserUpdater;
 use App\Services\Auth\Exceptions\UpdatingFailureException;
 use Illuminate\Support\Facades\Log;
+use App\Repositories\Entities\User;
 
 class AuthService implements AuthServiceInterface
 {
@@ -26,22 +28,28 @@ class AuthService implements AuthServiceInterface
     protected $email;
     protected $password;
     protected $userRepository;
-    protected $roleRepository;
+    protected $roleGlobalRepository;
+    protected $roleLocalRepository;
     protected $userUpdater;
 
     public function __construct(
         UserRepository $userRepository,
-        RoleRepository $roleRepository,
+        RoleLocalRepository $roleGlobalRepository,
+        RoleGlobalRepository $roleLocalRepository,
         UserUpdater $userUpdater
     ) {
         $this->userRepository = $userRepository;
-        $this->roleRepository = $roleRepository;
+        $this->roleLocalRepository = $roleLocalRepository;
+        $this->roleGlobalRepository = $roleGlobalRepository;
         $this->userUpdater = $userUpdater;
     }
 
-    public function authenticate($data)
+    public function authenticate(array $data)
     {
-        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+        if (Auth::attempt([
+            'email' => $data['email'],
+            'password' => $data['password']
+        ])) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
                 ['localRole']
@@ -55,7 +63,7 @@ class AuthService implements AuthServiceInterface
     {
         try {
             Auth::logout();
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             throw new AuthException($e->getMessage(), null, $e);
         }
     }
@@ -72,7 +80,8 @@ class AuthService implements AuthServiceInterface
         }
     }
 
-    public function getUserFromCookie($cookie) {
+    public function getUserFromCookie($cookie)
+    {
         $tokenObject = new Token($cookie);
 
         // Get a payload info from the token
@@ -115,7 +124,7 @@ class AuthService implements AuthServiceInterface
         }
     }
 
-    public function updateUser($data, $id)
+    public function updateUser(array $data, $id)
     {
         try {
             $user = $this->userRepository->update($data, $id);
@@ -130,7 +139,12 @@ class AuthService implements AuthServiceInterface
         return $user;
     }
 
-    public function updateUserRole($newRoleId, $user)
+    /**
+     * @param int $newRoleId
+     * @param User $user
+     * @return User
+     */
+    public function updateUserRole($newRoleId, User $user)
     {
         try {
             $entitledUser = $this->userRepository->setProtectedProperty(
@@ -138,7 +152,7 @@ class AuthService implements AuthServiceInterface
                 'local_role_id',
                 $newRoleId
             );
-            $role = $this->roleRepository->find($newRoleId);
+            $role = $this->roleLocalRepository->find($newRoleId);
             $entitledUser->local_role = $role;
         } catch (RepositoryException $e) {
             throw new AuthException(
@@ -151,10 +165,16 @@ class AuthService implements AuthServiceInterface
         return $entitledUser;
     }
 
+    /**
+     * @param int|null $pageSize
+     * @return mixed
+     */
     public function getAllUsers($pageSize = null)
     {
         try {
-            $users = $this->userRepository->with('localRole')->paginate($pageSize);
+            $users = $this->userRepository
+                ->with('localRole')
+                ->paginate($pageSize);
         } catch (RepositoryException $e) {
             throw new AuthException(
                 $e->getMessage() . ' Cannot return the users list.',
@@ -166,10 +186,25 @@ class AuthService implements AuthServiceInterface
         return $users;
     }
 
-    public function getAllRoles()
+    public function getLocalRoles()
     {
         try {
-            $roles = $this->roleRepository->all();
+            $roles = $this->roleLocalRepository->all();
+        } catch (RepositoryException $e) {
+            throw new AuthException(
+                $e->getMessage() . ' Cannot return the roles list.',
+                null,
+                $e
+            );
+        }
+
+        return $roles;
+    }
+
+    public function getGlobalRoles()
+    {
+        try {
+            $roles = $this->roleGlobalRepository->all();
         } catch (RepositoryException $e) {
             throw new AuthException(
                 $e->getMessage() . ' Cannot return the roles list.',

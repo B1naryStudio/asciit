@@ -24,10 +24,15 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $type = $request->get('type');
         try {
-            $roles = $this->authService->getAllRoles();
+            if ($type === 'global') {
+                $roles = $this->authService->getGlobalRoles();
+            } else {
+                $roles = $this->authService->getLocalRoles();
+            }
         } catch (AuthException $e) {
             return Response::json([
                 'error' => [

@@ -2,7 +2,7 @@ define([
     'app',
     'marionette',
     'backbone',
-    'tpl!views/templates/role/select-row.tpl',
+    'tpl!views/templates/role/select-row.tpl'
 ], function (
     App,
     Marionette,
@@ -23,7 +23,7 @@ define([
         childView: App.Role.Views.RoleSelectRow,
 
         events: {
-            'change': 'onChange'
+            change: 'onChange'
         },
 
         onChange: function () {

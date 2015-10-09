@@ -3,7 +3,7 @@
 namespace App\Services\Auth;
 
 use App\Repositories\Contracts\UserRepository;
-use App\Repositories\Contracts\RoleRepository;
+use App\Repositories\Contracts\RoleLocalRepository;
 use App\Services\RemoteDataGrabber\Contracts\DataGrabberInterface;
 use App\Services\Auth\Contracts\UserUpdater;
 use App\Services\Auth\Exceptions\UpdatingFailureException;
@@ -17,7 +17,7 @@ class ProfileAPIUserUpdater extends UserUpdater
     protected $dataGrabber;
 
     public function __construct(
-        RoleRepository $roleRepository,
+        RoleLocalRepository $roleRepository,
         UserRepository $userRepository,
         DataGrabberInterface $dataGrabber
     ) {

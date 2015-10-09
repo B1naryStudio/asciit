@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
-class Role extends Model
+class RoleLocal extends Model implements Transformable
 {
+    use TransformableTrait;
+
+    protected $table = 'roles';
+
     protected $fillable = ['title'];
     public $timestamps = false;
 

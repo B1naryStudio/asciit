@@ -3,9 +3,9 @@
 namespace App\Repositories\Contracts;
 
 /**
- * Interface RoleRepository
+ * Interface RoleGlobalRepository
  * @package namespace App\RepositoriesRepositories;
  */
-interface RoleRepository extends RepositoryInterface
+interface RoleGlobalRepository extends RoleRepository
 {
 }

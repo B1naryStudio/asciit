@@ -1,27 +1,44 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: antarus66
- * Date: 8/6/15
- * Time: 9:52 AM
- */
+
 namespace App\Services\Auth\Contracts;
+
+use App\Repositories\Entities\User;
 
 interface AuthServiceInterface
 {
-    public function authenticate($data);
+    public function authenticate(array $data);
 
     public function logout();
 
     public function getUser();
 
+    /**
+     * @param string $cookie
+     * @return mixed
+     */
     public function getUserFromCookie($cookie);
 
-    public function updateUser($data, $id);
+    /**
+     * @param array $data
+     * @param int $id
+     * @return mixed
+     */
+    public function updateUser(array $data, $id);
 
-    public function updateUserRole($newRoleId, $userId);
+    /**
+     * @param int $newRoleId
+     * @param User $user
+     * @return User
+     */
+    public function updateUserRole($newRoleId, User $user);
 
-    public function getAllUsers($pageSize);
+    /**
+     * @param int $pageSize
+     * @return mixed
+     */
+    public function getAllUsers($pageSize = null);
 
-    public function getAllRoles();
+    public function getLocalRoles();
+
+    public function getGlobalRoles();
 }

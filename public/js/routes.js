@@ -26,7 +26,8 @@ define([
             'activity': 'activity',
             'question/:question_id/answer/:answer_id': 'question',
             'folders': 'folders',
-            'folders/:folder': 'folderSearch'
+            'folders/:folder': 'folderSearch',
+            'roles': 'roles'
         },
         execute: function (callback, args, name) {
             if (
@@ -180,6 +181,12 @@ define([
         quoteControlHide: function (e) {
             App.Main.Views.Quote.triggerMethod('control:close', e);
             App.Main.Views.Layout.getRegion('quoteRegion').empty();
+        },
+        roles: function (data) {
+            require(['controllers/role'], function (controller) {
+                var tmp = App.helper.parseUrl(data);
+                controller.getRoles(tmp['page'] ? parseInt(tmp['page']) : 1);
+            });
         }
     };
 

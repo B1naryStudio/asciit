@@ -59,8 +59,13 @@ class RepositoryServiceProvider extends ServiceProvider
         );
 
         $this->app->singleton(
-            'App\Repositories\Contracts\RoleRepository',
-            'App\Repositories\Repositories\RoleRepositoryEloquent'
+            'App\Repositories\Contracts\RoleLocalRepository',
+            'App\Repositories\Repositories\RoleLocalRepositoryEloquent'
+        );
+
+        $this->app->singleton(
+            'App\Repositories\Contracts\RoleGlobalRepository',
+            'App\Repositories\Repositories\RoleGlobalRepositoryEloquent'
         );
     }
 }
