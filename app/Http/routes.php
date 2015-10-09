@@ -11,8 +11,6 @@
 |
 */
 
-use Illuminate\Http\Request;
-
 Route::get('/', function () {
     $prefix = env('SERVER_PREFIX', '');
     return view('base', [
@@ -46,16 +44,6 @@ Route::group(['prefix' => 'api/v1'], function () {
         'API\Question\AnswerController@setClosed'
     );
 
-//    Route::patch('/questions/{question_id}/answers/{answer_id}', function (Request $request, $question_id, $answer_id) {
-//        $controller = App::make('App\Http\Controllers\API\Question\AnswerController');
-//
-//        if ($request->has('closed')) {
-//            return $controller->setClosed($request, $question_id, $answer_id);
-//        } else {
-//            return $controller->updateFields($request, $question_id, $answer_id);
-//        }
-//    });
-
     Route::resource(
         '/questions/{id}/comments',
         'API\Question\CommentController',
@@ -70,9 +58,14 @@ Route::group(['prefix' => 'api/v1'], function () {
 
     Route::get('/crud-folders', 'API\FolderController@foldersForCrud');
 
-    Route::post('/user/login', 'API\UserController@login');
-    Route::delete('/user/login/{id}', 'API\UserController@logout');
-    Route::get('/user/login', 'API\UserController@session');
+    Route::post('/users/login', 'API\UserController@login');
+    Route::delete('/users/login/{id}', 'API\UserController@logout');
+    Route::get('/users/login', 'API\UserController@session');
+
+    Route::get('/users', 'API\UserController@index');
+    Route::put('/users/{users}', 'API\UserController@update');
+
+    Route::get('/roles', 'API\RoleController@index');
 
     Route::resource(
         '/tags',

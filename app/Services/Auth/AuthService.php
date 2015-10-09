@@ -2,6 +2,7 @@
 
 namespace App\Services\Auth;
 
+use App\Repositories\Contracts\RoleRepository;
 use App\Services\Auth\Contracts\AuthServiceInterface;
 use App\Services\Auth\Exceptions\AuthException;
 use App\Services\Auth\Exceptions\TokenInCookieExpiredException;
@@ -25,13 +26,16 @@ class AuthService implements AuthServiceInterface
     protected $email;
     protected $password;
     protected $userRepository;
+    protected $roleRepository;
     protected $userUpdater;
 
     public function __construct(
         UserRepository $userRepository,
+        RoleRepository $roleRepository,
         UserUpdater $userUpdater
     ) {
         $this->userRepository = $userRepository;
+        $this->roleRepository = $roleRepository;
         $this->userUpdater = $userUpdater;
     }
 
@@ -40,7 +44,7 @@ class AuthService implements AuthServiceInterface
         if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
-                ['role']
+                ['localRole']
             );
         } else {
             return Response::json(['error' => 'Wrong login or password'], 404);
@@ -61,7 +65,7 @@ class AuthService implements AuthServiceInterface
         if (Auth::check()) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
-                ['role']
+                ['localRole']
             );
         } else {
             throw new AuthException('User is not authorized');
@@ -104,20 +108,76 @@ class AuthService implements AuthServiceInterface
         if (Auth::check()) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
-                ['role']
+                ['localRole']
             );
         } else {
             throw new AuthException('Login error. User is not authorized.');
         }
     }
 
+    public function updateUser($data, $id)
+    {
+        try {
+            $user = $this->userRepository->update($data, $id);
+        } catch (RepositoryException $e) {
+            throw new AuthException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
 
+        return $user;
+    }
 
+    public function updateUserRole($newRoleId, $user)
+    {
+        try {
+            $entitledUser = $this->userRepository->setProtectedProperty(
+                $user,
+                'local_role_id',
+                $newRoleId
+            );
+            $role = $this->roleRepository->find($newRoleId);
+            $entitledUser->local_role = $role;
+        } catch (RepositoryException $e) {
+            throw new AuthException(
+                $e->getMessage(),
+                null,
+                $e
+            );
+        }
 
+        return $entitledUser;
+    }
 
+    public function getAllUsers($pageSize = null)
+    {
+        try {
+            $users = $this->userRepository->with('localRole')->paginate($pageSize);
+        } catch (RepositoryException $e) {
+            throw new AuthException(
+                $e->getMessage() . ' Cannot return the users list.',
+                null,
+                $e
+            );
+        }
 
+        return $users;
+    }
 
+    public function getAllRoles()
+    {
+        try {
+            $roles = $this->roleRepository->all();
+        } catch (RepositoryException $e) {
+            throw new AuthException(
+                $e->getMessage() . ' Cannot return the roles list.',
+                null,
+                $e
+            );
+        }
 
-
-
+        return $roles;
+    }
 }

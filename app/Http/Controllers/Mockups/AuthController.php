@@ -28,17 +28,17 @@ class AuthController extends Controller
         $this->dev->payloadInfo = [
             'id' =>  '55dd8be1fd5d69885b0bc0c7',
             'email' =>  'dev@asciit.local',
-            //'role' => 'ADMIN',
+            'role' => 'UNKNOWN',
             'iat' => 1441785864
         ];
 
         $this->admin->additionalInfo = [
             'userCV' => '55dcfb51fe77dc367b71d228',
             'userPDP' => '55dcfbb4fe77dc367b71d230',
-            'email' => 'igor.oziyan@gmail.com',
+            'email' => 'igor.oziyanoziyan@gmail.com',
             'password' => '123456789',
-            'name' => 'Igor',
-            'surname' => 'Oziyan',
+            'name' => 'IgorIgorIgor',
+            'surname' => 'OziyanOziyanOziyan',
             'country' => 'Ukraine',
             'city' => 'Kyiv',
             'gender' => 'male',

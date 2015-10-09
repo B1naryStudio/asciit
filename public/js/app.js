@@ -169,7 +169,7 @@ define([
         if (Backbone.history) {
             Backbone.history.start();
         }
-        require(['controllers/user'], function (controller) {
+        require(['controllers/user/init'], function (controller) {
             controller.session();
         });
     });
@@ -245,6 +245,11 @@ define([
             Views: {}
         },
         User: {
+            Controllers: {},
+            Models: {},
+            Views: {}
+        },
+        Role: {
             Models: {},
             Views: {}
         },

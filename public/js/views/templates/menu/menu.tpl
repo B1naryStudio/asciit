@@ -59,12 +59,12 @@
         <li><a id="nav-question" href="#questions"><%= _t("questions.all") %></a></li>
         <li><a id="nav-question-add"><%= _t("questions.add") %></a></li>
         <li><a href="#activity"><%= _t("questions.my") %></a></li>
+        <li><a id="nav-tags" href="#tags"><%= _t("tags.tags") %></a></li>
 
         <% if (admin) { %>
         <li><a id="nav-question" href="#folders"><%= _t("folders.folders") %></a></li>
+        <li><a id="nav-question" href="#edit-users"><%= _t("users.users") %></a></li>
         <% } %>
-
-        <li><a id="nav-tags" href="#tags"><%= _t("tags.tags") %></a></li>
     </ul>
 
     <ul class="lang-list hdr-invisible">

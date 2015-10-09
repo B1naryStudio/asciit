@@ -20,6 +20,7 @@ define([
             'questions/:id': 'question',
             'login': 'login',
             'logout': 'logout',
+            'edit-users': 'users',
             'tags': 'tags',
             'tags/:tag': 'tagSearch',
             'activity': 'activity',
@@ -70,25 +71,35 @@ define([
 
     var API = {
         login: function () {
-            require(['controllers/user'], function (controller) {
+            require(['controllers/user/init'], function (controller) {
                 App.trigger('spinner:check');
                 controller.login();
             });
         },
         logout: function () {
-            require(['controllers/user'], function (controller) {
+            require(['controllers/user/init'], function (controller) {
                 App.trigger('spinner:check');
                 controller.logout();
             });
         },
-        questions: function (data) {
+        users: function (options) {
+            var queryOptions = App.helper.parseUrl(options);
+
+            require(['controllers/user/init'], function (controller) {
+                controller.users(
+                    queryOptions['search'] ? queryOptions['search'] : '',
+                    queryOptions['page'] ? parseInt(queryOptions['page']) : 1
+                );
+            });
+        },
+        questions: function (options) {
             require(['controllers/question/init'], function (controller) {
-                var tmp = App.helper.parseUrl(data);
+                var queryOptions = App.helper.parseUrl(options);
                 controller.questions(
-                    tmp['search'] ? tmp['search'] : '',
+                    queryOptions['search'] ? queryOptions['search'] : '',
                     '',
                     '',
-                    tmp['page'] ? parseInt(tmp['page']) : 1
+                    queryOptions['page'] ? parseInt(queryOptions['page']) : 1
                 );
             });
         },

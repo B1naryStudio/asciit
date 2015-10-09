@@ -36,7 +36,6 @@ define([
             'mouseout @ui.email_button' : 'foldMenu',
             'mouseover @ui.lang_control' : 'unfoldMenu',
             'mouseout @ui.lang_control' : 'foldMenu',
-            'click @ui.tags': 'tags',
             'click @ui.lang_sel': 'switchLanguage',
             'click @ui.menu_control': 'menu',
             'click @ui.lang_control': 'lang',

@@ -367,4 +367,18 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
 
         return $collection;
     }
+
+    public function setProtectedProperty($model, $prop, $value)
+    {
+        $model->$prop = $value;
+        $model->save();
+
+        return $model;
+    }
+
+    public function setProtectedPropertyById($id, $prop, $value)
+    {
+        $model = $this->find($id);
+        return $this->setProtectedProperty($model, $prop, $value);
+    }
 }

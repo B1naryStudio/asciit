@@ -150,4 +150,20 @@ interface RepositoryInterface extends BaseRepositoryInterface
      * @return mixed
      */
     public function setCountedFields(Collection $collection);
+
+    /**
+     * @param $model
+     * @param $prop
+     * @param $value
+     * @return mixed
+     */
+    public function setProtectedProperty($model, $prop, $value);
+
+    /**
+     * @param $id
+     * @param $prop
+     * @param $value
+     * @return mixed
+     */
+    public function setProtectedPropertyById($id, $prop, $value);
 }

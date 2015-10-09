@@ -16,4 +16,12 @@ interface AuthServiceInterface
     public function getUser();
 
     public function getUserFromCookie($cookie);
+
+    public function updateUser($data, $id);
+
+    public function updateUserRole($newRoleId, $userId);
+
+    public function getAllUsers($pageSize);
+
+    public function getAllRoles();
 }
