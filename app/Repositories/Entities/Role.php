@@ -8,7 +8,7 @@ use Prettus\Repository\Traits\TransformableTrait;
 
 class Role extends Model
 {
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'is_global'];
     public $timestamps = false;
 
     public function users()
