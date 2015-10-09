@@ -69,7 +69,17 @@ var concatSettings = {
         jsPathMinFull + 'views/templates/tag/collection-row.tpl.js',
         jsPathMinFull + 'views/templates/tag/collection-layout.tpl.js'
     ],
-    'controllers/user': [
+    'controllers/user/edit-users': [
+        jsPathMinFull + 'controllers/user/edit-users.js',
+        jsPathMinFull + 'views/user/collection-layout.js',
+        jsPathMinFull + 'views/user/collection.js',
+        jsPathMinFull + 'views/templates/user/collection-layout.tpl.js',
+        jsPathMinFull + 'views/templates/user/collection.tpl.js',
+        jsPathMinFull + 'views/templates/user/row.tpl.js',
+        jsPathMinFull + 'views/templates/role/select-row.tpl.js',
+    ],
+    'controllers/user/login': [
+        jsPathMinFull + 'controllers/user/login.js',
         jsPathMinFull + 'controllers/user.js',
         jsPathMinFull + 'views/templates/user/login.tpl.js'
     ],
@@ -81,9 +91,11 @@ var concatSettings = {
         jsPathMinFull + 'views/view-behaviors/**/*.js',
         jsPathMinFull + 'controllers/paginator.js',
         jsPathMinFull + 'controllers/popup.js',
-        jsPathMinFull + 'controllers/user.js',
+        jsPathMinFull + 'controllers/user/session.js',
+        jsPathMinFull + 'controllers/user/logout.js',
         jsPathMinFull + 'controllers/**/init.js',
         jsPathMinFull + 'views/empty.js',
+        jsPathMinFull + 'views/form.js',
         jsPathMinFull + 'views/main-layout.js',
         jsPathMinFull + 'views/question/form.js',
         jsPathMinFull + 'views/folder/select.js',
