@@ -33,12 +33,19 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
                            'avatar', 'thumb_avatar', 'country', 'city',
                            'gender', 'birthday', 'binary_id'];
 
+    // Relations of binaryRole to a local role
+    protected $rolesRelation = [
+        'ADMIN' => 'ADMIN'
+    ];
+
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    protected $appends = ['result_role'];
 
     public function questions()
     {
@@ -48,6 +55,11 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
     public function folder()
     {
         return $this->hasMany('App\Repositories\Entities\Folder');
+    }
+
+    public function binaryRole()
+    {
+        return $this->belongsTo('App\Repositories\Entities\Role');
     }
 
     public function role()
@@ -86,10 +98,23 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      */
     public function getAssignments()
     {
+        if ($this->binaryRole) {
+            $title = $this->binaryRole->title;
+
+            if (array_key_exists($title, $this->rolesRelation)) {
+                return [$this->rolesRelation[$title]];
+            }
+        }
+
         if ($this->role) {
             return [$this->role->title];
-        } else {
-            return ['USER'];
         }
+
+        return ['USER'];
+    }
+
+    public function getResultRoleAttribute()
+    {
+        return $this->getAssignments()[0];
     }
 }

@@ -19,7 +19,7 @@ define([
         },
 
         isAdmin: function () {
-            return this.has('role') && this.get('role').title === 'ADMIN';
+            return this.has('result_role') && this.get('result_role') === 'ADMIN';
         },
 
         setAdminFlag: function () {

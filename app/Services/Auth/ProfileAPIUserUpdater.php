@@ -42,13 +42,23 @@ class ProfileAPIUserUpdater extends UserUpdater
             $preparedInfo
         );
 
-        // 'role_id' property is not allowed to the mass assignment for security
+        // 'binary_role_id' property is not allowed to the mass assignment for security
         // reasons
         $entitledUser = $this->userRepository->setProtectedProperty(
             $user,
-            'role_id',
-            $preparedInfo['role_id']
+            'binary_role_id',
+            $preparedInfo['binary_role_id']
         );
+
+        // Setting a default local role if it's absent
+        if (!$entitledUser->role_id) {
+            $role = $this->roleRepository->firstWhere(['title' => 'USER']);
+            $entitledUser = $this->userRepository->setProtectedProperty(
+                $entitledUser,
+                'role_id',
+                $role->id
+            );
+        }
 
         return $entitledUser;
     }
@@ -95,7 +105,7 @@ class ProfileAPIUserUpdater extends UserUpdater
             'surname' => 'last_name',
         ]);
 
-        $this->attachRoleId($arr);
+        $this->attachBinaryRoleId($arr);
         return $arr;
     }
 
@@ -118,16 +128,16 @@ class ProfileAPIUserUpdater extends UserUpdater
     }
 
     /**
-     * Attaches a role_id according to the role attribut in the array
+     * Attaches a binary_role_id according to the role attribut in the array
      *
      * @param array $arr
      */
-    protected function attachRoleId(array &$arr)
+    protected function attachBinaryRoleId(array &$arr)
     {
         if (!array_key_exists('role', $arr)) return;
 
-        $role = $this->roleRepository->getByTitle($arr['role']);
-        $arr['role_id'] = $role->id;
+        $role = $this->roleRepository->firstOrCreate(['title' => $arr['role']]);
+        $arr['binary_role_id'] = $role->id;
     }
 
     protected function attachAvatarInfo(array &$arr)
