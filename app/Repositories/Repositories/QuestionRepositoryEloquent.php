@@ -71,6 +71,11 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
         $this->pushCriteria(new QuestionCriteria());
     }
 
+    /**
+     * @param Question $model
+     * @param bool $value
+     * @return Question
+     */
     public function setClosed($model, $value)
     {
         $model->closed = $value;
@@ -79,6 +84,11 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
         return $model;
     }
 
+    /**
+     * @param int $id
+     * @param bool $value
+     * @return Question
+     */
     public function setClosedById($id, $value)
     {
         $this->with_relation_count = false;

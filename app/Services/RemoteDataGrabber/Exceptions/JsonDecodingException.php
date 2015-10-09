@@ -2,6 +2,7 @@
 
 namespace App\Services\RemoteDataGrabber\Exceptions;
 
-class JsonDecodingException extends RemoteDataGrabberException {
+class JsonDecodingException extends RemoteDataGrabberException
+{
     //
 }

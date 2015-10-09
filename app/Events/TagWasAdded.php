@@ -12,9 +12,7 @@ class TagWasAdded extends Event
     public $tag;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * @param Tag $tag
      */
     public function __construct(Tag $tag)
     {

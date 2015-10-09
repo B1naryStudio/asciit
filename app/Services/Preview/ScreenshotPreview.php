@@ -4,62 +4,42 @@ namespace App\Services\Preview;
 
 use App\Services\Preview\Contracts\ScreenshotPreviewInterface;
 use App\Services\Preview\Exceptions\PreviewNotExecutableException;
+use App\Services\Image\Contracts\ImageServiceInterface;
 
 class ScreenshotPreview implements ScreenshotPreviewInterface
 {
     /**
-     * @var string
+     * @var ImageServiceInterface
      */
-    private $folder = '/images/';
+    private $imageService;
 
-    private function resize($path, $desired_width)
+    public function __construct(ImageServiceInterface $imageService)
     {
-        $source_image = imagecreatefromjpeg($path);
-        $width = imagesx($source_image);
-        $height = imagesy($source_image);
-        $desired_height = floor($height * ($desired_width / $width));
-        $virtual_image = imagecreatetruecolor($desired_width, $desired_height);
-        $white = imagecolorallocate($virtual_image, 255, 255, 255);
-        imagefill($virtual_image, 0, 0, $white);
-        imagecopyresampled(
-            $virtual_image,
-            $source_image,
-            0,
-            0,
-            0,
-            0,
-            $desired_width,
-            $desired_height,
-            $width,
-            $height
-        );
-        imagejpeg($virtual_image, $path);
+        $this->imageService = $imageService;
     }
 
     public function get($url)
     {
         $config = env('LINK_PREVIEW_SCREENSHOT');
         if ($config) {
-            $fileName = time();
-            $path = $this->folder . $fileName . '.jpg';
-            $result = url(env('SERVER_PREFIX') . '/api/v1' . $this->folder . $fileName);
+            $info = $this->imageService->generateFilename('jpg');
             shell_exec(str_replace(
                 ['%url', '%file'],
-                [$url, storage_path('app') . $path],
+                [$url, $info['local_path']],
                 $config
             ));
         } else {
             throw new PreviewNotExecutableException();
         }
+        $newFile = $this->imageService->generateFilename('jpg');
 
-        $screenshot_width = config('preview.screenshot_width');
-        if ($screenshot_width) {
-            $this->resize(
-                storage_path('app') . $path,
-                $screenshot_width
-            );
-        }
+        $this->imageService->resize(
+            $info['local_path'],
+            $newFile['filename'],
+            config('preview.screenshot_width')
+        );
+        $this->imageService->delete($info['filename'], true);
 
-        return $result;
+        return $newFile['url'];
     }
 }

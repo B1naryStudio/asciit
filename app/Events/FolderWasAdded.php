@@ -12,9 +12,7 @@ class FolderWasAdded extends Event
     public $folder;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * @param Folder $folder
      */
     public function __construct(Folder $folder)
     {

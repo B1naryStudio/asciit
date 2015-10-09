@@ -9,7 +9,7 @@ namespace App\Repositories\Contracts;
 interface RoleRepository extends RepositoryInterface
 {
     /**
-     * @param $title
+     * @param string $title
      * @return array
      */
     public function getByTitle($title);

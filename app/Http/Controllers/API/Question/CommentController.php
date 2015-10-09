@@ -32,7 +32,8 @@ class CommentController extends Controller
     public function store(CommentValidatedRequest $request, $question_id)
     {
         try {
-            $comment = $this->questionService->createComment($request->all(), $question_id);
+            $comment = $this->questionService
+                ->createComment($request->all(), $question_id);
         } catch (QuestionServiceException $e) {
             return Response::json([
                 'error' => [
@@ -44,8 +45,11 @@ class CommentController extends Controller
         return Response::json($comment->toArray(), 201);
     }
 
-    public function update(CommentValidatedRequest $request, $entry_id, $comment_id)
-    {
+    public function update(
+        CommentValidatedRequest $request,
+        $entry_id,
+        $comment_id
+    ) {
         try {
             $comment = $this->questionService
                 ->updateComment($request->all(), $comment_id);

@@ -81,15 +81,6 @@ class AnswerController extends Controller
         );
     }
 
-//    public function update(Request $request, $question_id, $answer_id)
-//    {
-//        if ($request->has('closed')) {
-//            return $this->setClosed($request, $question_id, $answer_id);
-//        } else {
-//            return $this->updateFields($request, $question_id, $answer_id);
-//        }
-//    }
-
     public function update(
         AnswerValidatedRequest $request,
         $question_id,

@@ -69,9 +69,19 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
     {
         if (empty($avatar)) {
             try {
-                return Gravatar::get($this->attributes['email'], ['fallback' => 'identicon']);
+                return Gravatar::get(
+                    $this->attributes['email'],
+                    [
+                        'fallback' => 'identicon'
+                    ]
+                );
             } catch (InvalidEmailException $e) {
-                return Gravatar::get('example@example.com', ['fallback' => 'identicon']);
+                return Gravatar::get(
+                    'example@example.com',
+                    [
+                        'fallback' => 'identicon'
+                    ]
+                );
             }
         }
 

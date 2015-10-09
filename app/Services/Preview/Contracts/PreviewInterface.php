@@ -5,7 +5,7 @@ namespace App\Services\Preview\Contracts;
 interface PreviewInterface
 {
     /**
-     * @param $url string
+     * @param string $url
      * @return string url for image
      */
     public function get($url);

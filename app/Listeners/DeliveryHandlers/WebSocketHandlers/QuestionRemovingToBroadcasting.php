@@ -10,7 +10,7 @@ class QuestionRemovingToBroadcasting extends WebSocketDeliveryHandler
     /**
      * Handle the event.
      *
-     * @param  QuestionWasAdded  $event
+     * @param  QuestionWasRemoved  $event
      * @return void
      */
     public function handle(QuestionWasRemoved $event)

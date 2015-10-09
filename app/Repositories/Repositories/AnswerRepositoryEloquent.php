@@ -42,6 +42,11 @@ class AnswerRepositoryEloquent extends Repository implements AnswerRepository
         $this->pushCriteria(new AnswerCriteria());
     }
 
+    /**
+     * @param Answer $model
+     * @param bool $value
+     * @return Answer
+     */
     public function setClosed($model, $value)
     {
         $model->closed = $value;
@@ -50,6 +55,11 @@ class AnswerRepositoryEloquent extends Repository implements AnswerRepository
         return $model;
     }
 
+    /**
+     * @param int $id
+     * @param bool $value
+     * @return Answer
+     */
     public function setClosedById($id, $value)
     {
         $model = $this->find($id);

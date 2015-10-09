@@ -22,21 +22,21 @@ interface RepositoryInterface extends BaseRepositoryInterface
      *
      * @param $id
      * @param array $columns
-     * @return mixed
+     * @return Model
      */
     public function find($id, $columns = ['*']);
 
     /**
      * @param $id
      * @param array $relations
-     * @return model
+     * @return Model
      */
     public function findWithRelations($id, array $relations);
 
     /**
-     * @param $fieldName
-     * @param $fieldValue
-     * @param $relations
+     * @param string $fieldName
+     * @param string $fieldValue
+     * @param array $relations
      * @param array $columns
      * @return collection
      */
@@ -54,25 +54,40 @@ interface RepositoryInterface extends BaseRepositoryInterface
     public function firstOrCreate(array $keyAttributes);
 
     /**
-     * @param $model
-     * @param $relationName
+     * @param Model $model
+     * @param string $relationName
      * @param array $modelsToBind
      * @return mixed
      */
-    public function relationsAdd($model, $relationName, $modelsToBind);
+    public function relationsAdd(Model $model, $relationName, $modelsToBind);
 
-    public function relationsDestroy($model, $relationName, $modelIds);
+    /**
+     * @param Model $model
+     * @param $relationName
+     * @param $modelIds
+     * @return mixed
+     */
+    public function relationsDestroy(Model $model, $relationName, $modelIds);
 
+    /**
+     * @param CriteriaInterface $criteria
+     * @return mixed
+     */
     public function pushCriteria(CriteriaInterface $criteria);
 
+    /**
+     * @param array $where
+     * @param array $columns
+     * @return Model
+     */
     public function firstWhere(array $where , $columns = array('*'));
 
     /**
      * Return query for request with count and group by
      *
-     * @param $relation string Name of relation from repository
-     * @param $relation_count string Name of relation from model
-     * @param bool|true $use_main_table bool Join table from model or not.
+     * @param string $relation Name of relation from repository
+     * @param string $relation_count Name of relation from model
+     * @param bool|true $use_main_table Join table from model or not.
      *  Main table has alias `main`
      * @return Builder
      */
@@ -85,12 +100,12 @@ interface RepositoryInterface extends BaseRepositoryInterface
     /**
      * Return models with count records from related table
      *
-     * @param $relation string|array Name of relation from repository or
+     * @param string|array $relation Name of relation from repository or
      *  array with name of relation from repository and name of relation from model
-     * @param $limit int Limit
-     * @param $use_main_table bool Join table from model or not.
+     * @param int $limit Limit
+     * @param bool $use_main_table Join table from model or not.
      *  Main table has alias `main`
-     * @param array $where array Where clauses
+     * @param array $where Where clauses
      * @return array
      */
     public function loadRelationPopular(
@@ -104,12 +119,12 @@ interface RepositoryInterface extends BaseRepositoryInterface
     /**
      * Return models with count records from related table for pagination
      *
-     * @param $relation string|array Name of relation from repository or
+     * @param string|array $relation Name of relation from repository or
      *  array with name of relation from repository and name of relation from model
-     * @param $limit int Limit
-     * @param $use_main_table bool Join table from model or not.
+     * @param int $limit Limit
+     * @param bool $use_main_table Join table from model or not.
      *  Main table has alias `main`
-     * @param array $where array Where clauses
+     * @param array $where Where clauses
      * @return LengthAwarePaginator
      */
     public function loadRelationPopularPaginate(
@@ -130,5 +145,9 @@ interface RepositoryInterface extends BaseRepositoryInterface
      */
     public function withoutRelationCount();
 
-    public function setCountedFields($collection);
+    /**
+     * @param $collection
+     * @return mixed
+     */
+    public function setCountedFields(Collection $collection);
 }

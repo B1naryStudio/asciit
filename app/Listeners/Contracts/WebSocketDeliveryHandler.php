@@ -10,9 +10,7 @@ use App\WebSocket\Contracts\AbstractWebSocketFactory;
 class WebSocketDeliveryHandler extends DeliveryHandler
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
+     * @param AbstractWebSocketFactory $factory
      */
     public function __construct(AbstractWebSocketFactory $factory)
     {

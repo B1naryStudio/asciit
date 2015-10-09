@@ -8,8 +8,13 @@ use Ratchet\Wamp\WampServerInterface;
 
 class WampProcessorForGos extends WampProcessor implements WampServerInterface
 {
-    public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible)
-    {
+    public function onPublish(
+        ConnectionInterface $conn,
+        $topic,
+        $event,
+        array $exclude,
+        array $eligible
+    ) {
         // If some coolhatsker try to publish a message from the browser console
         if($conn->remoteAddress !== '127.0.0.1') {
             $this->kickIllegalPublisher($conn);
