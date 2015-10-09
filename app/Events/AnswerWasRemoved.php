@@ -12,9 +12,7 @@ class AnswerWasRemoved extends Event
     public $answer;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * @param Answer $answer
      */
     public function __construct(Answer $answer)
     {

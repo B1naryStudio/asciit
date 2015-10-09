@@ -3,8 +3,6 @@
 namespace App\Listeners\DeliveryHandlers\WebSocketHandlers;
 
 use App\Events\AnswerWasAdded;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Listeners\Contracts\WebSocketDeliveryHandler;
 
 class AnswerToBroadcasting extends WebSocketDeliveryHandler
@@ -12,8 +10,7 @@ class AnswerToBroadcasting extends WebSocketDeliveryHandler
     /**
      * Handle the event.
      *
-     * @param  QuestionWasAdded  $event
-     * @return void
+     * @param  AnswerWasAdded  $event
      */
     public function handle(AnswerWasAdded $event)
     {

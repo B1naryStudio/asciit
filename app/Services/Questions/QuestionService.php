@@ -34,6 +34,7 @@ use App\Events\FolderWasAdded;
 use App\Events\FolderWasUpdated;
 use App\Events\FolderWasRemoved;
 use App\Events\TagWasAdded;
+use App\Repositories\Entities\Answer;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -60,7 +61,7 @@ class QuestionService implements QuestionServiceInterface
         $this->commentRepository = $commentRepository;
     }
 
-    public function createQuestion($data)
+    public function createQuestion(array $data)
     {
         try {
             $this->attachFolderId($data);
@@ -84,7 +85,7 @@ class QuestionService implements QuestionServiceInterface
         return $question;
     }
 
-    public function updateQuestion($data, $id)
+    public function updateQuestion(array $data, $id)
     {
         try {
             $this->attachFolderId($data);
@@ -105,7 +106,7 @@ class QuestionService implements QuestionServiceInterface
         return $question;
     }
 
-    protected function attachFolderId(&$data) {
+    protected function attachFolderId(array &$data) {
         $folder = $this->folderRepository->firstWhere([
             'title' => $data['folder']
         ]);
@@ -346,8 +347,10 @@ class QuestionService implements QuestionServiceInterface
     }
 
     // Attaching likes in easy obvious one-query way.
-    private function attachVotesShortInfo(&$model, $votes)
-    {
+    private function attachVotesShortInfo(
+        Answer &$model,
+        \Illuminate\Support\Collection $votes
+    ) {
         $likes = $votes->whereLoose('sign', 1)->count();
         $dislikes = $votes->count() - $likes;
         $rating = $likes - $dislikes;
@@ -362,7 +365,7 @@ class QuestionService implements QuestionServiceInterface
         }
     }
 
-    public function addVote($data)
+    public function addVote(array $data)
     {
         $data['user_id'] = Auth::user()->id;
 
@@ -378,7 +381,14 @@ class QuestionService implements QuestionServiceInterface
             throw new QuestionServiceException('User can\'t vote twice!');
         }
 
-        $vote = $this->voteRepository->findWithRelations($vote->id, ['user', 'question.user', 'answer.question']);
+        $vote = $this->voteRepository->findWithRelations(
+            $vote->id,
+            [
+                'user',
+                'question.user',
+                'answer.question'
+            ]
+        );
 
         Event::fire(new VoteWasAdded($vote));
 
@@ -388,7 +398,14 @@ class QuestionService implements QuestionServiceInterface
     public function removeVote($vote_id)
     {
         try {
-            $vote = $this->voteRepository->findWithRelations($vote_id, ['user', 'question.user', 'answer.question']);
+            $vote = $this->voteRepository->findWithRelations(
+                $vote_id,
+                [
+                    'user',
+                    'question.user',
+                    'answer.question'
+                ]
+            );
             $vote->delete($vote_id);
 
         } catch (RepositoryException $e) {
@@ -400,11 +417,11 @@ class QuestionService implements QuestionServiceInterface
         }
 
         Event::fire(new VoteWasRemoved($vote));
-
+        
         return $vote;
     }
 
-    public function createAnswer($data, $question_id)
+    public function createAnswer(array $data, $question_id)
     {
         $data['user_id'] = Auth::user()->id;
 
@@ -425,7 +442,7 @@ class QuestionService implements QuestionServiceInterface
         return $answer;
     }
 
-    public function updateAnswer($data, $answer_id)
+    public function updateAnswer(array $data, $answer_id)
     {
         try {
             $answer = $this->answerRepository->update($data, $answer_id);
@@ -520,7 +537,11 @@ class QuestionService implements QuestionServiceInterface
     }
 
     // Folders
-    public function createFolder($data)
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function createFolder(array $data)
     {
         try {
             $folder = $this->folderRepository->create($data);
@@ -536,7 +557,7 @@ class QuestionService implements QuestionServiceInterface
         return $folder;
     }
 
-    public function updateFolder($data, $id)
+    public function updateFolder(array $data, $id)
     {
         try {
             $folder = $this->folderRepository->update($data, $id);
@@ -597,7 +618,7 @@ class QuestionService implements QuestionServiceInterface
         return $tags->items();
     }
 
-    public function createComment($data, $question_id)
+    public function createComment(array $data, $question_id)
     {
         $data['user_id'] = Auth::user()->id;
 
@@ -619,10 +640,10 @@ class QuestionService implements QuestionServiceInterface
         return $comment;
     }
 
-    public function updateComment($data)
+    public function updateComment(array $data, $id)
     {
         try {
-            $comment = $this->commentRepository->update($data, $data['id']);
+            $comment = $this->commentRepository->update($data, $id);
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),

@@ -8,6 +8,7 @@
 
 namespace App\Listeners\Contracts;
 
-abstract class DeliveryHandler {
+abstract class DeliveryHandler
+{
     protected $delivery;
 }

@@ -342,7 +342,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
      * @param $collection Collection
      * @return Collection
      */
-    public function setCountedFields($collection)
+    public function setCountedFields(Collection $collection)
     {
         $id = [];
         $collection->each(function ($item, $key) use (&$id) {

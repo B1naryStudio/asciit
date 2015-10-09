@@ -113,7 +113,12 @@ class QuestionController extends Controller
             ], 404);
         }
 
-        return Response::json($updatedQuestion->toArray(), 202, [], JSON_NUMERIC_CHECK);
+        return Response::json(
+            $updatedQuestion->toArray(),
+            202,
+            [],
+            JSON_NUMERIC_CHECK
+        );
     }
 
     /**

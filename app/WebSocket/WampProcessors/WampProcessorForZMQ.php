@@ -1,11 +1,13 @@
 <?php
 
 namespace App\WebSocket\WampProcessors;
+
 use App\WebSocket\Contracts\WampProcessor;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
 
-class WampProcessorForZMQ extends WampProcessor implements WampServerInterface {
+class WampProcessorForZMQ extends WampProcessor implements WampServerInterface
+{
     /**
      * A lookup of all the topics clients have subscribed to
      */
@@ -14,7 +16,8 @@ class WampProcessorForZMQ extends WampProcessor implements WampServerInterface {
     /**
      * @param string JSON'ified string we'll receive from ZeroMQ
      */
-    public function onNewItem($data) {
+    public function onNewItem($data)
+    {
         $decodedData = json_decode($data, true);
         echo "Got a message on topic:\n" . $decodedData['topic'] . "\n";
 
@@ -41,8 +44,13 @@ class WampProcessorForZMQ extends WampProcessor implements WampServerInterface {
         parent::onSubscribe($conn, $topic); // Message output
     }
 
-    public function onPublish(ConnectionInterface $conn, $topic, $event, array $exclude, array $eligible)
-    {
+    public function onPublish(
+        ConnectionInterface $conn,
+        $topic,
+        $event,
+        array $exclude,
+        array $eligible
+    ) {
         // In this application if clients send data it's because the user hacked around in console
         $this->kickIllegalPublisher($conn);
     }

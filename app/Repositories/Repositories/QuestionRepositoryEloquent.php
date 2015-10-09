@@ -71,6 +71,12 @@ class QuestionRepositoryEloquent extends Repository implements QuestionRepositor
         $this->pushCriteria(new QuestionCriteria());
     }
 
+    /**
+     * @param $id
+     * @param $prop
+     * @param $value
+     * @return Question
+     */
     public function setProtectedPropertyById($id, $prop, $value)
     {
         $this->with_relation_count = false;

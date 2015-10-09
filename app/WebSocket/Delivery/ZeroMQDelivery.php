@@ -19,9 +19,9 @@ class ZeroMQDelivery implements HttpToWampDelivery
         $this->socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
     }
 
-    public function send($data)
+    public function send(array $data)
     {
-        $port = env("ZMQ_PORT", 9091);
+        $port = env('ZMQ_PORT', 9091);
         $this->socket->connect("tcp://127.0.0.1:{$port}");
         $this->socket->send(json_encode($data));
     }

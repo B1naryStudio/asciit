@@ -4,5 +4,8 @@ namespace App\Services\Notifications\Contracts;
 
 interface NotificationServiceInterface
 {
-    public function send($data);
+    /**
+     * @param array $data
+     */
+    public function send(array $data);
 }

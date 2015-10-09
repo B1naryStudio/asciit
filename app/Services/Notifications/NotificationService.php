@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationService implements NotificationServiceInterface
 {
-    public function send($data){
+    public function send(array $data)
+    {
         $notificationInfo = [
             'title'       => $data['title'],
             'text'        => $data['text'],
@@ -23,12 +24,12 @@ class NotificationService implements NotificationServiceInterface
         $ch = curl_init();
 
         $options = [
-            CURLOPT_URL            =>  url(env('NOTIFICATIONS')),
+            CURLOPT_URL            => url(env('NOTIFICATIONS')),
             CURLOPT_POSTFIELDS     => $notificationInfo,
             CURLOPT_HEADER         => true,
             CURLOPT_POST           => true,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_COOKIE         => "x-access-token=" . $cookie,
+            CURLOPT_COOKIE         => 'x-access-token=' . $cookie,
             CURLOPT_HTTPHEADER     => [
                 'Content-type: application/json',
                 'Content-Length: ' . strlen($notificationInfo)
@@ -41,12 +42,12 @@ class NotificationService implements NotificationServiceInterface
         curl_close ($ch);
 
         if (empty($result))  {
-            Log::error("Notification request does not receive any responce. \n"
+            Log::error("Notification request does not receive any response. \n"
                 . 'Curl options: ' . $options);
         } elseif ($http_status_code != 200) {
             $info = 'Notification '
                 . $notificationInfo
-                . ' took a responce with code '
+                . ' took a response with code '
                 . $http_status_code
                 . ".\n Result: "
                 . $result;

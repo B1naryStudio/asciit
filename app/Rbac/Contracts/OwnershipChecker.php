@@ -4,8 +4,11 @@ namespace App\Rbac\Contracts;
 
 interface OwnershipChecker
 {
-    public function isSelf($params);
-    public function isAnswersOwner($params);
-    public function isQuestionsOwner($params);
-    public function isCommentsOwner($params);
+    public function isSelf(array $params);
+    
+    public function isAnswersOwner(array $params);
+    
+    public function isQuestionsOwner(array $params);
+    
+    public function isCommentsOwner(array $params);
 }
