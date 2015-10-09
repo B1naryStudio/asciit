@@ -3,13 +3,11 @@ define([
     'marionette',
     'backbone',
     'tpl!views/templates/role/select-row.tpl',
-    'tpl!views/templates/role/select.tpl',
 ], function (
     App,
     Marionette,
     Backbone,
-    SelectRowTpl,
-    SelectTpl
+    SelectRowTpl
 ) {
     App.Role.Views.RoleSelectRow = Marionette.ItemView.extend({
         tagName: 'option',
@@ -19,12 +17,10 @@ define([
         }
     });
 
-    App.Role.Views.RoleSelect = Marionette.CompositeView.extend({
+    App.Role.Views.RoleSelect = Marionette.CollectionView.extend({
         tagName: 'select',
         className: 'role-select form-control',
-        template: SelectTpl,
         childView: App.Role.Views.RoleSelectRow,
-        childViewContainer: '.role-options',
 
         events: {
             'change': 'onChange'

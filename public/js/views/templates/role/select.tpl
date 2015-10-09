@@ -1,1 +1,0 @@
-<optgroup class="role-options"></optgroup>
