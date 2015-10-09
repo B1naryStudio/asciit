@@ -45,7 +45,8 @@
         "firstName": "First name",
         "lastName": "Last name",
         "email": "E-mail",
-        "role": "Role"
+        "localRole": "Local role",
+        "globalRole": "Global role"
     },
     "search": {
         "placeholder": "Search it",

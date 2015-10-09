@@ -44,7 +44,8 @@
         "firstName": "Имя",
         "lastName": "Фамилия",
         "email": "E-mail",
-        "role": "Роль"
+        "localRole": "Роль на сайте",
+        "globalRole": "Глобальная роль"
     },
     "search": {
         "placeholder": "Ищи, ищи",

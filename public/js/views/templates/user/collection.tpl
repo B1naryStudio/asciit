@@ -29,7 +29,8 @@
             <th><%= _t("person.firstName") %></th>
             <th><%= _t("person.lastName") %></th>
             <th><%= _t("person.email") %></th>
-            <th><%= _t("person.role") %></th>
+            <th><%= _t("person.globalRole") %></th>
+            <th><%= _t("person.localRole") %></th>
         </tr>
     </thead>
     <tbody class="users-list"></tbody>
