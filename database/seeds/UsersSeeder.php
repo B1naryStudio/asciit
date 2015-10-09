@@ -36,7 +36,7 @@ class UsersSeeder extends Seeder
                 'last_name'      => $faker->lastName,
                 'email'          => $faker->unique()->email,
                 'remember_token' => str_random(10),
-                'role_id'        => $roleUser->id,
+                'local_role_id'        => $roleUser->id,
             ]);
         }
 
@@ -46,7 +46,7 @@ class UsersSeeder extends Seeder
             'email'          => 'admin@admin.com',
             'password'       => bcrypt('admin'),
             'remember_token' => str_random(10),
-            'role_id'        => $roleAdmin->id,
+            'local_role_id'        => $roleAdmin->id,
         ]);
 
         $this->userRepository->create([
@@ -55,7 +55,7 @@ class UsersSeeder extends Seeder
             'email'     => 'cypherpunks01@europe.com',
             'password' => bcrypt('cypherpunks01'),
             'remember_token' => str_random(10),
-            'role_id'        => $roleUser->id,
+            'local_role_id'        => $roleUser->id,
         ]);
     }
 }

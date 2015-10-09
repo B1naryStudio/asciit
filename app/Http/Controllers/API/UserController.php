@@ -76,12 +76,12 @@ class UserController extends Controller
         }
 
         // Update role
-        if ($request->has('role_id')
+        if ($request->has('local_role_id')
             && Auth::user()->allowed('users.edit.role')) {
 
             try {
                 $user = $this->authService->updateUserRole(
-                    $request->input('role_id'),
+                    $request->input('local_role_id'),
                     $user
                 );
             } catch (AuthException $e) {

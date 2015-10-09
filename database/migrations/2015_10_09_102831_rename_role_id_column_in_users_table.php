@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFKeyBinaryRoleIdFoUserTable extends Migration
+class RenameRoleIdColumnInUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,7 @@ class AddFKeyBinaryRoleIdFoUserTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('global_role_id')->unsigned()->nullable();
-            $table->foreign('global_role_id')->references('id')->on('roles')
-                ->onDelete('set null');
+            $table->renameColumn('role_id', 'local_role_id');
         });
     }
 
@@ -27,8 +25,7 @@ class AddFKeyBinaryRoleIdFoUserTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropForeign('users_global_role_id_foreign');
-            $table->dropColumn('global_role_id');
+            $table->renameColumn('local_role_id', 'role_id');
         });
     }
 }

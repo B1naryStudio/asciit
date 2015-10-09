@@ -57,12 +57,12 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
         return $this->hasMany('App\Repositories\Entities\Folder');
     }
 
-    public function binaryRole()
+    public function globalRole()
     {
         return $this->belongsTo('App\Repositories\Entities\Role');
     }
 
-    public function role()
+    public function localRole()
     {
         return $this->belongsTo('App\Repositories\Entities\Role');
     }
@@ -98,16 +98,16 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      */
     public function getAssignments()
     {
-        if ($this->binaryRole) {
-            $title = $this->binaryRole->title;
+        if ($this->globalRole) {
+            $title = $this->globalRole->title;
 
             if (array_key_exists($title, $this->rolesRelation)) {
                 return [$this->rolesRelation[$title]];
             }
         }
 
-        if ($this->role) {
-            return [$this->role->title];
+        if ($this->localRole) {
+            return [$this->localRole->title];
         }
 
         return ['USER'];

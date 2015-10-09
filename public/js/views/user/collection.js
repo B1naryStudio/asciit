@@ -63,19 +63,19 @@ define([
 
         onRoleSelectSwitched: function (childview, roleId) {
             this.triggerMethod('waiting:start');
-            this.model.set('role_id', +roleId);
+            this.model.set('local_role_id', +roleId);
             this.triggerMethod('role:switched');
         },
 
         onRoleUpdated: function (updatedModel) {
-            this.$('.role-value').text(updatedModel.get('role').title);
+            this.$('.role-value').text(updatedModel.get('local_role').title);
             this.triggerMethod('waiting:stop');
         },
 
         onModelInvalid: function () {
             this.triggerMethod('waiting:stop');
 
-            this.model.set('role_id', this.model.get('role').id);
+            this.model.set('local_role_id', this.model.get('local_role').id);
             this.getRegion('roleSelect').reset();
             this.onShow();
         },
@@ -83,7 +83,7 @@ define([
         onShow: function () {
             var selectView = new RolesSelectView({
                 collection: this.options.roles,
-                currentRole: this.model.get('role_id')
+                currentRole: this.model.get('local_role_id')
             });
 
             this.getRegion('roleSelect').show(selectView);

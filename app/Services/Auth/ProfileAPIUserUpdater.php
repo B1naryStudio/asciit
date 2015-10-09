@@ -42,20 +42,20 @@ class ProfileAPIUserUpdater extends UserUpdater
             $preparedInfo
         );
 
-        // 'binary_role_id' property is not allowed to the mass assignment for security
-        // reasons
+        // 'global_role_id' property is not allowed to the mass assignment for
+        // some security reasons
         $entitledUser = $this->userRepository->setProtectedProperty(
             $user,
-            'binary_role_id',
-            $preparedInfo['binary_role_id']
+            'global_role_id',
+            $preparedInfo['global_role_id']
         );
 
         // Setting a default local role if it's absent
-        if (!$entitledUser->role_id) {
+        if (!$entitledUser->local_role_id) {
             $role = $this->roleRepository->firstWhere(['title' => 'USER']);
             $entitledUser = $this->userRepository->setProtectedProperty(
                 $entitledUser,
-                'role_id',
+                'local_role_id',
                 $role->id
             );
         }
@@ -137,7 +137,7 @@ class ProfileAPIUserUpdater extends UserUpdater
         if (!array_key_exists('role', $arr)) return;
 
         $role = $this->roleRepository->firstOrCreate(['title' => $arr['role']]);
-        $arr['binary_role_id'] = $role->id;
+        $arr['global_role_id'] = $role->id;
     }
 
     protected function attachAvatarInfo(array &$arr)

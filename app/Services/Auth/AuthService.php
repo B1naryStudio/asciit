@@ -44,7 +44,7 @@ class AuthService implements AuthServiceInterface
         if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
-                ['role']
+                ['localRole']
             );
         } else {
             return Response::json(['error' => 'Wrong login or password'], 404);
@@ -65,7 +65,7 @@ class AuthService implements AuthServiceInterface
         if (Auth::check()) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
-                ['role']
+                ['localRole']
             );
         } else {
             throw new AuthException('User is not authorized');
@@ -108,7 +108,7 @@ class AuthService implements AuthServiceInterface
         if (Auth::check()) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
-                ['role']
+                ['localRole']
             );
         } else {
             throw new AuthException('Login error. User is not authorized.');
@@ -135,11 +135,11 @@ class AuthService implements AuthServiceInterface
         try {
             $entitledUser = $this->userRepository->setProtectedProperty(
                 $user,
-                'role_id',
+                'local_role_id',
                 $newRoleId
             );
             $role = $this->roleRepository->find($newRoleId);
-            $entitledUser->role = $role;
+            $entitledUser->local_role = $role;
         } catch (RepositoryException $e) {
             throw new AuthException(
                 $e->getMessage(),
@@ -154,7 +154,7 @@ class AuthService implements AuthServiceInterface
     public function getAllUsers($pageSize = null)
     {
         try {
-            $users = $this->userRepository->with('role')->paginate($pageSize);
+            $users = $this->userRepository->with('localRole')->paginate($pageSize);
         } catch (RepositoryException $e) {
             throw new AuthException(
                 $e->getMessage() . ' Cannot return the users list.',
