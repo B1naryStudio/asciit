@@ -10,6 +10,7 @@ use App\Repositories\Contracts\RepositoryInterface;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Repository
@@ -145,12 +146,12 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         return $this->create($attrs);
     }
 
-    public function relationsAdd($model, $relationName, $modelsToBind)
+    public function relationsAdd(Model $model, $relationName, $modelsToBind)
     {
         $model->$relationName()->saveMany($modelsToBind);
     }
 
-    public function relationsDestroy($model, $relationName, $modelIds)
+    public function relationsDestroy(Model $model, $relationName, $modelIds)
     {
         if (!is_array($modelIds)) {
             $modelIds = [$modelIds];
