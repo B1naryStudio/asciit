@@ -10,7 +10,7 @@ class RoleGlobal extends Model implements Transformable
 {
     use TransformableTrait;
 
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'is_global'];
     public $timestamps = false;
 
     public function users()

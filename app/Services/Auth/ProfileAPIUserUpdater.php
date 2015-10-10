@@ -136,7 +136,10 @@ class ProfileAPIUserUpdater extends UserUpdater
     {
         if (!array_key_exists('role', $arr)) return;
 
-        $role = $this->roleRepository->firstOrCreate(['title' => $arr['role']]);
+        $role = $this->roleRepository->firstOrCreate([
+            'title'  => $arr['role'],
+            'is_global' => true,
+        ]);
         $arr['global_role_id'] = $role->id;
     }
 
