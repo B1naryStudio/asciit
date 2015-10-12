@@ -25,13 +25,13 @@
             {
                 name: 'media',
                 items: [
-                    'Image', 'SimpleLink'
+                    'Image', 'LinkWithPreview'
                 ]
             },
             {
                 name: 'code-snippets',
                 items: [
-                    'CodeSnippet', 'JSFiddle'
+                    'CodeSnippet', 'JSFiddle', 'GitGist', 'CodePen', 'Pastebin'
                 ]
             },
             {
@@ -39,7 +39,7 @@
                 items: [
                     'Maximize'
                 ]
-            },
+            }
         ];
 
         config.codeSnippet_languages = {

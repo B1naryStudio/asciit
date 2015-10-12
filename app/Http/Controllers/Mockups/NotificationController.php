@@ -17,8 +17,6 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-//        $cookie = $request->cookie('x-access-token');
-//        return response($cookie);
         return response($request->all());
     }
 }

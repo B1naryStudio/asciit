@@ -13,6 +13,7 @@ define([
                 if (!errors.hasOwnProperty(field)) {
                     continue;
                 }
+
                 Backbone.Validation.callbacks.invalid(
                     this.view,
                     field,

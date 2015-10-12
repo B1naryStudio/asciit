@@ -56,9 +56,11 @@ class QuestionController extends Controller
         }
 
         $page = (int) Paginator::resolveCurrentPage();
+
         if (empty($page)) {
             $page = 1;
         }
+
         if ($page !== $questions->currentPage()) {
             return Response::json([
                 'error' => 'not found'
@@ -111,7 +113,12 @@ class QuestionController extends Controller
             ], 404);
         }
 
-        return Response::json($updatedQuestion->toArray(), 202, [], JSON_NUMERIC_CHECK);
+        return Response::json(
+            $updatedQuestion->toArray(),
+            202,
+            [],
+            JSON_NUMERIC_CHECK
+        );
     }
 
     /**

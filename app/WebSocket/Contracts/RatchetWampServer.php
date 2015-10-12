@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: antarus66
- * Date: 8/18/15
- * Time: 1:08 PM
- */
 
 namespace App\WebSocket\Contracts;
 
@@ -15,8 +9,10 @@ use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use Ratchet\Wamp\WampServer;
 
-abstract class RatchetWampServer {
+abstract class RatchetWampServer
+{
     protected $pusher;
+
     protected $loop;
 
     public function run($port)

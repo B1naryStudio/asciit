@@ -10,6 +10,7 @@ use App\Repositories\Contracts\RepositoryInterface;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Repository
@@ -135,20 +136,22 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     public function updateFirstOrCreate(array $keyAttributes, array $attributes=[])
     {
         $attrs = array_merge($keyAttributes, $attributes);
+        $collection = $this->findWhere($keyAttributes);
 
-        if (!is_null($instance = $this->findWhere($keyAttributes)->first())) {
+        if (!$collection->isEmpty()) {
+            $instance = $collection->first();
             return $this->update($attrs, $instance->id);
         }
 
         return $this->create($attrs);
     }
 
-    public function relationsAdd($model, $relationName, $modelsToBind)
+    public function relationsAdd(Model $model, $relationName, $modelsToBind)
     {
         $model->$relationName()->saveMany($modelsToBind);
     }
 
-    public function relationsDestroy($model, $relationName, $modelIds)
+    public function relationsDestroy(Model $model, $relationName, $modelIds)
     {
         if (!is_array($modelIds)) {
             $modelIds = [$modelIds];
@@ -340,7 +343,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
      * @param $collection Collection
      * @return Collection
      */
-    public function setCountedFields($collection)
+    public function setCountedFields(Collection $collection)
     {
         $id = [];
         $collection->each(function ($item, $key) use (&$id) {
@@ -364,5 +367,19 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         }
 
         return $collection;
+    }
+
+    public function setProtectedProperty($model, $prop, $value)
+    {
+        $model->$prop = $value;
+        $model->save();
+
+        return $model;
+    }
+
+    public function setProtectedPropertyById($id, $prop, $value)
+    {
+        $model = $this->find($id);
+        return $this->setProtectedProperty($model, $prop, $value);
     }
 }

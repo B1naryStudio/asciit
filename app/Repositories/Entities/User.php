@@ -30,8 +30,13 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      * @var array
      */
     protected $fillable = ['first_name', 'last_name', 'email', 'password',
-                           'avatar', 'country', 'city', 'gender', 'birthday',
-                           'role_id', 'binary_id'];
+                           'avatar', 'thumb_avatar', 'country', 'city',
+                           'gender', 'birthday', 'binary_id'];
+
+    // Relations of binaryRole to a local role
+    protected $rolesRelation = [
+        'ADMIN' => 'ADMIN'
+    ];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -39,6 +44,8 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    protected $appends = ['result_role'];
 
     public function questions()
     {
@@ -50,18 +57,43 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
         return $this->hasMany('App\Repositories\Entities\Folder');
     }
 
-    public function role()
+    public function globalRole()
+    {
+        return $this->belongsTo('App\Repositories\Entities\Role');
+    }
+
+    public function localRole()
     {
         return $this->belongsTo('App\Repositories\Entities\Role');
     }
 
     public function getAvatarAttribute($avatar)
     {
+        return $this->getAvatarPlaceholder($avatar);
+    }
+
+    public function getThumbAvatarAttribute($avatar)
+    {
+        return $this->getAvatarPlaceholder($avatar);
+    }
+
+    private function getAvatarPlaceholder($avatar)
+    {
         if (empty($avatar)) {
             try {
-                return Gravatar::get($this->attributes['email'], ['fallback' => 'identicon']);
+                return Gravatar::get(
+                    $this->attributes['email'],
+                    [
+                        'fallback' => 'identicon'
+                    ]
+                );
             } catch (InvalidEmailException $e) {
-                return Gravatar::get('example@example.com', ['fallback' => 'identicon']);
+                return Gravatar::get(
+                    'example@example.com',
+                    [
+                        'fallback' => 'identicon'
+                    ]
+                );
             }
         }
 
@@ -76,10 +108,23 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      */
     public function getAssignments()
     {
-        if ($this->role) {
-            return [$this->role->title];
-        } else {
-            return ['USER'];
+        if ($this->globalRole) {
+            $title = $this->globalRole->title;
+
+            if (array_key_exists($title, $this->rolesRelation)) {
+                return [$this->rolesRelation[$title]];
+            }
         }
+
+        if ($this->localRole) {
+            return [$this->localRole->title];
+        }
+
+        return ['USER'];
+    }
+
+    public function getResultRoleAttribute()
+    {
+        return $this->getAssignments()[0];
     }
 }

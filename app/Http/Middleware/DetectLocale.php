@@ -17,10 +17,13 @@ class DetectLocale
      */
     public function handle($request, Closure $next)
     {
-        $cookieLang = Cookie::get('i18next');
-
-        if ($cookieLang) {
-            App::setLocale($cookieLang);
+        /*
+         * Cookie::get('i18next'); - don't work because EncryptCookies executes
+         * later and it's no seems a way to change a middleware order
+         */
+        if (array_key_exists('i18next' ,$_COOKIE)) {
+            $lang = substr($_COOKIE['i18next'], 0, 2);
+            App::setLocale($lang);
         } elseif ($request->header('Accept-Language')) {
             App::setLocale($request->header('Accept-Language'));
         }

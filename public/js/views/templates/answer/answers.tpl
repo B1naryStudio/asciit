@@ -19,6 +19,7 @@
                 <div class="form-group">
                     <textarea name="description" id="description" rows="6"></textarea>
                     <span class="help-block hidden"></span>
+                    <span class="error-block answers-error-block hidden"></span>
                 </div>
             </form>
         </div>

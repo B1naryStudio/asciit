@@ -139,7 +139,27 @@ a > img {
 	outline: 1px solid #0782C1;
 }
 
-.code-snippet.jsfiddle {
+.code-snippet {
     width: 100%;
     border: none;
+}
+
+.code-snippet.full-height {
+    outline: dotted 1px #777;
+    height: 200px;
+}
+
+.link-preview-result-wrapper {
+	margin: 0 auto;
+	width: 70%;
+}
+
+.link-preview-result-wrapper img {
+	width: 100%;
+}
+
+.link-preview-result-wrapper a:first-child {
+	height: 300px;
+	overflow: hidden;
+	display: block;
 }

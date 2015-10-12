@@ -7,19 +7,25 @@ use App\Rbac\Contracts\OwnershipChecker;
 
 class OwnershipCheckerByRepository implements OwnershipChecker
 {
-    public function isOwner($params, $idParamName, $repo_name)
+    protected function isOwner(array $params, $idParamName, $repo_name,
+                            $userIdField='user_id')
     {
         $item_id = $params[$idParamName];
         $repository = app($repo_name);
-        $answer = $repository->find($item_id);
+        $item = $repository->find($item_id);
 
-        $owner = $answer->user_id;
+        $owner = $item->$userIdField;
         $current_user = Auth::id();
 
         return $owner == $current_user;
     }
 
-    public function isAnswersOwner($params)
+    public function isSelf(array $params)
+    {
+        return $params['users'] == Auth::id();
+    }
+
+    public function isAnswersOwner(array $params)
     {
         return $this->isOwner(
             $params,
@@ -28,7 +34,7 @@ class OwnershipCheckerByRepository implements OwnershipChecker
         );
     }
 
-    public function isQuestionsOwner($params)
+    public function isQuestionsOwner(array $params)
     {
         return $this->isOwner(
             $params,
@@ -37,7 +43,7 @@ class OwnershipCheckerByRepository implements OwnershipChecker
         );
     }
 
-    public function isCommentsOwner($params)
+    public function isCommentsOwner(array $params)
     {
         return $this->isOwner(
             $params,

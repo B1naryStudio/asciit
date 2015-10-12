@@ -81,8 +81,11 @@ class AnswerController extends Controller
         );
     }
 
-    public function update(AnswerValidatedRequest $request, $question_id, $answer_id)
-    {
+    public function update(
+        AnswerValidatedRequest $request,
+        $question_id,
+        $answer_id
+    ) {
         try {
             $answer = $this->questionService
                 ->updateAnswer($request->all(), $answer_id);
@@ -95,6 +98,29 @@ class AnswerController extends Controller
         }
 
         return Response::json($answer->toArray(), 202, [], JSON_NUMERIC_CHECK);
+    }
+
+    public function setClosed(Request $request, $question_id, $answer_id)
+    {
+        if (!$request->has('closed')) {
+            return Response::json([
+                'error' => [
+                    'message' => 'Wrong data',
+                ],
+            ], 400);
+        }
+
+        try {
+            $newValue = $this->questionService->handleQuestionClosing(
+                $question_id,
+                $answer_id,
+                $request->input('closed')
+            );
+        } catch (QuestionServiceException $e) {
+            return Response::json(['error' => $e->getMessage()], 404);
+        }
+
+        return Response::json([$newValue], 200);
     }
 
     public function destroy($question_id, $answer_id) {

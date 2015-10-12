@@ -14,12 +14,13 @@
 Route::get('/', function () {
     $prefix = env('SERVER_PREFIX', '');
     return view('base', [
-        'js_is_min' => env('JS_IS_MIN', false),
+        'is_min' => env('JS_IS_MIN', false),
+        'use_common_header' => env('USE_COMMON_HEADER', false),
         'js_path' => ($prefix ? '/' : '' ) . env('JS_PATH')
     ]);
 });
 
-Route::group(['prefix' => 'api/v1'], function() {
+Route::group(['prefix' => 'api/v1'], function () {
     Route::resource(
         '/questions',
         'API\QuestionController',
@@ -29,7 +30,18 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::resource(
         '/questions/{id}/answers',
         'API\Question\AnswerController',
-        ['only' => ['index', 'store', 'update', 'destroy']]
+        ['only' => ['index', 'store', 'destroy']]
+    );
+
+    Route::put(
+        '/questions/{questions}/answers/{answers}',
+        'API\Question\AnswerController@update'
+    );
+
+    // Patch uses on answers for closed status update only
+    Route::patch(
+        '/questions/{questions}/answers/{answers}',
+        'API\Question\AnswerController@setClosed'
     );
 
     Route::resource(
@@ -46,9 +58,14 @@ Route::group(['prefix' => 'api/v1'], function() {
 
     Route::get('/crud-folders', 'API\FolderController@foldersForCrud');
 
-    Route::post('/user/login', 'API\UserController@login');
-    Route::delete('/user/login/{id}', 'API\UserController@logout');
-    Route::get('/user/login', 'API\UserController@session');
+    Route::post('/users/login', 'API\UserController@login');
+    Route::delete('/users/login/{id}', 'API\UserController@logout');
+    Route::get('/users/login', 'API\UserController@session');
+
+    Route::get('/users', 'API\UserController@index');
+    Route::put('/users/{users}', 'API\UserController@update');
+
+    Route::get('/roles', 'API\RoleController@index');
 
     Route::resource(
         '/tags',
@@ -57,7 +74,7 @@ Route::group(['prefix' => 'api/v1'], function() {
     );
 
     Route::post('/images', 'API\ImageController@store');
-    Route::get('/images/{filename}', 'API\ImageController@show');
+    Route::get('/images/{filename}_{extension}', 'API\ImageController@show');
 
     Route::resource(
         '/votes',
@@ -69,7 +86,10 @@ Route::group(['prefix' => 'api/v1'], function() {
     Route::get('/answers-my', 'API\Question\AnswerController@my');
 });
 
-Route::group(['prefix' => 'api/v1/widget'], function() {
+Route::get('/gist-snippets', 'API\CodeSnippetController@getGistWidget');
+Route::get('/pastebin-snippets', 'API\CodeSnippetController@getPastebinWidget');
+
+Route::group(['prefix' => 'api/v1/widget'], function () {
     Route::get('/questions/recent', 'API\WidgetController@questionsRecent');
     Route::get('/questions/popular', 'API\WidgetController@questionsPopular');
     Route::get('/questions/upvoted', 'API\WidgetController@questionsUpvoted');
@@ -79,6 +99,7 @@ Route::group(['prefix' => 'api/v1/widget'], function() {
 // Auth mockups
 Route::get('/auth/', 'Mockups\AuthController@auth');
 Route::get('/auth/logout', 'Mockups\AuthController@logout');
+Route::get('/auth/me/{binary_id}', 'Mockups\AuthController@profile');
 
 // Header mockups
 Route::get('/app/header', 'Mockups\HeaderController@menu');
@@ -90,3 +111,6 @@ Route::resource(
     'Mockups\NotificationController',
     ['only' => ['store']]
 );
+
+// Link preview
+Route::get('/link-preview', 'API\PreviewController@index');

@@ -11,7 +11,6 @@ class AnswerRemovingToBroadcasting extends WebSocketDeliveryHandler
      * Handle the event.
      *
      * @param  AnswerWasRemoved  $event
-     * @return void
      */
     public function handle(AnswerWasRemoved $event)
     {

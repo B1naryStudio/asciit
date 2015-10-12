@@ -20,6 +20,7 @@ define([
             'questions/:id': 'question',
             'login': 'login',
             'logout': 'logout',
+            'edit-users': 'users',
             'tags': 'tags',
             'tags/:tag': 'tagSearch',
             'activity': 'activity',
@@ -33,27 +34,33 @@ define([
                 callback || name === 'login' && callback
             ) {
                 callback.apply(this, args);
-                if (App.Routes.spinner) {
-                    App.Routes.spinner.destroy();
+
+                var duration;
+
+                if (!App.Routes.spinner) {
+                    App.Routes.spinner = new ProgressBar.Line('#spinner', {
+                        color: '#FCB03C',
+                        svgStyle: {
+                            height: '3px'
+                        }
+                    });
+
+                    duration = 2000;
+                } else {
+                    duration = 4000;
                 }
-                App.Routes.spinner = new ProgressBar.Line('#spinner', {
-                    color: '#FCB03C',
-                    svgStyle: {
-                        height: '3px'
-                    }
-                });
 
                 App.Routes.spinner.animate(0.8, {
-                    duration: 2000,
+                    duration: duration,
                     easing: 'easeOut'
                 }, function () {            // Callback on animation finish
                     setTimeout(function () { // Waiting for downloading finish
                         if (App.Routes.spinner) {
                             App.Routes.spinner.destroy();
                         }
+
                         App.Routes.spinner = null;
                     }, 3000)
-
                 });
             }
         },
@@ -64,25 +71,35 @@ define([
 
     var API = {
         login: function () {
-            require(['controllers/user'], function (controller) {
+            require(['controllers/user/init'], function (controller) {
                 App.trigger('spinner:check');
                 controller.login();
             });
         },
         logout: function () {
-            require(['controllers/user'], function (controller) {
+            require(['controllers/user/init'], function (controller) {
                 App.trigger('spinner:check');
                 controller.logout();
             });
         },
-        questions: function (data) {
+        users: function (options) {
+            var queryOptions = App.helper.parseUrl(options);
+
+            require(['controllers/user/init'], function (controller) {
+                controller.users(
+                    queryOptions['search'] ? queryOptions['search'] : '',
+                    queryOptions['page'] ? parseInt(queryOptions['page']) : 1
+                );
+            });
+        },
+        questions: function (options) {
             require(['controllers/question/init'], function (controller) {
-                var tmp = App.helper.parseUrl(data);
+                var queryOptions = App.helper.parseUrl(options);
                 controller.questions(
-                    tmp['search'] ? tmp['search'] : '',
+                    queryOptions['search'] ? queryOptions['search'] : '',
                     '',
                     '',
-                    tmp['page'] ? parseInt(tmp['page']) : 1
+                    queryOptions['page'] ? parseInt(queryOptions['page']) : 1
                 );
             });
         },
@@ -150,6 +167,19 @@ define([
                     App.Main.Menu = menu;
                 }
             });
+        },
+        quoteControlShow: function (e) {
+            require(['views/quote-control'], function (View) {
+                App.Main.Views.Quote = new View();
+                App.Main.Views.Layout
+                    .getRegion('quoteRegion')
+                    .show(App.Main.Views.Quote);
+                App.Main.Views.Quote.triggerMethod('control:show', e);
+            });
+        },
+        quoteControlHide: function (e) {
+            App.Main.Views.Quote.triggerMethod('control:close', e);
+            App.Main.Views.Layout.getRegion('quoteRegion').empty();
         }
     };
 
@@ -158,6 +188,20 @@ define([
         if (!Backbone.history.navigate(url, { trigger: true })) {
             Backbone.history.loadUrl(url);
         }
+    });
+
+    App.listenTo(App, 'spinner:login', function () {
+        App.Routes.spinner = new ProgressBar.Line('#spinner', {
+            color: '#FCB03C',
+            svgStyle: {
+                height: '3px'
+            }
+        });
+
+        App.Routes.spinner.animate(0.3, {
+            duration: 2000,
+            easing: 'easeOut'
+        }, 2000);
     });
 
     App.addInitializer(function() {
@@ -204,6 +248,14 @@ define([
 
     App.listenTo(App, 'user:authorized', function (user) {
         API.menuShow({ model: user });
+    });
+
+    App.listenTo(App, 'select:after', function (e) {
+        API.quoteControlShow(e);
+    });
+
+    App.listenTo(App, 'select:cancel', function (e) {
+        API.quoteControlHide(e);
     });
 
     $(document).on('click', 'a:not([data-bypass],[target])', function(evt) {

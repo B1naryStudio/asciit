@@ -5,6 +5,8 @@ define([
     'tpl!views/templates/question/row.tpl',
     'views/tag/view',
     'views/view-behaviors/code-highlighter',
+    'views/view-behaviors/iframes-height',
+    'views/view-behaviors/closed-question-indicator',
     'models/tag',
     'syphon'
 ], function (
@@ -13,7 +15,9 @@ define([
     Backbone,
     QuestionTpl,
     TagView,
-    CodeHighlighter
+    CodeHighlighter,
+    IframesHeight,
+    ClosedQuestionIndicator
 ) {
     App.Question.Views.QuestionCollectionRow = Marionette.LayoutView.extend({
         tagName: 'div',
@@ -22,9 +26,15 @@ define([
         regions: {
             tag: '.tags'
         },
+        ui: {
+            closedIndicator: '.best-controls .indicator'
+        },
         behaviors: {
-            CodeHighlighter: {
-                behaviorClass: CodeHighlighter
+            IframesHeight : {
+                behaviorClass: IframesHeight
+            },
+            ClosedQuestionIndicator: {
+                behaviorClass: ClosedQuestionIndicator
             }
         },
         onShow: function () {

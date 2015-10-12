@@ -28,7 +28,7 @@ class WidgetController extends Controller
      */
     public function questionsRecent(Request $request)
     {
-        $count = $request->get('count');
+        $count = (int) $request->get('count');
         if (empty($count)) {
             $count = 3;
         }
@@ -43,11 +43,11 @@ class WidgetController extends Controller
         }
 
         /** @var \Illuminate\Pagination\LengthAwarePaginator $questions */
-        $questions = $this->questionService->getQuestions($count, $where);
+        $questions = $this->questionService->getQuestionsRecent($count, $where);
 
         $questions = $this->addLinks($request, $questions);
 
-        return Response::json($questions->items(), 200);
+        return Response::json($questions, 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -76,7 +76,7 @@ class WidgetController extends Controller
 
         $questions = $this->addLinks($request, $questions);
 
-        return Response::json($questions, 200);
+        return Response::json($questions, 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -105,7 +105,7 @@ class WidgetController extends Controller
 
         $questions = $this->addLinks($request, $questions);
 
-        return Response::json($questions, 200);
+        return Response::json($questions, 200, [], JSON_NUMERIC_CHECK);
     }
 
     /**
@@ -134,7 +134,7 @@ class WidgetController extends Controller
 
         $questions = $this->addLinks($request, $questions);
 
-        return Response::json($questions, 200);
+        return Response::json($questions, 200, [], JSON_NUMERIC_CHECK);
     }
 
     private function addLinks(Request $request, $data)

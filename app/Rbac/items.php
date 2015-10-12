@@ -5,6 +5,22 @@ use App\Rbac\Facades\Ownership;
 /*
  * Permissions
  */
+//Users + roles
+Rbac::permission('users.view');
+Rbac::permission('users.edit');
+Rbac::permission('users.edit.role');
+Rbac::permission('users.edit.own', ['users.edit'], function ($params) {
+    return Ownership::isSelf($params);
+});
+Rbac::permission('users.roles.view');
+
+Rbac::permission('users.manage', [
+    'users.view',
+    'users.edit',
+    'users.edit.role',
+    'users.roles.view',
+]);
+
 // folders
 Rbac::permission('folders.view');
 Rbac::permission('folders.create');
@@ -23,24 +39,29 @@ Rbac::permission('questions.view');
 Rbac::permission('questions.create');
 Rbac::permission('questions.edit');
 Rbac::permission('questions.edit.own', ['questions.edit'], function ($params) {
-return Ownership::isQuestionsOwner($params);
+    return Ownership::isQuestionsOwner($params);
+});
+Rbac::permission('questions.close');
+Rbac::permission('questions.close.own', ['questions.close'], function ($params) {
+    return Ownership::isQuestionsOwner($params);
 });
 Rbac::permission('questions.delete');
 Rbac::permission('questions.delete.own', ['questions.delete'], function ($params) {
     return Ownership::isQuestionsOwner($params);
 });
 
-
 Rbac::permission('questions.manage', [
     'questions.view',
     'questions.create',
     'questions.edit',
+    'questions.close',
     'questions.delete'
 ]);
 
 Rbac::permission('questions.manage.own', [
     'questions.create',
     'questions.edit.own',
+    'questions.close.own',
     'questions.delete.own'
 ]);
 
@@ -119,11 +140,15 @@ Rbac::permission('votes.own', [
 Rbac::permission('images.view');
 Rbac::permission('images.create');
 
+// link preview
+Rbac::permission('preview.view');
+
 /*
  * Roles
  */
 Rbac::role('ADMIN', [
-    'folders.manage',   // manage = view + create + edit + delete for all items
+    'users.manage',     // view + edit roles
+    'folders.manage',   // manage below = view + create + edit + delete for all items
     'questions.manage',
     'answers.manage',
     'comments.manage',
@@ -134,9 +159,11 @@ Rbac::role('ADMIN', [
 
     'images.view',
     'images.create',
+    'preview.view'
 ]);
 
 Rbac::role('USER', [
+    'users.edit.own',
     'folders.view',
 
     'questions.view',
@@ -155,4 +182,5 @@ Rbac::role('USER', [
 
     'images.view',
     'images.create',
+    'preview.view'
 ]);

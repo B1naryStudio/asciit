@@ -1,7 +1,7 @@
 <div class="list-group-item">
     <div class="row">
         <div class="col-md-3 col-lg-3 col-sm-4 col-xs-3 text-center wrapper-avatar">
-            <img src="<%- user.avatar %>" alt="100x100" class="img-thumbnail big">
+            <img src="<%- user.thumb_avatar %>" alt="100x100" class="img-thumbnail big">
             <div><b><%= user.first_name + ' ' + user.last_name %></b></div>
         </div>
         <div class="col-md-9 col-lg-9 col-sm-8 col-xs-9">
@@ -13,6 +13,11 @@
                         <i class="fa fa-thumbs-up fa-1"></i>
                         <%- vote_value %>
                     </div>
+                    <span class="best-controls">
+                        <span class="control indicator" title="<%- _t('closed.questionClosed') %>">
+                            <i class="fa fa-1-5 fa-check-circle-o "></i>
+                        </span>
+                    </span>
                     <span class="time asked_time">
                         <time class="relative" data-abs-time="<%- created_at %>">
                              <%- created_relative %>

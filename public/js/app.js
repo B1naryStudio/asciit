@@ -2,10 +2,11 @@ define([
     'marionette',
     'backbone',
     'bootstrap',
+    'underscore',
+    'tpl',
     'validation-model',
     'jquery.scroll',
-    'paginator',
-    'updown'
+    'paginator'
 ], function (Marionette, Backbone) {
     var App = new Marionette.Application();
     App.queryFlag = [];
@@ -28,7 +29,7 @@ define([
         moveFocus: function(editor, data) {
             var checkData = editor.getData();
             var el = $(editor.getSelection().document.$).find('body');
-            if(checkData!='') {
+            if(checkData !== '') {
                 el.append('<p></p>');
                 el.find('p:last').append(data);
             } else {
@@ -43,7 +44,7 @@ define([
             node = parents[parents.length - 2].getFirst();
             while (true) {
                 var x = node.getNext();
-                if (x == null) {
+                if (x === null) {
                     break;
                 }
                 node = x;
@@ -103,6 +104,20 @@ define([
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
                 .replace(/"/g, '&quot;');
+        },
+
+        loadCSS: function(href) {
+            var cssLink = $('<link rel="stylesheet" type="text/css" href="' +
+                href + '">');
+            $('head').append(cssLink);
+        },
+
+        saveSelectedInfo: function (data) {
+            this.selected = data;
+        },
+
+        getSelectedInfo: function () {
+            return this.selected;
         }
     };
 
@@ -128,7 +143,7 @@ define([
                             options.websocketPort :
                             9090;
         // Loading css for codesnippets highlighting
-        loadCSS('js/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/' +
+        App.helper.loadCSS('js/vendor/ckeditor/plugins/codesnippet/lib/highlight/styles/' +
             App.codeSnippetTheme + '.css');
 
         overwriteRenderer();
@@ -150,16 +165,11 @@ define([
         };
     }
 
-    var loadCSS = function(href) {
-        var cssLink = $('<link rel="stylesheet" type="text/css" href="' + href + '">');
-        $('head').append(cssLink);
-    };
-
     App.on('start', function () {
         if (Backbone.history) {
             Backbone.history.start();
         }
-        require(['controllers/user'], function (controller) {
+        require(['controllers/user/init'], function (controller) {
             controller.session();
         });
     });
@@ -235,6 +245,11 @@ define([
             Views: {}
         },
         User: {
+            Controllers: {},
+            Models: {},
+            Views: {}
+        },
+        Role: {
             Models: {},
             Views: {}
         },
@@ -254,7 +269,6 @@ define([
         },
         Routes: {},
         FormView: {},
-        ViewsMixins: {},
         Behaviors: {}
     });
 

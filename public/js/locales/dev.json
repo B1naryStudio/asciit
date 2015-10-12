@@ -40,8 +40,16 @@
         "tags": "Tags",
         "popular": "Popular tags"
     },
+    "person": {
+        "avatar": "Avatar",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "E-mail",
+        "localRole": "Local role",
+        "globalRole": "Global role"
+    },
     "search": {
-        "placeholder": "Search it...",
+        "placeholder": "Search it",
         "tagInfo": "To search by tags enter: ",
         "folderInfo": "To search by folders enter: ",
         "tagInfoSpan": "\"tag:tag title\"",
@@ -83,5 +91,14 @@
         "required-field": "This field is required.",
         "invalid-value": "Please, insert a valid value for this field.",
         "login-error": "Wrong login or password!"
+    },
+    "closed": {
+        "answerFits": "Accepted by the question owner as the best",
+        "questionClosed": "Question is closed",
+        "pick": "Pick up this answer as the best",
+        "cancel": "Cancel an assignment of this question as the best"
+    },
+    "users": {
+        "users": "Users"
     }
 }

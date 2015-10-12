@@ -3,7 +3,7 @@
         <!-- User's avatar and name -->
         <div class="row">
             <figure class="user-info text-center">
-                <img src="<%- user.avatar %>" alt="100x100" class="img-thumbnail big">
+                <img src="<%- user.thumb_avatar %>" alt="100x100" class="img-thumbnail big">
                 <h5><%= user.first_name + ' ' + user.last_name %></h5>
             </figure>
         </div>
@@ -19,7 +19,14 @@
                          <%- created_relative %>
                     </time>
                 </span>
-                <h2 class="model-field"><%- title %></h2>
+                <h2 class="model-field">
+                    <span class="best-controls">
+                        <span class="control indicator" title="<%- _t('closed.questionClosed') %>">
+                            <i class="fa fa-check-circle-o "></i>
+                        </span>
+                    </span>
+                    <%- title %>
+                </h2>
                 <div class="folder">
                     <span class="icon glyphicon glyphicon-folder-open"></span>
                     <a href="#folders/<%- folder.title %>"><%- folder.title %></a>
@@ -31,7 +38,7 @@
             </div>
         </div>
         <!-- Text -->
-        <p class="model-field"><%= description %></p>
+        <p class="model-field description"><%= description %></p>
         <div class="error-block hidden"></div>
         <!-- Actions -->
         <div class="actions">
@@ -41,7 +48,7 @@
                       title="<%- _t('ui.edit') %>">
                     <i class="fa fa-pencil"></i>
                 </span>
-                <span class="delete"
+                <span class="control delete"
                       title="<%- _t('ui.delete') %>">
                     <i class="fa fa-times"></i>
                 </span>

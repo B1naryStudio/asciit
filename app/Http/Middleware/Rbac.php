@@ -12,11 +12,11 @@ class Rbac extends RbacMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $permission=null)
+    public function handle($request, Closure $next, $permission = null)
     {
         try {
             return parent::handle($request, $next, $permission);

@@ -4,9 +4,9 @@ define([
     'backbone',
     'tpl!views/templates/answer/row-by-user.tpl',
     'views/empty',
-    'views/views-mixins',
     'views/view-behaviors/contains-votes',
     'views/view-behaviors/code-highlighter',
+    'views/view-behaviors/iframes-height',
     'models/tag'
 ], function (
     App,
@@ -14,9 +14,9 @@ define([
     Backbone,
     AnswerTpl,
     EmptyView,
-    ViewsMixins,
     ContainsVotes,
-    CodeHighlighter
+    CodeHighlighter,
+    IframesHeight
 ) {
     App.Answer.Views.AnswerCollectionByUserRow = Marionette.LayoutView.extend({
         tagName: 'div',
@@ -26,11 +26,14 @@ define([
             tag: '.tags'
         },
         behaviors: {
-            ContainsVotesaa: {
+            ContainsVotes: {
                 behaviorClass: ContainsVotes
             },
             CodeHighlighter: {
                 behaviorClass: CodeHighlighter
+            },
+            IframesHeight : {
+                behaviorClass: IframesHeight
             }
         },
         initialize: function () {

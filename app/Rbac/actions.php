@@ -1,5 +1,10 @@
 <?php
 
+// users
+Rbac::action('API\\UserController@index', 'users.view');
+Rbac::action('API\\UserController@update', 'users.edit');
+Rbac::action('API\\RoleController@index', 'users.roles.view');
+
 // folders
 Rbac::action([
     'API\\FolderController@index',
@@ -26,6 +31,7 @@ Rbac::action([
 ], 'answers.view');
 Rbac::action('API\\Question\\AnswerController@store', 'answers.create');
 Rbac::action('API\\Question\\AnswerController@update', 'answers.edit');
+Rbac::action('API\\Question\\AnswerController@setClosed', 'questions.close');
 Rbac::action('API\\Question\\AnswerController@destroy', 'answers.delete');
 
 // comments
@@ -45,3 +51,6 @@ Rbac::action('API\\VoteController@destroy', 'votes.delete.own');
 //images
 Rbac::action('API\\ImageController@show', 'images.view');
 Rbac::action('API\\ImageController@store', 'images.create');
+
+//link preview
+Rbac::action('API\\PreviewController@index', 'preview.view');

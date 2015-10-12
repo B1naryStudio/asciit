@@ -15,7 +15,7 @@ class GosWebSocketDelivery implements HttpToWampDelivery
         $this->client = $client;
     }
 
-    public function send($data)
+    public function send(array $data)
     {
         try {
             $this->client->connect();

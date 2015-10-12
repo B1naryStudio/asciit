@@ -14,9 +14,7 @@ use App\Services\Notifications\NotificationService;
 class HttpDeliveryHandler extends DeliveryHandler
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
+     * @param NotificationService $notification
      */
     public function __construct(NotificationService $notification)
     {
