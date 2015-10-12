@@ -167,7 +167,7 @@ interface QuestionServiceInterface
      * @param int $question_id
      * @param int $answer_id
      * @param bool $closing_value
-     * @return mixed
+     * @return bool
      */
     public function handleQuestionClosing(
         $question_id,
@@ -193,4 +193,20 @@ interface QuestionServiceInterface
      * @return Question
      */
     public function removeQuestion($id);
+
+    /**
+     * @param Question $question
+     * @param array $tagTitlesTarget
+     */
+    public function updateQuestionTags(
+        Question $question,
+        array $tagTitlesTarget
+    );
+
+    /**
+     * @param int $pageSize
+     * @param array $data
+     * @return mixed
+     */
+    public function getQuestionsRecent($pageSize, $data = array());
 }

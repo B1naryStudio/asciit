@@ -15,7 +15,7 @@ class NotificationService implements NotificationServiceInterface
             'text'        => $data['text'],
             'url'         => $data['url'],
             'sound'       => true,
-            'serviceType' => 'QA platform',
+            'serviceType' => 'Asciit',
             'users'       => $data['users'],
         ];
         $notificationInfo = json_encode($notificationInfo);
