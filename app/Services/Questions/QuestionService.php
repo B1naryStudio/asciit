@@ -17,6 +17,8 @@ use App\Repositories\Contracts\TagRepository;
 use App\Repositories\Contracts\VoteRepository;
 use App\Repositories\Criteria\InCriteria;
 use App\Repositories\Criteria\TagQuestionCriteria;
+use App\Repositories\Criteria\RecentCriteria;
+use App\Repositories\Criteria\LimitCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
 use App\Repositories\Contracts\CommentRepository;
 use Illuminate\Support\Facades\Event;
@@ -35,6 +37,10 @@ use App\Events\FolderWasUpdated;
 use App\Events\FolderWasRemoved;
 use App\Events\TagWasAdded;
 use App\Repositories\Entities\Answer;
+use App\Repositories\Entities\Comment;
+use App\Repositories\Entities\Question;
+use App\Repositories\Entities\Vote;
+use App\Repositories\Entities\Folder;
 
 class QuestionService implements QuestionServiceInterface
 {
@@ -106,7 +112,8 @@ class QuestionService implements QuestionServiceInterface
         return $question;
     }
 
-    protected function attachFolderId(array &$data) {
+    protected function attachFolderId(array &$data)
+    {
         $folder = $this->folderRepository->firstWhere([
             'title' => $data['folder']
         ]);
@@ -114,7 +121,14 @@ class QuestionService implements QuestionServiceInterface
         $data['folder_id'] = $folder->id;
     }
 
-    protected function attachTagsToQuestion($question, array $newTagsTitles) {
+    /**
+     * @param Question $question
+     * @param array $newTagsTitles
+     */
+    protected function attachTagsToQuestion(
+        Question $question,
+        array $newTagsTitles
+    ) {
         // Retreiving all tags with titles like in the list
         $existantTags = $this->tagRepository->getByCriteria(
             new InCriteria('title', $newTagsTitles)
@@ -162,8 +176,14 @@ class QuestionService implements QuestionServiceInterface
         }
     }
 
-    public function updateQuestionTags($question, $tagTitlesTargetList)
-    {
+    /**
+     * @param Question $question
+     * @param array $tagTitlesTarget
+     */
+    public function updateQuestionTags(
+        Question $question,
+        array $tagTitlesTarget
+    ) {
         // Retreive all already related with question tags
         $questionTags = $this->tagRepository->getByCriteria(
             new TagQuestionCriteria($question->id)
@@ -177,19 +197,29 @@ class QuestionService implements QuestionServiceInterface
         // Remove all question relations with tags if there no tags anymore
         if (empty($tagTitlesTargetList)) {
             $tagsIdsToDetach = $questionTags->pluck('id')->all();
-            $this->tagRepository->relationsDestroy($question, 'tags', $tagsIdsToDetach);
+            $this->tagRepository->relationsDestroy(
+                $question,
+                'tags',
+                $tagsIdsToDetach
+            );
             return;
         } else {
             // If tag is related but isn't exist in target list - to detaching list
-            $questionTags->map(function ($item) use ($tagTitlesTargetList, &$tagsIdsToDetach) {
-                if (!in_array($item->title, $tagTitlesTargetList)) {
-                    $tagsIdsToDetach[] = $item->id;
+            $questionTags->map(
+                function ($item) use ($tagTitlesTargetList, &$tagsIdsToDetach) {
+                    if (!in_array($item->title, $tagTitlesTargetList)) {
+                        $tagsIdsToDetach[] = $item->id;
+                    }
                 }
-            });
+            );
 
             // Detaching
             if (!empty($tagsIdsToDetach)) {
-                $this->tagRepository->relationsDestroy($question, 'tags', $tagsIdsToDetach);
+                $this->tagRepository->relationsDestroy(
+                    $question,
+                    'tags',
+                    $tagsIdsToDetach
+                );
             }
         }
 
@@ -212,8 +242,8 @@ class QuestionService implements QuestionServiceInterface
     }
 
     /**
-     * @param $id
-     * @return \App\Repositories\Entities\Question
+     * @param int $id
+     * @return Question
      */
     public function getQuestionById($id)
     {
@@ -240,8 +270,8 @@ class QuestionService implements QuestionServiceInterface
     }
 
     /**
-     * @param $id
-     * @return \App\Repositories\Entities\Question
+     * @param string $slug
+     * @return Question
      */
     public function getQuestionBySlug($slug)
     {
@@ -269,7 +299,9 @@ class QuestionService implements QuestionServiceInterface
     }
 
     /**
-     * @return Collection
+     * @param int|null $pageSize
+     * @param array $data
+     * @return LengthAwarePaginator
      */
     public function getQuestions($pageSize = null, $data = array())
     {
@@ -289,6 +321,10 @@ class QuestionService implements QuestionServiceInterface
         return $questions;
     }
 
+    /**
+     * @param int $id
+     * @return int
+     */
     public function removeQuestion($id)
     {
         try {
@@ -365,6 +401,10 @@ class QuestionService implements QuestionServiceInterface
         }
     }
 
+    /**
+     * @param array $data
+     * @return Vote
+     */
     public function addVote(array $data)
     {
         $data['user_id'] = Auth::user()->id;
@@ -391,10 +431,14 @@ class QuestionService implements QuestionServiceInterface
         );
 
         Event::fire(new VoteWasAdded($vote));
-
         return $vote;
     }
 
+    /**
+     * @param int $vote_id
+     * @return Vote
+     * @throws QuestionServiceException
+     */
     public function removeVote($vote_id)
     {
         try {
@@ -417,10 +461,14 @@ class QuestionService implements QuestionServiceInterface
         }
 
         Event::fire(new VoteWasRemoved($vote));
-        
         return $vote;
     }
 
+    /**
+     * @param array $data
+     * @param int $question_id
+     * @return Answer
+     */
     public function createAnswer(array $data, $question_id)
     {
         $data['user_id'] = Auth::user()->id;
@@ -438,10 +486,14 @@ class QuestionService implements QuestionServiceInterface
         }
 
         Event::fire(new AnswerWasAdded($answer));
-
         return $answer;
     }
 
+    /**
+     * @param array $data
+     * @param int $answer_id
+     * @return Answer
+     */
     public function updateAnswer(array $data, $answer_id)
     {
         try {
@@ -458,6 +510,12 @@ class QuestionService implements QuestionServiceInterface
         return $answer;
     }
 
+    /**
+     * @param int $question_id
+     * @param int $answer_id
+     * @param bool $closing_value
+     * @return bool
+     */
     public function handleQuestionClosing(
         $question_id,
         $answer_id,
@@ -506,6 +564,10 @@ class QuestionService implements QuestionServiceInterface
         return $closing_value;
     }
 
+    /**
+     * @param int $id
+     * @return int
+     */
     public function removeAnswer($id)
     {
         try {
@@ -539,7 +601,7 @@ class QuestionService implements QuestionServiceInterface
     // Folders
     /**
      * @param array $data
-     * @return mixed
+     * @return Folder
      */
     public function createFolder(array $data)
     {
@@ -557,6 +619,11 @@ class QuestionService implements QuestionServiceInterface
         return $folder;
     }
 
+    /**
+     * @param array $data
+     * @param int $id
+     * @return Folder
+     */
     public function updateFolder(array $data, $id)
     {
         try {
@@ -573,6 +640,10 @@ class QuestionService implements QuestionServiceInterface
         return $folder;
     }
 
+    /**
+     * @param int|null $pageSize
+     * @return Folder
+     */
     public function getFoldersForCrud($pageSize = null)
     {
         try {
@@ -588,6 +659,10 @@ class QuestionService implements QuestionServiceInterface
         return $folder;
     }
 
+    /**
+     * @param int $id
+     * @return int
+     */
     public function removeFolder($id)
     {
         try {
@@ -604,6 +679,10 @@ class QuestionService implements QuestionServiceInterface
         return $folder;
     }
 
+    /**
+     * @param int|null $pageSize
+     * @return LengthAwarePaginator
+     */
     public function getTags($pageSize = null)
     {
         try {
@@ -618,6 +697,11 @@ class QuestionService implements QuestionServiceInterface
         return $tags->items();
     }
 
+    /**
+     * @param array $data
+     * @param int $question_id
+     * @return Comment
+     */
     public function createComment(array $data, $question_id)
     {
         $data['user_id'] = Auth::user()->id;
@@ -640,6 +724,11 @@ class QuestionService implements QuestionServiceInterface
         return $comment;
     }
 
+    /**
+     * @param array $data
+     * @param int $id
+     * @return Comment
+     */
     public function updateComment(array $data, $id)
     {
         try {
@@ -656,6 +745,10 @@ class QuestionService implements QuestionServiceInterface
         return $comment;
     }
 
+    /**
+     * @param int $id
+     * @return int
+     */
     public function removeComment($id)
     {
         try {
@@ -672,6 +765,11 @@ class QuestionService implements QuestionServiceInterface
         return $comment;
     }
 
+    /**
+     * @param int|null $pageSize
+     * @param string $search
+     * @return LengthAwarePaginator
+     */
     public function getTagsPopular($pageSize = null, $search = '')
     {
         $where = [];
@@ -728,6 +826,11 @@ class QuestionService implements QuestionServiceInterface
     }
 
     // Widgets
+    /**
+     * @param int|null $pageSize
+     * @param array $data
+     * @return array|mixed
+     */
     public function getQuestionsPopular($pageSize = null, $data = array())
     {
         $where = [
@@ -760,6 +863,11 @@ class QuestionService implements QuestionServiceInterface
         return $questions;
     }
 
+    /**
+     * @param int|null $pageSize
+     * @param array $data
+     * @return array|mixed
+     */
     public function getQuestionsUpvoted($pageSize = null, $data = array())
     {
         $where = [
@@ -792,6 +900,11 @@ class QuestionService implements QuestionServiceInterface
         return $questions;
     }
 
+    /**
+     * @param int|null $pageSize
+     * @param array $data
+     * @return array|mixed
+     */
     public function getQuestionsTopCommented($pageSize = null, $data = array())
     {
         $where = [
@@ -824,5 +937,33 @@ class QuestionService implements QuestionServiceInterface
         return $questions;
     }
 
+    public function getQuestionsRecent($pageSize, $data = array())
+    {
+        $this->questionRepository->pushCriteria(
+            new RecentCriteria('updated_at', 'desc')
+        );
+        $this->questionRepository->pushCriteria(
+            new LimitCriteria($pageSize)
+        );
+
+        $where = [];
+        if (!empty($data['date_start'])) {
+            $where[] = ['created_at', '>=', $data['date_start']];
+        }
+        if (!empty($data['date_end'])) {
+            $where[] = ['created_at', '<=', $data['date_end']];
+        }
+
+        $questions_query = $this->questionRepository
+            ->with(['user', 'folder', 'tags']);
+
+        if (empty($where)) {
+            $questions = $questions_query->all();
+        } else {
+            $questions = $questions_query->findWhere($where);
+        }
+
+        return $questions;
+    }
 }
 
