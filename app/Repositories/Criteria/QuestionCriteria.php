@@ -9,7 +9,6 @@ class QuestionCriteria implements CriteriaInterface
 {
     public function apply($model, RepositoryInterface $repository)
     {
-        $model = $model->whereNull('question_id');
-        return $model;
+        return $model->whereNull('question_id');
     }
 }

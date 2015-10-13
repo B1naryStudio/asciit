@@ -1,13 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: antarus66
- * Date: 9/18/15
- * Time: 9:12 PM
- */
+
 namespace App\Services\Auth\Contracts;
 
-use App\Services\Auth\User;
+use App\Repositories\Entities\User;
 
 abstract class UserUpdater
 {

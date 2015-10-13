@@ -146,24 +146,24 @@ interface RepositoryInterface extends BaseRepositoryInterface
     public function withoutRelationCount();
 
     /**
-     * @param $collection
+     * @param Collection $collection
      * @return mixed
      */
     public function setCountedFields(Collection $collection);
 
     /**
-     * @param $model
-     * @param $prop
-     * @param $value
-     * @return mixed
+     * @param Model $model
+     * @param string $prop
+     * @param mixed $value
+     * @return Model
      */
-    public function setProtectedProperty($model, $prop, $value);
+    public function setProtectedProperty(Model $model, $prop, $value);
 
     /**
-     * @param $id
-     * @param $prop
-     * @param $value
-     * @return mixed
+     * @param int $id
+     * @param string $prop
+     * @param mixed $value
+     * @return Model
      */
     public function setProtectedPropertyById($id, $prop, $value);
 }
