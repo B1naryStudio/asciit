@@ -2,6 +2,7 @@ define([
     'app',
     'marionette',
     'backbone',
+    'tpl!views/templates/role/collection.tpl',
     'tpl!views/templates/role/row.tpl',
     'views/role/select',
     'views/view-behaviors/waiting-state',
@@ -10,7 +11,7 @@ define([
     App,
     Marionette,
     Backbone,
-    SearchForm,
+    RolesCollectionTpl,
     RoleRowTpl,
     RoleSelectView,
     WaitingState,
@@ -18,8 +19,8 @@ define([
 ) {
     App.Role.Views.RoleRowView = Marionette.LayoutView.extend({
         template: RoleRowTpl,
-        tagName: 'tr',
-        className: 'user-element',
+        tagName: 'div',
+        className: 'role-element',
 
         regions: {
             roleSelect: '.role-select-wrapper'
@@ -59,19 +60,19 @@ define([
 
         onRoleSelectSwitched: function (childview, roleId) {
             this.triggerMethod('waiting:start');
-            this.model.set('local_role_id', +roleId);
+            this.model.set('local_id', +roleId);
             this.triggerMethod('role:switched');
         },
 
         onRoleUpdated: function (updatedModel) {
-            this.$('.role-value').text(updatedModel.get('local_role').title);
+            this.$('.role-value').text(updatedModel.get('local').title);
             this.triggerMethod('waiting:stop');
         },
 
         onModelInvalid: function () {
             this.triggerMethod('waiting:stop');
 
-            this.model.set('local_role_id', this.model.get('local_role').id);
+            this.model.set('local_id', this.model.get('local').id);
             this.getRegion('roleSelect').reset();
             this.onShow();
         },
@@ -79,16 +80,18 @@ define([
         onShow: function () {
             var selectView = new RoleSelectView({
                 collection: this.options.roles,
-                currentRole: this.model.get('local_role_id')
+                currentRole: this.model.get('local_id')
             });
 
             this.getRegion('roleSelect').show(selectView);
         }
     });
 
-    App.Role.Views.RoleView = Marionette.Collection.extend({
+    App.Role.Views.RoleView = Marionette.CompositeView.extend({
         className: 'roles',
+        template: RolesCollectionTpl,
         childView: App.Role.Views.RoleRowView,
+        childViewContainer: '.roles-list',
 
         onNotFound: function () {
             this.$('.users-table').hide();

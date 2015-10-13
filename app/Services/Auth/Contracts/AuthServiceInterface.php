@@ -41,4 +41,6 @@ interface AuthServiceInterface
     public function getLocalRoles();
 
     public function getGlobalRoles();
+
+    public function mapRoles(array $data, $role_id);
 }

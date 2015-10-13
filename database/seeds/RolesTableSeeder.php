@@ -1,15 +1,20 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Repositories\Contracts\RoleRepository;
+use App\Repositories\Contracts\RoleLocalRepository;
+use App\Repositories\Contracts\RoleGlobalRepository;
 
 class RolesTableSeeder extends Seeder
 {
-    private $roleRepository;
+    private $roleLocalRepository;
+    private $roleGlobalRepository;
 
-    public function __construct(RoleRepository $roleRepository)
-    {
-        $this->roleRepository = $roleRepository;
+    public function __construct(
+        RoleLocalRepository $roleLocalRepository,
+        RoleGlobalRepository $roleGlobalRepository
+    ) {
+        $this->roleLocalRepository = $roleLocalRepository;
+        $this->roleGlobalRepository = $roleGlobalRepository;
     }
     /**
      * Run the database seeds.
@@ -18,7 +23,15 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->roleRepository->create(['title' => 'ADMIN']);
-        $this->roleRepository->create(['title' => 'USER']);
+        $localAdmin = $this->roleLocalRepository->create(['title' => 'ADMIN']);
+        $localUser = $this->roleLocalRepository->create(['title' => 'USER']);
+        $globalAdmin = $this->roleGlobalRepository->create(['title' => 'ADMIN']);
+        $globalUser = $this->roleGlobalRepository->create(['title' => 'USER']);
+
+        //$this->roleGlobalRepository->create(['title' => 'MODER']);
+
+        // mapping
+        $localAdmin->globals()->save($globalAdmin);
+        $localUser->globals()->save($globalUser);
     }
 }

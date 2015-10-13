@@ -66,6 +66,7 @@ Route::group(['prefix' => 'api/v1'], function () {
     Route::put('/users/{users}', 'API\UserController@update');
 
     Route::get('/roles', 'API\RoleController@index');
+    Route::put('/roles/{roles}', 'API\RoleController@update');
 
     Route::resource(
         '/tags',

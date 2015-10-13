@@ -22,5 +22,3 @@ return [
         'www.slideshare.net' => 'api/oembed/2'
     ]
 ];
-
-?>

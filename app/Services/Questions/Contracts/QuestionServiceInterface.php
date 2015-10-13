@@ -202,4 +202,11 @@ interface QuestionServiceInterface
         Question $question,
         array $tagTitlesTarget
     );
+
+    /**
+     * @param int $pageSize
+     * @param array $data
+     * @return mixed
+     */
+    public function getQuestionsRecent($pageSize, $data = array());
 }

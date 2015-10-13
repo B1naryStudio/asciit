@@ -5,11 +5,17 @@ namespace App\Repositories\Criteria;
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Contracts\CriteriaInterface;
 
-class GlobalRoleCriteria implements CriteriaInterface
+class LimitCriteria implements CriteriaInterface
 {
+    private $limit;
+
+    public function __construct($limit)
+    {
+        $this->limit = $limit;
+    }
+
     public function apply($model, RepositoryInterface $repository)
     {
-        $model = $model->whereNotNull('is_global');
-        return $model;
+        return $model->limit($this->limit);
     }
 }

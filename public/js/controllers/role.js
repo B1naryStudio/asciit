@@ -24,59 +24,58 @@ define([
                 }),
                 App.request('role:collection')
             ).done(function (globalRoles, localRoles) {
-                    var view = new RolesView({
-                        collection: globalRoles,
-                        childViewOptions: {
-                            roles: localRoles
-                        }
-                    });
-
-                    var collectionLayout = new RolesLayoutView();
-
-                    App.Main.Views.Layout
-                        .getRegion('content')
-                        .show(collectionLayout);
-
-                    collectionLayout
-                        .getRegion('collectionRegion')
-                        .show(view);
-
-                    App.trigger('paginator:get', {
-                        collection: users,
-                        navigate: true,
-                        success: function (paginatorView) {
-                            collectionLayout
-                                .getRegion('paginatorRegion')
-                                .show(paginatorView);
-                        }
-                    });
-
-                    if (!globalRoles.length) {
-                        view.triggerMethod('not:found');
+                var view = new RolesView({
+                    collection: globalRoles,
+                    childViewOptions: {
+                        roles: localRoles
                     }
+                });
 
-                    App.Role.Controller.listenTo(
-                        view,
-                        'childview:role:switched',
-                        function (childview) {
-                            $.when(App.request(
-                                'user:update',
-                                childview.model
-                            )).done(function (updatedModel) {
-                                childview.triggerMethod(
-                                    'role:updated',
-                                    updatedModel
-                                );
-                            }).fail(function (errors) {
-                                childview.triggerMethod(
-                                    'model:invalid',
-                                    errors
-                                );
-                            });
-                        }
-                    );
+                var collectionLayout = new RolesLayoutView();
+
+                App.Main.Views.Layout
+                    .getRegion('content')
+                    .show(collectionLayout);
+
+                collectionLayout
+                    .getRegion('collectionRegion')
+                    .show(view);
+
+                App.trigger('paginator:get', {
+                    collection: globalRoles,
+                    navigate: true,
+                    success: function (paginatorView) {
+                        collectionLayout
+                            .getRegion('paginatorRegion')
+                            .show(paginatorView);
+                    }
+                });
+
+                if (!globalRoles.length) {
+                    view.triggerMethod('not:found');
                 }
-            );
+
+                App.Role.Controller.listenTo(
+                    view,
+                    'childview:role:switched',
+                    function (childview) {
+                        $.when(App.request(
+                            'role:update',
+                            childview.model
+                        )).done(function (updatedModel) {
+                            childview.triggerMethod(
+                                'role:updated',
+                                updatedModel
+                            );
+                        }).fail(function (errors) {
+                            childview.triggerMethod(
+                                'model:invalid',
+                                errors
+                            );
+                        });
+                    }
+                );
+            });
         }
     });
     App.Role.Controller = new Controller();

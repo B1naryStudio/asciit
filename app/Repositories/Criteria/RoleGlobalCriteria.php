@@ -9,6 +9,6 @@ class RoleGlobalCriteria implements CriteriaInterface
 {
     public function apply($model, RepositoryInterface $repository)
     {
-        return $model->whereNotNull('is_global');
+        return $model->whereNotNull('local_id');
     }
 }

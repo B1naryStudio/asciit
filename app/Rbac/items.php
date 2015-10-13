@@ -143,6 +143,9 @@ Rbac::permission('images.create');
 // link preview
 Rbac::permission('preview.view');
 
+// roles
+Rbac::permission('roles.update');
+
 /*
  * Roles
  */
@@ -159,7 +162,8 @@ Rbac::role('ADMIN', [
 
     'images.view',
     'images.create',
-    'preview.view'
+    'preview.view',
+    'roles.update'
 ]);
 
 Rbac::role('USER', [

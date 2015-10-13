@@ -64,6 +64,7 @@ class UserController extends Controller
         );
 
     }
+
     public function update(Request $request, $user_id)
     {
         // Update user
@@ -76,9 +77,10 @@ class UserController extends Controller
         }
 
         // Update role
-        if ($request->has('local_role_id')
-            && Auth::user()->allowed('users.edit.role')) {
-
+        if (
+            $request->has('local_role_id') &&
+            Auth::user()->allowed('users.edit.role')
+        ) {
             try {
                 $user = $this->authService->updateUserRole(
                     $request->input('local_role_id'),
@@ -118,16 +120,16 @@ class UserController extends Controller
 
             $logoutResult = (array)$dataGrabber->getFromJson(
                 url(env('AUTH_LOGOUT')),
-                [CURLOPT_COOKIE => "x-access-token=" . $cookie]
+                [CURLOPT_COOKIE => 'x-access-token=' . $cookie]
             );
-        } catch (AuthException $e){
-            $message = "Internal logout error: " . $e->getMessage();
+        } catch (AuthException $e) {
+            $message = 'Internal logout error: ' . $e->getMessage();
 
             return Response::json([
                 'error' => [$message]
             ], 500);
         } catch (RemoteDataGrabberException $e) {
-            $message = "Remote logout error: " . $e->getMessage();
+            $message = 'Remote logout error: ' . $e->getMessage();
 
             return Response::json([
                 'error' => [$message]
@@ -152,7 +154,7 @@ class UserController extends Controller
                                    'referer',
                                    url(env('SERVER_PREFIX', '') . '/')
                                );
-            } catch (AuthException $e){
+            } catch (AuthException $e) {
                 // Redirect to the authorisation server if user is not authorised
                 return Response::json(
                     ['redirectTo' => url(env('AUTH_REDIRECT'))],

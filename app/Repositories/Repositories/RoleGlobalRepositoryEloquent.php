@@ -6,6 +6,8 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use App\Repositories\Entities\RoleGlobal;
 use App\Repositories\Contracts\RoleGlobalRepository;
 use App\Repositories\Criteria\RoleGlobalCriteria;
+use App\Repositories\Contracts\RoleLocalRepository;
+use Illuminate\Container\Container as Application;
 
 /**
  * Class RoleGlobalRepositoryEloquent
@@ -13,6 +15,17 @@ use App\Repositories\Criteria\RoleGlobalCriteria;
  */
 class RoleGlobalRepositoryEloquent extends Repository implements RoleGlobalRepository
 {
+    private $localRoleRepository;
+
+    public function __construct(
+        Application $app,
+        RoleLocalRepository $localRepository
+    ) {
+        $this->localRoleRepository = $localRepository;
+
+        parent::__construct($app);
+    }
+
     /**
      * Specify Model class name
      *
@@ -30,5 +43,17 @@ class RoleGlobalRepositoryEloquent extends Repository implements RoleGlobalRepos
     {
         $this->pushCriteria(app(RequestCriteria::class));
         $this->pushCriteria(new RoleGlobalCriteria());
+    }
+
+    public function create(array $attributes)
+    {
+        if (empty($attributes['local_id'])) {
+            $role = $this->localRoleRepository->findWhere(['title' => 'ADMIN']);
+            if (!empty($role)) {
+                $attributes['local_id'] = $role->first()->id;
+            }
+        }
+
+        return parent::create($attributes);
     }
 }

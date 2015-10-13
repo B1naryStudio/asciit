@@ -100,6 +100,8 @@
         "users": "Users"
     },
     "roles": {
-        "roles": "Roles"
+        "roles": "Roles",
+        "local": "Role on the site",
+        "global": "Global role"
     }
 }

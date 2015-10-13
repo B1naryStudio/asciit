@@ -1,25 +1,27 @@
 define([
     'app',
     'backbone',
+    'paginator',
     'models/model-mixins'
 ], function (
     App,
     Backbone,
+    PageableCollection,
     ModelMixins
 ) {
-    App.Role.Models.Model = Backbone.Model.extend({
+    App.Role.Models.RoleModel = Backbone.Model.extend({
         defaults: {
             title: ''
         }
     });
 
     App.Role.Models.Collection = Backbone.Collection.extend({
-        model: App.Role.Models.Model,
+        model: App.Role.Models.RoleModel,
         url: App.prefix + '/api/v1/roles'
     });
 
-    App.User.Models.Global = PageableCollection.extend({
-        model: App.User.Models.UserModel,
+    App.Role.Models.Global = PageableCollection.extend({
+        model: App.Role.Models.RoleModel,
         url: App.prefix + '/api/v1/roles',
         sortKey: 'title',
         order: 'asc',
@@ -61,6 +63,10 @@ define([
 
     App.reqres.setHandler('role:global', function () {
         return API.roleGlobal();
+    });
+
+    App.reqres.setHandler('role:update', function (model) {
+        return API.deferOperation('save', model);
     });
 
     return App.Role.Models;

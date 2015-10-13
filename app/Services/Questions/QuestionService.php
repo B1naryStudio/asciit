@@ -17,6 +17,8 @@ use App\Repositories\Contracts\TagRepository;
 use App\Repositories\Contracts\VoteRepository;
 use App\Repositories\Criteria\InCriteria;
 use App\Repositories\Criteria\TagQuestionCriteria;
+use App\Repositories\Criteria\RecentCriteria;
+use App\Repositories\Criteria\LimitCriteria;
 use App\Services\Questions\Exceptions\QuestionServiceException;
 use App\Repositories\Contracts\CommentRepository;
 use Illuminate\Support\Facades\Event;
@@ -935,5 +937,33 @@ class QuestionService implements QuestionServiceInterface
         return $questions;
     }
 
+    public function getQuestionsRecent($pageSize, $data = array())
+    {
+        $this->questionRepository->pushCriteria(
+            new RecentCriteria('updated_at', 'desc')
+        );
+        $this->questionRepository->pushCriteria(
+            new LimitCriteria($pageSize)
+        );
+
+        $where = [];
+        if (!empty($data['date_start'])) {
+            $where[] = ['created_at', '>=', $data['date_start']];
+        }
+        if (!empty($data['date_end'])) {
+            $where[] = ['created_at', '<=', $data['date_end']];
+        }
+
+        $questions_query = $this->questionRepository
+            ->with(['user', 'folder', 'tags']);
+
+        if (empty($where)) {
+            $questions = $questions_query->all();
+        } else {
+            $questions = $questions_query->findWhere($where);
+        }
+
+        return $questions;
+    }
 }
 

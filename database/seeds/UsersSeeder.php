@@ -1,7 +1,7 @@
  <?php
 
 use Illuminate\Database\Seeder;
-use App\Repositories\Contracts\RoleRepository;
+use App\Repositories\Contracts\RoleLocalRepository;
 use App\Repositories\Contracts\UserRepository;
 use Faker\Factory;
 
@@ -11,7 +11,7 @@ class UsersSeeder extends Seeder
     private $userRepository;
 
     public function __construct(
-        RoleRepository $roleRepository,
+        RoleLocalRepository $roleRepository,
         UserRepository $userRepository
     ) {
         $this->roleRepository = $roleRepository;
@@ -36,7 +36,7 @@ class UsersSeeder extends Seeder
                 'last_name'      => $faker->lastName,
                 'email'          => $faker->unique()->email,
                 'remember_token' => str_random(10),
-                'local_role_id'        => $roleUser->id,
+                'local_role_id'  => $roleUser->id,
             ]);
         }
 
@@ -46,16 +46,16 @@ class UsersSeeder extends Seeder
             'email'          => 'admin@admin.com',
             'password'       => bcrypt('admin'),
             'remember_token' => str_random(10),
-            'local_role_id'        => $roleAdmin->id,
+            'local_role_id'  => $roleAdmin->id,
         ]);
 
         $this->userRepository->create([
-            'first_name' => 'unknown',
-            'last_name'  => 'unknown',
-            'email'     => 'cypherpunks01@europe.com',
-            'password' => bcrypt('cypherpunks01'),
+            'first_name'     => 'unknown',
+            'last_name'      => 'unknown',
+            'email'          => 'cypherpunks01@europe.com',
+            'password'       => bcrypt('cypherpunks01'),
             'remember_token' => str_random(10),
-            'local_role_id'        => $roleUser->id,
+            'local_role_id'  => $roleUser->id,
         ]);
     }
 }

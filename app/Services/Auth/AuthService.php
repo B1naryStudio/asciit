@@ -34,8 +34,8 @@ class AuthService implements AuthServiceInterface
 
     public function __construct(
         UserRepository $userRepository,
-        RoleLocalRepository $roleGlobalRepository,
-        RoleGlobalRepository $roleLocalRepository,
+        RoleGlobalRepository $roleGlobalRepository,
+        RoleLocalRepository $roleLocalRepository,
         UserUpdater $userUpdater
     ) {
         $this->userRepository = $userRepository;
@@ -46,10 +46,12 @@ class AuthService implements AuthServiceInterface
 
     public function authenticate(array $data)
     {
-        if (Auth::attempt([
-            'email' => $data['email'],
-            'password' => $data['password']
-        ])) {
+        if (
+            Auth::attempt([
+                'email' => $data['email'],
+                'password' => $data['password']
+            ])
+        ) {
             return $this->userRepository->findWithRelations(
                 Auth::id(),
                 ['localRole']
@@ -174,6 +176,7 @@ class AuthService implements AuthServiceInterface
         try {
             $users = $this->userRepository
                 ->with('localRole')
+                ->with('globalRole')
                 ->paginate($pageSize);
         } catch (RepositoryException $e) {
             throw new AuthException(
@@ -204,7 +207,9 @@ class AuthService implements AuthServiceInterface
     public function getGlobalRoles()
     {
         try {
-            $roles = $this->roleGlobalRepository->all();
+            $roles = $this->roleGlobalRepository
+                ->with('local')
+                ->all();
         } catch (RepositoryException $e) {
             throw new AuthException(
                 $e->getMessage() . ' Cannot return the roles list.',
@@ -214,5 +219,19 @@ class AuthService implements AuthServiceInterface
         }
 
         return $roles;
+    }
+
+    public function mapRoles(array $data, $roleId)
+    {
+        $localRole = $this->roleLocalRepository->find($data['local_id']);
+        $globalRole = $this->roleGlobalRepository
+            ->with('local')
+            ->find($roleId);
+
+        $localRole->globals()->save($globalRole);
+
+        return $this->roleGlobalRepository
+            ->with('local')
+            ->find($roleId);
     }
 }

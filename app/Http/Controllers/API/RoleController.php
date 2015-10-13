@@ -43,4 +43,18 @@ class RoleController extends Controller
 
         return Response::json($roles, 200, [], JSON_NUMERIC_CHECK);
     }
+
+    public function update(Request $request, $role_id)
+    {
+        // Update user
+        try {
+            $localRole = $this->authService->mapRoles($request->all(), $role_id);
+        } catch (AuthException $e) {
+            return Response::json([
+                'error' => [$e->getMessage()]
+            ], 500);
+        }
+
+        return Response::json($localRole, 200, [], JSON_NUMERIC_CHECK);
+    }
 }
