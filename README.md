@@ -93,31 +93,8 @@ BSA 2015 Forum Project
        sudo pecl install zmq-beta
        ```
 
-    - Подключить расширение в файлах настроек для cli и fpm:
-
-        - Открыть файл настроек текстовым редактором (в примере используется
-        vim)
-
-        ```
-        sudo vim /etc/php5/cli/php.ini
-        ```
-
-        - Найти раздел динамических расширений
-        ```
-        /Dynamic [Enter]
-        ```
-        - Вставить под комментариями  строку ```extension=zmq.so```
-        ```
-        i [Ctrl + Shift + V]
-        ```
-
-        - Сохранить файл
-
-        ```
-        [Esc] :wq [Enter]
-        ```
-
-        - Повторить шаги для файла ```/etc/php5/fpm/php.ini```
+    -  Добавить в файлы настроек ```/etc/php5/cli/php.ini``` и
+        ```/etc/php5/fpm/php.ini``` строку ```extension=zmq.so```
 
     - Создать в папке ```/etc/php5/mods-available/``` файл ```zmq.ini```
     с содержимым ```extension=zmq.so```
