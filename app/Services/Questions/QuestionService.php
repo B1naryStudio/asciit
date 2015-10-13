@@ -546,8 +546,19 @@ class QuestionService implements QuestionServiceInterface
             }
 
             // Update an answer closed value
-            $answer = $this->answerRepository
+            $this->answerRepository
                 ->setProtectedPropertyById($answer_id, 'closed', $closing_value);
+
+            // Lazy loading of data for notifications
+            $answer = $this->answerRepository->findWithRelations(
+                $answer_id,
+                [
+                    'user',
+                    'question.user',
+                    'question'
+                ]
+            );
+
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
