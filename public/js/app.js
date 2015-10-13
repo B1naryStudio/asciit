@@ -118,6 +118,22 @@ define([
 
         getSelectedInfo: function () {
             return this.selected;
+        },
+
+        getRoteByFunctionName: function (name) {
+            var i;
+
+            for (i in App.Routes.routes) {
+                if (!App.Routes.routes.hasOwnProperty(i)) {
+                    continue;
+                }
+
+                if (App.Routes.routes[i] === name) {
+                    return i;
+                }
+            }
+
+            return false;
         }
     };
 

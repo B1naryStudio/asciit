@@ -4,7 +4,8 @@ define([
     'backbone',
     'progressbar',
     'views/menu/menu',
-    'stickit'
+    'stickit',
+    'roles'
 ], function (
     App,
     Marionette,
@@ -13,23 +14,36 @@ define([
     Menu
 ) {
     // routes
+    App.Routes.routes = {
+        '': 'questions',
+        'questions': 'questions',
+        'questions/:id': 'question',
+        'login': 'login',
+        'logout': 'logout',
+        'edit-users': 'users',
+        'tags': 'tags',
+        'tags/:tag': 'tagSearch',
+        'activity': 'activity',
+        'question/:question_id/answer/:answer_id': 'question',
+        'folders': 'folders',
+        'folders/:folder': 'folderSearch',
+        'roles': 'roles'
+    };
+
     App.Routes.Router = Marionette.AppRouter.extend({
-        appRoutes: {
-            '': 'questions',
-            'questions': 'questions',
-            'questions/:id': 'question',
-            'login': 'login',
-            'logout': 'logout',
-            'edit-users': 'users',
-            'tags': 'tags',
-            'tags/:tag': 'tagSearch',
-            'activity': 'activity',
-            'question/:question_id/answer/:answer_id': 'question',
-            'folders': 'folders',
-            'folders/:folder': 'folderSearch',
-            'roles': 'roles'
-        },
+        appRoutes: App.Routes.routes,
         execute: function (callback, args, name) {
+            if (
+                App.User.Current &&
+                App.User.Current.get('result_role') &&
+                App.Roles[App.User.Current.get('result_role')] &&
+                App.Roles[App.User.Current.get('result_role')].indexOf(
+                    App.helper.getRoteByFunctionName(name)
+                ) < 0
+            ) {
+                Backbone.history.navigate('/', { trigger: true });
+                return false;
+            }
             if (
                 name !== 'login' && App.Routes.isOpen &&
                 callback || name === 'login' && callback

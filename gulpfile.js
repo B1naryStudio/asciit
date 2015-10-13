@@ -76,12 +76,17 @@ var concatSettings = {
         jsPathMinFull + 'views/templates/user/collection-layout.tpl.js',
         jsPathMinFull + 'views/templates/user/collection.tpl.js',
         jsPathMinFull + 'views/templates/user/row.tpl.js',
-        jsPathMinFull + 'views/templates/role/select-row.tpl.js',
+        jsPathMinFull + 'views/templates/role/select-row.tpl.js'
     ],
     'controllers/user/login': [
         jsPathMinFull + 'controllers/user/login.js',
-        jsPathMinFull + 'controllers/user.js',
         jsPathMinFull + 'views/templates/user/login.tpl.js'
+    ],
+    'controllers/role': [
+        jsPathMinFull + 'controllers/role.js',
+        jsPathMinFull + 'views/templates/role/collection.tpl.js',
+        jsPathMinFull + 'views/templates/role/collection-layout.tpl.js',
+        jsPathMinFull + 'views/templates/role/row.tpl.js'
     ],
     main: [
         jsPathMinFull + 'vendor/require/require.min.js',
@@ -103,6 +108,7 @@ var concatSettings = {
         jsPathMinFull + 'views/tag/view.js',
         jsPathMinFull + 'views/vote/single.js',
         jsPathMinFull + 'views/popup/confirm.js',
+        jsPathMinFull + 'views/role/select.js',
         jsPathMinFull + 'views/templates/menu/menu.tpl.js',
         jsPathMinFull + 'views/templates/main-layout.tpl.js',
         jsPathMinFull + 'views/templates/empty.tpl.js',
@@ -113,7 +119,8 @@ var concatSettings = {
         jsPathMinFull + 'views/templates/folder/select-row.tpl.js',
         jsPathMinFull + 'views/templates/question/form.tpl.js',
         jsPathMinFull + 'views/templates/popup/confirm.tpl.js',
-        jsPathMinFull + 'views/templates/vote/votes.tpl.js'
+        jsPathMinFull + 'views/templates/vote/votes.tpl.js',
+        jsPathMinFull + 'views/templates/role/select-row.tpl.js'
     ]
 };
 
@@ -195,7 +202,8 @@ gulp.task('js-prepare', function () {
         jsPathFull + 'views/tag/select.js',
         jsPathFull + 'views/tag/view.js',
         jsPathFull + 'views/popup/confirm.js',
-        jsPathFull + 'views/vote/single.js'
+        jsPathFull + 'views/vote/single.js',
+        jsPathFull + 'views/role/select.js'
     ])
         .pipe(loadSeparateFiles());
 });

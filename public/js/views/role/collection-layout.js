@@ -2,7 +2,7 @@ define([
     'app',
     'marionette',
     'backbone',
-    'tpl!views/templates/user/collection-layout.tpl'
+    'tpl!views/templates/role/collection-layout.tpl'
 ], function (
     App,
     Marionette,

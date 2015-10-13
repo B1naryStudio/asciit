@@ -48,7 +48,7 @@ class RoleGlobalRepositoryEloquent extends Repository implements RoleGlobalRepos
     public function create(array $attributes)
     {
         if (empty($attributes['local_id'])) {
-            $role = $this->localRoleRepository->findWhere(['title' => 'ADMIN']);
+            $role = $this->localRoleRepository->findWhere(['title' => 'USER']);
             if (!empty($role)) {
                 $attributes['local_id'] = $role->first()->id;
             }

@@ -28,7 +28,8 @@ class RolesTableSeeder extends Seeder
         $globalAdmin = $this->roleGlobalRepository->create(['title' => 'ADMIN']);
         $globalUser = $this->roleGlobalRepository->create(['title' => 'USER']);
 
-        //$this->roleGlobalRepository->create(['title' => 'MODER']);
+        $this->roleGlobalRepository->create(['title' => 'MODERATOR']);
+        $this->roleGlobalRepository->create(['title' => 'TESTER']);
 
         // mapping
         $localAdmin->globals()->save($globalAdmin);
