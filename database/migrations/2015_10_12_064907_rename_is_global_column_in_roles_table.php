@@ -13,12 +13,12 @@ class RenameIsGlobalColumnInRolesTable extends Migration
     public function up()
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->dropUnique('roles_title_is_global_unique');
+            //$table->dropUnique('roles_title_is_global_unique');
             $table->dropColumn('is_global');
 
             $table->integer('local_id')->unsigned()->nullable();
-            /*$table->foreign('local_id')->references('id')->on('roles')
-                ->onDelete('cascade');*/
+            $table->foreign('local_id')->references('id')->on('roles')
+                ->onDelete('cascade');
             $table->unique(array('title', 'local_id'));
         });
     }
@@ -32,11 +32,11 @@ class RenameIsGlobalColumnInRolesTable extends Migration
     {
         Schema::table('roles', function (Blueprint $table) {
             $table->dropUnique('roles_title_local_id_unique');
+            $table->dropForeign('roles_local_id_foreign');
             $table->dropColumn('local_id');
-            //$table->dropForeign('roles_local_id_foreign');
 
-            $table->boolean('is_global')->nullable();
-            $table->unique(array('title', 'is_global'));
+            //$table->boolean('is_global')->nullable();
+            //$table->unique(array('title', 'is_global'));
         });
     }
 }
