@@ -1,45 +1,46 @@
 # Asciit
 BSA 2015 Forum Project
 
-### Развертывание в системном окружении разработчика:
-1. Клонирование репозитория
+### A deployment on a system environment of developer:
+1. Clone the repository
 
     ```
     git clone https://github.com/m1x0n/asciit.git
     ```
-    или по ssh:
+    or by ssh:
     ```
     git clone git@github.com:m1x0n/asciit.git
     ```
 
-    Команда создаст в текущей директории поддиректорию с именем проекта, в которой
-     будут расположены склонированные файлы репозитория.
+    The command will create in the recent folder a subfolder where cloned files
+     will be placed.
 
-3. Создание локальной версии ветки `development`
+3. Create a local version of the branch `development`
 
-   - Перейти в папку проекта:
+   - Go to the project folder:
 
         ```
         cd asciit
         ```
 
-   - Создать ветку:
+   - Create a branch:
 
         ```
         git checkout development
         ```
 
-2. Установка зависимостей
+2. Install the project dependencies
 
     ```
     composer install
     ```
 
-4. Создание таблиц в базе данных
+4. Create tables in a database
 
-   - Создать в СУБД базу данных `ascit`
-   - Добавить в основной директории проекта файл с именем `.env` по примеру
-   `.env.example` и исправить в нем настройки базы данных на актуальные. Например:
+   - Create a database `ascit`
+   - Add a file with name `.env` in the main  directory.
+   - Add settings from `.env.example` to the file.
+   - Change the database settings to correct. For example:
 
        ```
        DB_HOST=192.168.10.10
@@ -48,19 +49,19 @@ BSA 2015 Forum Project
        DB_PASSWORD=secret
        ```
 
-   - запустить миграции
+   - run migrations
 
        ```
        php artisan migrate
        ```
 
-5. Заполнение таблиц тестовыми данными
+5. Seed the database by a random data
 
     ```
     php artisan db:seed
     ```
 
-    Тестовые пользователи:
+    Test users:
 
     ```
     email: admin@admin.com
@@ -69,23 +70,25 @@ BSA 2015 Forum Project
     email: cypherpunks01@europe.com
     pass:  cypherpunks01
     ```
-    У всех остальных пользователей случайно сгенерированый email и пароль `secret`.
 
-6. Включение обновления в реальном времени
+    Rest of users have a random email and the password `secret`.
 
-    6.1 Настройка сервиса доставки сообщений от HTTP-сервера к WAMP-серверу
+6. Turning on real-time updates
 
-       Возможно использование доставки с помощью HTTP-клиента GOS либо сервера очередей
-       ZMQ.
+    6.1 Set up a delivery service from an HTTP-server to a WAMP-server
 
-       - Установить в ```app/Providers/WebSocketsServiceProvider.php```
-       соответствующую абстрактную фабрику (```GOSWebSocketFactory``` или ```ZeroMQWebSocketFactory```).
+       It is possible to choose a delivery by HTTP-client GOS or the queue server
+        ZMQ.
 
-    В случае использования ZMQ, необходимо установить PHP-расширение. Приведен
-    код для установки на Debian-based системах. Команды и версии пакетов могут
-    отличаться.
+       - Set an appropriate abstract factory
+       (```GOSWebSocketFactory``` or ```ZeroMQWebSocketFactory```)
+       in ```app/Providers/WebSocketsServiceProvider.php```
 
-    - Установить расширение
+    In case you use ZMQ, it is necessary to install ZMQ PHP-extention. There
+    is a code for installing on Debian-based systems. Commands and package names
+    can be different.
+
+    - Install the ZMQ extension
 
        ```
        sudo apt-get install gcc make autoconf pkg-config
@@ -93,53 +96,52 @@ BSA 2015 Forum Project
        sudo pecl install zmq-beta
        ```
 
-    -  Добавить в файлы настроек ```/etc/php5/cli/php.ini``` и
-        ```/etc/php5/fpm/php.ini``` строку ```extension=zmq.so```
+    -  Add to the setting files ```/etc/php5/cli/php.ini``` and
+        ```/etc/php5/fpm/php.ini``` the string ```extension=zmq.so```
 
-    - Создать в папке ```/etc/php5/mods-available/``` файл ```zmq.ini```
-    с содержимым ```extension=zmq.so```
+    - Create a file with name ```zmq.ini``` in the folder ```/etc/php5/mods-available/```
 
-    - Перезапустить демона php:
+    - Insert to the file a string ```extension=zmq.so```
+
+    - Restart the PHP daemon:
 
     ```
     sudo service php5-fpm restart
     ```
 
-    - Проверить установку
+    - Check if ZMQ has installed
     ```
     php5 -i | grep zmq
     ```
-    При успешной установке будет похожий вывод:
+    You should see the following output:
     ```
     /etc/php5.X-sp/conf.d/zmq.ini
     zmq
     libzmq version => 2.2.0
     ```
 
-    6.2 Запустить WAMP-сервер
+    6.2 Run the WAMP-server
        ```
        php artisan sockets:serve
        ```
-       Команда запустит WAMP-сервер для рассылки сообщений о новых вопросах,
-       ответах и комментариях.
 
-       **Важно:** команду нужно запускать на том же окружении, в котором будет
-       работать HTTP-сервер. То есть, если вы работаете через Homestead -
-       запускать команду нужно под виртуальной машиной:
+       **Important:** you have run the command on the same system environment
+       as the HTTP-server. Hereby if you're use Homestead, run the command
+       on a virtual machine:
 
-       - Зайти по ssh:
+       - Connect to the VM by ssh:
 
        ```
        ssh vagrant@127.0.0.1 -p 2222
        ```
 
-       - Перейти в папку проекта:
+       - Go to the project folder:
 
        ```
        cd Code/ascit/
        ```
 
-       - Запустить WAMP-сервер
+       - Run the WAMP-server
 
        ```
        php artisan sockets:serve
