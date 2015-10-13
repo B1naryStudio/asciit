@@ -1,4 +1,4 @@
-# asciit
+# Asciit
 BSA 2015 Forum Project
 
 ### Развертывание в системном окружении разработчика:
@@ -73,6 +73,73 @@ BSA 2015 Forum Project
 
 6. Включение обновления в реальном времени
 
+    6.1 Настройка сервиса доставки сообщений от HTTP-сервера к WAMP-серверу
+
+       Возможно использование доставки с помощью HTTP-клиента GOS либо сервера очередей
+       ZMQ.
+
+       - Установить в ```app/Providers/WebSocketsServiceProvider.php```
+       соответствующую абстрактную фабрику (```GOSWebSocketFactory``` или ```ZeroMQWebSocketFactory```).
+
+    В случае использования ZMQ, необходимо установить PHP-расширение. Приведен
+    код для установки на Debian-based системах. Команды и версии пакетов могут
+    отличаться.
+
+    - Установить расширение
+
+       ```
+       sudo apt-get install gcc make autoconf pkg-config
+       sudo apt-get install libzmq-dev
+       sudo pecl install zmq-beta
+       ```
+
+    - Подключить расширение в файлах настроек для cli и fpm:
+
+        - Открыть файл настроек текстовым редактором (в примере используется
+        vim)
+
+        ```
+        sudo vim /etc/php5/cli/php.ini
+        ```
+
+        - Найти раздел динамических расширений
+        ```
+        /Dynamic [Enter]
+        ```
+        - Вставить под комментариями  строку ```extension=zmq.so```
+        ```
+        i [Ctrl + Shift + V]
+        ```
+
+        - Сохранить файл
+
+        ```
+        [Esc] :wq [Enter]
+        ```
+
+        - Повторить шаги для файла ```/etc/php5/fpm/php.ini```
+
+    - Создать в папке ```/etc/php5/mods-available/``` файл ```zmq.ini```
+    с содержимым ```extension=zmq.so```
+
+    - Перезапустить демона php:
+
+    ```
+    sudo service php5-fpm restart
+    ```
+
+    - Проверить установку
+    ```
+    php5 -i | grep zmq
+    ```
+    При успешной установке будет похожий вывод:
+    ```
+    /etc/php5.X-sp/conf.d/zmq.ini
+    zmq
+    libzmq version => 2.2.0
+    ```
+
+    6.2 Запустить WAMP-сервер
        ```
        php artisan sockets:serve
        ```
