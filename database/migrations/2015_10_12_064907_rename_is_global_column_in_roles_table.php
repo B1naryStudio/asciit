@@ -31,12 +31,14 @@ class RenameIsGlobalColumnInRolesTable extends Migration
     public function down()
     {
         Schema::table('roles', function (Blueprint $table) {
+            DB::table('roles')->whereNotNull('local_id')->delete();
+
             $table->dropUnique('roles_title_local_id_unique');
             $table->dropForeign('roles_local_id_foreign');
             $table->dropColumn('local_id');
 
             $table->boolean('is_global')->nullable();
-            //$table->unique(array('title', 'is_global'));
+            $table->unique(array('title', 'is_global'));
         });
     }
 }
