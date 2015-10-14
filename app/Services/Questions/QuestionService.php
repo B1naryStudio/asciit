@@ -26,7 +26,8 @@ use App\Events\QuestionWasAdded;
 use App\Events\QuestionWasRemoved;
 use App\Events\AnswerWasAdded;
 use App\Events\AnswerWasUpdated;
-use App\Events\AnswerWasRemoved;
+use App\Events\AnswerWasAccepted;
+use App\Events\AnswerWasDeclined;
 use App\Events\CommentWasAdded;
 use App\Events\CommentWasUpdated;
 use App\Events\CommentWasRemoved;
@@ -523,6 +524,7 @@ class QuestionService implements QuestionServiceInterface
     ) {
         try {
             if ($closing_value == true) {
+                // Check is there another chosen answer
                 $previous = $this->answerRepository->firstWhere([
                     'question_id' => $question_id,
                     'closed'      => true
@@ -530,7 +532,7 @@ class QuestionService implements QuestionServiceInterface
 
                 if ($previous) {
                     // Cancel a previous choise if it exists
-                    $answer = $this->answerRepository
+                    $previousBestAnswer = $this->answerRepository
                         ->setProtectedProperty($previous, 'closed', false);
                 } else {
                     // If there wasn't a best answer yet, mark question as closed
@@ -544,8 +546,19 @@ class QuestionService implements QuestionServiceInterface
             }
 
             // Update an answer closed value
-            $answer = $this->answerRepository
+            $this->answerRepository
                 ->setProtectedPropertyById($answer_id, 'closed', $closing_value);
+
+            // Lazy loading of data for notifications
+            $answer = $this->answerRepository->findWithRelations(
+                $answer_id,
+                [
+                    'user',
+                    'question.user',
+                    'question'
+                ]
+            );
+
         } catch (RepositoryException $e) {
             throw new QuestionServiceException(
                 $e->getMessage(),
@@ -560,6 +573,18 @@ class QuestionService implements QuestionServiceInterface
         }
 
         Event::fire(new AnswerWasUpdated($answer));
+
+        // Notifications for answer's authors
+        if ($closing_value) {
+            Event::fire(new AnswerWasAccepted($answer));
+        } else {
+            Event::fire(new AnswerWasDeclined($answer));
+        }
+
+        // Notification of the answer decline
+        if (isset($previousBestAnswer)) {
+            Event::fire(new AnswerWasDeclined($previousBestAnswer));
+        }
 
         return $closing_value;
     }

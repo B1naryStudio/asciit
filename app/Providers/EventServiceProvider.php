@@ -32,6 +32,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\AnswerWasRemoved' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\AnswerRemovingToBroadcasting',
         ],
+        'App\Events\AnswerWasAccepted' => [
+            'App\Listeners\DeliveryHandlers\HttpHandlers\AnswerAcceptingToHttp',
+        ],
+        'App\Events\AnswerWasDeclined' => [
+            'App\Listeners\DeliveryHandlers\HttpHandlers\AnswerDecliningToHttp',
+        ],
         'App\Events\CommentWasAdded' => [
             'App\Listeners\DeliveryHandlers\WebSocketHandlers\CommentToBroadcasting',
             'App\Listeners\DeliveryHandlers\HttpHandlers\CommentToHttp',
