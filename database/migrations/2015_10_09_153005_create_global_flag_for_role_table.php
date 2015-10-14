@@ -27,12 +27,11 @@ class CreateGlobalFlagForRoleTable extends Migration
     public function down()
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->dropUnique('roles_title_is_global_unique');
-            $sql = 'DELETE FROM roles WHERE is_global IS NOT NULL';
-            $table->dropColumn('is_global');
-            DB::connection()->getPdo()->exec($sql);
-            $table->unique('title');
+            DB::table('roles')->whereNotNull('is_global')->delete();
 
+            $table->dropUnique('roles_title_is_global_unique');
+            $table->dropColumn('is_global');
+            $table->unique('title');
         });
     }
 }

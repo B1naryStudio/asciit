@@ -3,25 +3,29 @@
 namespace App\Services\Auth;
 
 use App\Repositories\Contracts\UserRepository;
-use App\Repositories\Contracts\RoleRepository;
+use App\Repositories\Contracts\RoleLocalRepository;
 use App\Services\RemoteDataGrabber\Contracts\DataGrabberInterface;
 use App\Services\Auth\Contracts\UserUpdater;
 use App\Services\Auth\Exceptions\UpdatingFailureException;
 use App\Repositories\Entities\User;
 use App\Services\RemoteDataGrabber\Exceptions\RemoteDataGrabberException;
+use App\Repositories\Contracts\RoleGlobalRepository;
 
 class ProfileAPIUserUpdater extends UserUpdater
 {
-    protected $roleRepository;
+    protected $roleLocalRepository;
+    protected $roleGlobalRepository;
     protected $userRepository;
     protected $dataGrabber;
 
     public function __construct(
-        RoleRepository $roleRepository,
+        RoleLocalRepository $roleLocalRepository,
+        RoleGlobalRepository $roleGlobalRepository,
         UserRepository $userRepository,
         DataGrabberInterface $dataGrabber
     ) {
-        $this->roleRepository = $roleRepository;
+        $this->roleLocalRepository = $roleLocalRepository;
+        $this->roleGlobalRepository = $roleGlobalRepository;
         $this->userRepository = $userRepository;
         $this->dataGrabber = $dataGrabber;
     }
@@ -52,7 +56,7 @@ class ProfileAPIUserUpdater extends UserUpdater
 
         // Setting a default local role if it's absent
         if (!$entitledUser->local_role_id) {
-            $role = $this->roleRepository->firstWhere(['title' => 'USER']);
+            $role = $this->roleLocalRepository->firstWhere(['title' => 'USER']);
             $entitledUser = $this->userRepository->setProtectedProperty(
                 $entitledUser,
                 'local_role_id',
@@ -70,12 +74,13 @@ class ProfileAPIUserUpdater extends UserUpdater
      * @param $user
      * @return User $user
      */
-    public function updateAdditionalInfo($cookie, $user) {
+    public function updateAdditionalInfo($cookie, $user)
+    {
         $url = url(env('AUTH_ME') . '/' . $user->binary_id);
-        $curlOptions = [CURLOPT_COOKIE => "x-access-token=" . $cookie];
+        $curlOptions = [CURLOPT_COOKIE => 'x-access-token=' . $cookie];
 
         try {
-            $remoteInfo = (array)$this->dataGrabber->getFromJson(
+            $remoteInfo = $this->dataGrabber->getFromJson(
                 $url,
                 $curlOptions
             );
@@ -134,11 +139,12 @@ class ProfileAPIUserUpdater extends UserUpdater
      */
     protected function attachBinaryRoleId(array &$arr)
     {
-        if (!array_key_exists('role', $arr)) return;
+        if (!array_key_exists('role', $arr)) {
+            return;
+        }
 
-        $role = $this->roleRepository->firstOrCreate([
-            'title'  => $arr['role'],
-            'is_global' => true,
+        $role = $this->roleGlobalRepository->firstOrCreate([
+            'title'  => $arr['role']
         ]);
         $arr['global_role_id'] = $role->id;
     }

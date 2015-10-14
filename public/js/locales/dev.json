@@ -79,7 +79,6 @@
 
         "edit": "Edit",
         "delete": "Delete",
-        "save": "Save",
         "cancel": "Cancel",
 
         "confirm-title": "Confirmation",
@@ -100,5 +99,10 @@
     },
     "users": {
         "users": "Users"
+    },
+    "roles": {
+        "roles": "Roles",
+        "local": "Local role",
+        "global": "Global role"
     }
 }
