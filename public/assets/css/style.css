@@ -2,6 +2,34 @@
     outline: none;
 }
 
+body,
+.votes.question-votes {
+    /*background-color: #f0f0f0;*/
+}
+
+.panel,
+.pages.pagination,
+.search,
+.list-group-item {
+    border: none;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.14),
+                0 1px 10px 0 rgba(0, 0, 0, 0.098),
+                0 1px 18px 0 rgba(0, 0, 0, 0.084);
+    background-color: #ffffff;
+}
+
+.search {
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.14),
+                0 1px 5px 0 rgba(0, 0, 0, 0.098),
+                0 1px 5px 0 rgba(0, 0, 0, 0.084);
+}
+
+.panel-heading {
+    border: none;
+    outline: 1px solid #ddd;
+    padding: 10px 15px;
+}
+
 body.modal-open {
     overflow: inherit;
     padding-right: 0 !important;
@@ -11,6 +39,24 @@ body.modal-open {
     width: 100%;
     height: auto;
     margin: 5px 0;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Search
+ |------------------------------------------------------------------------------
+ */
+.search {
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.14),
+                0 1px 5px 0 rgba(0, 0, 0, 0.098),
+                0 1px 5px 0 rgba(0, 0, 0, 0.084);
+
+}
+
+#search-query {
+    height: 43px;
+    padding: 18px 10px;
+    border: none;
 }
 
 /*
@@ -435,8 +481,7 @@ body.modal-open {
 .section-header {
     font-size: 1.2em;
     font-weight: bold;
-    color: #aaa;
-    border-bottom: 1px solid #ccc;
+    color: #999;
     padding-left: 10px;
     margin-bottom: 10px;
 }
@@ -476,6 +521,15 @@ body.modal-open {
  | Controls (edit, delete)
  |------------------------------------------------------------------------------
  */
+.form-control {
+    height: 34px;
+    padding: 6px 12px;
+}
+
+.btn-default {
+    background-color: rgb(51, 51, 51);
+}
+
 .control {
     display: inline-block;
 }
@@ -621,6 +675,7 @@ body.modal-open {
 /* The same color for the select 2 border as from Bootstrap 3 */
 .select2-container--default .select2-selection {
     border: 1px solid #ccc;
+    border-radius: 0;
     font-weight: normal;
 
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
@@ -632,6 +687,11 @@ body.modal-open {
 
 .select2-container .select2-selection--single {
     height: 34px;
+}
+
+.select2-dropdown {
+    border-radius: 0;
+    border-color: rgb(204, 204, 204);
 }
 
 .select2-selection--single .select2-selection__rendered {
@@ -791,6 +851,10 @@ body.modal-open {
  | User avatar
  |------------------------------------------------------------------------------
  */
+.img-thumbnail {
+    border: none;
+}
+
 .img-thumbnail.big {
     max-width: 100px;
     max-height: 100px;
@@ -818,7 +882,7 @@ body.modal-open {
  |------------------------------------------------------------------------------
  */
 .tags_list {
-    margin-top: 50px;
+    margin-top: 58px;
 }
 
 #question-view .tags  {
@@ -853,8 +917,6 @@ body.modal-open {
     list-style: none;
     font-size: 0.8em;
     background-color: #EEEEEE;
-    border: 1px solid #ccc;
-    border-radius: 4px;
     cursor: default;
     margin-right: 5px;
     margin-top: 5px;
@@ -877,7 +939,6 @@ body.modal-open {
 .tags_list .title {
     float: left;
     width: 100%;
-    padding-top: 5px;
 }
 
 .tags .search {
@@ -1067,6 +1128,8 @@ blockquote .author {
 .single-comment {
     border: none;
     border-top: 1px solid #ddd;
+    box-shadow: none;
+    background-color: inherit;
 }
 
 .question-preview {
