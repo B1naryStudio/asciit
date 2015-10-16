@@ -196,11 +196,11 @@ interface QuestionServiceInterface
 
     /**
      * @param Question $question
-     * @param array $tagTitlesTarget
+     * @param array $tagTitlesTargetList
      */
     public function updateQuestionTags(
         Question $question,
-        array $tagTitlesTarget
+        array $tagTitlesTargetList
     );
 
     /**
