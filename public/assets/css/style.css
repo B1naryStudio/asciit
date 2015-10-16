@@ -2,14 +2,18 @@
     outline: none;
 }
 
-body,
-.votes.question-votes {
-    /*background-color: #f0f0f0;*/
+body {
+    background-color: #f0f0f0;
 }
 
 .panel,
 .pages.pagination,
 .search,
+.answers-list > .folding-controls,
+.question-wrapper,
+.table,
+.roles .row,
+.tags-collection .tag-element,
 .list-group-item {
     border: none;
     box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.14),
@@ -28,6 +32,10 @@ body,
     border: none;
     outline: 1px solid #ddd;
     padding: 10px 15px;
+}
+
+.panel-body {
+    overflow: hidden;
 }
 
 body.modal-open {
@@ -57,6 +65,9 @@ body.modal-open {
     height: 43px;
     padding: 18px 10px;
     border: none;
+}
+.search span.input-group-btn {
+    background-color: #333;
 }
 
 /*
@@ -402,7 +413,7 @@ body.modal-open {
 
 .question_view .votes {
     font-size: 25px;
-    padding-top: 20px;
+    padding-top: 5px;
     text-align: center;
 }
 
@@ -450,6 +461,11 @@ body.modal-open {
  | Single question
  |------------------------------------------------------------------------------
  */
+.question-wrapper {
+    padding: 15px;
+    margin: 0 -15px 20px;
+}
+
 .time {
     display: block;
     margin-bottom: 5px;
@@ -481,8 +497,8 @@ body.modal-open {
 .section-header {
     font-size: 1.2em;
     font-weight: bold;
-    color: #999;
-    padding-left: 10px;
+    color: #333;
+    padding-left: 5px;
     margin-bottom: 10px;
 }
 
@@ -808,6 +824,11 @@ body.modal-open {
     margin: 0;
 }
 
+#popup-layout-view #cke_description {
+    box-shadow: none;
+    border: 1px solid #ddd;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Users table
@@ -959,8 +980,7 @@ body.modal-open {
     float: left;
     text-align: left;
     border: 1px solid #eeeeee;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 .tag-element a {
@@ -986,7 +1006,6 @@ body.modal-open {
     background-color: #009933;
     color: #ffffff;
     border-color: #ffffff;
-    border-radius: 5px;
 }
 
 .tag-element a:hover .badge {
@@ -1186,6 +1205,10 @@ blockquote .author {
  | New answer
  |------------------------------------------------------------------------------
  */
+.new-answer {
+    margin: 0 -15px 21px;
+}
+
 .new-answer .panel-body {
     padding: 0;
 }
@@ -1230,6 +1253,13 @@ blockquote .author {
     padding-right: 0;
 }
 
+#answers,
+.answers-list > .section-header,
+.answers-list > .folding-controls {
+    margin-left: 30px;
+    margin-right: -15px;
+}
+
 .answers-list .question-info {
     color: dimgray;
     font-size: 0.9em;
@@ -1267,6 +1297,7 @@ blockquote .author {
  */
 #answers .single-answer {
     margin-bottom: 10px;
+    padding-top: 20px;
 }
 
 .single-answer .user-info {
@@ -1350,6 +1381,16 @@ div .fa-05 {
     text-align: center;
 }
 
+.paginator .active a {
+    background-color: rgb(51, 51, 51);
+    color: #ffffff;
+}
+
+.paginator .active a:hover {
+    background-color: #555555;
+    color: #ffffff;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Folders
@@ -1431,6 +1472,10 @@ div .fa-05 {
 .folders-form .wrapper-fields {
     margin-right: 95px;
     margin-bottom: 0;
+}
+
+.folders-form input {
+    padding: 5px 10px;
 }
 
 .folders-form .help-block {
@@ -2015,14 +2060,14 @@ div .fa-05 {
 
 @media (min-width: 850px) {
     .tag-element {
-        width: 15%;
+        width: 17%;
     }
 
     .tag-element:nth-child(5n-3),
     .tag-element:nth-child(5n-2),
     .tag-element:nth-child(5n-1),
     .tag-element:nth-child(5n) {
-        margin-left: 6.2%;
+        margin-left: 3%;
     }
 }
 
@@ -2051,13 +2096,13 @@ div .fa-05 {
     }
 
     .tag-element {
-        width: 12%;
+        width: 17%;
     }
 
     .tag-element:nth-child(5n-3),
     .tag-element:nth-child(5n-2),
     .tag-element:nth-child(5n-1),
     .tag-element:nth-child(5n) {
-        margin-left: 10%;
+        margin-left: 3%;
     }
 }
