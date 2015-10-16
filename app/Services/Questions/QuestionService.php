@@ -179,11 +179,11 @@ class QuestionService implements QuestionServiceInterface
 
     /**
      * @param Question $question
-     * @param array $tagTitlesTarget
+     * @param array $tagTitlesTargetList
      */
     public function updateQuestionTags(
         Question $question,
-        array $tagTitlesTarget
+        array $tagTitlesTargetList
     ) {
         // Retreive all already related with question tags
         $questionTags = $this->tagRepository->getByCriteria(

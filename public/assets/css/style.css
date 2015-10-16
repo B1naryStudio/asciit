@@ -2,6 +2,43 @@
     outline: none;
 }
 
+body {
+    background-color: #f0f0f0;
+}
+
+.panel,
+.pages.pagination,
+.search,
+#question-list .help,
+.answers-list > .folding-controls,
+.question-wrapper,
+.table,
+.roles .row,
+.tags-collection .tag-element,
+.list-group-item {
+    border: none;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.14),
+                0 1px 10px 0 rgba(0, 0, 0, 0.098),
+                0 1px 18px 0 rgba(0, 0, 0, 0.084);
+    background-color: #ffffff;
+}
+
+.search {
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.14),
+                0 1px 5px 0 rgba(0, 0, 0, 0.098),
+                0 1px 5px 0 rgba(0, 0, 0, 0.084);
+}
+
+.panel-heading {
+    border: none;
+    outline: 1px solid #ddd;
+    padding: 10px 15px;
+}
+
+.panel-body {
+    overflow: hidden;
+}
+
 body.modal-open {
     overflow: inherit;
     padding-right: 0 !important;
@@ -11,6 +48,27 @@ body.modal-open {
     width: 100%;
     height: auto;
     margin: 5px 0;
+}
+
+/*
+ |------------------------------------------------------------------------------
+ | Search
+ |------------------------------------------------------------------------------
+ */
+.search {
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.14),
+                0 1px 5px 0 rgba(0, 0, 0, 0.098),
+                0 1px 5px 0 rgba(0, 0, 0, 0.084);
+
+}
+
+#search-query {
+    height: 43px;
+    padding: 18px 10px;
+    border: none;
+}
+.search span.input-group-btn {
+    background-color: #333;
 }
 
 /*
@@ -299,7 +357,7 @@ body.modal-open {
     background-color: #fff;
     padding: 10px;
     display: none;
-    top: 44px;
+    top: 50px;
     left: 50%;
     margin-left: -165px;
 }
@@ -356,7 +414,7 @@ body.modal-open {
 
 .question_view .votes {
     font-size: 25px;
-    padding-top: 20px;
+    padding-top: 5px;
     text-align: center;
 }
 
@@ -404,6 +462,11 @@ body.modal-open {
  | Single question
  |------------------------------------------------------------------------------
  */
+.question-wrapper {
+    padding: 15px;
+    margin: 0 -15px 20px;
+}
+
 .time {
     display: block;
     margin-bottom: 5px;
@@ -435,9 +498,8 @@ body.modal-open {
 .section-header {
     font-size: 1.2em;
     font-weight: bold;
-    color: #aaa;
-    border-bottom: 1px solid #ccc;
-    padding-left: 10px;
+    color: #333;
+    padding-left: 5px;
     margin-bottom: 10px;
 }
 
@@ -476,6 +538,15 @@ body.modal-open {
  | Controls (edit, delete)
  |------------------------------------------------------------------------------
  */
+.form-control {
+    height: 34px;
+    padding: 6px 12px;
+}
+
+.btn-default {
+    background-color: rgb(51, 51, 51);
+}
+
 .control {
     display: inline-block;
 }
@@ -549,11 +620,7 @@ body.modal-open {
 
 .answer-body,
 .single-answer .user-info,
-.single-comment .row, {
-    position: relative;
-}
-
-.answer-body {
+.single-comment .row {
     position: relative;
 }
 
@@ -562,12 +629,14 @@ body.modal-open {
     right: 10px;
 }
 
-.single-comment .entry-controls {
-    bottom: 0;
-}
-
 .single-answer .entry-controls {
     bottom: 10px;
+}
+
+.single-comment .entry-controls {
+    position: absolute;
+    bottom: 0;
+    right: 10px;
 }
 
 .best .single-answer,
@@ -621,6 +690,7 @@ body.modal-open {
 /* The same color for the select 2 border as from Bootstrap 3 */
 .select2-container--default .select2-selection {
     border: 1px solid #ccc;
+    border-radius: 0;
     font-weight: normal;
 
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
@@ -632,6 +702,11 @@ body.modal-open {
 
 .select2-container .select2-selection--single {
     height: 34px;
+}
+
+.select2-dropdown {
+    border-radius: 0;
+    border-color: rgb(204, 204, 204);
 }
 
 .select2-selection--single .select2-selection__rendered {
@@ -748,6 +823,11 @@ body.modal-open {
     margin: 0;
 }
 
+#popup-layout-view #cke_description {
+    box-shadow: none;
+    border: 1px solid #ddd;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Users table
@@ -791,6 +871,10 @@ body.modal-open {
  | User avatar
  |------------------------------------------------------------------------------
  */
+.img-thumbnail {
+    border: none;
+}
+
 .img-thumbnail.big {
     max-width: 100px;
     max-height: 100px;
@@ -818,7 +902,7 @@ body.modal-open {
  |------------------------------------------------------------------------------
  */
 .tags_list {
-    margin-top: 50px;
+    margin-top: 58px;
 }
 
 #question-view .tags  {
@@ -853,8 +937,6 @@ body.modal-open {
     list-style: none;
     font-size: 0.8em;
     background-color: #EEEEEE;
-    border: 1px solid #ccc;
-    border-radius: 4px;
     cursor: default;
     margin-right: 5px;
     margin-top: 5px;
@@ -877,7 +959,6 @@ body.modal-open {
 .tags_list .title {
     float: left;
     width: 100%;
-    padding-top: 5px;
 }
 
 .tags .search {
@@ -898,8 +979,7 @@ body.modal-open {
     float: left;
     text-align: left;
     border: 1px solid #eeeeee;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 .tag-element a {
@@ -925,7 +1005,6 @@ body.modal-open {
     background-color: #009933;
     color: #ffffff;
     border-color: #ffffff;
-    border-radius: 5px;
 }
 
 .tag-element a:hover .badge {
@@ -1037,8 +1116,16 @@ blockquote .author {
  | Comments
  |------------------------------------------------------------------------------
  */
+.comments-region {
+    margin-bottom: 0;
+}
+
 .comment-form {
+    margin-top: 15px;
     display: none;
+    box-shadow: none;
+    border: 1px solid #ddd;
+    margin-bottom: 0;
 }
 
 .comments-form textarea {
@@ -1060,13 +1147,21 @@ blockquote .author {
 }
 
 .form-open {
-    background-color: #e6e6e6;
+    background-color: #5b5b5b;
     border-color: #adadad;
 }
 
 .single-comment {
     border: none;
     border-top: 1px solid #ddd;
+    box-shadow: none;
+    background-color: inherit;
+    padding: 15px 15px 0;
+    margin: 15px 0;
+}
+
+.single-comment:first-child {
+    margin-top: 0;
 }
 
 .question-preview {
@@ -1123,6 +1218,10 @@ blockquote .author {
  | New answer
  |------------------------------------------------------------------------------
  */
+.new-answer {
+    margin: 0 -15px 21px;
+}
+
 .new-answer .panel-body {
     padding: 0;
 }
@@ -1167,6 +1266,13 @@ blockquote .author {
     padding-right: 0;
 }
 
+#answers,
+.answers-list > .section-header,
+.answers-list > .folding-controls {
+    margin-left: 30px;
+    margin-right: -15px;
+}
+
 .answers-list .question-info {
     color: dimgray;
     font-size: 0.9em;
@@ -1204,10 +1310,34 @@ blockquote .author {
  */
 #answers .single-answer {
     margin-bottom: 10px;
+    padding: 20px 15px;
 }
 
 .single-answer .user-info {
     padding-left: 20px;
+}
+
+.single-answer .answer-body {
+    display: table;
+}
+
+.answer-body .avatar-block,
+.answer-body .content-block {
+    float: none;
+    display: table-cell;
+}
+
+.answer-body .content-block {
+    vertical-align: top;
+    padding-bottom: 30px;
+}
+
+.single-answer .actions {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding-left: 15px;
 }
 
 /*
@@ -1285,6 +1415,16 @@ div .fa-05 {
  */
 .paginator {
     text-align: center;
+}
+
+.paginator .active a {
+    background-color: rgb(51, 51, 51);
+    color: #ffffff;
+}
+
+.paginator .active a:hover {
+    background-color: #5b5b5b;
+    color: #ffffff;
 }
 
 /*
@@ -1368,6 +1508,10 @@ div .fa-05 {
 .folders-form .wrapper-fields {
     margin-right: 95px;
     margin-bottom: 0;
+}
+
+.folders-form input {
+    padding: 5px 10px;
 }
 
 .folders-form .help-block {
@@ -1952,14 +2096,14 @@ div .fa-05 {
 
 @media (min-width: 850px) {
     .tag-element {
-        width: 15%;
+        width: 17%;
     }
 
     .tag-element:nth-child(5n-3),
     .tag-element:nth-child(5n-2),
     .tag-element:nth-child(5n-1),
     .tag-element:nth-child(5n) {
-        margin-left: 6.2%;
+        margin-left: 3%;
     }
 }
 
@@ -1988,13 +2132,13 @@ div .fa-05 {
     }
 
     .tag-element {
-        width: 12%;
+        width: 17%;
     }
 
     .tag-element:nth-child(5n-3),
     .tag-element:nth-child(5n-2),
     .tag-element:nth-child(5n-1),
     .tag-element:nth-child(5n) {
-        margin-left: 10%;
+        margin-left: 3%;
     }
 }

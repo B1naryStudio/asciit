@@ -27,8 +27,9 @@ define([
 ) {
     App.Comment.Views.SingleCommentCompositeView = Marionette.CompositeView.extend({
         template: SingleCommentTpl,
+        className: "list-group-item single-comment",
+
         ui: {
-            itemArea:     '.single-comment',
             deleteButton: '.entry-controls .delete',
             editButton:   '.entry-controls .edit',
             saveButton:   '.entry-controls .save',
@@ -44,8 +45,8 @@ define([
         },
 
         triggers: {
-            'mouseenter @ui.itemArea': 'over:entry',
-            'mouseleave @ui.itemArea':  'out:entry',
+            'mouseenter': 'over:entry',
+            'mouseleave':  'out:entry',
             'click @ui.deleteButton': 'delete',
             'click @ui.editButton':   'edit:start',
             'click @ui.saveButton':   'edit:save',
@@ -56,11 +57,11 @@ define([
         behaviors: {
             HidingControls: {
                 behaviorClass: HidingControls,
-                controlsContainer: '.single-comment .entry-controls'
+                controlsContainer: '    .entry-controls'
             },
             DeleteButton: {
                 behaviorClass: DeleteButton,
-                itemArea: '.single-comment'
+                itemArea: this.el
             },
             EditButton: {
                 behaviorClass: EditButton
