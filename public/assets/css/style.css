@@ -9,6 +9,7 @@ body {
 .panel,
 .pages.pagination,
 .search,
+#question-list .help,
 .answers-list > .folding-controls,
 .question-wrapper,
 .table,
@@ -356,7 +357,7 @@ body.modal-open {
     background-color: #fff;
     padding: 10px;
     display: none;
-    top: 44px;
+    top: 50px;
     left: 50%;
     margin-left: -165px;
 }
