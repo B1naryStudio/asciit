@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="form-group controls">
-        <button type="submit" class="btn btn-info"><%- _t("ui.yes") %></button>
-        <button type="button" class="btn btn-info cancel-confirm"><%- _t("ui.no") %></button>
+        <button type="submit" class="btn btn-sm btn-info"><%- _t("ui.yes") %></button>
+        <button type="button" class="btn btn-sm btn-info cancel-confirm"><%- _t("ui.no") %></button>
     </div>
 </form>
