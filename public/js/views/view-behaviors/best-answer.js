@@ -32,21 +32,21 @@ define([
             if (this.isAnswerBest()) {
                 this.$el.addClass('best');
                 this.onStatusBestShow();
-                this.ui.selectAsBestButton.hide();
+                this.$(this.ui.selectAsBestButton).hide();
             } else {
                 this.$el.removeClass('best');
-                this.ui.indicatorOfBest.hide();
-                this.ui.cancelBestStatusButton.hide();
+                this.$(this.ui.indicatorOfBest).hide();
+                this.$(this.ui.cancelBestStatusButton).hide();
             }
         },
 
         onOverEntry: function () {
             if (!this.isAnswerBest() && this.isOwnerOfQuestion()) {
-                this.ui.selectAsBestButton.show();
+                this.$(this.ui.selectAsBestButton).show();
             }
         },
         onOutEntry: function () {
-            this.ui.selectAsBestButton.hide();
+            this.$(this.ui.selectAsBestButton).hide();
         },
 
         onBestSelect: function () {
@@ -70,16 +70,16 @@ define([
         onBestCancelButtonShow: function () {
             // question ownership clause
             if (this.isAnswerBest() && this.isOwnerOfQuestion()) {
-                this.ui.indicatorOfBest.hide();
-                this.ui.cancelBestStatusButton.show();
+                this.$(this.ui.indicatorOfBest).hide();
+                this.$(this.ui.cancelBestStatusButton).show();
             }
         },
 
         // Shows the status of the best answer (on show or on mouse out of cancel)
         onStatusBestShow: function () {
             if (this.isAnswerBest()) {
-                this.ui.indicatorOfBest.show();
-                this.ui.cancelBestStatusButton.hide();
+                this.$(this.ui.indicatorOfBest).show();
+                this.$(this.ui.cancelBestStatusButton).hide();
             }
         },
 
