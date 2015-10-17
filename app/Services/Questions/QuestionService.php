@@ -28,6 +28,7 @@ use App\Events\AnswerWasAdded;
 use App\Events\AnswerWasUpdated;
 use App\Events\AnswerWasAccepted;
 use App\Events\AnswerWasDeclined;
+use App\Events\AnswerWasRemoved;
 use App\Events\CommentWasAdded;
 use App\Events\CommentWasUpdated;
 use App\Events\CommentWasRemoved;
