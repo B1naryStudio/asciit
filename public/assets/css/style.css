@@ -1148,6 +1148,10 @@ blockquote .author {
     outline-offset: 0;
 }
 
+#answers .single-comment .user-info {
+    min-width: 100px;
+}
+
 .form-open {
     background-color: #5b5b5b;
     border-color: #adadad;
@@ -1337,6 +1341,11 @@ blockquote .author {
     padding-bottom: 30px;
 }
 
+.answer-body .content-block,
+.single-answer .actions {
+    padding-left: 10px;
+}
+
 .single-answer .actions {
     position: absolute;
     bottom: 0;
@@ -1427,7 +1436,7 @@ div .fa-05 {
 }
 
 .paginator .active a:hover {
-    background-color: #5b5b5b;
+    background-color: #222;
     color: #ffffff;
 }
 
@@ -2009,6 +2018,7 @@ div .fa-05 {
     }
 
     #question-list .img-thumbnail.big,
+    #answers .img-thumbnail,
     .my-questions .img-thumbnail,
     .my-answers .img-thumbnail {
         max-width: 75px;
@@ -2042,6 +2052,11 @@ div .fa-05 {
     #top-link {
         display: none !important;
     }
+
+    .answer-body .avatar-block,
+    .answer-body .content-block {
+        display: block;
+    }
 }
 
 @media (min-width: 768px) {
@@ -2059,9 +2074,10 @@ div .fa-05 {
     }
 
     .comments-region,
-    .comment-form {
-        width: 80%;
-        margin-left: 20%;
+    .comment-form,
+    .comment-list .folding-controls .control {
+        width: 84%;
+        margin-left: 16%;
     }
 
     .questions-answers {
@@ -2096,6 +2112,14 @@ div .fa-05 {
     .tag-element:nth-child(5n) {
         margin-left: 6.2%;
     }
+
+    #answers .col-md-2 {
+        width: 25%;
+    }
+
+    #answers .col-md-10 {
+        width: 75%;
+    }
 }
 
 @media (min-width: 850px) {
@@ -2115,18 +2139,19 @@ div .fa-05 {
     .container {
         width: 1100px;
     }
+
+    #answers .col-md-2 {
+        width: 17%;
+    }
+
+    #answers .col-md-10 {
+        width: 83%;
+    }
 }
 
 @media (min-width: 1251px) {
     .container {
         width: 1170px;
-    }
-
-    .comments-region,
-    .comment-form,
-    .comment-list .folding-controls .control {
-        width: 88%;
-        margin-left: 12%;
     }
 
     .tag-element {
