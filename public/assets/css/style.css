@@ -592,7 +592,7 @@ body.modal-open {
 
 .single-answer .best-controls {
     position: absolute;
-    left: 13px;
+    left: 0;
     top: 0;
 }
 
@@ -633,13 +633,12 @@ body.modal-open {
 
 .entry-controls {
     position: absolute;
-    right: 10px;
+    right: 0;
 }
 
 .single-comment .entry-controls {
     position: absolute;
     bottom: 0;
-    right: 10px;
 }
 
 .best .single-answer,
@@ -1317,17 +1316,20 @@ blockquote .author {
 }
 
 .single-answer .user-info {
-    margin-left: 18px;
+    margin: auto 20px;
 }
 
 .single-answer .answer-body {
     display: table;
+    width: 100%;
+    margin: 0;
 }
 
 .answer-body .avatar-block,
 .answer-body .content-block {
     float: none;
     display: table-cell;
+    padding: 0;
 }
 
 .answer-body .content-block {
@@ -1340,7 +1342,6 @@ blockquote .author {
     bottom: 0;
     left: 0;
     width: 100%;
-    padding-left: 15px;
 }
 
 /*
@@ -1695,10 +1696,6 @@ div .fa-05 {
     #answers .votes .like-vote {
         left: 0;
     }
-
-    .single-answer .best-controls {
-        left: 5px;
-    }
 }
 
 @media (max-width: 350px) {
@@ -2045,10 +2042,6 @@ div .fa-05 {
     #top-link {
         display: none !important;
     }
-
-    .single-answer .best-controls {
-        left: 8px;
-    }
 }
 
 @media (min-width: 768px) {
@@ -2103,10 +2096,6 @@ div .fa-05 {
     .tag-element:nth-child(5n) {
         margin-left: 6.2%;
     }
-
-    .single-answer .best-controls {
-        left: 8px;
-    }
 }
 
 @media (min-width: 850px) {
@@ -2120,25 +2109,11 @@ div .fa-05 {
     .tag-element:nth-child(5n) {
         margin-left: 3.7%;
     }
-
-    .single-answer .best-controls {
-        left: 8px;
-    }
 }
-
-/*@media (min-width: 1000px) {
-    .container {
-        width: 940px;
-    }
-}*/
 
 @media (min-width: 1250px) {
     .container {
         width: 1100px;
-    }
-
-    .single-answer .best-controls {
-        left: 10px;
     }
 }
 
@@ -2163,9 +2138,5 @@ div .fa-05 {
     .tag-element:nth-child(5n-1),
     .tag-element:nth-child(5n) {
         margin-left: 3.7%;
-    }
-
-    .single-answer .best-controls {
-        left: 13px;
     }
 }
