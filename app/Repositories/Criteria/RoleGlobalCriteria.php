@@ -5,11 +5,10 @@ namespace App\Repositories\Criteria;
 use Prettus\Repository\Contracts\RepositoryInterface;
 use Prettus\Repository\Contracts\CriteriaInterface;
 
-class LocalRoleCriteria implements CriteriaInterface
+class RoleGlobalCriteria implements CriteriaInterface
 {
     public function apply($model, RepositoryInterface $repository)
     {
-        $model = $model->whereNull('is_global');
-        return $model;
+        return $model->whereNotNull('local_id');
     }
 }

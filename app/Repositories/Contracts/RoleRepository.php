@@ -3,14 +3,9 @@
 namespace App\Repositories\Contracts;
 
 /**
- * Interface TagRepository
+ * Interface RoleRepository
  * @package namespace App\RepositoriesRepositories;
  */
 interface RoleRepository extends RepositoryInterface
 {
-    /**
-     * @param string $title
-     * @return array
-     */
-    public function getByTitle($title);
 }

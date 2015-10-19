@@ -13,9 +13,9 @@ define([
         onShow: function () {
             // selecting clause with preventing a type collision
             if (this.isQuestionClosed()) {
-                this.ui.closedIndicator.show();
+                this.$(this.ui.closedIndicator).show();
             } else {
-                this.ui.closedIndicator.hide();
+                this.$(this.ui.closedIndicator).hide();
             }
         },
 

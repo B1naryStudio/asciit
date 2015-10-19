@@ -97,5 +97,5 @@
         config.allowedContent = true;
 
         // Color of the toolbar (changes '-' placeholders color)
-        //config.uiColor = '#f5f5f5';
+        config.uiColor = '#f5f5f5';
     };

@@ -54,3 +54,6 @@ Rbac::action('API\\ImageController@store', 'images.create');
 
 //link preview
 Rbac::action('API\\PreviewController@index', 'preview.view');
+
+//roles
+Rbac::action('API\\RoleController@update', 'roles.update');

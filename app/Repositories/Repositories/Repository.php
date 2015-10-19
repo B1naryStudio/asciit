@@ -340,7 +340,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     }
 
     /**
-     * @param $collection Collection
+     * @param Collection $collection
      * @return Collection
      */
     public function setCountedFields(Collection $collection)
@@ -369,7 +369,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         return $collection;
     }
 
-    public function setProtectedProperty($model, $prop, $value)
+    public function setProtectedProperty(Model $model, $prop, $value)
     {
         $model->$prop = $value;
         $model->save();

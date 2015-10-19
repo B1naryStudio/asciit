@@ -9,7 +9,6 @@ class AnswerCriteria implements CriteriaInterface
 {
     public function apply($model, RepositoryInterface $repository)
     {
-        $model = $model->whereNotNull('question_id');
-        return $model;
+        return $model->whereNotNull('question_id');
     }
 }

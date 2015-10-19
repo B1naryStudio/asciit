@@ -9,11 +9,15 @@ class VoteAddedToHttp extends HttpDeliveryHandler
 {
     public function handle(VoteWasAdded $event)
     {
+        $prefix = env('SERVER_PREFIX', '');
+
         if ($event->vote->answer->question == null) {
-            $url = url('/questions/'.$event->vote->question->slug);
+            $url = url($prefix . '/#questions/' . $event->vote->question->slug);
             $text = 'New vote was added to you question';
         } else {
-            $url = url('/questions/'.$event->vote->answer->question->slug);
+            $url = url($prefix
+                 . '/#questions/'
+                 . $event->vote->answer->question->slug);
             $text = 'New vote was added to you answer';
         }
         $this->delivery->send([

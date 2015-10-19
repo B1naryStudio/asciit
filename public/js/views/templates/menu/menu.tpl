@@ -62,8 +62,9 @@
         <li><a id="nav-tags" href="#tags"><%= _t("tags.tags") %></a></li>
 
         <% if (admin) { %>
-        <li><a id="nav-question" href="#folders"><%= _t("folders.folders") %></a></li>
-        <li><a id="nav-question" href="#edit-users"><%= _t("users.users") %></a></li>
+            <li><a id="nav-folder" href="#folders"><%= _t("folders.folders") %></a></li>
+            <li><a id="nav-edit-users" href="#edit-users"><%= _t("users.users") %></a></li>
+            <li><a id="nav-roles" href="#roles"><%= _t("roles.roles") %></a></li>
         <% } %>
     </ul>
 

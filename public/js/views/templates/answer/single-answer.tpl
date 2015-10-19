@@ -1,6 +1,6 @@
 <div class="list-group-item single-answer">
     <div class="row answer-body">
-        <div class="col-md-2 col-lg-2 col-sm-2">
+        <div class="col-md-2 col-lg-2 col-sm-2 avatar-block">
             <!-- Closed indication -->
             <div class="best-controls">
                 <span class="control indicator" title="<%- _t('closed.answerFits') %>">
@@ -22,7 +22,7 @@
                 <h5><%= user.first_name + ' ' + user.last_name %></h5>
             </figure>
         </div>
-        <div class="col-md-10 col-lg-10 col-sm-10">
+        <div class="col-md-10 col-lg-10 col-sm-10 content-block">
             <!-- Votes region -->
             <div class="votes"></div>
 
@@ -40,28 +40,29 @@
                     <div class="error-block hidden"></div>
                 </div>
             </form>
-
-            <div class="related-controls">
-                <button class="btn btn-default btn-xs show-form"><%= _t("comment.add") %></button>
+            <div class="actions">
+                <div class="entry-controls">
+                    <span class="control edit"
+                          title="<%- _t('ui.edit') %>">
+                        <i class="fa fa-pencil"></i>
+                    </span>
+                    <span class="control save"
+                          title="<%- _t('ui.save') %>">
+                        <i class="fa fa-floppy-o "></i>
+                    </span>
+                    <span class="control cancel"
+                          title="<%- _t('ui.cancel') %>">
+                        <i class="fa fa-ban"></i>
+                    </span>
+                    <span class="control delete"
+                          title="<%- _t('ui.delete') %>">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
+                <div class="related-controls">
+                    <button class="btn btn-default btn-xs show-form"><%= _t("comment.add") %></button>
+                </div>
             </div>
-        </div>
-        <div class="entry-controls">
-            <span class="control edit"
-                  title="<%- _t('ui.edit') %>">
-                <i class="fa fa-pencil"></i>
-            </span>
-            <span class="control save"
-                  title="<%- _t('ui.save') %>">
-                <i class="fa fa-floppy-o "></i>
-            </span>
-            <span class="control cancel"
-                  title="<%- _t('ui.cancel') %>">
-                <i class="fa fa-ban"></i>
-            </span>
-            <span class="control delete"
-                  title="<%- _t('ui.delete') %>">
-                <i class="fa fa-times"></i>
-            </span>
         </div>
     </div>
     <!-- Comments -->

@@ -29,13 +29,18 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      *
      * @var array
      */
-    protected $fillable = ['first_name', 'last_name', 'email', 'password',
-                           'avatar', 'thumb_avatar', 'country', 'city',
-                           'gender', 'birthday', 'binary_id'];
-
-    // Relations of binaryRole to a local role
-    protected $rolesRelation = [
-        'ADMIN' => 'ADMIN'
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'avatar',
+        'thumb_avatar',
+        'country',
+        'city',
+        'gender',
+        'birthday',
+        'binary_id'
     ];
 
     /**
@@ -59,12 +64,22 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
 
     public function globalRole()
     {
-        return $this->belongsTo('App\Repositories\Entities\Role');
+        return $this->belongsTo(
+            'App\Repositories\Entities\RoleGlobal',
+            'global_role_id',
+            'id',
+            'roles'
+        );
     }
 
     public function localRole()
     {
-        return $this->belongsTo('App\Repositories\Entities\Role');
+        return $this->belongsTo(
+            'App\Repositories\Entities\RoleLocal',
+            'local_role_id',
+            'id',
+            'roles'
+        );
     }
 
     public function getAvatarAttribute($avatar)
@@ -108,16 +123,18 @@ class User extends Model implements Transformable, AuthenticatableContract, Assi
      */
     public function getAssignments()
     {
-        if ($this->globalRole) {
-            $title = $this->globalRole->title;
-
-            if (array_key_exists($title, $this->rolesRelation)) {
-                return [$this->rolesRelation[$title]];
-            }
-        }
-
-        if ($this->localRole) {
+        $role = $this->localRole;
+        if ($role && $role->title !== 'USER') {
             return [$this->localRole->title];
+        } else {
+            $role = $this->globalRole;
+            if ($role) {
+                $local = $role->local;
+
+                if ($local) {
+                    return [$local->title];
+                }
+            }
         }
 
         return ['USER'];

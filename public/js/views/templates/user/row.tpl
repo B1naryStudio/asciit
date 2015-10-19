@@ -1,15 +1,13 @@
 <td>
     <img src="<%- avatar %>"
          title="avatar"
-         width="50"
-         height="50"
          class="avatar">
 </td>
 <td><%- first_name %></td>
 <td><%- last_name %></td>
 <td><%- email %></td>
 <td class="col-md-2">
-    <% if(global_role) { %>
+    <% if (global_role) { %>
         <%- global_role.title %>
     <% } else { %>
         -
@@ -20,4 +18,3 @@
     <span class="role-select-wrapper"></span>
     <div class="error-block hidden">Алярм.</div>
 </td>
-
