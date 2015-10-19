@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, width=device-width">
     <title>Asciit</title>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
     <link href="http://team.binary-studio.com/app/styles/css/style.css" rel="stylesheet" />
     @if ($is_min)
