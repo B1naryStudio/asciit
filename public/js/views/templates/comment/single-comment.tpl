@@ -1,6 +1,6 @@
 <div class="row">
     <!-- User info -->
-    <div class="col-md-2 col-lg-2 col-sm-2">
+    <div class="col-md-2 col-lg-2 col-sm-2 user-info-container">
         <figure class="user-info text-center">
             <img src="<%- user.thumb_avatar %>" alt="100x100" class="img-thumbnail medium">
             <h5><%= user.first_name + ' ' + user.last_name %></h5>
