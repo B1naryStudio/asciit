@@ -1640,6 +1640,10 @@ div .fa-05 {
     display: block;
 }
 
+a.cke_dialog_ui_button_readonly {
+    background-image: linear-gradient(to bottom,#ffa166,#ffa166) !important;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Roles

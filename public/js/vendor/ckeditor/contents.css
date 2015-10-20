@@ -35,12 +35,12 @@ blockquote
 	border-width: 0;
 }
 
-    blockquote .author {
-        font-style: normal;
-        font-weight: bold;
-        margin-bottom: 0.7em;
-        display: inline-block;
-    }
+blockquote .author {
+	font-style: normal;
+	font-weight: bold;
+	margin-bottom: 0.7em;
+	display: inline-block;
+}
 
 .cke_contents_ltr blockquote
 {
