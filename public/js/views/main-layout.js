@@ -5,7 +5,8 @@ define([
     'views/menu/mock',
     'tpl!views/templates/main-layout.tpl',
     'moment',
-    'syphon'
+    'syphon',
+    'tools/alert-overriding',
 ], function (
     App,
     Marionette,
