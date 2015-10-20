@@ -356,7 +356,6 @@ body.modal-open {
     width: 330px;
     position: absolute;
     border: 1px solid #ccc;
-    border-radius: 10px;
     z-index: 132;
     background-color: #fff;
     padding: 10px;
