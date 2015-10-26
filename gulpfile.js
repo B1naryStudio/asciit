@@ -107,6 +107,7 @@ var concatSettings = {
         jsPathMinFull + 'views/tag/select.js',
         jsPathMinFull + 'views/tag/view.js',
         jsPathMinFull + 'views/vote/single.js',
+        jsPathMinFull + 'views/popup/alert.js',
         jsPathMinFull + 'views/popup/confirm.js',
         jsPathMinFull + 'views/role/select.js',
         jsPathMinFull + 'views/templates/menu/menu.tpl.js',
@@ -118,9 +119,11 @@ var concatSettings = {
         jsPathMinFull + 'views/templates/folder/select.tpl.js',
         jsPathMinFull + 'views/templates/folder/select-row.tpl.js',
         jsPathMinFull + 'views/templates/question/form.tpl.js',
+        jsPathMinFull + 'views/templates/popup/alert.tpl.js',
         jsPathMinFull + 'views/templates/popup/confirm.tpl.js',
         jsPathMinFull + 'views/templates/vote/votes.tpl.js',
-        jsPathMinFull + 'views/templates/role/select-row.tpl.js'
+        jsPathMinFull + 'views/templates/role/select-row.tpl.js',
+        jsPathMinFull + 'tools/alert-overriding.js',
     ]
 };
 
@@ -184,7 +187,7 @@ gulp.task('js-prepare-static', function () {
         jsPathFull + 'vendor/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js',
         jsPathFull + 'vendor/ckeditor/adapters/jquery.js',
         jsPathFull + 'app.js',
-        jsPathFull + 'validation-model.js'
+        jsPathFull + 'tools/validation-model.js',
     ])
         .pipe(loadStaticExclude());
 });
@@ -201,6 +204,7 @@ gulp.task('js-prepare', function () {
         jsPathFull + 'views/folder/select.js',
         jsPathFull + 'views/tag/select.js',
         jsPathFull + 'views/tag/view.js',
+        jsPathFull + 'views/popup/alert.js',
         jsPathFull + 'views/popup/confirm.js',
         jsPathFull + 'views/vote/single.js',
         jsPathFull + 'views/role/select.js'

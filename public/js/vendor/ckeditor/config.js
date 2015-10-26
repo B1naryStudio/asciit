@@ -98,4 +98,8 @@
 
         // Color of the toolbar (changes '-' placeholders color)
         config.uiColor = '#f5f5f5';
+
+        // User should not be asked to confirm close, if any dialog field was
+        // modified.
+        config.dialog_noConfirmCancel = true;
     };

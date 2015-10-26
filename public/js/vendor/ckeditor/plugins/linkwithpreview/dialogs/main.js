@@ -120,6 +120,12 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
             this.setupContent(this.element, this.definition);
         },
         onOk: function () {
+            if (
+                this.parts.footer.$.getElementsByTagName('a')[0]
+                    .classList.contains('cke_dialog_ui_button_readonly')
+            ) {
+                return false;
+            }
             this.commitContent(this.element);
 
             if (this.insertMode) {
@@ -175,10 +181,14 @@ CKEDITOR.dialog.add('linkWithPreviewDialog', function (editor) {
             );
             this.dialog.preview.style.display = 'block';
             this.dialog.preview.classList.add('preload');
+            this.dialog.parts.footer.$.getElementsByTagName('a')[0]
+                .classList.add('cke_dialog_ui_button_readonly');
         },
         preloadHide: function (image) {
             this.dialog.preview.setAttribute('src', image);
             this.dialog.preview.classList.remove('preload');
+            this.dialog.parts.footer.$.getElementsByTagName('a')[0]
+                .classList.remove('cke_dialog_ui_button_readonly');
         }
     };
 });
