@@ -755,8 +755,11 @@ body.modal-open {
 .modal-backdrop.in {
     width: 100%;
     height: 100%;
-    z-index: 10100;
     position: fixed;
+}
+
+.modal-backdrop.alert {
+    z-index: 10100;
 }
 
 .modal-header {
@@ -771,6 +774,10 @@ body.modal-open {
     padding: 0 !important;
     position: fixed;
     overflow: hidden;
+    visibility: hidden;
+}
+
+#popup-layout-view.alert-form {
     z-index: 10110;
 }
 
