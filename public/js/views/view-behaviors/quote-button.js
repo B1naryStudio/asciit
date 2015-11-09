@@ -11,8 +11,14 @@ define([
             var line_height = parseInt(container.css('line-height'));
             var container_offset = container.offset();
             var current_line = Math.ceil(
-                (e.pageY - container_offset.top) / line_height
+                (e.pageY - container_offset.top + line_height / 2) / line_height
             );
+            if (
+                current_line * line_height - (e.pageY - container_offset.top) >
+                line_height
+            ) {
+                current_line --;
+            }
             this.$el
                 .css({
                     left: e.pageX + 3,

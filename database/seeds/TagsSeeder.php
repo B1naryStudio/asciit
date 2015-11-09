@@ -38,19 +38,78 @@ class TagsSeeder extends Seeder
         $users = $this->userRepository->all();
         $folders = $this->folderRepository->all();
 
+        $tag_titles = [
+            'php',
+            'javascript',
+            'c#',
+            'design',
+            'css',
+            'forms',
+            'gulp',
+            'marionette',
+            'backbone',
+            'jquery',
+            'laravel',
+            'f3',
+            'zend',
+            'zend2',
+            'yii',
+            'yii2',
+            'node-js',
+            'node',
+            'code-ignite',
+            'maven',
+            'symfony2',
+            'rest',
+            'email',
+            'unit-testing',
+            'mono',
+            'jade',
+            'express',
+            'tlp',
+            'underscore',
+            'pagination',
+            'mvc',
+            'bootstrap',
+            'documentation',
+            'popup',
+            'collection',
+            'mysql',
+            '.net',
+            'arrays',
+            'ajax',
+            'regex',
+            'json',
+            'angular',
+            'wordpress',
+            'string',
+            'html5',
+            'git',
+            'svn',
+            'apache',
+            'postgresql',
+            '.htaccess',
+            'function',
+            'file',
+            'image',
+            'gd',
+            'phantomjs',
+            'sorting',
+            'http',
+            'laravel',
+            'opencv',
+            'firefox'
+        ];
         $tags = [];
-        while (count($tags) < 150) {
-            $title = $faker->word;
-            if (empty($tags[$title])) {
-                $tags[$title] = ['title' => $title];
-            }
+        foreach ($tag_titles as $title) {
+            $tags[$title] = ['title' => $title];
         }
         $tags = $this->tagRepository->createSeveral(array_values($tags));
 
-        for ($i = 0; $i < 150; $i++) {
+        for ($i = 0; $i < count($tags); $i++) {
             $tmp = array_slice($tags, $i, rand(1, 3));
 
-            for ($j = 0; $j < 1; $j++) {
+            for ($j = 0; $j < rand(1, 6); $j++) {
                 $model = $this->questionRepository->create([
                     'title' => $faker->sentence,
                     'description' => $faker->realText(1500),
