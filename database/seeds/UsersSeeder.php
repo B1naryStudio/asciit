@@ -50,8 +50,8 @@ class UsersSeeder extends Seeder
         ]);
 
         $this->userRepository->create([
-            'first_name'     => 'unknown',
-            'last_name'      => 'unknown',
+            'first_name'     => 'John',
+            'last_name'      => 'Malkovich',
             'email'          => 'cypherpunks01@europe.com',
             'password'       => bcrypt('cypherpunks01'),
             'remember_token' => str_random(10),

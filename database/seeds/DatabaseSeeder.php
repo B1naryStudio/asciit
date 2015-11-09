@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             $this->call(VotesSeeder::class);
             $this->call(CommentForAnswerSeeder::class);
             $this->call(CommentForQuestionSeeder::class);
+            $this->call(RealisticDataSeeder::class);
         });
 
         Model::reguard();
