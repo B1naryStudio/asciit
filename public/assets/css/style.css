@@ -45,7 +45,7 @@ body.modal-open {
 }
 
 .model-field.description img {
-    width: 100%;
+    max-width: 100%;
     height: auto;
     margin: 5px 0;
 }

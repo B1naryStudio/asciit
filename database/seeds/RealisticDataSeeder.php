@@ -78,6 +78,11 @@ class RealisticDataSeeder extends Seeder
             'PHP'
         )->first();
 
+        $folderIdeas = $this->folderRepository->findByField(
+            'title',
+            'Ideas'
+        )->first();
+
         // users
         $users = $this->userRepository->all();
 
@@ -101,6 +106,16 @@ class RealisticDataSeeder extends Seeder
         $tagAjax = $this->tagRepository->findByField(
             'title',
             'ajax'
+        )->first();
+
+        $tagImage = $this->tagRepository->findByField(
+            'title',
+            'image'
+        )->first();
+
+        $tagJquery = $this->tagRepository->findByField(
+            'title',
+            'jquery'
         )->first();
 
         /*
@@ -246,6 +261,71 @@ EOT;
             'text' => 'So if the method returns an empty array, I should throw an error myself?',
             'user_id' => $authorOfQuestion->id,
             'q_and_a_id' => $answer2->id
+        ]);
+
+        /*
+         * Question 3
+         */
+        $descriptionForQuestion3 = <<<'EOD'
+<p>I am trying to use the JQuery reflection function and I am running into some trouble. The reflection feature works fine on any image I try to add the class to, however, it works only if I do not modify the size of the image.</p>
+
+<p>Once I try to resize the image that I am applying a reflection to, the size I try to apply to it is neglected and some of the image is cut off... I was wondering what is the correct way to resize an image that I am applying a reflection to?</p>
+
+<p><iframe class="code-snippet jsfiddle " src="http://jsfiddle.net/suxcd/embedded/"></iframe></p>
+
+<p><strong>Note:</strong>&nbsp;If you remove &quot;width:50%&quot; the reflection works fine, and the entire image displays as it should.</p>
+EOD;
+
+        $question3 = $this->questionRepository->create([
+            'title' => 'Image resize while using JQuery Reflection (jsfiddle)',
+            'description' => $descriptionForQuestion3,
+            'user_id' => $user->id,
+            'folder_id' => $folderIdeas->id,
+        ]);
+
+        // tags
+        $tags_for_question3 = [$tagImage, $tagJquery];
+        $this->questionRepository
+            ->relationsAdd($question3, 'tags', $tags_for_question3);
+
+        $descriptionForAnswer1 = <<<'EOD'
+<p>It is possible, but it only works when using one percentual value for all images that you use reflect on (or you have to use ID&#39;s).&nbsp;Anyway, here is the updated fiddle:</p>
+
+<p><iframe class="code-snippet jsfiddle " src="http://jsfiddle.net/suxcd/embedded/"></iframe></p>
+
+<p>Most important code: edited the document ready code:</p>
+
+<pre>
+<code class="language-javascript hljs">$(<span class="hljs-built_in">document</span>).ready(<span class="hljs-function"><span class="hljs-keyword">function</span>() </span>{
+    <span class="hljs-keyword">var</span> options = {
+        opacity: <span class="hljs-number">0.75</span>
+    };
+    $(<span class="hljs-string">&#39;.reflect&#39;</span>).reflect(options);
+    $(<span class="hljs-string">&#39;.reflected&#39;</span>).parent(<span class="hljs-string">&#39;.reflect&#39;</span>).children(<span class="hljs-string">&#39;canvas&#39;</span>).width(<span class="hljs-string">&#39;50%&#39;</span>);
+});​</code></pre>
+EOD;
+        $answer1 = $this->answerRepository->create([
+            'description' => $descriptionForAnswer1,
+            'user_id' => $user->id,
+            'question_id' => $question3->id,
+        ]);
+
+        $descriptionForAnswer2 = <<<'EOD'
+<p>&nbsp;</p>
+<blockquote><span class="author"><time class="relative" data-abs-time="2015-11-10 11:55:59">40 minutes ago</time> by John Malkovich:</span><br/>
+Note:&nbsp;If you remove &quot;width:50%&quot; the reflection works fine, and the entire image displays as it should.</blockquote>
+<img alt="" height="135" src="http://ascit.local/api/v1/images/1447157634_jpeg" style="float:right" width="135" />
+<p>You are resizing by percentage, if you use a defined number it works.&nbsp;I guess the question is do you need it to be in %. Basically, I changed this</p>
+<pre>
+<code class="hljs cpp">h.scale(<span class="hljs-number"><span class="hljs-number"><span class="hljs-number"><span class="hljs-number"><span class="hljs-number"><span class="hljs-number">0.5</span></span></span></span></span></span>, -<span class="hljs-number"><span class="hljs-number"><span class="hljs-number"><span class="hljs-number"><span class="hljs-number"><span class="hljs-number">1</span></span></span></span></span></span>);</code>
+</pre>
+<p>0.5 same as 50%, you can set the 0.5 to a dynamic value easily. Get the width attribute on the img tag and if there is a % then grab the number convert it to decimal and use it there. If no % then don&#39;t change that</p>
+EOD;
+
+        $answer2 = $this->answerRepository->create([
+            'description' => $descriptionForAnswer2,
+            'user_id' => $users->random()->id,
+            'question_id' => $question3->id,
         ]);
     }
 }
