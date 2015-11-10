@@ -81,6 +81,8 @@ class TagsSeeder extends Seeder
             'opencv',
             'firefox',
             'ubuntu',
+            'grep',
+            'gmail-api'
         ];
         $tags = [];
         foreach ($tag_titles as $title) {

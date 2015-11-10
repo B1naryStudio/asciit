@@ -56,6 +56,7 @@ class UsersSeeder extends Seeder
             'password'       => bcrypt('cypherpunks01'),
             'remember_token' => str_random(10),
             'local_role_id'  => $roleUser->id,
+            'binary_id' => '55dc13391846c68a1ad56da3'
         ]);
     }
 }

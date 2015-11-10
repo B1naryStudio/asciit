@@ -7,6 +7,8 @@ use App\Repositories\Contracts\QuestionRepository;
 use App\Repositories\Contracts\AnswerRepository;
 use App\Repositories\Contracts\CommentRepository;
 use App\Repositories\Contracts\TagRepository;
+use App\Services\Preview\PreviewService;
+use Illuminate\Http\Request;
 
 class RealisticDataSeeder extends Seeder
 {
@@ -40,13 +42,17 @@ class RealisticDataSeeder extends Seeder
      */
     private $tagRepository;
 
+    private $previewService;
+
     public function __construct(
         FolderRepository $folderRepository,
         UserRepository $userRepository,
         QuestionRepository $questionRepository,
         AnswerRepository $answerRepository,
         CommentRepository $commentRepository,
-        TagRepository $tagRepository
+        TagRepository $tagRepository,
+        PreviewService $previewService,
+        Request $request
     ) {
         $this->folderRepository = $folderRepository;
         $this->userRepository = $userRepository;
@@ -54,6 +60,10 @@ class RealisticDataSeeder extends Seeder
         $this->answerRepository = $answerRepository;
         $this->commentRepository = $commentRepository;
         $this->tagRepository = $tagRepository;
+        $this->previewService = $previewService;
+
+        app('Illuminate\Contracts\Routing\UrlGenerator')
+            ->forceRootUrl(env('SERVER_HOST'));
     }
 
     /**
@@ -148,6 +158,15 @@ class RealisticDataSeeder extends Seeder
             'git'
         )->first();
 
+        $tagGmail = $this->tagRepository->findByField(
+            'title',
+            'gmail-api'
+        )->first();
+
+        $tagGrep = $this->tagRepository->findByField(
+            'title',
+            'grep'
+        )->first();
 
         $tagUbuntu = $this->tagRepository->findByField(
             'title',
@@ -164,7 +183,24 @@ class RealisticDataSeeder extends Seeder
             'folder_id' => $folderJS->id,
         ]);
 
-        // The only answer to th 1st question (1.1)
+        $this->commentRepository->create([
+            'text' => 'If user is moves mouse in random direction than it can\'t be smooth and you can\'t predict where user will move mouse... Unless you have some super powers.',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $question->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'Since the function gets to control/generate the next position of the mouse, you can guarantee the movement will be smooth.',
+            'user_id' => $user->id,
+            'q_and_a_id' => $question->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'mouse events aren\'t smooth. If you do move quickly enough, there will be gaps between mouse positions. Could you explain more explicitly what you need and why?',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $question->id
+        ]);
+
         $answer = $this->answerRepository->create([
             'description' => 'Last I heard the browser\'s mouse position cannot be altered with JavaScript, so the question really has no answer "as is". The mouse position can be locked though. I\'m not certain whether it would be possible to implement a custom cursor that allows setting the position. This would include hiding and perhaps locking the stock cursor.',
             'user_id' => $users->random()->id,
@@ -183,11 +219,52 @@ class RealisticDataSeeder extends Seeder
             'q_and_a_id' => $answer->id
         ]);
 
+        $this->commentRepository->create([
+            'text' => 'Yes, a virtual mouse path.',
+            'user_id' => $user->id,
+            'q_and_a_id' => $answer->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'A mouse can be virtually locked inside the browser window by using the css body cursor property and using a .cur file which is completely transparent. Then a javascript can keep track of the mouse position and choose whether an image should follow the same track. Although when the mouse position gets outside the boundaries of the inner window it will be visible again.',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'Then the mouse is not locked, just invisible. By the way, you don\'t need to use a .cur file for this (whatever it is, I\'m not on windows, this doesn\'t exists here) but since CSS3, there is a none value which will just hide the cursor (this wont disable the mouse, nor allow your scripts to move it for the user)',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer->id
+        ]);
+
+        $answer = $this->answerRepository->create([
+            'description' => 'Having something smoothly follow the cursor is quite straight forward. You may be able to reverse this process to achieve what you need. Here\'s a code snippet which simply calculates the distance between the cursor and a div every frame and then moves the div 10% of that distance towards the cursor:',
+            'user_id' => $users->random()->id,
+            'question_id' => $question->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'I don\'t think this is what OP asked for, but maybe I misread it... Also, why a setInterval(func,20) if you do listen to mousemove already ? Oh and I missed the "reverse this process" part : if we do reverse what you do, then our mouse will follow a div, unanimated...',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'Using setInterval separately like this just lets you control the animation frame rate, but yes, you could combine into mousemove if preferred. By reverse I mean calculate the next, rather than the previous mouse position so that the div follows in front of the user\'s mouse. Who knows if this is what the OP really wanted! It\'s a difficult question to decipher!',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'Well the problem with setInterval is that even if the mouse didn\'t move, you\'ll continue to set your element style... Also, according to this comment and the ones above it, I think we can assume OP wants to simulate a mouse movement',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer->id
+        ]);
+
         /*
          * Question 2
          */
-        $authorOfQuestion = $users->random();
-        $tags =
+        $authorOfQuestion = $user;
         $code4question = <<<'EOD'
 <pre>
 <code class="language-php">$result = DB::select("SELECT d.idDemo, d.idUsuario, u.Referencia, d.Uri_fichero,
@@ -257,7 +334,7 @@ EOD;
         ]);
 
         // Answer 2
-        $authorOfAnswer2 = $users->random();
+        $authorOfAnswer2 = $user;
         $descriptionForAnswer2 = <<<'EOT'
 <p>first you&#39;d better remove the comment before the namespace:&nbsp;<code>#App\Http\Controller\MainController</code></p>
 
@@ -387,19 +464,14 @@ EOD;
             ->relationsAdd($question4, 'tags', [$tagGit, $tagUbuntu]);
 
         $authorOfAnswer1 = $users->random();
-        $descriptionForAnswer1 = <<<'EOD'
-<p>From the Unix &amp; Linux Stackexchange question&nbsp;</p>
+        $link = $this->previewService->get('http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git');
 
-<div class="link-preview-result-wrapper"><a href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git"><img alt="" src="http://dummyimage.com/200x200/ffa800&amp;text=No+Preview" /></a><a class="link-preview-image-link" href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" src="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" target="_blank">http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git</a></div>
-
-<div class="link-preview-result-wrapper">&nbsp;</div>
-
-<blockquote>
-<p>The&nbsp;<code>color.ui</code>&nbsp;is a meta configuration that includes all the various&nbsp;<code>color.*</code>&nbsp;configurations available with&nbsp;<code>git</code>&nbsp;commands. This is explained in-depth in&nbsp;<code>git help config</code>.</p>
-</blockquote>
-EOD;
         $answer1 = $this->answerRepository->create([
-            'description' => $descriptionForAnswer1,
+            'description' => '<p>From the Unix &amp; Linux Stackexchange question&nbsp;</p>
+                <div class="link-preview-result-wrapper"><a href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git"><img alt="" src="' . $link . '" /></a><a class="link-preview-image-link" href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" src="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" target="_blank">http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git</a></div>
+                <blockquote>
+                <p>The&nbsp;<code>color.ui</code>&nbsp;is a meta configuration that includes all the various&nbsp;<code>color.*</code>&nbsp;configurations available with&nbsp;<code>git</code>&nbsp;commands. This is explained in-depth in&nbsp;<code>git help config</code>.</p>
+                </blockquote>',
             'user_id' => $authorOfAnswer1->id,
             'question_id' => $question4->id,
         ]);
@@ -449,7 +521,7 @@ EOD;
 
         $answer2 = $this->answerRepository->create([
             'description' => $descriptionForAnswer2,
-            'user_id' => $users->random()->id,
+            'user_id' => $user->id,
             'question_id' => $question4->id,
         ]);
 
@@ -533,7 +605,7 @@ EOD;
             'user_id' => $users->random()->id,
             'q_and_a_id' => $question5->id
         ]);
-
+        
         /*
          * Question 6
          */
@@ -597,6 +669,123 @@ EOD;
             'description' => $descriptionForAnswer1,
             'user_id' => $users->random()->id,
             'question_id' => $question6->id,
+        ]);
+
+        /**
+         * Question 7
+         */
+        $codeGrep = <<<'EOD'
+<pre>
+<code>xrandr | grep " connected " | awk '{ print$1 }'
+</code>
+</pre>
+EOD;
+        $gnuDocPreview = $this->previewService->get('http://www.gnu.org/software/grep/manual/grep.html#grep-Programs');
+        sleep(1);
+        $question7 = $this->questionRepository->create([
+            'title' => 'What does grep do?',
+            'description' => '<p>Here is the description of&nbsp;<code>grep</code>&nbsp;from&nbsp;GNU.org:</p>
+                <div class="link-preview-result-wrapper"><a href="http://www.gnu.org/software/grep/manual/grep.html#grep-Programs"><img src="' . $gnuDocPreview . '" /></a><a class="link-preview-image-link" href="http://www.gnu.org/software/grep/manual/grep.html#grep-Programs" src="http://www.gnu.org/software/grep/manual/grep.html#grep-Programs" target="_blank">the GNU docs</a></div>
+                <blockquote>
+                    <p><code>grep</code>&nbsp;searches input files for lines containing a match to a given pattern list. When it finds a match in a line, it copies the line to standard output (by default), or produces whatever other sort of output you have requested with options.</p>
+                </blockquote>
+                <p>I have this command that I use often, which gives the name of the currently connected monitor:</p>'
+                . $codeGrep . '
+                <p>I can&#39;t see any files in this command, or links to them, so what exactly is going on? Is&nbsp;<code>grep</code>&nbsp;used for other stuff apart from searching files?</p>',
+            'user_id' => $user->id,
+            'folder_id' => $folderIdeas->id,
+        ]);
+
+        $this->questionRepository
+            ->relationsAdd($question7, 'tags', [$tagUbuntu, $tagGrep]);
+
+        $this->commentRepository->create([
+            'text' => 'You told grep to find the output of the "connected" (with spaces, probably to ensure it only finds the correct line) from xrandr and awk to print the results. Err... I\'m pretty sure that\'s what you did, at any rate.',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $question7->id
+        ]);
+
+        $codeQuote = <<<'EOD'
+<pre>
+<code>grep  searches the named input FILEs (or <strong>standard input if no files are
+named</strong>, or if a single hyphen-minus (-) is given as file name) for lines
+containing  a  match to the given PATTERN. By default, grep prints the
+matching lines.
+</code>
+</pre>
+EOD;
+        $codeGrep = <<<'EOD'
+<pre>
+<code>xrandr | awk '/ connected /{print $1}'
+</code>
+</pre>
+EOD;
+        $this->answerRepository->create([
+            'description' => '<p>From &nbsp;man grep</p>
+                <div class="link-preview-result-wrapper"><a href="http://manpages.ubuntu.com/manpages/trusty/en/man1/grep.1.html"><img src="' . $this->previewService->get('http://manpages.ubuntu.com/manpages/trusty/en/man1/grep.1.html') . '" /></a><a class="link-preview-image-link" href="http://manpages.ubuntu.com/manpages/trusty/en/man1/grep.1.html" src="http://manpages.ubuntu.com/manpages/trusty/en/man1/grep.1.html" target="_blank">man grep</a></div>
+                <p>&nbsp;(emphasis mine):</p>'
+                . $codeQuote . '
+                <p>And from the GNU docs</p>
+                <div class="link-preview-result-wrapper"><a href="http://www.gnu.org/software/grep/manual/grep.html#grep-Programs"><img src="' . $gnuDocPreview . '" /></a><a class="link-preview-image-link" href="http://www.gnu.org/software/grep/manual/grep.html#grep-Programs" src="http://www.gnu.org/software/grep/manual/grep.html#grep-Programs" target="_blank">the GNU docs</a></div>
+                <p>(again, emphasis mine):</p>
+                <blockquote>
+                <h3>2.4 grep Programs</h3>
+                <p><code>grep</code>&nbsp;searches the named input files for lines containing a match to the given pattern. By default, grep prints the matching lines. A file named&nbsp;<code>-</code>&nbsp;stands for standard input.&nbsp;<strong>If no input is specified</strong>,<code>grep</code>&nbsp;searches he working directory&nbsp;<code>.</code>&nbsp;if given a command-line option specifying recursion; otherwise,&nbsp;<strong><code>grep</code>&nbsp;searches standard input</strong>.</p>
+                </blockquote>
+                <p>The standard input, in this case, is the pipe connected to&nbsp;<code>xrandr</code>&#39;s standard output.</p>
+                <p>The&nbsp;<code>grep</code>&nbsp;is superfluous in this case;&nbsp;<code>awk</code>&nbsp;can do the job by itself:</p>'
+                . $codeGrep,
+            'user_id' => $users->random()->id,
+            'question_id' => $question7->id
+        ]);
+
+        /**
+         * Question 8
+         */
+        $question8 = $this->questionRepository->create([
+            'title' => 'Find timestamp for hangout and chat messages retrieved with gmail api',
+            'description' => '<p>While fiddling with the Gmail API, I noticed that if I don\'t use any filters, the Users.messages: list method also returns messages sent and received through Google Hangout or Gmail Chat. Which is very nice.</p>
+                <div class="link-preview-result-wrapper"><a href="https://developers.google.com/gmail/api/v1/reference/users/messages/list"><img src="' . $this->previewService->get('https://developers.google.com/gmail/api/v1/reference/users/messages/list') . '" /></a><a class="link-preview-image-link" href="https://developers.google.com/gmail/api/v1/reference/users/messages/list" src="https://developers.google.com/gmail/api/v1/reference/users/messages/list" target="_blank">Users.messages: list</a></div>
+                <p>The json object for a Hangout message is structured like an email (with payload, headers etc), but the only header provided is the sender. There\'s no information about the time the message is sent. I\'ve looked through all other Gmail API methods (threads, history...) but none of them provides datetime information for chat messages.</p>
+                <p>Any idea if/how I could lookup a timestamp for chat/hangout messages (from within a backend process)?</p>',
+            'user_id' => $users->random()->id,
+            'folder_id' => $folderIdeas->id,
+        ]);
+
+        $this->questionRepository
+            ->relationsAdd($question8, 'tags', [$tagGmail]);
+
+        $this->commentRepository->create([
+            'text' => 'i am also looking for the same',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $question8->id
+        ]);
+
+        $this->answerRepository->create([
+            'description' => 'Hangout chats show up in the Gmail API is a known issue, using the Gmail API for Hangout chats is not supported.',
+            'user_id' => $users->random()->id,
+            'question_id' => $question8->id
+        ]);
+
+        $answer = $this->answerRepository->create([
+            'description' => '<p>As mentioned by kroikie it is a known issue all you can do it filter them outusing "NOT is:chat" in the search query:</p>
+                <p>eg q=from:x@y.com%20NOT%20is:chats</p>
+                <p>Just to save time I searched the docs and as far as I can see you can not get the data from the history or tread list calls either.</p>
+                <div class="link-preview-result-wrapper"><a href="https://developers.google.com/gmail/api/"><img src="' . $this->previewService->get('https://developers.google.com/gmail/api/') . '" /></a><a class="link-preview-image-link" href="https://developers.google.com/gmail/api/" src="https://developers.google.com/gmail/api/" target="_blank">https://developers.google.com/gmail/api/overview</a></div>',
+            'user_id' => $users->random()->id,
+            'question_id' => $question8->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'Not sure this adds to the selected answer. This could probably be a comment instead of an answer.',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'Agreed: but ... I don\'t have the required reputation to make a comment but thought I would save others the searching',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer->id
         ]);
     }
 }

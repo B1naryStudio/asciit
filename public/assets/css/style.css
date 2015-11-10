@@ -1240,6 +1240,10 @@ blockquote .author {
     font-size: 18px;
 }
 
+.questions-answers {
+    width: 100%;
+}
+
 /*
  |------------------------------------------------------------------------------
  | New answer

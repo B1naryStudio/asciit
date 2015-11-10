@@ -21,18 +21,21 @@ define([
         },
 
         showVotes: function () {
-            var vote = this.view.model.get('vote');
-
-            var votesView = new VotesView({
-                vote:       vote,
-                likes:      this.view.model.get('vote_likes'),
-                dislikes:   this.view.model.get('vote_dislikes'),
-                q_and_a_id: this.view.model.id
-            });
-
             var votesRegion = this.view.getRegion(this.options.votesRegion);
-            votesRegion.empty();
-            votesRegion.show(votesView);
+
+            if (votesRegion) {
+                var vote = this.view.model.get('vote');
+
+                var votesView = new VotesView({
+                    vote:       vote,
+                    likes:      this.view.model.get('vote_likes'),
+                    dislikes:   this.view.model.get('vote_dislikes'),
+                    q_and_a_id: this.view.model.id
+                });
+
+                votesRegion.empty();
+                votesRegion.show(votesView);
+            }
         }
     });
 
