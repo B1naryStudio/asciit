@@ -671,7 +671,7 @@ body.modal-open {
 .comment-list .folding-controls .control {
     line-height: 25px;
     font-size: 0.8em;
-    margin: 0 0 5px 0;
+    margin: 15px 0;
 }
 
 .role-select {
@@ -1172,10 +1172,6 @@ blockquote .author {
     box-shadow: none;
     background-color: inherit;
     padding: 15px 15px 0;
-    margin: 15px 0;
-}
-
-.single-comment:first-child {
     margin: 15px 0;
 }
 
@@ -2019,7 +2015,7 @@ a.cke_dialog_ui_button_readonly {
         width: 100%;
         margin-left: 0;
     }
-
+    
     .questions-answers {
         display: block;
     }
