@@ -34,7 +34,7 @@ class CommentForAnswerSeeder extends Seeder
         $users = $this->userRepository->all();
         $answers = $this->answerRepository->all();
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 300; $i++) {
             $this->commentRepository->create([
                 'text' => $faker->realText(500),
                 'user_id'     => $users->random()->id,

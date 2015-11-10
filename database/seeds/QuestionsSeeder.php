@@ -38,15 +38,6 @@ class QuestionsSeeder extends Seeder
         $users = $this->userRepository->all();
         $folders = $this->folderRepository->all();
 
-        for ($i = 0; $i < 10; $i++) {
-            $this->questionRepository->create([
-                'title' => $faker->sentence,
-                'description' => $faker->realText(1500),
-                'user_id' => $users->random()->id,
-                'folder_id' => $folders->random()->id,
-            ]);
-        }
-
         $admin = $this->userRepository
             ->findWhere(['email' => 'admin@admin.com'])
             ->first();
@@ -61,6 +52,7 @@ class QuestionsSeeder extends Seeder
         }
 
         $tags = $this->tagRepository->all();
+
         for ($i = 0; $i < count($tags); $i++) {
             $tags_for_question = $tags->slice($i, rand(1, 3))->all();
 

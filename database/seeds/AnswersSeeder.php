@@ -34,7 +34,7 @@ class AnswersSeeder extends Seeder
         $users = $this->userRepository->all();
         $questions = $this->questionRepository->all();
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 250; $i++) {
             $this->answerRepository->create([
                 'description' => $faker->realText(500),
                 'user_id'     => $users->random()->id,
