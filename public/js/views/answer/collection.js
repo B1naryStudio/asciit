@@ -152,6 +152,7 @@ define([
             this.editor.destroy();
             this.editableField.attr('contenteditable', false);
             this.triggerMethod('iframe:resize');
+            this.triggerMethod('show');
         },
 
         onShow: function () {
