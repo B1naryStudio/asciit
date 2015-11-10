@@ -81,7 +81,7 @@ define([
             'click @ui.selectAsBestButton':        'best:select',
             'click @ui.cancelBestStatusButton':    'best:cancel',
 
-            'mouseup p': 'text:select'
+            'mouseup div.model-field, p.model-field': 'text:select'
         },
 
         behaviors: {

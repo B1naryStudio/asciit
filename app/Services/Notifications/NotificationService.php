@@ -45,18 +45,20 @@ class NotificationService implements NotificationServiceInterface
                 $options
             );
         } catch (RemoteServerException $e) {
-            $info = "Notification request fails. \n"
+            $info = 'Notification request fails.'
+                  . PHP_EOL
                   . $e->getMessage()
                   . 'Curl options: '
-                  . $options;
+                  . var_export($options, true);
             Log::error($info);
         }
 
         if (empty($result)) {
             Log::error(
-                "Notification request does not receive any response. \n"
+                'Notification request does not receive any response.'
+                . PHP_EOL
                 . 'Curl options: '
-                . $options
+                . var_export($options, true)
             );
         }
     }

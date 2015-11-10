@@ -17,7 +17,7 @@ define([
     App.Paginator.Views.PaginatorCollectionRow = Marionette.ItemView.extend({
         tagName: 'li',
         getTemplate: function () {
-            if (this.model.type === 'more') {
+            if (this.model.get('type') === 'more') {
                 return PaginatorMoreTpl;
             }
             return PaginatorRowTpl;
@@ -42,12 +42,15 @@ define([
         },
         getNextPage: function () {
             this.trigger('form:page', this.info.currentPage + 1);
+            return false;
         },
         getPrevPage: function () {
             this.trigger('form:page', this.info.currentPage - 1);
+            return false;
         },
         goToPage: function (event) {
             this.trigger('form:page', parseInt(event.target.innerHTML));
+            return false;
         },
         initialize: function (options) {
             this.info = options.state;
