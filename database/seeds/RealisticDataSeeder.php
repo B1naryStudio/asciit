@@ -108,6 +108,21 @@ class RealisticDataSeeder extends Seeder
             'ajax'
         )->first();
 
+        $tagJavascript = $this->tagRepository->findByField(
+            'title',
+            'javascript'
+        )->first();
+
+        $tagCSS = $this->tagRepository->findByField(
+            'title',
+            'css'
+        )->first();
+
+        $tagHTML5 = $this->tagRepository->findByField(
+            'title',
+            'html5'
+        )->first();
+
         $tagImage = $this->tagRepository->findByField(
             'title',
             'image'
@@ -116,6 +131,17 @@ class RealisticDataSeeder extends Seeder
         $tagJquery = $this->tagRepository->findByField(
             'title',
             'jquery'
+        )->first();
+
+        $tagGit = $this->tagRepository->findByField(
+            'title',
+            'git'
+        )->first();
+
+
+        $tagUbuntu = $this->tagRepository->findByField(
+            'title',
+            'ubuntu'
         )->first();
 
         /*
@@ -128,6 +154,7 @@ class RealisticDataSeeder extends Seeder
             'folder_id' => $folderJS->id,
         ]);
 
+        // The only answer to th 1st question (1.1)
         $answer = $this->answerRepository->create([
             'description' => 'Last I heard the browser\'s mouse position cannot be altered with JavaScript, so the question really has no answer "as is". The mouse position can be locked though. I\'m not certain whether it would be possible to implement a custom cursor that allows setting the position. This would include hiding and perhaps locking the stock cursor.',
             'user_id' => $users->random()->id,
@@ -192,6 +219,7 @@ EOD;
             'closed' => true
         ]);
 
+        // comment to question2
         $this->commentRepository->create([
             'text' => 'Can you share the Demo::getRecordsByTag($tag, $limit) code with us?',
             'user_id' => $users->random()->id,
@@ -199,11 +227,10 @@ EOD;
         ]);
 
         // tags
-        $tags_for_question2 = [$tagAjax, $tagLaravel, $tagLaravel5];
         $this->questionRepository
-            ->relationsAdd($question2, 'tags', $tags_for_question2);
+            ->relationsAdd($question2, 'tags', [$tagAjax, $tagLaravel, $tagLaravel5]);
 
-        // Answer 1
+        // Answer1 to question2
         $answer = $this->answerRepository->create([
             'description' => '<p>​I would rewrite your&nbsp;<code>getRecordsByTag</code>&nbsp;function to take care if it like this:</p>
                 <p><iframe class="code-snippet gist full-height" src="/gist-snippets?link=https%3A%2F%2Fgist.github.com%2FAntarus66%2F2ad7483f27a740082f56"></iframe><br />
@@ -284,9 +311,8 @@ EOD;
         ]);
 
         // tags
-        $tags_for_question3 = [$tagImage, $tagJquery];
         $this->questionRepository
-            ->relationsAdd($question3, 'tags', $tags_for_question3);
+            ->relationsAdd($question3, 'tags', [$tagImage, $tagJquery]);
 
         $descriptionForAnswer1 = <<<'EOD'
 <p>It is possible, but it only works when using one percentual value for all images that you use reflect on (or you have to use ID&#39;s).&nbsp;Anyway, here is the updated fiddle:</p>
@@ -326,6 +352,175 @@ EOD;
             'description' => $descriptionForAnswer2,
             'user_id' => $users->random()->id,
             'question_id' => $question3->id,
+        ]);
+
+        /*
+         * Question 4
+         */
+        $descriptionForQuestion4 = <<<'EOD'
+<p>I recently saw that the Git console in Windows is colored, e.g. Green for additions, red for deletions, etc. How do I color my Ubuntu Git console like that?&nbsp;To install it, I used the command:</p>
+
+<pre>
+<code class="language-bash">$ apt-get install git-core</code></pre>
+EOD;
+
+        $question4 = $this->questionRepository->create([
+            'title' => 'How to color the Git console in Ubuntu?',
+            'description' => $descriptionForQuestion4,
+            'user_id' => $users->random()->id,
+            'folder_id' => $folderIdeas->id,
+            'closed' => true
+        ]);
+
+        $this->questionRepository
+            ->relationsAdd($question4, 'tags', [$tagGit, $tagUbuntu]);
+
+        $authorOfAnswer1 = $users->random();
+        $descriptionForAnswer1 = <<<'EOD'
+<p>From the Unix &amp; Linux Stackexchange question&nbsp;</p>
+
+<div class="link-preview-result-wrapper"><a href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git"><img alt="" src="http://dummyimage.com/200x200/ffa800&amp;text=No+Preview" /></a><a class="link-preview-image-link" href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" src="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" target="_blank">http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git</a></div>
+
+<div class="link-preview-result-wrapper">&nbsp;</div>
+
+<blockquote>
+<p>The&nbsp;<code>color.ui</code>&nbsp;is a meta configuration that includes all the various&nbsp;<code>color.*</code>&nbsp;configurations available with&nbsp;<code>git</code>&nbsp;commands. This is explained in-depth in&nbsp;<code>git help config</code>.</p>
+</blockquote>
+EOD;
+        $answer1 = $this->answerRepository->create([
+            'description' => $descriptionForAnswer1,
+            'user_id' => $authorOfAnswer1->id,
+            'question_id' => $question4->id,
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'This works on OSX too, not just linux as the question was asking',
+            'user_id' => $authorOfAnswer1->id,
+            'q_and_a_id' => $answer1->id
+        ]);
+        $this->commentRepository->create([
+            'text' => 'Probably need to add \'true\' at the end. git config --global color.ui auto true',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer1->id
+        ]);
+        $this->commentRepository->create([
+            'text' => 'no, auto is enough. ',
+            'user_id' => $authorOfAnswer1->id,
+            'q_and_a_id' => $answer1->id
+        ]);
+        $this->commentRepository->create([
+            'text' => 'Is this change persistent?',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer1->id
+        ]);
+        $this->commentRepository->create([
+            'text' => 'yes, it is persistent',
+            'user_id' => $authorOfAnswer1->id,
+            'q_and_a_id' => $answer1->id
+        ]);
+
+
+        $descriptionForAnswer2 = <<<'EOD'
+<p>Another way is to edit the&nbsp;<code>.gitconfig</code>&nbsp;(create one if not exist), for instance:</p>
+
+<pre>
+<code>vim ~/.gitconfig
+</code></pre>
+
+<p>and then add:</p>
+
+<pre>
+<code>[color]
+  diff = auto
+  status = auto
+  branch = auto</code></pre>
+EOD;
+
+        $answer2 = $this->answerRepository->create([
+            'description' => $descriptionForAnswer2,
+            'user_id' => $users->random()->id,
+            'question_id' => $question4->id,
+        ]);
+
+        $descriptionForAnswer3 = <<<'EOD'
+<p>Add to your .gitconfig file next code:</p>
+
+<pre>
+<code>  [color]
+    ui = auto
+  [color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+  [color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+  [color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan</code></pre>
+EOD;
+
+        $answer3 = $this->answerRepository->create([
+            'description' => $descriptionForAnswer3,
+            'user_id' => $users->random()->id,
+            'question_id' => $question4->id,
+            'closed' => true
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'I\'m using an older version of git and setting color.ui auto did not work for me, this did. Thank you',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $answer3->id
+        ]);
+
+        /*
+         * Question 5
+         */
+        $descriptionForQuestion5 = <<<'EOD'
+<p>I was hoping to make an example of Google Maps embedding using codepen. It doesn&#39;t work properly.</p>
+
+<p>The map loads centred in the correct place but its a static image, not an interactive map with a marker and info box attached.&nbsp;Here&#39;s the codepen:&nbsp;</p>
+
+<p><iframe class="code-snippet codepen " src="http://codepen.io/jonnybarnes/embed/bfdLj"></iframe></p>
+
+<p>Is this a limitation with how codepen handles javascript or is there a way of making this work?</p>
+EOD;
+
+        $question5 = $this->questionRepository->create([
+            'title' => 'Embedding Google Maps in a codepen',
+            'description' => $descriptionForQuestion5,
+            'user_id' => $users->random()->id,
+            'folder_id' => $folderJS->id,
+        ]);
+
+        $this->questionRepository
+            ->relationsAdd($question5, 'tags', [$tagJavascript, $tagCSS, $tagHTML5]);
+
+        $this->commentRepository->create([
+            'text' => 'I actually emailed their help desk about this very issue. They said it was a known bug and are still working on it.',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $question5->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'You can use jsfiddle though, it works quite flawlessly',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $question5->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'Whilst it doesn\'t work on the codepen website itself, if you embed the codepen on your own website everything works as you would expect.',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $question5->id
+        ]);
+
+        $this->commentRepository->create([
+            'text' => 'If you open console, you will see message: Uncaught ReferenceError: F is not defined.',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $question5->id
         ]);
     }
 }

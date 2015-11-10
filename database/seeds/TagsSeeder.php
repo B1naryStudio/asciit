@@ -79,7 +79,8 @@ class TagsSeeder extends Seeder
             'sorting',
             'http',
             'opencv',
-            'firefox'
+            'firefox',
+            'ubuntu',
         ];
         $tags = [];
         foreach ($tag_titles as $title) {
