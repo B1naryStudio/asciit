@@ -112,14 +112,18 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
     }
 
     /**
-     * @param $fieldName
-     * @param $fieldValue
-     * @param $relations
+     * @param string $fieldName
+     * @param mixed $fieldValue
+     * @param array $relations
      * @param array $columns
      * @return collection
      */
-    public function findByFieldWithRelations($fieldName, $fieldValue, $relations, $columns=['*'])
-    {
+    public function findByFieldWithRelations(
+        $fieldName,
+        $fieldValue,
+        $relations,
+        $columns=['*']
+    ) {
         return $this->with($relations)->findByField($fieldName, $fieldValue);
     }
 
@@ -131,7 +135,6 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
 
         return static::create($attributes);
     }
-
 
     public function updateFirstOrCreate(array $keyAttributes, array $attributes=[])
     {
@@ -160,8 +163,11 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         $model->$relationName()->detach($modelIds);
     }
 
-    public function getRelationRecordCount($relation, $relation_count, $use_main_table = true)
-    {
+    public function getRelationRecordCount(
+        $relation,
+        $relation_count,
+        $use_main_table = true
+    ) {
         $this->with($relation);
         $model = $this->model;
         $query = Relation::noConstraints(function () use (
@@ -252,8 +258,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
         $use_main_table = true,
         $relations = array(),
         $where = array()
-    )
-    {
+    ) {
         if (!is_array($relation)) {
             $relation_count = $relation;
         } else {

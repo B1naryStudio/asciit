@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             DB::table('folders')->truncate();
             DB::table('q_and_a')->truncate();
             DB::table('tags')->truncate();
+            DB::table('tag_q_and_a')->truncate();
             DB::table('comment')->truncate();
             DB::table('votes')->truncate();
             DB::table('roles')->truncate();
@@ -29,8 +30,8 @@ class DatabaseSeeder extends Seeder
             $this->call(RolesTableSeeder::class);
             $this->call(UsersSeeder::class);
             $this->call(FoldersSeeder::class);
-            $this->call(QuestionsSeeder::class);
             $this->call(TagsSeeder::class);
+            $this->call(QuestionsSeeder::class);
             $this->call(AnswersSeeder::class);
             $this->call(VotesSeeder::class);
             $this->call(CommentForAnswerSeeder::class);

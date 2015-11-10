@@ -78,19 +78,19 @@ class RealisticDataSeeder extends Seeder
 
         $answer = $this->answerRepository->create([
             'description' => 'Last I heard the browser\'s mouse position cannot be altered with JavaScript, so the question really has no answer "as is". The mouse position can be locked though. I\'m not certain whether it would be possible to implement a custom cursor that allows setting the position. This would include hiding and perhaps locking the stock cursor.',
-            'user_id'     => $users->random()->id,
+            'user_id' => $users->random()->id,
             'question_id' => $question->id
         ]);
 
         $this->commentRepository->create([
             'text' => 'I am not looking for altering the mouse position, just getting the "random coordinates" as if it was moving.',
-            'user_id'     => $user->id,
+            'user_id' => $user->id,
             'q_and_a_id' => $answer->id
         ]);
 
         $this->commentRepository->create([
             'text' => 'Oh you mean a "virtual" mouse path which simulates a mouse moving? Well that is certainly possible, but making it "human" is a tricky mission. Math and randomizing to a point where the path acts like a mouse but still has that certain "jitter": perhaps set two points (start and stop), then move while smoothly changing the speed and then adding a small random vector of movement on X and Y axes. Not sure how to achieve this though.',
-            'user_id'     => $users->random()->id,
+            'user_id' => $users->random()->id,
             'q_and_a_id' => $answer->id
         ]);
     }
