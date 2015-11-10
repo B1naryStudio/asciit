@@ -31,6 +31,7 @@ class TagsSeeder extends Seeder
             'backbone',
             'jquery',
             'laravel',
+            'laravel5',
             'f3',
             'zend',
             'zend2',
@@ -77,7 +78,6 @@ class TagsSeeder extends Seeder
             'phantomjs',
             'sorting',
             'http',
-            'laravel',
             'opencv',
             'firefox'
         ];

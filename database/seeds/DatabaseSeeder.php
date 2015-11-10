@@ -33,10 +33,10 @@ class DatabaseSeeder extends Seeder
             $this->call(TagsSeeder::class);
             $this->call(QuestionsSeeder::class);
             $this->call(AnswersSeeder::class);
-            $this->call(VotesSeeder::class);
             $this->call(CommentForAnswerSeeder::class);
             $this->call(CommentForQuestionSeeder::class);
             $this->call(RealisticDataSeeder::class);
+            $this->call(VotesSeeder::class);
         });
 
         Model::reguard();
