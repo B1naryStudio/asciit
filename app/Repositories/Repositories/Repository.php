@@ -162,7 +162,7 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
 
     public function getRelationRecordCount($relation, $relation_count, $use_main_table = true)
     {
-        $this->with($relation);
+        $this->with($relation); // substitutes the model with a Builder instance
         $model = $this->model;
         $query = Relation::noConstraints(function () use (
             $model,
@@ -200,6 +200,11 @@ abstract class Repository extends BaseRepository implements RepositoryInterface
                 $this->relations[$relation]['foreignKey']
             );
         }
+
+        // It is necessary to return the previous state of the model after
+        // using "$this->with()", which substitutes the model with a Builder
+        // instance.
+        $this->resetModel();
         return $query;
     }
 
