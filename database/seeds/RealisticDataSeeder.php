@@ -93,6 +93,16 @@ class RealisticDataSeeder extends Seeder
         )->first();
 
         // tags
+        $tagPHP = $this->tagRepository->findByField(
+            'title',
+            'php'
+        )->first();
+
+        $tagMysql = $this->tagRepository->findByField(
+            'title',
+            'mysql'
+        )->first();
+
         $tagLaravel = $this->tagRepository->findByField(
             'title',
             'laravel'
@@ -522,6 +532,71 @@ EOD;
             'text' => 'If you open console, you will see message: Uncaught ReferenceError: F is not defined.',
             'user_id' => $users->random()->id,
             'q_and_a_id' => $question5->id
+        ]);
+
+        /*
+         * Question 6
+         */
+        $descriptionForQuestion6 = <<<'EOD'
+<p>This is my MySQL query which I convert to laravel, and I&#39;m getting below error pls advice how to fix</p>
+
+<pre>
+<code class="language-php">$shiftData=   DB::table(DB::raw('shifts'))
+    -&gt;whereRaw("time_sheet_id = $getTimesheet1-&gt;time_sheet_id AND user_id = $user_id-&gt;user_id")
+    -&gt;whereRaw("$shift_start_time BETWEEN shift_start_time AND shift_end_time OR $shift_end_time BETWEEN shift_start_time AND shift_end_time OR $shift_start_time &gt;= shift_start_time AND $shift_end_time &lt;= shift_end_time")
+    -&gt;get();
+$shift_end_time = $request-&gt;input('shift_end_time');
+$shift_start_time = $request-&gt;input('shift_start_time');</code></pre>
+
+<p>I&#39;ve got QueryException in Connection.php line 651. Does anyone have an idea about it?</p>
+
+EOD;
+
+        $question6 = $this->questionRepository->create([
+            'title' => 'Laravel whereRaw query error',
+            'description' => $descriptionForQuestion6,
+            'user_id' => $users->random()->id,
+            'folder_id' => $folderPHP->id,
+        ]);
+
+        $this->questionRepository
+            ->relationsAdd($question6, 'tags', [
+                $tagPHP,
+                $tagLaravel,
+                $tagLaravel5,
+                $tagMysql
+            ]);
+
+        $this->commentRepository->create([
+            'text' => 'You need to put your time values (16:00:00, 20:00:00) in quotes.',
+            'user_id' => $users->random()->id,
+            'q_and_a_id' => $question6->id
+        ]);
+
+        $descriptionForAnswer1 = <<<'EOD'
+<p>Your sql query looks like a pseudo code</p>
+
+<p>&#39;shift start time&#39; and &#39;shift end time&#39; should be defined before sql query.</p>
+
+<p>Try something like this:</p>
+
+<pre>
+<code>$shift_end_time = $request-&gt;input('shift_end_time');
+$shift_start_time = $request-&gt;input('shift_start_time');
+
+$shiftData=   DB::table('shifts')
+    -&gt;where(time_sheet_id, $getTimesheet1-&gt;time_sheet_id)
+    -&gt;where(user_id, $user_id-&gt;user_id)
+    -&gt;whereBetween('shift_start_time', array($shift_start_time, $shift_end_time))
+    -&gt;whereBetween('shift_end_time', array($shift_start_time, $shift_end_time))
+    -&gt;where('shift_end_time', '&gt;=', 'shift_start_time')
+    -&gt;get();</code></pre>
+EOD;
+
+        $answer1 = $this->answerRepository->create([
+            'description' => $descriptionForAnswer1,
+            'user_id' => $users->random()->id,
+            'question_id' => $question6->id,
         ]);
     }
 }
