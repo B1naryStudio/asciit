@@ -75,8 +75,8 @@ define([
         initialize: function (options) {
             if (!options.model) {
                 this.model = new Question.Model({
-                    title: "",       // to display an empty model in tpl
-                    description: ""  // cause there is 1 tpl for add and upd
+                    title: '',       // to display an empty model in tpl
+                    description: ''  // cause there is 1 tpl for add and upd
                 });
             }
 
