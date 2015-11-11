@@ -35,7 +35,7 @@ class AuthController extends Controller
 
         $this->user->payloadInfo = [
             'id' => '55dc13391846c68a1ad56da3',
-            'email' => 'user@user.local',
+            'email' => 'cypherpunks01@europe.com',
             'role' => 'USER',
             'iat' => 1440615292
         ];
@@ -89,13 +89,13 @@ class AuthController extends Controller
         $this->user->additionalInfo = [
             'userCV' => '55dcfb51fe77dc367b71d228',
             'userPDP' => '55dcfbb4fe77dc367b71d230',
-            'email' => 'user@gmail.com',
-            'password' => '123456789',
-            'name' => 'New Super User',
-            'surname' => 'Super User',
+            'email' => 'cypherpunks01@europe.com',
+            'password' => 'cypherpunks01',
+            'name' => 'John',
+            'surname' => 'Malkovich',
             'country' => 'Ukraine',
             'city' => 'Kyiv',
-            'gender' => 'female',
+            'gender' => 'male',
             'birthday' => '1992-12-11T22:00:00.000Z',
             'serverUserId' => '55dc13391846c68a1ad56daa',
             'avatar' => [

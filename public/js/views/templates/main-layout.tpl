@@ -8,5 +8,6 @@
     </a>
 </div>
 <div id="popup"></div>
+<div id="alert"></div>
 <div id="quote"></div>
 <footer></footer>

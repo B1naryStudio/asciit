@@ -1,4 +1,4 @@
-define([
+    define([
     'app',
     'marionette',
     'backbone',
@@ -111,12 +111,7 @@ define([
             this.model.set(this.model.oldValues);
 
             // hiding the error messages
-            this.$(
-                this.ui.itemArea.selector +
-                ' .help-block, ' +             // validation errors
-                this.ui.itemArea.selector +
-                ' .error-block'                // server errors
-            ).addClass('hidden');
+            this.$(' .help-block, .error-block').addClass('hidden');
 
             this.switchToText();
         },

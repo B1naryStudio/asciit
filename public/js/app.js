@@ -6,7 +6,7 @@ define([
     'tpl',
     'tools/validation-model',
     'jquery.scroll',
-    'paginator',
+    'paginator'
 ], function (Marionette, Backbone) {
     var App = new Marionette.Application();
     App.queryFlag = [];
