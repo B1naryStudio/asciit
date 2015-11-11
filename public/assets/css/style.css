@@ -44,7 +44,8 @@ body.modal-open {
     padding-right: 0 !important;
 }
 
-.model-field.description img {
+.model-field.description img,
+.question_view img {
     max-width: 100%;
     height: auto;
     margin: 5px 0;
@@ -71,6 +72,7 @@ body.modal-open {
     padding: 18px 10px;
     border: none;
 }
+
 .search span.input-group-btn {
     background-color: #333;
 }
@@ -395,6 +397,15 @@ body.modal-open {
     bottom: 100%;
     z-index: 0;
     margin-left: -32px;
+}
+
+#question-list .link-preview-result-wrapper {
+    display: none;
+}
+
+.question-row .wrapper-avatar,
+.answer-row .wrapper-avatar {
+    word-break: break-all;
 }
 
 /*
@@ -1244,6 +1255,11 @@ blockquote .author {
     width: 100%;
 }
 
+.questions-answers .link-preview-result-wrapper,
+#question-list .question-row .limited img {
+    display: none;
+}
+
 /*
  |------------------------------------------------------------------------------
  | New answer
@@ -1784,8 +1800,8 @@ a.cke_dialog_ui_button_readonly {
     }
 
     .custom-menu {
-        top: 40px;
-        right: 13px;
+        top: 37px;
+        right: 12px;
     }
 
     .main-menu {
@@ -1794,7 +1810,7 @@ a.cke_dialog_ui_button_readonly {
 
     #appsBtn,
     #notificationBtn {
-        margin-top: -20px;
+        margin-top: -22px;
     }
 
     .header {
@@ -1913,11 +1929,6 @@ a.cke_dialog_ui_button_readonly {
 
     .answers-list .votes {
         margin-bottom: 15px;
-    }
-
-    .question-row .wrapper-avatar,
-    .answer-row .wrapper-avatar {
-        word-break: break-all;
     }
 
     .confirm-form {

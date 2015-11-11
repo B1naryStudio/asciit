@@ -1,6 +1,6 @@
 <div class="list-group-item">
     <div class="row">
-        <div class="col-md-3 col-lg-3 col-sm-4 col-xs-3 text-center">
+        <div class="col-md-3 col-lg-3 col-sm-4 col-xs-3 text-center wrapper-avatar">
             <img src="<%- user.thumb_avatar %>" alt="100x100" class="img-thumbnail">
             <div><b><%= user.first_name + ' ' + user.last_name %></b></div>
         </div>
