@@ -681,7 +681,6 @@ EOD;
 </pre>
 EOD;
         $gnuDocPreview = $this->previewService->get('http://www.gnu.org/software/grep/manual/grep.html#grep-Programs');
-        sleep(1);
         $question7 = $this->questionRepository->create([
             'title' => 'What does grep do?',
             'description' => '<p>Here is the description of&nbsp;<code>grep</code>&nbsp;from&nbsp;GNU.org:</p>
