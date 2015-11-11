@@ -25,7 +25,7 @@
             {
                 name: 'media',
                 items: [
-                    'Image', 'LinkWithPreview'
+                    'Image', 'SimpleLink',  'LinkWithPreview'
                 ]
             },
             {
