@@ -321,10 +321,18 @@ EOD;
         $this->questionRepository
             ->relationsAdd($question2, 'tags', [$tagAjax, $tagLaravel, $tagLaravel5]);
 
+        if (env('SERVER_PREFIX', '')) {
+            $prefix = '/' . env('SERVER_PREFIX', '');
+        } else {
+            $prefix = '';
+        }
+
         // Answer1 to question2
         $answer = $this->answerRepository->create([
             'description' => '<p>​I would rewrite your&nbsp;<code>getRecordsByTag</code>&nbsp;function to take care if it like this:</p>
-                <p><iframe class="code-snippet gist full-height" src="/gist-snippets?link=https%3A%2F%2Fgist.github.com%2FAntarus66%2F2ad7483f27a740082f56"></iframe><br />
+                <p><iframe class="code-snippet gist full-height" src="'
+                . $prefix
+                . '/gist-snippets?link=https%3A%2F%2Fgist.github.com%2FAntarus66%2F2ad7483f27a740082f56"></iframe><br />
                 &nbsp;</p>',
             'user_id' => $users->random()->id,
             'question_id' => $question2->id,
@@ -470,6 +478,28 @@ EOD;
         $authorOfAnswer1 = $users->random();
         $link = $this->previewService->get('http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git');
 
+        $descriptionForAnswer2 = <<<'EOD'
+<p>Another way is to edit the&nbsp;<code>.gitconfig</code>&nbsp;(create one if not exist), for instance:</p>
+
+<pre>
+<code>vim ~/.gitconfig
+</code></pre>
+
+<p>and then add:</p>
+
+<pre>
+<code>[color]
+  diff = auto
+  status = auto
+  branch = auto</code></pre>
+EOD;
+
+        $answer2 = $this->answerRepository->create([
+            'description' => $descriptionForAnswer2,
+            'user_id' => $user->id,
+            'question_id' => $question4->id,
+        ]);
+
         $answer1 = $this->answerRepository->create([
             'description' => '<p>From the Unix &amp; Linux Stackexchange question&nbsp;</p>
                 <div class="link-preview-result-wrapper"><a href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git"><img alt="" src="' . $link . '" /></a><a class="link-preview-image-link" href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" src="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" target="_blank">http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git</a></div>
@@ -504,29 +534,6 @@ EOD;
             'text' => 'yes, it is persistent',
             'user_id' => $authorOfAnswer1->id,
             'q_and_a_id' => $answer1->id
-        ]);
-
-
-        $descriptionForAnswer2 = <<<'EOD'
-<p>Another way is to edit the&nbsp;<code>.gitconfig</code>&nbsp;(create one if not exist), for instance:</p>
-
-<pre>
-<code>vim ~/.gitconfig
-</code></pre>
-
-<p>and then add:</p>
-
-<pre>
-<code>[color]
-  diff = auto
-  status = auto
-  branch = auto</code></pre>
-EOD;
-
-        $answer2 = $this->answerRepository->create([
-            'description' => $descriptionForAnswer2,
-            'user_id' => $user->id,
-            'question_id' => $question4->id,
         ]);
 
         $descriptionForAnswer3 = <<<'EOD'
