@@ -183,6 +183,10 @@ class RealisticDataSeeder extends Seeder
             'folder_id' => $folderJS->id,
         ]);
 
+        // tags
+        $this->questionRepository
+            ->relationsAdd($question, 'tags', [$tagJavascript, $tagUbuntu]);
+
         $this->commentRepository->create([
             'text' => 'If user is moves mouse in random direction than it can\'t be smooth and you can\'t predict where user will move mouse... Unless you have some super powers.',
             'user_id' => $users->random()->id,
