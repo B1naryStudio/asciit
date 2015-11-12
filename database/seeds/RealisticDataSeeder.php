@@ -183,6 +183,10 @@ class RealisticDataSeeder extends Seeder
             'folder_id' => $folderJS->id,
         ]);
 
+        // tags
+        $this->questionRepository
+            ->relationsAdd($question, 'tags', [$tagJavascript, $tagUbuntu]);
+
         $this->commentRepository->create([
             'text' => 'If user is moves mouse in random direction than it can\'t be smooth and you can\'t predict where user will move mouse... Unless you have some super powers.',
             'user_id' => $users->random()->id,
@@ -474,6 +478,28 @@ EOD;
         $authorOfAnswer1 = $users->random();
         $link = $this->previewService->get('http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git');
 
+        $descriptionForAnswer2 = <<<'EOD'
+<p>Another way is to edit the&nbsp;<code>.gitconfig</code>&nbsp;(create one if not exist), for instance:</p>
+
+<pre>
+<code>vim ~/.gitconfig
+</code></pre>
+
+<p>and then add:</p>
+
+<pre>
+<code>[color]
+  diff = auto
+  status = auto
+  branch = auto</code></pre>
+EOD;
+
+        $answer2 = $this->answerRepository->create([
+            'description' => $descriptionForAnswer2,
+            'user_id' => $user->id,
+            'question_id' => $question4->id,
+        ]);
+
         $answer1 = $this->answerRepository->create([
             'description' => '<p>From the Unix &amp; Linux Stackexchange question&nbsp;</p>
                 <div class="link-preview-result-wrapper"><a href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git"><img alt="" src="' . $link . '" /></a><a class="link-preview-image-link" href="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" src="http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git" target="_blank">http://unix.stackexchange.com/questions/44266/how-to-colorize-output-of-git</a></div>
@@ -508,29 +534,6 @@ EOD;
             'text' => 'yes, it is persistent',
             'user_id' => $authorOfAnswer1->id,
             'q_and_a_id' => $answer1->id
-        ]);
-
-
-        $descriptionForAnswer2 = <<<'EOD'
-<p>Another way is to edit the&nbsp;<code>.gitconfig</code>&nbsp;(create one if not exist), for instance:</p>
-
-<pre>
-<code>vim ~/.gitconfig
-</code></pre>
-
-<p>and then add:</p>
-
-<pre>
-<code>[color]
-  diff = auto
-  status = auto
-  branch = auto</code></pre>
-EOD;
-
-        $answer2 = $this->answerRepository->create([
-            'description' => $descriptionForAnswer2,
-            'user_id' => $user->id,
-            'question_id' => $question4->id,
         ]);
 
         $descriptionForAnswer3 = <<<'EOD'
