@@ -50,14 +50,14 @@ define([
 
                                 for (var i = 0; i < data[1].length; i++ ) {
                                     tmp = App.helper.htmlspecialchars(
-                                        data[i]['title']
+                                        data[1][i]['title']
                                     );
                                     data[1][i].text = tmp;
                                     data[1][i].id = tmp;
                                 }
 
                                 return {
-                                    results: data
+                                    results: data[1]
                                 };
                             },
                             cache: true

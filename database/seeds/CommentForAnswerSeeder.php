@@ -32,13 +32,13 @@ class CommentForAnswerSeeder extends Seeder
         $faker = Factory::create();
 
         $users = $this->userRepository->all();
-        $questions = $this->answerRepository->all();
+        $answers = $this->answerRepository->all();
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 300; $i++) {
             $this->commentRepository->create([
                 'text' => $faker->realText(500),
                 'user_id'     => $users->random()->id,
-                'q_and_a_id' => $questions->random()->id
+                'q_and_a_id' => $answers->random()->id
             ]);
         }
     }

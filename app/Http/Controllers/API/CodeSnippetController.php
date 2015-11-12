@@ -110,7 +110,7 @@ class CodeSnippetController extends Controller
             'js_path'  => $jsPath,
             'prefix'  => $prefixToPaste,
             'description' => $message
-        ],  404);
+        ],  200);
     }
 
     protected function getJsPath()

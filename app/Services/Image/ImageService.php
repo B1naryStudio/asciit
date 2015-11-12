@@ -59,7 +59,7 @@ class ImageService implements ImageServiceInterface
 
     public function generateFilename($extension, $extraName = '')
     {
-        $fileName = time() . ($extraName ? ('_' . $extraName) : '');
+        $fileName = time() . rand() . ($extraName ? ('_' . $extraName) : '');
         $fileName .= '.' . $extension;
 
         return [

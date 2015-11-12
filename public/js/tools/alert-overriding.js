@@ -16,6 +16,7 @@ define([
                 title: title
             },
             class: 'alert-form',
+            type: 'alert',
             contentView: alertView
         });
 
@@ -23,7 +24,9 @@ define([
             alertView,
             'form:submit',
             function () {
-                App.trigger('popup:close');
+                App.trigger('popup:close', {
+                    type: 'alert'
+                });
             }
         );
     };

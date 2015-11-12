@@ -41,7 +41,7 @@ class VotesSeeder extends Seeder
         foreach ($users as $user) {
             $usersLikeable = $likeable->shuffle();
 
-            for ($i = 0; $i < 20; $i++) {
+            for ($i = 0; $i < 70; $i++) {
                 $this->voteRepository->create([
                     'sign' => rand(0,1),
                     'user_id' => $user->id,

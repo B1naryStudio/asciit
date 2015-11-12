@@ -44,8 +44,9 @@ body.modal-open {
     padding-right: 0 !important;
 }
 
-.model-field.description img {
-    width: 100%;
+.model-field.description img,
+.question_view img {
+    max-width: 100%;
     height: auto;
     margin: 5px 0;
 }
@@ -71,6 +72,7 @@ body.modal-open {
     padding: 18px 10px;
     border: none;
 }
+
 .search span.input-group-btn {
     background-color: #333;
 }
@@ -397,6 +399,15 @@ body.modal-open {
     margin-left: -32px;
 }
 
+#question-list .link-preview-result-wrapper {
+    display: none;
+}
+
+.question-row .wrapper-avatar,
+.answer-row .wrapper-avatar {
+    word-break: break-all;
+}
+
 /*
  |------------------------------------------------------------------------------
  | Votes block
@@ -521,12 +532,28 @@ body.modal-open {
     padding-right: 15px;
 }
 
+.list-group-item .limited::before,
 .list-group-item .limited::after {
     color: #fff;
     content: ".";
     position: absolute;
-    right: 0;
     bottom: 0;
+}
+
+.list-group-item .limited::before {
+    left: 0;
+    width: 100%;
+    height: 0.7em;
+
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&amp;0+0,1+85 */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 85%, rgba(255,255,255,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 85%,rgba(255,255,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 85%,rgba(255,255,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+}
+
+.list-group-item .limited::after {
+    right: 0;
     width: 15em;
 
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,ffffff+74,ffffff+74,ffffff+93&amp;0+0,1+74 */
@@ -671,7 +698,7 @@ body.modal-open {
 .comment-list .folding-controls .control {
     line-height: 25px;
     font-size: 0.8em;
-    margin: 0 0 5px 0;
+    margin: 15px 0;
 }
 
 .role-select {
@@ -755,8 +782,11 @@ body.modal-open {
 .modal-backdrop.in {
     width: 100%;
     height: 100%;
-    z-index: 10100;
     position: fixed;
+}
+
+.modal-backdrop.alert {
+    z-index: 10100;
 }
 
 .modal-header {
@@ -771,6 +801,10 @@ body.modal-open {
     padding: 0 !important;
     position: fixed;
     overflow: hidden;
+    visibility: hidden;
+}
+
+#popup-layout-view.alert-form {
     z-index: 10110;
 }
 
@@ -1168,10 +1202,6 @@ blockquote .author {
     margin: 15px 0;
 }
 
-.single-comment:first-child {
-    margin: 15px 0;
-}
-
 .question-preview {
     font-size: 18px;
     padding-right: 0;
@@ -1219,6 +1249,15 @@ blockquote .author {
 
 .my-questions .question-preview {
     font-size: 18px;
+}
+
+.questions-answers {
+    width: 100%;
+}
+
+.questions-answers .link-preview-result-wrapper,
+#question-list .question-row .limited img {
+    display: none;
 }
 
 /*
@@ -1308,8 +1347,6 @@ blockquote .author {
 .answers-list .cke {
     border: none;
 }
-
-
 
 /*
  |------------------------------------------------------------------------------
@@ -1763,8 +1800,8 @@ a.cke_dialog_ui_button_readonly {
     }
 
     .custom-menu {
-        top: 40px;
-        right: 13px;
+        top: 37px;
+        right: 12px;
     }
 
     .main-menu {
@@ -1773,7 +1810,7 @@ a.cke_dialog_ui_button_readonly {
 
     #appsBtn,
     #notificationBtn {
-        margin-top: -20px;
+        margin-top: -22px;
     }
 
     .header {
@@ -1894,11 +1931,6 @@ a.cke_dialog_ui_button_readonly {
         margin-bottom: 15px;
     }
 
-    .question-row .wrapper-avatar,
-    .answer-row .wrapper-avatar {
-        word-break: break-all;
-    }
-
     .confirm-form {
         width: 70%;
     }
@@ -2012,7 +2044,7 @@ a.cke_dialog_ui_button_readonly {
         width: 100%;
         margin-left: 0;
     }
-
+    
     .questions-answers {
         display: block;
     }

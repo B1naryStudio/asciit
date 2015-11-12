@@ -12,10 +12,19 @@ define([
     var Controller = Marionette.Controller.extend({
         show: function (data) {
             var view = new View(data);
-            App.Main.Views.Layout.getRegion('popup').show(view);
+            var regionName = data.type ? data.type : 'popup';
+            App.Main.Views.Layout.getRegion(regionName).show(view);
         },
         close: function (data) {
-            App.Main.Views.Layout.getRegion('popup').currentView.close(data);
+            var regionName
+
+            if (data && data.type) {
+                regionName = data.type;
+            } else {
+                regionName = 'popup';
+            }
+
+            App.Main.Views.Layout.getRegion(regionName).currentView.close(data);
         }
     });
     App.Popup.Controller = new Controller();

@@ -34,7 +34,7 @@ class CommentForQuestionSeeder extends Seeder
         $users = $this->userRepository->all();
         $questions = $this->questionRepository->all();
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 150; $i++) {
             $this->commentRepository->create([
                 'text' => $faker->realText(500),
                 'user_id'     => $users->random()->id,

@@ -20,11 +20,12 @@ define([
         id: 'app-layout-view',
         template: Tpl,
         regions: {
-            header:  'header',
-            content: '#page-content-wrapper',
-            popup:   '#popup',
+            header:      'header',
+            content:     '#page-content-wrapper',
+            popup:       '#popup',
+            alert:       '#alert',
             quoteRegion: '#quote',
-            footer:  'footer'
+            footer:      'footer'
         },
         startRelativeTimeUpdating: function () {
             setInterval(function () {

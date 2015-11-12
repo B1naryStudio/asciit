@@ -95,6 +95,10 @@ class QuestionService implements QuestionServiceInterface
 
     public function updateQuestion(array $data, $id)
     {
+        if (empty($data['tag'])) {
+            $data['tag'] = [];
+        }
+
         try {
             $this->attachFolderId($data);
             $question = $this->questionRepository->update($data, $id);

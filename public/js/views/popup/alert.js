@@ -30,6 +30,14 @@ define([
             }));
         },
 
+        onShow: function () {
+            $('.modal-backdrop').addClass('alert');
+        },
+
+        onDestroy: function () {
+            $('.modal-backdrop').removeClass('alert');
+        },
+
         initialize: function (options) {
             this.message = options.message;
         }

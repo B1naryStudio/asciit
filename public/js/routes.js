@@ -48,6 +48,7 @@ define([
                 name !== 'login' && App.Routes.isOpen &&
                 callback || name === 'login' && callback
             ) {
+                App.trigger('select:cancel');
                 callback.apply(this, args);
 
                 var duration;
@@ -193,8 +194,10 @@ define([
             });
         },
         quoteControlHide: function (e) {
-            App.Main.Views.Quote.triggerMethod('control:close', e);
-            App.Main.Views.Layout.getRegion('quoteRegion').empty();
+            if (App.Main.Views.Quote) {
+                App.Main.Views.Quote.triggerMethod('control:close', e);
+                App.Main.Views.Layout.getRegion('quoteRegion').empty();
+            }
         },
         roles: function (data) {
             require(['controllers/role'], function (controller) {

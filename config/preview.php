@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'placeholder' => 'http://dummyimage.com/200x200/ffa800&text=No+Preview',
+    'placeholder' => 'https://placeholdit.imgix.net/~text?txtsize=200&txt=No+Preview&w=1024&h=550&txttrack=0',
     'screenshot_width' =>  700, //px
     'screenshot_providers' => [
         App\Services\Preview\Contracts\OEmbedPreviewInterface::class,

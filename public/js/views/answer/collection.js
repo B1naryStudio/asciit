@@ -81,7 +81,7 @@ define([
             'click @ui.selectAsBestButton':        'best:select',
             'click @ui.cancelBestStatusButton':    'best:cancel',
 
-            'mouseup p': 'text:select'
+            'mouseup div.model-field, p.model-field': 'text:select'
         },
 
         behaviors: {
@@ -152,6 +152,7 @@ define([
             this.editor.destroy();
             this.editableField.attr('contenteditable', false);
             this.triggerMethod('iframe:resize');
+            this.triggerMethod('show');
         },
 
         onShow: function () {
