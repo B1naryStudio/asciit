@@ -183,10 +183,6 @@ class RealisticDataSeeder extends Seeder
             'folder_id' => $folderJS->id,
         ]);
 
-        // tags
-        $this->questionRepository
-            ->relationsAdd($question, 'tags', [$tagJavascript, $tagUbuntu]);
-
         $this->commentRepository->create([
             'text' => 'If user is moves mouse in random direction than it can\'t be smooth and you can\'t predict where user will move mouse... Unless you have some super powers.',
             'user_id' => $users->random()->id,
@@ -321,10 +317,18 @@ EOD;
         $this->questionRepository
             ->relationsAdd($question2, 'tags', [$tagAjax, $tagLaravel, $tagLaravel5]);
 
+        if (env('SERVER_PREFIX', '')) {
+            $prefix = '/' . env('SERVER_PREFIX', '');
+        } else {
+            $prefix = '';
+        }
+
         // Answer1 to question2
         $answer = $this->answerRepository->create([
             'description' => '<p>​I would rewrite your&nbsp;<code>getRecordsByTag</code>&nbsp;function to take care if it like this:</p>
-                <p><iframe class="code-snippet gist full-height" src="/gist-snippets?link=https%3A%2F%2Fgist.github.com%2FAntarus66%2F2ad7483f27a740082f56"></iframe><br />
+                <p><iframe class="code-snippet gist full-height" src="'
+                . $prefix
+                . '/gist-snippets?link=https%3A%2F%2Fgist.github.com%2FAntarus66%2F2ad7483f27a740082f56"></iframe><br />
                 &nbsp;</p>',
             'user_id' => $users->random()->id,
             'question_id' => $question2->id,
