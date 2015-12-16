@@ -210,8 +210,11 @@ define([
         options.error = function (xhr, textStatus, errorThrown) {
             App.queryFlag.pop();
             App.trigger('spinner:check');
+
             if (xhr.status === 401 ) {
-                Backbone.history.navigate('/login', { trigger: true });
+                require(['controllers/user/init'], function (controller) {
+                    controller.session();
+                });
             } else if (xhr.status === 303 ) {
                 location.reload();
             } else if (xhr.status === 302 ) {
