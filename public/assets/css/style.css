@@ -159,7 +159,7 @@ body.modal-open {
 }
 
 .menu.navbar.navbar-inverse {
-    background: #333;
+    background: #545861;
 }
 
 .main-menu {
@@ -170,8 +170,8 @@ body.modal-open {
 .custom-menu {
     width: 85px;
     position: absolute;
-    right: 10px;
-    top: 25px;
+    right: 8px;
+    top: 15px;
     display: flex;
     align-self: center;
     z-index: 3;
@@ -183,7 +183,7 @@ body.modal-open {
     height: 30px;
     width: 30px;
     border-radius: 5px;
-    background: #ffa800;
+    background: transparent;
     cursor: pointer;
     margin-left: 10px;
     color: #fff;
@@ -202,7 +202,7 @@ body.modal-open {
     border-bottom: 20px solid #fff;
     content: '';
     margin-top: -25px;
-    margin-left: 128px;
+    margin-left: 130px;
     position: absolute;
 }
 
@@ -214,7 +214,7 @@ body.modal-open {
     border-bottom: 20px solid #fff;
     content: '';
     margin-top: -25px;
-    margin-left: 9px;
+    margin-left: 12px;
     position: absolute;
 }
 
@@ -256,12 +256,11 @@ body.modal-open {
 .menu-list li,
 .lang-list li {
     list-style: none;
-    border-bottom: 1px solid #d6dadc;
     text-align: center;
     margin-bottom: 3px;
-    height: 30px;
+    height: 35px;
     line-height: 2em;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .menu-list li:last-child,
@@ -282,15 +281,6 @@ body.modal-open {
 .lang-list li:hover,
 .lang-list li:focus {
     background-color: #fff;
-}
-
-.menu-list li:hover a,
-.menu-list li:focus a,
-.lang-list li:hover span,
-.lang-list li:focus span {
-    cursor: pointer;
-    font-size: 17px;
-    transition: .2s;
 }
 
 #appsBlock:before {

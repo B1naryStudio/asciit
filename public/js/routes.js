@@ -44,9 +44,12 @@ define([
                 Backbone.history.navigate('/', { trigger: true });
                 return false;
             }
+
             if (
-                name !== 'login' && App.Routes.isOpen &&
-                callback || name === 'login' && callback
+                name !== 'login' &&
+                App.Routes.isOpen &&
+                callback || name === 'login' &&
+                callback
             ) {
                 App.trigger('select:cancel');
                 callback.apply(this, args);
@@ -209,6 +212,7 @@ define([
 
     App.listenTo(App, 'init:openRoutes', function (url) {
         App.Routes.isOpen = true;
+
         if (!Backbone.history.navigate(url, { trigger: true })) {
             Backbone.history.loadUrl(url);
         }

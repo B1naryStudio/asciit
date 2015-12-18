@@ -143,6 +143,7 @@ class UserController extends Controller
     public function session(Request $request)
     {
         $cookie = $request->cookie('x-access-token');
+
         if(!empty($cookie)) {
             try {
                 $user = $this->authService->getUserFromCookie(
