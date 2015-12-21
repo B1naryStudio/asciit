@@ -218,6 +218,10 @@ body.modal-open {
     position: absolute;
 }
 
+.lang-list li {
+    cursor: pointer;
+}
+
 .custom-menu .menu-list-control {
     padding: 4px 7px;
 }
@@ -359,6 +363,10 @@ body.modal-open {
 
 #question-list .question-form .search:hover ~ .help {
     display: block;
+}
+
+#question-list .question-form .help-block {
+    margin-top: 10px;
 }
 
 #question-list .help:before {
@@ -843,7 +851,7 @@ body.modal-open {
     text-align: center;
 }
 
-#nav-question-add {
+.nav-question-add {
     cursor: pointer;
 }
 
