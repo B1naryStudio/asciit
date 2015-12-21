@@ -5,6 +5,7 @@ namespace App\WebSocket\WampProcessors;
 use App\WebSocket\Contracts\WampProcessor;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
+use Illuminate\Support\Facades\Log;
 
 class WampProcessorForZMQ extends WampProcessor implements WampServerInterface
 {
@@ -19,6 +20,19 @@ class WampProcessorForZMQ extends WampProcessor implements WampServerInterface
     public function onNewItem($data)
     {
         $decodedData = json_decode($data, true);
+
+        // Logging the error:
+        // Exception 'ErrorException' with message 'Undefined index: topic'
+        if (!array_key_exists('topic', $decodedData)) {
+            $message = sprintf(
+                "There is no 'topic' key in the decoded message data:\n%s\n",
+                $decodedData
+            );
+
+            Log::error($message);
+            return;
+        }
+
         echo "Got a message on topic:\n" . $decodedData['topic'] . "\n";
 
         // If the lookup topic object isn't set there is no one to publish to
