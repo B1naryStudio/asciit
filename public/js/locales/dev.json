@@ -11,7 +11,7 @@
         "edit-title": "Edit the question",
         "title": "Title",
         "description": "Description",
-        "empty": "There is no questions. You can be the first!",
+        "empty": "There is no questions. You can be the first:",
         "confirm-del-title": "Question deleting confirm",
         "confirm-del-body": "Do you really want to delete this question?"
     },

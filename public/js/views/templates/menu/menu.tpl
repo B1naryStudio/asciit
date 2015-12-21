@@ -56,10 +56,10 @@
         <button class="language button lang"><%= _t("app.currentLanguage") %></button>
     </div>
     <ul class="menu-list hdr-invisible">
-        <li><a id="nav-question" href="#questions"><%= _t("questions.all") %></a></li>
-        <li><a id="nav-question-add"><%= _t("questions.add") %></a></li>
+        <li><a class="nav-question" href="#questions"><%= _t("questions.all") %></a></li>
+        <li><a class="nav-question-add"><%= _t("questions.add") %></a></li>
         <li><a href="#activity"><%= _t("questions.my") %></a></li>
-        <li><a id="nav-tags" href="#tags"><%= _t("tags.tags") %></a></li>
+        <li><a class="nav-tags" href="#tags"><%= _t("tags.tags") %></a></li>
 
         <% if (admin) { %>
             <li><a id="nav-folder" href="#folders"><%= _t("folders.folders") %></a></li>

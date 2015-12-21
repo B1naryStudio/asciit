@@ -17,11 +17,15 @@
                 </button>
             </span>
         </div>
-        <span class="help-block hidden"></span>
+        <div class="help">
+            <%= _t("search.searchInfo") %>
+        </div>
+        <span class="help-block hidden">
+            <%= _t("questions.empty") %>
+            <a class="nav-question-add"><%= _t("questions.add") %></a>
+        </span>
     </div>
-    <div class="help">
-        <%= _t("search.searchInfo") %>
-    </div>
+
 </form>
 
 <div class="questions-list">

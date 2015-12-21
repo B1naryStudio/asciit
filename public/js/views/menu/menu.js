@@ -15,9 +15,9 @@ define([
         template: MenuTpl,
         id: 'menu-view',
         ui: {
-            login: '#nav-login',
-            questions: '#nav-questions',
-            question_add: '#nav-question-add',
+            login: '.nav-login',
+            questions: '.nav-questions',
+            question_add: '.nav-question-add',
             email_button: '.email',
             lang_control: '.lang',
             lang_sel: '.lang-list [data-lang]',

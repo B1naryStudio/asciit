@@ -8,6 +8,10 @@ define([
     Backbone
 ) {
     App.Behaviors.SearchForm = Marionette.Behavior.extend({
+        defaults: {
+            emptinessMessage: i18n.t('ui.empty') + '...'
+        },
+
         events: {
             'submit form': 'submit'
         },
@@ -27,7 +31,7 @@ define([
             Backbone.Validation.callbacks.invalid(
                 this.view,
                 'search_query',
-                i18n.t('ui.empty') + '...'
+                this.options.emptinessMessage
             );
         },
 

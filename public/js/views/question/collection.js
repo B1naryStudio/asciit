@@ -22,10 +22,24 @@ define([
         childView: QuestionView,
         childViewContainer: '.list',
 
+        ui: {
+            question_add: '.nav-question-add'
+        },
+
+        events: {
+            'click @ui.question_add' : 'questionAdd'
+        },
+
         behaviors: {
             SearchForm: {
-                behaviorClass: SearchForm
+                behaviorClass: SearchForm,
+                emptinessMessage: undefined
             }
+        },
+
+        questionAdd: function () {
+            App.trigger('question:add');
+            return false;
         },
 
         initialize: function (options) {
