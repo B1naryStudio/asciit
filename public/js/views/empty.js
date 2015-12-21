@@ -15,5 +15,6 @@ define([
         className: 'empty',
         template: EmptyTpl
     });
+
     return App.Main.Views.Empty;
 });

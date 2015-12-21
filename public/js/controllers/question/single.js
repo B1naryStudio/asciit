@@ -5,7 +5,7 @@ define([
     'views/question/single',
     'views/answer/collection',
     'views/comment/collection',
-    'views/empty',
+    'views/question/empty',
     'models/answer',
     'models/comment',
     'models/question',
@@ -18,7 +18,7 @@ define([
     SingleView,
     AnswersView,
     CommentsView,
-    EmptyView,
+    EmptyQuestionsView,
     Answer,
     Comment
 ) {
@@ -299,7 +299,7 @@ define([
                         });
                 }).fail(function (data) {
                     if (data.status === 404) {
-                        var view = new EmptyView();
+                        var view = new EmptyQuestionsView();
                         App.Main.Views.Layout
                             .getRegion('content')
                             .show(view);

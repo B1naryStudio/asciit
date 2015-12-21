@@ -357,7 +357,7 @@ body.modal-open {
     margin-left: -165px;
 }
 
-#question-list .question-form:hover .help {
+#question-list .question-form .search:hover ~ .help {
     display: block;
 }
 
