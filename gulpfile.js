@@ -36,6 +36,7 @@ var concatSettings = {
         jsPathMinFull + 'views/templates/answer/answers.tpl.js',
         jsPathMinFull + 'views/templates/answer/single-answer.tpl.js',
         jsPathMinFull + 'views/templates/question/question-layout.tpl.js',
+        jsPathMinFull + 'views/templates/question/empty.tpl.js',
         jsPathMinFull + 'views/templates/comment/comments.tpl.js',
         jsPathMinFull + 'views/templates/comment/single-comment.tpl.js'
     ],
@@ -102,6 +103,7 @@ var concatSettings = {
         jsPathMinFull + 'views/empty.js',
         jsPathMinFull + 'views/form.js',
         jsPathMinFull + 'views/main-layout.js',
+        jsPathMinFull + 'views/question/empty.js',
         jsPathMinFull + 'views/question/form.js',
         jsPathMinFull + 'views/folder/select.js',
         jsPathMinFull + 'views/tag/select.js',
